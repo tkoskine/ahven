@@ -1,0 +1,21 @@
+Ahven - Unit Test Library for Ada
+=================================
+
+Ahven is a small unit test library for Ada.
+It is mostly written because I had a need for
+one and the only existing unit test library,
+AUnit, requires Ada 2005 and is a pure GPL project.
+
+Instead, Ahven is Ada95 code and distributed
+under ISC license, so it can be used with older
+projects and does not infect GPL to the whole
+project.
+
+Homepage:
+ http://home.gna.org/ahven/
+
+License:
+ ISC. See file LICENSE for more information.
+
+Maintainer:
+ Tero Koskinen <tero.koskinen@iki.fi>
