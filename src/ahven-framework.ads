@@ -39,18 +39,34 @@ package Ahven.Framework is
    end record;
 
    procedure Add_Failure (Result : in out Test_Result; P : Result_Place);
+   -- Add a test failure to the result.
+   -- P tells which test failed.
+
    procedure Add_Error   (Result : in out Test_Result; P : Result_Place);
+   -- Add a test error to the result.
+   -- P tells which test had the error.
+
    procedure Add_Pass    (Result : in out Test_Result; P : Result_Place);
+   -- Add a successful test to the result
+   -- P tells which test was ok.
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    type Test_Class_Access is access all Test'Class;
    type Test_Access is access Test;
 
    procedure Set_Up    (T : in out Test);
+   -- Set_Up is called before executing the test procedure.
+
    procedure Tear_Down (T : in out Test);
+   -- Tear_Down is called after the test procedure is executed.
+
    function  Name      (T : Test) return Unbounded_String is abstract;
+   -- Return the name of the test.
+
    procedure Run       (T      : in out Test;
                         Result : in out Test_Result) is abstract;
+   -- Run the test and place the test result to Result.
+
    procedure Register_Routines (T : in out Test) is abstract;
    procedure Execute   (T : Test_Class_Access;
                         Result : in out Test_Result);

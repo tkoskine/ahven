@@ -1,3 +1,4 @@
+-- Ahven Unit Test Library
 --
 -- Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
 --
@@ -16,7 +17,12 @@
 
 package Ahven is
    Assertion_Error : exception;
+   -- Exception, raised when Assert fails.
 
    procedure Assert (Condition : Boolean; Message : String);
+   -- If Condition is false, Assert raises Assertion_Error
+   -- with given Message.
+
    procedure Fail   (Message : String);
+   -- Fail always raises Assertion_Error with given Message.
 end Ahven;
