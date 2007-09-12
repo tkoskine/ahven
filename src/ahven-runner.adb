@@ -23,19 +23,8 @@ use Ada.Strings.Unbounded;
 
 package body Ahven.Runner is
 
-   procedure Finalize (R : in out Test_Runner) is
-      procedure Free is new Ada.Unchecked_Deallocation
-        (Framework.Test'Class, Framework.Test_Class_Access);
-   begin
-      -- Free (R.Suite);
-      null;
-   end Finalize;
-
    procedure Run (R : in out Test_Runner) is
-      use Framework.Result_List;
-
       P : Framework.Result_Place;
-      Iter : Iterator;
    begin
       P.Test_Name := Framework.Name (R.Suite.all);
       begin
@@ -46,28 +35,6 @@ package body Ahven.Runner is
          when others =>
             Framework.Add_Error (R.Result, P);
       end;
-
-      Iter := First (R.Result.Failure_Results);
-
-      Put ("Passed: ");
-      Put_Line (Integer'Image (Size (R.Result.Pass_Results)));
-      Put ("Failed: ");
-      Put_Line (Integer'Image (Size (R.Result.Failure_Results)));
-      loop
-         exit when Iter = null;
-         Put (" " & To_String (Data (Iter).Test_Name) & " : ");
-         Put_Line (To_String (Data (Iter).Routine_Name));
-         Iter := Next (Iter);
-      end loop;
-      Put ("Errors: ");
-      Put_Line (Integer'Image (Size (R.Result.Error_Results)));
-      Iter := First (R.Result.Error_Results);
-      loop
-         exit when Iter = null;
-         Put (" " & To_String (Data (Iter).Test_Name) & " : ");
-         Put_Line (To_String (Data (Iter).Routine_Name));
-         Iter := Next (Iter);
-      end loop;
    end Run;
 
 end Ahven.Runner;

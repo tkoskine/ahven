@@ -14,7 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Runner;
+with Ahven.Text_Runner;
 with Ahven.Framework;
 with Simple_Tests;
 
@@ -22,10 +22,8 @@ use Ahven;
 
 procedure Runner is
    S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-   R : Ahven.Runner.Test_Runner;
 begin
    Framework.Add_Test (S.all, new Simple_Tests.Test);
-   R.Suite := Framework.Test_Class_Access (S);
-   Ahven.Runner.Run (R);
+   Text_Runner.Run (S);
    Framework.Release_Suite (S);
 end Runner;

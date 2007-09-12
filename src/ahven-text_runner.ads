@@ -13,17 +13,10 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
-
-with Ada.Finalization;
 with Ahven.Framework;
 
-package Ahven.Runner is
+package Ahven.Text_Runner is
 
-   type Test_Runner is new Ada.Finalization.Controlled with record
-      Suite : Ahven.Framework.Test_Class_Access;
-      Result : Ahven.Framework.Test_Result;
-   end record;
+   procedure Run (Suite : Framework.Test_Suite_Access);
 
-   procedure Run (R : in out Test_Runner);
-
-end Ahven.Runner;
+end Ahven.Text_Runner;
