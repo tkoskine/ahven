@@ -32,10 +32,38 @@ package Ahven.Framework is
    package Result_List is
      new Ahven.Double_Linked_List (Result_Place);
 
+   type Result_Listener is abstract tagged null record;
+   type Result_Listener_Access is access Result_Listener;
+   type Result_Listener_Class_Access is access Result_Listener'Class;
+
+   procedure Add_Pass (Listener : Result_Listener; Place : Result_Place)
+     is abstract;
+   -- Called after test passes.
+
+   procedure Add_Failure (Listener : Result_Listener; Place : Result_Place)
+     is abstract;
+   -- Called after test fails.
+
+   procedure Add_Error (Listener : Result_Listener; Place : Result_Place)
+     is abstract;
+   -- Called after there is an error in the test.
+
+   procedure Begin_Test (Listener : Result_Listener; Place : Result_Place)
+     is abstract;
+   -- Called before the test begins.
+
+   procedure End_Test (Listener : Result_Listener; Place : Result_Place)
+     is abstract;
+   -- Called after the test ends. Add_* procedures are called before this.
+
+   package Result_Listener_List is
+     new Ahven.Double_Linked_List (Result_Listener_Class_Access);
+
    type Test_Result is record
       Error_Results   : Result_List.List;
       Failure_Results : Result_List.List;
       Pass_Results    : Result_List.List;
+      Listeners       : Result_Listener_List.List;
    end record;
 
    procedure Add_Failure (Result : in out Test_Result; P : Result_Place);
@@ -49,6 +77,9 @@ package Ahven.Framework is
    procedure Add_Pass    (Result : in out Test_Result; P : Result_Place);
    -- Add a successful test to the result
    -- P tells which test was ok.
+
+   procedure Add_Listener(Result : in out Test_Result;
+                          Listener : Result_Listener_Class_Access);
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    type Test_Class_Access is access all Test'Class;

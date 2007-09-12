@@ -37,6 +37,12 @@ package body Ahven.Framework is
       Result_List.Append (Result.Pass_Results, P);
    end Add_Pass;
 
+   procedure Add_Listener (Result : in out Test_Result;
+                           Listener : Result_Listener_Class_Access) is
+   begin
+      Result_Listener_List.Append (Result.Listeners, Listener);
+   end Add_Listener;
+
    procedure Set_Up (T : in out Test) is
    begin
       null;
