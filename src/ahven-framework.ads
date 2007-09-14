@@ -48,7 +48,7 @@ package Ahven.Framework is
      is abstract;
    -- Called after there is an error in the test.
 
-   procedure Begin_Test (Listener : Result_Listener; Place : Result_Place)
+   procedure Start_Test (Listener : Result_Listener; Place : Result_Place)
      is abstract;
    -- Called before the test begins.
 
@@ -77,6 +77,12 @@ package Ahven.Framework is
    procedure Add_Pass    (Result : in out Test_Result; P : Result_Place);
    -- Add a successful test to the result
    -- P tells which test was ok.
+
+   procedure Start_Test (Result : in out Test_Result ; Place : Result_Place);
+   -- Informs result that the test is about to start.
+
+   procedure End_Test (Result: in out Test_Result; Place : Result_Place);
+   -- Informs the result that the test has ended.
 
    procedure Add_Listener(Result : in out Test_Result;
                           Listener : Result_Listener_Class_Access);

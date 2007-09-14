@@ -23,19 +23,69 @@ package body Ahven.Framework is
    use Address_To_Access_Conversions;
 
    procedure Add_Failure (Result : in out Test_Result; P : Result_Place) is
+      use Result_Listener_List;
+
+      Iter : Iterator := First (Result.Listeners);
    begin
       Result_List.Append (Result.Failure_Results, P);
+      loop
+         exit when Iter = null;
+         Add_Failure (Data (Iter).all, P);
+         Iter := Next (Iter);
+      end loop;
+
    end Add_Failure;
 
    procedure Add_Error (Result : in out Test_Result; P : Result_Place) is
+      use Result_Listener_List;
+
+      Iter : Iterator := First (Result.Listeners);
    begin
       Result_List.Append (Result.Error_Results, P);
+      loop
+         exit when Iter = null;
+         Add_Error (Data (Iter).all, P);
+         Iter := Next (Iter);
+      end loop;
    end Add_Error;
 
    procedure Add_Pass (Result : in out Test_Result; P : Result_Place) is
+      use Result_Listener_List;
+
+      Iter : Iterator := First (Result.Listeners);
    begin
       Result_List.Append (Result.Pass_Results, P);
+      loop
+         exit when Iter = null;
+         Add_Pass (Data (Iter).all, P);
+         Iter := Next (Iter);
+      end loop;
    end Add_Pass;
+
+   procedure Start_Test
+     (Result : in out Test_Result ; Place : Result_Place) is
+      use Result_Listener_List;
+
+      Iter : Iterator := First (Result.Listeners);
+   begin
+      loop
+         exit when Iter = null;
+         Start_Test (Data (Iter).all, Place);
+         Iter := Next (Iter);
+      end loop;
+   end Start_Test;
+
+   procedure End_Test (Result: in out Test_Result; Place : Result_Place) is
+      use Result_Listener_List;
+
+      Iter : Iterator := First (Result.Listeners);
+   begin
+      loop
+         exit when Iter = null;
+         End_Test (Data (Iter).all, Place);
+         Iter := Next (Iter);
+      end loop;
+   end End_Test;
 
    procedure Add_Listener (Result : in out Test_Result;
                            Listener : Result_Listener_Class_Access) is
