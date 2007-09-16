@@ -23,6 +23,14 @@ package body Simple_Tests is
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Simple Tests");
+
+      Ahven.Framework.Register_Routine
+        (T, Test_Assertion'Access, "Test Assertion");
+      Ahven.Framework.Register_Routine
+        (T, Test_With_Object'Access, "Test With Object");
+      Ahven.Framework.Register_Routine
+        (T, Test_Error'Access, "Test Error (exception)");
+
    end Initialize;
    
    procedure Set_Up (T : in out Test) is
@@ -58,15 +66,5 @@ package body Simple_Tests is
       Put_Line ("Test_With_Object");
       Hello (Test (T));
    end Test_With_Object;
-
-   procedure Register_Routines (T : in out Test) is 
-   begin
-      Ahven.Framework.Register_Routine
-        (T, Test_Assertion'Access, "Test Assertion");
-      Ahven.Framework.Register_Routine
-        (T, Test_With_Object'Access, "Test With Object");
-      Ahven.Framework.Register_Routine
-        (T, Test_Error'Access, "Test Error (exception)");
-   end Register_Routines;
 end Simple_Tests;
 

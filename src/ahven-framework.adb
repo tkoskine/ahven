@@ -106,9 +106,11 @@ package body Ahven.Framework is
    procedure Execute (T : Test_Class_Access;
                       Result : in out Test_Result) is
       N : Unbounded_String := Name (T.all);
+      Place : Result_Place := (N, Null_Unbounded_String);
    begin
-      Register_Routines (T.all);
+      Start_Test (Result, Place);
       Run (T.all, Result);
+      End_Test (Result, Place);
    end Execute;
 
    procedure Register_Routine (T       : in out Test_Case'Class;
@@ -168,7 +170,11 @@ package body Ahven.Framework is
       loop
          exit when Iter = null;
          Place.Routine_Name := Test_Command_List.Data (Iter).Name;
+
+         Start_Test (Result, Place);
          Run_Command (Test_Command_List.Data (Iter), Place, Result);
+         End_Test (Result, Place);
+
          Iter := Test_Command_List.Next (Iter);
       end loop;
    end Run;
@@ -256,11 +262,6 @@ package body Ahven.Framework is
    begin
       Free (Ptr);
    end Release_Suite;
-
-   procedure Register_Routines (T : in out Test_Suite) is
-   begin
-      null;
-   end Register_Routines;
 
    procedure Run (Command : Test_Object_Command) is
    begin

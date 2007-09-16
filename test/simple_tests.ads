@@ -33,7 +33,4 @@ package Simple_Tests is
    procedure Test_Assertion;
    procedure Test_Error;
    procedure Test_With_Object (T : in out Ahven.Framework.Test_Case'Class);
-
-   procedure Register_Routines (T : in out Test);
-
 end Simple_Tests;

@@ -58,6 +58,7 @@ package Ahven.Framework is
 
    package Result_Listener_List is
      new Ahven.Double_Linked_List (Result_Listener_Class_Access);
+   -- A package for Result_Listener list.
 
    type Test_Result is record
       Error_Results   : Result_List.List;
@@ -104,7 +105,6 @@ package Ahven.Framework is
                         Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
 
-   procedure Register_Routines (T : in out Test) is abstract;
    procedure Execute   (T : Test_Class_Access;
                         Result : in out Test_Result);
 
@@ -130,7 +130,6 @@ package Ahven.Framework is
    procedure Register_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String);
-   procedure Register_Routines (T : in out Test_Case) is abstract;
 
    type Test_Suite is new Test with private;
    type Test_Suite_Access is access all Test_Suite;
@@ -144,7 +143,6 @@ package Ahven.Framework is
                   Result : in out Test_Result);
    procedure Finalize  (T : in out Test_Suite);
    procedure Release_Suite (T : in out Test_Suite_Access);
-   procedure Register_Routines (T : in out Test_Suite);
 
 private
    type Test_Command is abstract tagged record
