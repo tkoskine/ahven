@@ -18,13 +18,15 @@ with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 
+with Ahven.Results;
+
 use Ada.Text_IO;
 use Ada.Strings.Unbounded;
 
 package body Ahven.Runner is
 
    procedure Run (R : in out Test_Runner) is
-      P : Framework.Result_Place;
+      P : Results.Result_Place;
    begin
       P.Test_Name := Framework.Name (R.Suite.all);
       begin

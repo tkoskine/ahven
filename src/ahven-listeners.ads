@@ -14,18 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
-with Ahven.Framework;
-with Simple_Tests;
-with Framework_Tests;
-
-use Ahven;
-
-procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S.all, new Simple_Tests.Test);
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
-end Runner;
+package Ahven.Listeners is
+   -- Empty
+end Ahven.Listeners;

@@ -14,18 +14,22 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
 with Ahven.Framework;
-with Simple_Tests;
-with Framework_Tests;
 
-use Ahven;
+use Ahven.Framework;
 
-procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S.all, new Simple_Tests.Test);
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
-end Runner;
+package Ahven.Basic_Listener is
+   type Basic_Listener is new Result_Listener with null record;
+
+   procedure Add_Pass (Listener : Basic_Listener; Place : Result_Place);
+
+   procedure Add_Failure (Listener : Basic_Listener; Place : Result_Place);
+
+   procedure Add_Error (Listener : Basic_Listener; Place : Result_Place);
+
+   procedure Start_Test (Listener : Basic_Listener; Place : Result_Place);
+
+   procedure End_Test (Listener : Basic_Listener; Place : Result_Place);
+
+
+end Ahven.Basic_Listener;

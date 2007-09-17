@@ -14,18 +14,22 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
+with Ada.Strings.Unbounded;
 with Ahven.Framework;
-with Simple_Tests;
-with Framework_Tests;
 
-use Ahven;
+use Ada.Strings.Unbounded;
 
-procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S.all, new Simple_Tests.Test);
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
-end Runner;
+package Framework_Tests is
+   type Test is new Ahven.Framework.Test_Case with record
+      Value : Integer := -1;
+   end record;
+
+   procedure Initialize (T : in out Test);
+
+   procedure Set_Up (T : in out Test);
+
+   procedure Tear_Down (T : in out Test);
+
+   procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class);
+
+end Framework_Tests;

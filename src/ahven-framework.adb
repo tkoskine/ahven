@@ -27,7 +27,6 @@ package body Ahven.Framework is
 
       Iter : Iterator := First (Result.Listeners);
    begin
-      Result_List.Append (Result.Failure_Results, P);
       loop
          exit when Iter = null;
          Add_Failure (Data (Iter).all, P);
@@ -41,7 +40,6 @@ package body Ahven.Framework is
 
       Iter : Iterator := First (Result.Listeners);
    begin
-      Result_List.Append (Result.Error_Results, P);
       loop
          exit when Iter = null;
          Add_Error (Data (Iter).all, P);
@@ -54,7 +52,6 @@ package body Ahven.Framework is
 
       Iter : Iterator := First (Result.Listeners);
    begin
-      Result_List.Append (Result.Pass_Results, P);
       loop
          exit when Iter = null;
          Add_Pass (Data (Iter).all, P);
@@ -171,9 +168,7 @@ package body Ahven.Framework is
          exit when Iter = null;
          Place.Routine_Name := Test_Command_List.Data (Iter).Name;
 
-         Start_Test (Result, Place);
          Run_Command (Test_Command_List.Data (Iter), Place, Result);
-         End_Test (Result, Place);
 
          Iter := Test_Command_List.Next (Iter);
       end loop;

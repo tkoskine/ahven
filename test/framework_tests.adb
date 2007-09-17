@@ -14,18 +14,30 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
 with Ahven.Framework;
-with Simple_Tests;
-with Framework_Tests;
 
-use Ahven;
+package body Framework_Tests is
+   use Ahven;
+   
+   procedure Initialize (T : in out Test) is
+   begin
+      Set_Name (T, "Framework tests");
+      Ahven.Framework.Register_Routine (T, Test_Set_Up'Access, "Test Set_Up");
+   end Initialize;
+   
+   procedure Set_Up (T : in out Test) is
+   begin
+      T.Value := 2;
+   end Set_Up;
 
-procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S.all, new Simple_Tests.Test);
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
-end Runner;
+   procedure Tear_Down (T : in out Test) is
+   begin
+      T.Value := -3;
+   end Tear_Down;
+   
+   procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class) is
+   begin
+      Assert (Test (T).Value = 2, "Set_Up not called!");
+   end Test_Set_Up;
+
+end Framework_Tests;
