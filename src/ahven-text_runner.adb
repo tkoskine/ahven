@@ -39,79 +39,95 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Print_Tests (Iter : Result_Place_List.Iterator;
-                          Level : Natural) is
-      use Result_Place_List;
-
-      Current : Result_Place_List.Iterator := Iter;
+   procedure Print_Test (Place : Results.Result_Place;
+                         Level : Natural) is
    begin
-      loop
-         exit when Current = null;
-         Pad (Level + 1);
-         -- Put (To_String (Data (Iter).Test_Name) & " - ");
-         Put_Line (To_String (Data (Iter).Routine_Name));
-         Current := Next (Current);
-      end loop;
-   end Print_Tests;
+      Pad (Level + 1);
+      -- Put (To_String (Data (Iter).Test_Name) & " - ");
+      Put_Line (To_String (Routine_Name (Place)));
+   end Print_Test;
 
-   procedure Print_Failed (Result : Results.Result; Level : Natural) is
-      use Result_List;
-
-      Iter : Iterator := First (Result.Children);
+   procedure Print_Failures (Result : in out Results.Result;
+                             Level : Natural) is
+      End_Flag : Boolean := False;
+      Place : Results.Result_Place;
+      Child : Results.Result_Access := null;
    begin
-      if Length (Result.Test_Name) > 0 then
+      if Length (Results.Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Result.Test_Name) & ":");
+         Put_Line (To_String (Results.Test_Name (Result)) & ":");
       end if;
-      Print_Tests (Result_Place_List.First (Result.Failures), Level);
+
+      Failure_Loop:
       loop
-         exit when Iter = null;
-         if Failure_Count (Data (Iter).all) > 0 then
-            Print_Failed (Data (Iter).all, Level + 1);
+         Next_Failure (Result, Place, End_Flag);
+         exit Failure_Loop when End_Flag;
+         Print_Test (Place, Level);
+      end loop Failure_Loop;
+
+      loop
+         Next_Child (Result, Child, End_Flag);
+         exit when End_Flag;
+         if Failure_Count (Child.all) > 0 then
+            Print_Failures (Child.all, Level + 1);
          end if;
-         Iter := Next (Iter);
       end loop;
-   end Print_Failed;
+   end Print_Failures;
 
-   procedure Print_Errors (Result : Results.Result; Level : Natural) is
-      use Result_List;
-
-      Iter : Iterator := First (Result.Children);
+   procedure Print_Errors (Result : in out Results.Result; Level : Natural) is
+      End_Flag : Boolean := False;
+      Place : Results.Result_Place;
+      Child : Results.Result_Access := null;
    begin
-      if Length (Result.Test_Name) > 0 then
+      if Length (Results.Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Result.Test_Name) & ":");
+         Put_Line (To_String (Results.Test_Name (Result)) & ":");
       end if;
-      Print_Tests (Result_Place_List.First (Result.Errors), Level);
+
+      Error_Loop:
       loop
-         exit when Iter = null;
-         if Error_Count (Data (Iter).all) > 0 then
-            Print_Errors (Data (Iter).all, Level + 1);
+         Next_Error (Result, Place, End_Flag);
+         exit Error_Loop when End_Flag;
+         Print_Test (Place, Level);
+      end loop Error_Loop;
+
+      loop
+         Next_Child (Result, Child, End_Flag);
+         exit when End_Flag;
+         if Error_Count (Child.all) > 0 then
+            Print_Errors (Child.all, Level + 1);
          end if;
-         Iter := Next (Iter);
       end loop;
+
    end Print_Errors;
 
-   procedure Print_Passes (Result : Results.Result; Level : Natural) is
-      use Result_List;
-
-      Iter : Iterator := First (Result.Children);
+   procedure Print_Passes (Result : in out Results.Result; Level : Natural) is
+      End_Flag : Boolean := False;
+      Place : Results.Result_Place;
+      Child : Results.Result_Access := null;
    begin
-      if Length (Result.Test_Name) > 0 then
+      if Length (Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Result.Test_Name) & ":");
+         Put_Line (To_String (Test_Name (Result)) & ":");
       end if;
-      Print_Tests (Result_Place_List.First (Result.Passes), Level);
+
+      Pass_Loop:
       loop
-         exit when Iter = null;
-         if Pass_Count (Data (Iter).all) > 0 then
-            Print_Passes (Data (Iter).all, Level + 1);
+         Next_Pass (Result, Place, End_Flag);
+         exit Pass_Loop when End_Flag;
+         Print_Test (Place, Level);
+      end loop Pass_Loop;
+
+      loop
+         Next_Child (Result, Child, End_Flag);
+         exit when End_Flag;
+         if Pass_Count (Child.all) > 0 then
+            Print_Passes (Child.all, Level + 1);
          end if;
-         Iter := Next (Iter);
       end loop;
    end Print_Passes;
 
-   procedure Report_Results (Result  : Results.Result;
+   procedure Report_Results (Result  : in out Results.Result;
                              Verbose : Boolean := False) is
    begin
       Put_Line ("Passed : " & Integer'Image (Pass_Count (Result)));
@@ -121,9 +137,9 @@ package body Ahven.Text_Runner is
       New_Line;
       if Failure_Count (Result) > 0 then
          Put_Line ("Failed : " & Integer'Image (Failure_Count (Result)));
-         Print_Failed (Result, 0);
+         Print_Failures (Result, 0);
+         New_Line;
       end if;
-      New_Line;
       if Error_Count (Result) > 0 then
          Put_Line ("Errors : " & Integer'Image (Error_Count (Result)));
          Print_Errors (Result, 0);

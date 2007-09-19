@@ -42,16 +42,16 @@ package body Ahven.Listeners.Basic is
                          Place : Result_Place) is
       R : Result_Access := null;
    begin
-      if Place.Routine_Name = Null_Unbounded_String then
+      if Routine_Name (Place) = Null_Unbounded_String then
          R := new Result;
-         Set_Name (R.all, Place.Test_Name);
+         Set_Name (R.all, Test_Name (Place));
          if Listener.Current_Result = null then
-            Result_List.Append (Listener.Main_Result.Children, R);
+            Add_Child (Listener.Main_Result, R);
             Listener.Current_Result := R;
          else
-            Result_List.Append (Listener.Current_Result.Children, R);
+            Add_Child (Listener.Current_Result.all, R);
          end if;
-         R.Parent := Listener.Current_Result;
+         Set_Parent (R.all, Listener.Current_Result);
          Listener.Current_Result := R;
       end if;
    end Start_Test;
@@ -60,7 +60,7 @@ package body Ahven.Listeners.Basic is
                        Place : Result_Place) is
    begin
       if Listener.Current_Result /= null then
-         Listener.Current_Result := Listener.Current_Result.Parent;
+         Listener.Current_Result := Parent (Listener.Current_Result.all);
       end if;
    end End_Test;
 

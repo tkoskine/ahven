@@ -20,10 +20,42 @@ package body Ahven.Results is
    use Ahven.Results.Result_List;
    use Ahven.Results.Result_Place_List;
 
-   procedure Add_Children (Res : in out Result; Child : Result_Access) is
+   procedure Set_Test_Name (Place : in out Result_Place;
+                            Name : Unbounded_String) is
+   begin
+      Place.Test_Name := Name;
+   end Set_Test_Name;
+
+   procedure Set_Routine_Name (Place : in out Result_Place;
+                               Name : Unbounded_String) is
+   begin
+      Place.Routine_Name := Name;
+   end Set_Routine_Name;
+
+   procedure Set_Test_Name (Place : in out Result_Place; Name : String) is
+   begin
+      Set_Test_Name (Place, To_Unbounded_String (Name));
+   end Set_Test_Name;
+
+   procedure Set_Routine_Name (Place : in out Result_Place; Name : String) is
+   begin
+      Set_Routine_Name (Place, To_Unbounded_String (Name));
+   end Set_Routine_Name;
+
+   function Test_Name (Place : Result_Place) return Unbounded_String is
+   begin
+      return Place.Test_Name;
+   end Test_Name;
+
+   function Routine_Name (Place : Result_Place) return Unbounded_String is
+   begin
+      return Place.Routine_Name;
+   end Routine_Name;
+
+   procedure Add_Child (Res : in out Result; Child : Result_Access) is
    begin
       Append (Res.Children, Child);
-   end Add_Children;
+   end Add_Child;
 
    procedure Add_Error (Res : in out Result; Place : Result_Place) is
    begin
@@ -66,6 +98,11 @@ package body Ahven.Results is
    begin
       Res.Test_Name := Name;
    end Set_Name;
+
+   procedure Set_Parent (Res : in out Result; Parent : Result_Access) is
+   begin
+      Res.Parent := Parent;
+   end Set_Parent;
 
    function Test_Count (Res : Result) return Natural is
       Count : Natural := Size (Res.Errors) +
@@ -120,5 +157,74 @@ package body Ahven.Results is
       end loop;
       return Count;
    end Failure_Count;
+
+   function Test_Name (Res : Result) return Unbounded_String is
+   begin
+      return Res.Test_Name;
+   end Test_Name;
+
+   function Parent (Res : Result) return Result_Access is
+   begin
+      return Res.Parent;
+   end Parent;
+
+   procedure Next_In_List (List : in out Result_Place_List.List;
+                           Iter : in out Result_Place_List.Iterator;
+                           Place : out Result_Place;
+                           End_Of_List : out Boolean) is
+   begin
+      if Iter = null then
+         Iter := First (List);
+      else
+         Iter := Next (Iter);
+      end if;
+
+      if Iter = null then
+         End_Of_List := True;
+         Place := (Null_Unbounded_String, Null_Unbounded_String);
+      else
+         End_of_List := False;
+         Place := Data (Iter);
+      end if;
+   end Next_In_List;
+
+   procedure Next_Error (Res : in out Result;
+                         Place : out Result_Place;
+                         End_Of_Errors : out Boolean) is
+   begin
+      Next_In_list (Res.Errors, Res.Error_Iter, Place, End_Of_Errors);
+   end Next_Error;
+
+   procedure Next_Failure (Res : in out Result;
+                           Place : out Result_Place;
+                           End_Of_Failures : out Boolean) is
+   begin
+      Next_In_list (Res.Failures, Res.Failure_Iter, Place, End_Of_Failures);
+   end Next_Failure;
+
+   procedure Next_Pass (Res : in out Result;
+                        Place : out Result_Place;
+                        End_Of_Passes : out Boolean) is
+   begin
+      Next_In_list (Res.Passes, Res.Pass_Iter, Place, End_Of_Passes);
+   end Next_Pass;
+
+   procedure Next_Child (Res : in out Result;
+                         Child : out Result_Access;
+                         End_Of_Children : out Boolean) is
+   begin
+      if Res.Child_Iter = null then
+         Res.Child_Iter := First (Res.Children);
+      else
+         Res.Child_Iter := Next (Res.Child_Iter);
+      end if;
+      if Res.Child_Iter = null then
+         End_Of_Children := True;
+         Child := null;
+      else
+         End_of_Children := False;
+         Child := Data (Res.Child_Iter);
+      end if;
+   end Next_Child;
 
 end Ahven.Results;

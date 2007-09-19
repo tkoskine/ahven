@@ -97,10 +97,10 @@ package Ahven.Framework is
                         Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
 
+   procedure Finalize  (T : in out Test);
+
    procedure Execute   (T : Test_Class_Access;
                         Result : in out Test_Result);
-
-   procedure Finalize  (T : in out Test) is null;
 
    type Test_Case is abstract new Test with private;
    type Test_Case_Access is access all Test_Case;

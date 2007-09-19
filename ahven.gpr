@@ -24,7 +24,7 @@ project Ahven is
   package Builder is
      -- for Default_Switches ("Ada") use ("-Iinclude","-x","-O2","-pg");
      for Default_Switches ("Ada") use ("-Iinclude","-x","-g","-gnatf",
-                                       "-gnatybmhe");
+                                       "-gnatybmhe", "-gnat95");
   end Builder;
 
   package Naming is

@@ -28,7 +28,7 @@ package body Ahven.Runner is
    procedure Run (R : in out Test_Runner) is
       P : Results.Result_Place;
    begin
-      P.Test_Name := Framework.Name (R.Suite.all);
+      Results.Set_Test_Name (P, Framework.Name (R.Suite.all));
       begin
          Framework.Execute (R.Suite, R.Result);
       exception
