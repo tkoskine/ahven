@@ -14,20 +14,19 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ahven.Framework;
-with Simple_Tests;
-with Framework_Tests;
-with List_Tests;
 
-use Ahven;
+package List_Tests is
 
-procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S.all, new Simple_Tests.Test);
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Framework.Add_Test (S.all, new List_Tests.Test_Case);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
-end Runner;
+   type Test_Case is new Ahven.Framework.Test_Case with null record;
+   
+   procedure Initialize (T: in out Test_Case);
+private
+   procedure Test_Append;
+   procedure Test_Remove;
+   procedure Test_Join;
+   procedure Test_Assignment;
+   procedure Test_Forward_Iterator;
+   procedure Test_Reverse_Iterator;
+end List_Tests;
