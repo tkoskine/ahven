@@ -52,33 +52,39 @@ package body Ahven.Results is
       return Place.Routine_Name;
    end Routine_Name;
 
-   procedure Add_Child (Res : in out Result; Child : Result_Access) is
+   procedure Add_Child (Collection : in out Result_Collection;
+                        Child : Result_Collection_Access) is
    begin
-      Append (Res.Children, Child);
+      Append (Collection.Children, Child);
    end Add_Child;
 
-   procedure Add_Error (Res : in out Result; Place : Result_Place) is
+   procedure Add_Error (Collection : in out Result_Collection;
+                        Place : Result_Place) is
    begin
-      Append (Res.Errors, Place);
+      Append (Collection.Errors, Place);
    end Add_Error;
 
-   procedure Add_Failure (Res : in out Result; Place : Result_Place) is
+   procedure Add_Failure (Collection : in out Result_Collection;
+                          Place : Result_Place) is
    begin
-      Append (Res.Failures, Place);
+      Append (Collection.Failures, Place);
    end Add_Failure;
 
-   procedure Add_Pass (Res : in out Result; Place : Result_Place) is
+   procedure Add_Pass (Collection : in out Result_Collection;
+                       Place : Result_Place) is
    begin
-      Append (Res.Passes, Place);
+      Append (Collection.Passes, Place);
    end Add_Pass;
 
-   procedure Finalize (Res : in out Result) is
+   procedure Finalize (Collection : in out Result_Collection) is
       use Result_List;
 
-      procedure Free is new Ada.Unchecked_Deallocation (Result, Result_Access);
+      procedure Free is
+        new Ada.Unchecked_Deallocation
+          (Result_Collection, Result_Collection_Access);
 
-      Iter : Result_List.Iterator := First (Res.Children);
-      Ptr  : Result_Access := null;
+      Iter : Result_List.Iterator := First (Collection.Children);
+      Ptr  : Result_Collection_Access := null;
    begin
       loop
          exit when Iter = null;
@@ -88,27 +94,29 @@ package body Ahven.Results is
 
          Iter := Next (Iter);
       end loop;
-      Remove_All (Res.Children);
-      Remove_All (Res.Errors);
-      Remove_All (Res.Failures);
-      Remove_All (Res.Passes);
+      Remove_All (Collection.Children);
+      Remove_All (Collection.Errors);
+      Remove_All (Collection.Failures);
+      Remove_All (Collection.Passes);
    end Finalize;
 
-   procedure Set_Name (Res : in out Result; Name : Unbounded_String) is
+   procedure Set_Name (Collection : in out Result_Collection;
+                       Name : Unbounded_String) is
    begin
-      Res.Test_Name := Name;
+      Collection.Test_Name := Name;
    end Set_Name;
 
-   procedure Set_Parent (Res : in out Result; Parent : Result_Access) is
+   procedure Set_Parent (Collection : in out Result_Collection;
+                         Parent : Result_Collection_Access) is
    begin
-      Res.Parent := Parent;
+      Collection.Parent := Parent;
    end Set_Parent;
 
-   function Test_Count (Res : Result) return Natural is
-      Count : Natural := Size (Res.Errors) +
-                         Size (Res.Failures) +
-                         Size (Res.Passes);
-      Iter : Result_List.Iterator := First (Res.Children);
+   function Test_Count (Collection : Result_Collection) return Natural is
+      Count : Natural := Size (Collection.Errors) +
+                         Size (Collection.Failures) +
+                         Size (Collection.Passes);
+      Iter : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when Iter = null;
@@ -119,9 +127,9 @@ package body Ahven.Results is
       return Count;
    end Test_Count;
 
-   function Pass_Count (Res : Result) return Natural is
-      Count : Natural              := Size (Res.Passes);
-      Iter  : Result_List.Iterator := First (Res.Children);
+   function Pass_Count (Collection : Result_Collection) return Natural is
+      Count : Natural              := Size (Collection.Passes);
+      Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when Iter = null;
@@ -132,9 +140,9 @@ package body Ahven.Results is
       return Count;
    end Pass_Count;
 
-   function Error_Count (Res : Result) return Natural is
-      Count : Natural              := Size (Res.Errors);
-      Iter  : Result_List.Iterator := First (Res.Children);
+   function Error_Count (Collection : Result_Collection) return Natural is
+      Count : Natural              := Size (Collection.Errors);
+      Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when Iter = null;
@@ -145,9 +153,9 @@ package body Ahven.Results is
       return Count;
    end Error_Count;
 
-   function Failure_Count (Res : Result) return Natural is
-      Count : Natural              := Size (Res.Failures);
-      Iter  : Result_List.Iterator := First (Res.Children);
+   function Failure_Count (Collection : Result_Collection) return Natural is
+      Count : Natural              := Size (Collection.Failures);
+      Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when Iter = null;
@@ -158,14 +166,16 @@ package body Ahven.Results is
       return Count;
    end Failure_Count;
 
-   function Test_Name (Res : Result) return Unbounded_String is
+   function Test_Name (Collection : Result_Collection)
+     return Unbounded_String is
    begin
-      return Res.Test_Name;
+      return Collection.Test_Name;
    end Test_Name;
 
-   function Parent (Res : Result) return Result_Access is
+   function Parent (Collection : Result_Collection)
+     return Result_Collection_Access is
    begin
-      return Res.Parent;
+      return Collection.Parent;
    end Parent;
 
    procedure Next_In_List (List : in out Result_Place_List.List;
@@ -188,42 +198,51 @@ package body Ahven.Results is
       end if;
    end Next_In_List;
 
-   procedure Next_Error (Res : in out Result;
+   procedure Next_Error (Collection : in out Result_Collection;
                          Place : out Result_Place;
                          End_Of_Errors : out Boolean) is
    begin
-      Next_In_list (Res.Errors, Res.Error_Iter, Place, End_Of_Errors);
+      Next_In_list (Collection.Errors,
+                    Collection.Error_Iter,
+                    Place,
+                    End_Of_Errors);
    end Next_Error;
 
-   procedure Next_Failure (Res : in out Result;
+   procedure Next_Failure (Collection : in out Result_Collection;
                            Place : out Result_Place;
                            End_Of_Failures : out Boolean) is
    begin
-      Next_In_list (Res.Failures, Res.Failure_Iter, Place, End_Of_Failures);
+      Next_In_list (Collection.Failures,
+                    Collection.Failure_Iter,
+                    Place,
+                    End_Of_Failures);
    end Next_Failure;
 
-   procedure Next_Pass (Res : in out Result;
+   procedure Next_Pass (Collection : in out Result_Collection;
                         Place : out Result_Place;
                         End_Of_Passes : out Boolean) is
    begin
-      Next_In_list (Res.Passes, Res.Pass_Iter, Place, End_Of_Passes);
+      Next_In_list (Collection.Passes,
+                    Collection.Pass_Iter,
+                    Place,
+                    End_Of_Passes);
    end Next_Pass;
 
-   procedure Next_Child (Res : in out Result;
-                         Child : out Result_Access;
+   procedure Next_Child (Collection : in out Result_Collection;
+                         Child : out Result_Collection_Access;
                          End_Of_Children : out Boolean) is
    begin
-      if Res.Child_Iter = null then
-         Res.Child_Iter := First (Res.Children);
+      if Collection.Child_Iter = null then
+         Collection.Child_Iter := First (Collection.Children);
       else
-         Res.Child_Iter := Next (Res.Child_Iter);
+         Collection.Child_Iter := Next (Collection.Child_Iter);
       end if;
-      if Res.Child_Iter = null then
+      if Collection.Child_Iter = null then
          End_Of_Children := True;
          Child := null;
       else
          End_of_Children := False;
-         Child := Data (Res.Child_Iter);
+         Child := Data (Collection.Child_Iter);
       end if;
    end Next_Child;
 

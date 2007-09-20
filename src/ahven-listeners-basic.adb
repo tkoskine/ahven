@@ -40,10 +40,10 @@ package body Ahven.Listeners.Basic is
 
    procedure Start_Test (Listener : in out Basic_Listener;
                          Place : Result_Place) is
-      R : Result_Access := null;
+      R : Result_Collection_Access := null;
    begin
       if Routine_Name (Place) = Null_Unbounded_String then
-         R := new Result;
+         R := new Result_Collection;
          Set_Name (R.all, Test_Name (Place));
          if Listener.Current_Result = null then
             Add_Child (Listener.Main_Result, R);

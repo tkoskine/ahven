@@ -47,11 +47,11 @@ package body Ahven.Text_Runner is
       Put_Line (To_String (Routine_Name (Place)));
    end Print_Test;
 
-   procedure Print_Failures (Result : in out Results.Result;
+   procedure Print_Failures (Result : in out Results.Result_Collection;
                              Level : Natural) is
       End_Flag : Boolean := False;
       Place : Results.Result_Place;
-      Child : Results.Result_Access := null;
+      Child : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
          Pad (Level);
@@ -74,10 +74,11 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Failures;
 
-   procedure Print_Errors (Result : in out Results.Result; Level : Natural) is
+   procedure Print_Errors (Result : in out Results.Result_Collection;
+                           Level : Natural) is
       End_Flag : Boolean := False;
       Place : Results.Result_Place;
-      Child : Results.Result_Access := null;
+      Child : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
          Pad (Level);
@@ -101,10 +102,11 @@ package body Ahven.Text_Runner is
 
    end Print_Errors;
 
-   procedure Print_Passes (Result : in out Results.Result; Level : Natural) is
+   procedure Print_Passes (Result : in out Results.Result_Collection;
+                           Level : Natural) is
       End_Flag : Boolean := False;
       Place : Results.Result_Place;
-      Child : Results.Result_Access := null;
+      Child : Results.Result_Collection_Access := null;
    begin
       if Length (Test_Name (Result)) > 0 then
          Pad (Level);
@@ -127,7 +129,7 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Passes;
 
-   procedure Report_Results (Result  : in out Results.Result;
+   procedure Report_Results (Result  : in out Results.Result_Collection;
                              Verbose : Boolean := False) is
    begin
       Put_Line ("Passed : " & Integer'Image (Pass_Count (Result)));

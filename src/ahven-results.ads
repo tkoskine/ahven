@@ -43,49 +43,56 @@ package Ahven.Results is
    function Routine_Name (Place : Result_Place) return Unbounded_String;
    -- Return the routine name of the result place.
 
-   type Result is new Ada.Finalization.Controlled with private;
-   type Result_Access is access Result;
+   type Result_Collection is new Ada.Finalization.Controlled with private;
+   type Result_Collection_Access is access Result_Collection;
 
-   procedure Add_Child (Res : in out Result; Child : Result_Access);
+   procedure Add_Child (Collection : in out Result_Collection;
+                        Child : Result_Collection_Access);
 
-   procedure Add_Error (Res : in out Result; Place : Result_Place);
+   procedure Add_Error (Collection : in out Result_Collection;
+                        Place : Result_Place);
 
-   procedure Add_Failure (Res : in out Result; Place : Result_Place);
+   procedure Add_Failure (Collection : in out Result_Collection;
+                          Place : Result_Place);
 
-   procedure Add_Pass (Res : in out Result; Place : Result_Place);
+   procedure Add_Pass (Collection : in out Result_Collection;
+                       Place : Result_Place);
 
-   procedure Finalize (Res : in out Result);
+   procedure Finalize (Collection : in out Result_Collection);
 
-   procedure Set_Name (Res : in out Result; Name : Unbounded_String);
+   procedure Set_Name (Collection : in out Result_Collection;
+                       Name : Unbounded_String);
 
-   procedure Set_Parent (Res : in out Result; Parent : Result_Access);
+   procedure Set_Parent (Collection: in out Result_Collection;
+                         Parent : Result_Collection_Access);
 
-   function Test_Count (Res : Result) return Natural;
+   function Test_Count (Collection : Result_Collection) return Natural;
 
-   function Pass_Count (Res : Result) return Natural;
+   function Pass_Count (Collection : Result_Collection) return Natural;
 
-   function Error_Count (Res : Result) return Natural;
+   function Error_Count (Collection : Result_Collection) return Natural;
 
-   function Failure_Count (Res : Result) return Natural;
+   function Failure_Count (Collection : Result_Collection) return Natural;
 
-   function Test_Name (Res : Result) return Unbounded_String;
+   function Test_Name (Collection : Result_Collection) return Unbounded_String;
 
-   function Parent (Res : Result) return Result_Access;
+   function Parent (Collection : Result_Collection)
+     return Result_Collection_Access;
 
-   procedure Next_Error (Res : in out Result;
+   procedure Next_Error (Collection : in out Result_Collection;
                          Place : out Result_Place;
                          End_Of_Errors : out Boolean);
 
-   procedure Next_Failure (Res : in out Result;
+   procedure Next_Failure (Collection : in out Result_Collection;
                            Place : out Result_Place;
-                           End_Of_Failures : out Boolean);
+                           End_Of_Failures: out Boolean);
 
-   procedure Next_Pass (Res : in out Result;
+   procedure Next_Pass (Collection : in out Result_Collection;
                         Place : out Result_Place;
                         End_Of_Passes : out Boolean);
 
-   procedure Next_Child (Res : in out Result;
-                         Child : out Result_Access;
+   procedure Next_Child (Collection : in out Result_Collection;
+                         Child : out Result_Collection_Access;
                          End_Of_Children : out Boolean);
 private
    type Result_Place is record
@@ -97,15 +104,15 @@ private
      new Ahven.Double_Linked_List (Result_Place);
 
    package Result_List is
-     new Ahven.Double_Linked_List (Result_Access);
+     new Ahven.Double_Linked_List (Result_Collection_Access);
 
-   type Result is new Ada.Finalization.Controlled with record
+   type Result_Collection is new Ada.Finalization.Controlled with record
       Test_Name : Unbounded_String := Null_Unbounded_String;
       Passes    : Result_Place_List.List := Result_Place_List.Empty_List;
       Failures  : Result_Place_List.List := Result_Place_List.Empty_List;
       Errors    : Result_Place_List.List := Result_Place_List.Empty_List;
       Children  : Result_List.List       := Result_List.Empty_List;
-      Parent    : Result_Access := null;
+      Parent    : Result_Collection_Access := null;
 
       Pass_Iter    : Result_Place_List.Iterator := null;
       Failure_Iter : Result_Place_List.Iterator := null;

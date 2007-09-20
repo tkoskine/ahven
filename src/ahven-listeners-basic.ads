@@ -22,8 +22,8 @@ use Ahven.Results;
 
 package Ahven.Listeners.Basic is
    type Basic_Listener is new Result_Listener with record
-      Main_Result : Result;
-      Current_Result : Result_Access;
+      Main_Result : Result_Collection;
+      Current_Result : Result_Collection_Access;
    end record;
 
    type Basic_Listener_Access is access all Basic_Listener;
