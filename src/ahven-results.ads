@@ -48,52 +48,79 @@ package Ahven.Results is
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child : Result_Collection_Access);
+   -- Add a child collection to the collection.
 
    procedure Add_Error (Collection : in out Result_Collection;
                         Place : Result_Place);
+   -- Add a test error to the collection.
 
    procedure Add_Failure (Collection : in out Result_Collection;
                           Place : Result_Place);
+   -- Add a test failure to the collection.
 
    procedure Add_Pass (Collection : in out Result_Collection;
                        Place : Result_Place);
+   -- Add a passed test to the collection
 
    procedure Finalize (Collection : in out Result_Collection);
+   -- Finalize procedure for the collection. Frees also
+   -- all children added via Add_Child.
 
    procedure Set_Name (Collection : in out Result_Collection;
                        Name : Unbounded_String);
+   -- Set a test name for the collection.
 
    procedure Set_Parent (Collection: in out Result_Collection;
                          Parent : Result_Collection_Access);
+   -- Set a parent collection to the collection.
 
    function Test_Count (Collection : Result_Collection) return Natural;
+   -- Return the amount of tests in the collection.
+   -- Tests in child collections are included.
 
    function Pass_Count (Collection : Result_Collection) return Natural;
+   -- Return the amount of passed tests in the collection.
+   -- Tests in child collections are included.
 
    function Error_Count (Collection : Result_Collection) return Natural;
+   -- Return the amount of test errors in the collection.
+   -- Tests in child collections are included.
 
    function Failure_Count (Collection : Result_Collection) return Natural;
+   -- Return the amount of test errors in the collection.
+   -- Tests in child collections are included.
 
    function Test_Name (Collection : Result_Collection) return Unbounded_String;
+   -- Return the name of the collection's test.
 
    function Parent (Collection : Result_Collection)
      return Result_Collection_Access;
+   -- Return the parent of the collection.
 
    procedure Next_Error (Collection : in out Result_Collection;
                          Place : out Result_Place;
                          End_Of_Errors : out Boolean);
+   -- Return the next error in the collection.
+   -- If there are no more errors, End_Of_Errors is set to True.
 
    procedure Next_Failure (Collection : in out Result_Collection;
                            Place : out Result_Place;
                            End_Of_Failures: out Boolean);
+   -- Return the next failure in the collection.
+   -- If there are no more failures, End_Of_Failures is set to True.
 
    procedure Next_Pass (Collection : in out Result_Collection;
                         Place : out Result_Place;
                         End_Of_Passes : out Boolean);
+   -- Return the next pass in the collection.
+   -- If there are no more passes, End_Of_Passes is set to True.
 
    procedure Next_Child (Collection : in out Result_Collection;
                          Child : out Result_Collection_Access;
                          End_Of_Children : out Boolean);
+   -- Return the next child collection.
+   -- If there are no more children, End_Of_Children is set to True.
+
 private
    type Result_Place is record
       Test_Name    : Unbounded_String := Null_Unbounded_String;
