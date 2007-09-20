@@ -36,54 +36,62 @@ package Ahven.Framework is
    -- Add a test failure to the result.
    -- P tells which test failed.
 
-   procedure Add_Error   (Result : in out Test_Result; P : Result_Place);
+   procedure Add_Error (Result : in out Test_Result; P : Result_Place);
    -- Add a test error to the result.
    -- P tells which test had the error.
 
-   procedure Add_Pass    (Result : in out Test_Result; P : Result_Place);
+   procedure Add_Pass (Result : in out Test_Result; P : Result_Place);
    -- Add a successful test to the result
    -- P tells which test was ok.
 
-   procedure Start_Test (Result : in out Test_Result ; Place : Result_Place);
+   procedure Start_Test (Result : in out Test_Result; Place : Result_Place);
    -- Informs result that the test is about to start.
 
    procedure End_Test (Result: in out Test_Result; Place : Result_Place);
    -- Informs the result that the test has ended.
 
-   procedure Add_Listener(Result : in out Test_Result;
-                          Listener : Listeners.Result_Listener_Class_Access);
+   procedure Add_Listener (Result   : in out Test_Result;
+                           Listener : Listeners.Result_Listener_Class_Access);
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    type Test_Class_Access is access all Test'Class;
    type Test_Access is access Test;
 
-   procedure Set_Up    (T : in out Test);
+   procedure Set_Up (T : in out Test);
    -- Set_Up is called before executing the test procedure.
 
    procedure Tear_Down (T : in out Test);
    -- Tear_Down is called after the test procedure is executed.
 
-   function  Name      (T : Test) return Unbounded_String is abstract;
+   function  Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
 
-   procedure Run       (T      : in out Test;
-                        Result : in out Test_Result) is abstract;
+   procedure Run (T      : in out Test;
+                  Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
 
-   procedure Finalize  (T : in out Test);
+   procedure Finalize (T : in out Test);
+   -- Finalize procedure of Test.
 
-   procedure Execute   (T : Test_Class_Access;
+   procedure Execute (T : Test_Class_Access;
                         Result : in out Test_Result);
+   -- Call Test class' Run method and place the test outcome to Result.
 
    type Test_Case is abstract new Test with private;
    type Test_Case_Access is access all Test_Case;
    type Test_Case_Class_Access is access all Test_Case'Class;
 
    function Name (T : Test_Case) return Unbounded_String;
+   -- Return the name of the test case.
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result);
+   -- Run Test_Case's test routines.
+
    procedure Finalize (T : in out Test_Case);
+   -- Finalize procedure of the Test_Case.
+
    procedure Set_Name (T : in out Test_Case; Name : String);
+   -- Set Test_Case's name.
 
    type Object_Test_Routine_Access is
      access procedure (T : in out Test_Case'Class);
@@ -92,9 +100,15 @@ package Ahven.Framework is
    procedure Register_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
                                Name    : String);
+   -- Register a test routine to the Test_Case.
+   -- Routine must have signature
+   --  "procedure R (T : in out Test_Case'Class)".
+
    procedure Register_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String);
+   -- Register a simple test routine to the Test_Case.
+   -- Routine must have signature "procedure R".
 
    type Test_Suite is new Test with private;
    type Test_Suite_Access is access all Test_Suite;
@@ -102,12 +116,25 @@ package Ahven.Framework is
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access;
+   -- Create a new Test_Suite.
+   -- Caller must free returned Test_Suite.
+
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access);
-   function  Name     (T : Test_Suite) return Unbounded_String;
+   -- Add a Test to the suite. The suite frees the Test automatically
+   -- when it is no longer needed.
+
+   function Name (T : Test_Suite) return Unbounded_String;
+   -- Return the name of Test_Suite.
+
    procedure Run (T      : in out Test_Suite;
                   Result : in out Test_Result);
+   -- Run Test_Suite's Test_Cases.
+
    procedure Finalize  (T : in out Test_Suite);
+   -- Finalize procedure of Test_Suite. Frees all added Tests.
+
    procedure Release_Suite (T : in out Test_Suite_Access);
+   -- Delete the Test_Suite. All added tests are freed automatically.
 
 private
    type Test_Command is abstract tagged record
