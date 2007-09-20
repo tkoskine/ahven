@@ -14,6 +14,38 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ahven.Double_Linked_List;
+with Ahven.Results;
+
+use Ahven.Results;
+
 package Ahven.Listeners is
-   -- Empty
+   type Result_Listener is abstract tagged null record;
+   type Result_Listener_Access is access Result_Listener;
+   type Result_Listener_Class_Access is access all Result_Listener'Class;
+
+   procedure Add_Pass (Listener : in out Result_Listener;
+                       Place : Result_Place) is abstract;
+   -- Called after test passes.
+
+   procedure Add_Failure (Listener : in out Result_Listener;
+                          Place : Result_Place) is abstract;
+   -- Called after test fails.
+
+   procedure Add_Error (Listener : in out Result_Listener;
+                        Place : Result_Place) is abstract;
+   -- Called after there is an error in the test.
+
+   procedure Start_Test (Listener : in out Result_Listener;
+                         Place : Result_Place) is abstract;
+   -- Called before the test begins.
+
+   procedure End_Test (Listener : in out Result_Listener;
+                       Place : Result_Place) is abstract;
+   -- Called after the test ends. Add_* procedures are called before this.
+
+   package Result_Listener_List is
+     new Ahven.Double_Linked_List (Result_Listener_Class_Access);
+   -- A package for Result_Listener list.
+
 end Ahven.Listeners;

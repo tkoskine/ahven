@@ -22,6 +22,7 @@ with Ahven.Runner;
 with Ahven.Results;
 with Ahven.Listeners.Basic;
 with Ahven.Framework;
+with Ahven.Listeners;
 
 use Ada.Text_IO;
 use Ada.Strings.Unbounded;
@@ -157,7 +158,7 @@ package body Ahven.Text_Runner is
    begin
       R.Suite := Framework.Test_Class_Access (Suite);
       Framework.Add_Listener
-        (R.Result, Framework.Result_Listener_Class_Access (Listener));
+        (R.Result, Listeners.Result_Listener_Class_Access (Listener));
       Runner.Run (R);
       Report_Results (Listener.Main_Result, True);
       Free (Listener);

@@ -20,6 +20,7 @@ with System.Address_To_Access_Conversions;
 
 with Ahven.Double_Linked_List;
 with Ahven.Results;
+with Ahven.Listeners;
 
 use Ada.Strings.Unbounded;
 
@@ -27,36 +28,8 @@ use Ahven.Results;
 
 package Ahven.Framework is
 
-   type Result_Listener is abstract tagged null record;
-   type Result_Listener_Access is access Result_Listener;
-   type Result_Listener_Class_Access is access all Result_Listener'Class;
-
-   procedure Add_Pass (Listener : in out Result_Listener;
-                       Place : Result_Place) is abstract;
-   -- Called after test passes.
-
-   procedure Add_Failure (Listener : in out Result_Listener;
-                          Place : Result_Place) is abstract;
-   -- Called after test fails.
-
-   procedure Add_Error (Listener : in out Result_Listener;
-                        Place : Result_Place) is abstract;
-   -- Called after there is an error in the test.
-
-   procedure Start_Test (Listener : in out Result_Listener;
-                         Place : Result_Place) is abstract;
-   -- Called before the test begins.
-
-   procedure End_Test (Listener : in out Result_Listener;
-                       Place : Result_Place) is abstract;
-   -- Called after the test ends. Add_* procedures are called before this.
-
-   package Result_Listener_List is
-     new Ahven.Double_Linked_List (Result_Listener_Class_Access);
-   -- A package for Result_Listener list.
-
    type Test_Result is record
-      Listeners : Result_Listener_List.List;
+      Listeners : Ahven.Listeners.Result_Listener_List.List;
    end record;
 
    procedure Add_Failure (Result : in out Test_Result; P : Result_Place);
@@ -78,7 +51,7 @@ package Ahven.Framework is
    -- Informs the result that the test has ended.
 
    procedure Add_Listener(Result : in out Test_Result;
-                          Listener : Result_Listener_Class_Access);
+                          Listener : Listeners.Result_Listener_Class_Access);
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    type Test_Class_Access is access all Test'Class;
@@ -147,7 +120,7 @@ private
    type Test_Command_Class_Access is access Test_Command'Class;
 
    package Test_Command_List is
-     new Ahven.Double_Linked_List (Test_Command_Class_Access);
+     new Double_Linked_List (Test_Command_Class_Access);
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
@@ -174,7 +147,7 @@ private
 
    procedure Run (Command : Test_Simple_Command);
 
-   package Test_List is new Ahven.Double_Linked_List (Test_Class_Access);
+   package Test_List is new Double_Linked_List (Test_Class_Access);
 
    type Test_Suite is new Test with record
       Suite_Name : Unbounded_String;

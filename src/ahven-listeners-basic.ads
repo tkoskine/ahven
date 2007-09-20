@@ -14,10 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Framework;
 with Ahven.Results;
 
-use Ahven.Framework;
 use Ahven.Results;
 
 package Ahven.Listeners.Basic is
