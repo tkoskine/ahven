@@ -19,11 +19,8 @@ with Ahven.Framework;
 
 package Ahven.Runner is
 
-   type Test_Runner is new Ada.Finalization.Controlled with record
-      Suite : Ahven.Framework.Test_Class_Access;
-      Result : Ahven.Framework.Test_Result;
-   end record;
-
-   procedure Run (R : in out Test_Runner);
+   procedure Run (T      : Ahven.Framework.Test_Class_Access;
+                  Result : in out Ahven.Framework.Test_Result);
+   -- Run the test T and place results to Result.
 
 end Ahven.Runner;

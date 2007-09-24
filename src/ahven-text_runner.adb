@@ -152,14 +152,16 @@ package body Ahven.Text_Runner is
    procedure Run (Suite : Framework.Test_Suite_Access) is
       procedure Free is new Ada.Unchecked_Deallocation
         (Basic_Listener, Basic_Listener_Access);
-      R : Runner.Test_Runner;
+
+      Test : Ahven.Framework.Test_Class_Access :=
+        Framework.Test_Class_Access (Suite);
+      Result : Ahven.Framework.Test_Result;
       Listener : Listeners.Basic.Basic_Listener_Access :=
         new Listeners.Basic.Basic_Listener;
    begin
-      R.Suite := Framework.Test_Class_Access (Suite);
       Framework.Add_Listener
-        (R.Result, Listeners.Result_Listener_Class_Access (Listener));
-      Runner.Run (R);
+        (Result, Listeners.Result_Listener_Class_Access (Listener));
+      Runner.Run (Test, Result);
       Report_Results (Listener.Main_Result, True);
       Free (Listener);
    end Run;

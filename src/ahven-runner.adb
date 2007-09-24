@@ -25,17 +25,18 @@ use Ada.Strings.Unbounded;
 
 package body Ahven.Runner is
 
-   procedure Run (R : in out Test_Runner) is
+   procedure Run (T      : Ahven.Framework.Test_Class_Access;
+                  Result : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Place;
    begin
-      Results.Set_Test_Name (P, Framework.Name (R.Suite.all));
+      Results.Set_Test_Name (P, Framework.Name (T.all));
       begin
-         Framework.Execute (R.Suite, R.Result);
+         Framework.Execute (T, Result);
       exception
          when Assertion_Error =>
-            Framework.Add_Failure (R.Result, P);
+            Framework.Add_Failure (Result, P);
          when others =>
-            Framework.Add_Error (R.Result, P);
+            Framework.Add_Error (Result, P);
       end;
    end Run;
 
