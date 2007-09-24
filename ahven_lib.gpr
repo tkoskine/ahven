@@ -1,0 +1,14 @@
+project Ahven_Lib is
+
+   for Languages use ("Ada");
+
+   for Source_Dirs use ("../../include/ahven");
+
+   for Library_Dir use "../../lib/ahven";
+   for Library_Name use "ahven";
+   for Library_Kind use "dynamic";
+
+   for Externally_Built use "true";
+
+end Ahven_Lib;
+
