@@ -68,5 +68,5 @@ install_lib:
 test: build_tests
 
 docs:
-	adabrowse -c adabrowse.conf -i -I src/ -f@ahven.specs -o doc/
+	adabrowse -c adabrowse.conf -i -I src/ -f@ahven.specs -o doc/api/
 
