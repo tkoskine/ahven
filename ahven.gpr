@@ -17,7 +17,7 @@
 project Ahven is
   for Languages use ("Ada");
   for Source_Dirs use ("src");
-  for Object_Dir use "obj";
+  for Object_Dir use "objects";
   for Library_Name use "ahven";
   for Library_Dir use "lib";
   for Library_Kind use "dynamic";
