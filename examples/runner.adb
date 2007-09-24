@@ -16,16 +16,13 @@
 
 with Ahven.Text_Runner;
 with Ahven.Framework;
-with Framework_Tests;
-with List_Tests;
-
-use Ahven;
+with Simple_Tests;
 
 procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
+   S : Ahven.Framework.Test_Suite_Access :=
+     Ahven.Framework.Create_Suite ("All");
 begin
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Framework.Add_Test (S.all, new List_Tests.Test_Case);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
+   Ahven.Framework.Add_Test (S.all, new Simple_Tests.Test);
+   Ahven.Text_Runner.Run (S);
+   Ahven.Framework.Release_Suite (S);
 end Runner;
