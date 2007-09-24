@@ -28,9 +28,7 @@ use Ahven.Results;
 
 package Ahven.Framework is
 
-   type Test_Result is record
-      Listeners : Ahven.Listeners.Result_Listener_List.List;
-   end record;
+   type Test_Result is private;
 
    procedure Add_Failure (Result : in out Test_Result; P : Result_Place);
    -- Add a test failure to the result.
@@ -63,7 +61,7 @@ package Ahven.Framework is
    procedure Tear_Down (T : in out Test);
    -- Tear_Down is called after the test procedure is executed.
 
-   function  Name (T : Test) return Unbounded_String is abstract;
+   function Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
 
    procedure Run (T      : in out Test;
@@ -130,13 +128,17 @@ package Ahven.Framework is
                   Result : in out Test_Result);
    -- Run Test_Suite's Test_Cases.
 
-   procedure Finalize  (T : in out Test_Suite);
+   procedure Finalize (T : in out Test_Suite);
    -- Finalize procedure of Test_Suite. Frees all added Tests.
 
    procedure Release_Suite (T : in out Test_Suite_Access);
    -- Delete the Test_Suite. All added tests are freed automatically.
 
 private
+   type Test_Result is record
+      Listeners : Ahven.Listeners.Result_Listener_List.List;
+   end record;
+
    type Test_Command is abstract tagged record
       Name : Unbounded_String;
    end record;
