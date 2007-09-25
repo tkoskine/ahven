@@ -71,8 +71,8 @@ package Ahven.Framework is
    procedure Finalize (T : in out Test);
    -- Finalize procedure of Test.
 
-   procedure Execute (T : Test_Class_Access;
-                        Result : in out Test_Result);
+   procedure Execute (T : in out Test'Class;
+                      Result : in out Test_Result);
    -- Call Test class' Run method and place the test outcome to Result.
 
    type Test_Case is abstract new Test with private;
@@ -81,6 +81,7 @@ package Ahven.Framework is
 
    function Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
+
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result);
    -- Run Test_Case's test routines.

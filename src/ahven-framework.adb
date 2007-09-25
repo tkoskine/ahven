@@ -107,14 +107,14 @@ package body Ahven.Framework is
       null;
    end Finalize;
 
-   procedure Execute (T : Test_Class_Access;
+   procedure Execute (T : in out Test'Class;
                       Result : in out Test_Result) is
-      N : Unbounded_String := Name (T.all);
+      N : Unbounded_String := Name (T);
       Place : Result_Place;
    begin
       Set_Test_Name (Place, N);
       Start_Test (Result, Place);
-      Run (T.all, Result);
+      Run (T, Result);
       End_Test (Result, Place);
    end Execute;
 
@@ -240,7 +240,7 @@ package body Ahven.Framework is
       loop
          exit when Iter = null;
 
-         Execute (Test_List.Data (Iter), Result);
+         Execute (Test_List.Data (Iter).all, Result);
          Iter := Test_List.Next (Iter);
       end loop;
    end Run;

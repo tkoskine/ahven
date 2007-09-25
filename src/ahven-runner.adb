@@ -32,7 +32,7 @@ package body Ahven.Runner is
    begin
       Results.Set_Test_Name (P, Framework.Name (T.all));
       begin
-         Framework.Execute (T, Result);
+         Framework.Execute (T.all, Result);
       exception
          when E : Assertion_Error =>
             Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
