@@ -14,15 +14,30 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Unchecked_Deallocation;
 with Ahven.Framework;
+with Ahven.Listeners;
+with Ahven.Results;
+with Simple_Listener;
 
 package body Framework_Tests is
    use Ahven;
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Simple_Listener.Listener, Simple_Listener.Listener_Access);
    
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Framework tests");
-      Ahven.Framework.Register_Routine (T, Test_Set_Up'Access, "Test Set_Up");
+      Framework.Register_Routine (T, Test_Set_Up'Access, "Set_Up");
+
+      Framework.Register_Routine (T, Test_Test_Result_Add_Pass'Access,
+                                  "Test_Result: Add_Pass");
+      Framework.Register_Routine (T, Test_Test_Result_Add_Pass'Access,
+                                  "Test_Result: Add_Pass");
+      Framework.Register_Routine (T, Test_Test_Result_Add_Failure'Access,
+                                  "Test_Result: Add_Failure");
+      Framework.Register_Routine (T, Test_Test_Result_Add_Error'Access,
+                                  "Test_Result: Add_Error");
    end Initialize;
    
    procedure Set_Up (T : in out Test) is
@@ -39,5 +54,50 @@ package body Framework_Tests is
    begin
       Assert (Test (T).Value = 2, "Set_Up not called!");
    end Test_Set_Up;
+   
+   procedure Test_Test_Result_Add_Pass is
+      Result : Framework.Test_Result;
+      My_Listener : Simple_Listener.Listener_Access :=
+        new Simple_Listener.Listener;
+      Place : Results.Result_Place;
+   begin
+      Ahven.Framework.Add_Listener
+        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
+      Framework.Add_Pass (Result, Place);
+      Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
+      Assert (My_Listener.Errors = 0, "Invalid amount of errors.");
+      Assert (My_Listener.Failures = 0, "Invalid amount of failures.");
+      Free (My_Listener);
+   end Test_Test_Result_Add_Pass;
+
+   procedure Test_Test_Result_Add_Failure is
+      Result : Framework.Test_Result;
+      My_Listener : Simple_Listener.Listener_Access :=
+        new Simple_Listener.Listener;
+      Place : Results.Result_Place;
+   begin
+      Framework.Add_Listener
+        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
+      Ahven.Framework.Add_Failure (Result, Place);
+      Assert (My_Listener.Passes = 0, "Invalid amount of passes.");
+      Assert (My_Listener.Errors = 0, "Invalid amount of errors.");
+      Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+      Free (My_Listener);
+   end Test_Test_Result_Add_Failure;
+
+   procedure Test_Test_Result_Add_Error is
+      Result : Framework.Test_Result;
+      My_Listener : Simple_Listener.Listener_Access :=
+        new Simple_Listener.Listener;
+      Place : Results.Result_Place;
+   begin
+      Framework.Add_Listener
+        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
+      Framework.Add_Error (Result, Place);
+      Assert (My_Listener.Passes = 0, "Invalid amount of passes.");
+      Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
+      Assert (My_Listener.Failures = 0, "Invalid amount of failures.");
+      Free (My_Listener);
+   end Test_Test_Result_Add_Error;
 
 end Framework_Tests;

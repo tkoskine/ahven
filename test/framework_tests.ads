@@ -31,5 +31,11 @@ package Framework_Tests is
    procedure Tear_Down (T : in out Test);
 
    procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class);
+   
+   procedure Test_Test_Result_Add_Pass;
+
+   procedure Test_Test_Result_Add_Failure;
+
+   procedure Test_Test_Result_Add_Error;
 
 end Framework_Tests;
