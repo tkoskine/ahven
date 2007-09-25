@@ -53,7 +53,7 @@ clean_tests:
 	gnatclean -Pahven_tests
 
 clean_docs:
-	rm -f doc/*.html
+	rm -f doc/api/*.html
 
 install: install_lib
 
