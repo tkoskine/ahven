@@ -14,30 +14,16 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
 with Ahven.Framework;
 
-use Ada.Strings.Unbounded;
-
-package Framework_Tests is
-   type Test is new Ahven.Framework.Test_Case with record
-      Value : Integer := -1;
-   end record;
+package Dummy_Tests is
+   type Test is new Ahven.Framework.Test_Case with null record;
 
    procedure Initialize (T : in out Test);
 
-   procedure Set_Up (T : in out Test);
+   procedure This_Test_Fails;
 
-   procedure Tear_Down (T : in out Test);
+   procedure This_Test_Passes;
 
-   procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class);
-   
-   procedure Test_Test_Result_Add_Pass;
-
-   procedure Test_Test_Result_Add_Failure;
-
-   procedure Test_Test_Result_Add_Error;
-
-   procedure Test_Test_Case_Run;
-
-end Framework_Tests;
+   procedure This_Test_Raises_Error;
+end Dummy_Tests;
