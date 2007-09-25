@@ -31,6 +31,12 @@ package body Ahven.Results is
    begin
       Place.Routine_Name := Name;
    end Set_Routine_Name;
+   
+   procedure Set_Message (Place : in out Result_Place;
+                          Message : Unbounded_String) is
+   begin
+      Place.Message := Message;
+   end Set_Message;
 
    procedure Set_Test_Name (Place : in out Result_Place; Name : String) is
    begin
@@ -41,6 +47,11 @@ package body Ahven.Results is
    begin
       Set_Routine_Name (Place, To_Unbounded_String (Name));
    end Set_Routine_Name;
+   
+   procedure Set_Message (Place : in out Result_Place; Message : String) is
+   begin
+      Set_Message (Place, To_Unbounded_String (Message));
+   end Set_Message;
 
    function Test_Name (Place : Result_Place) return Unbounded_String is
    begin
@@ -51,6 +62,11 @@ package body Ahven.Results is
    begin
       return Place.Routine_Name;
    end Routine_Name;
+   
+   function Message (Place : Result_Place) return Unbounded_String is
+   begin
+      return Place.Message;
+   end Message;
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child : Result_Collection_Access) is
@@ -191,7 +207,9 @@ package body Ahven.Results is
 
       if Iter = null then
          End_Of_List := True;
-         Place := (Null_Unbounded_String, Null_Unbounded_String);
+         Place := (Null_Unbounded_String,
+                   Null_Unbounded_String,
+                   Null_Unbounded_String);
       else
          End_of_List := False;
          Place := Data (Iter);

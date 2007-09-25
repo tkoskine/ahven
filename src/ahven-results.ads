@@ -30,18 +30,28 @@ package Ahven.Results is
    procedure Set_Routine_Name (Place : in out Result_Place;
                                Name : Unbounded_String);
    -- Set a routine name for the result place.
+   
+   procedure Set_Message (Place : in out Result_Place;
+                          Message : Unbounded_String);
+   -- Set a message for the result place.
 
    procedure Set_Test_Name (Place : in out Result_Place; Name : String);
    -- A helper function, which calls Set_Test_Name (.. ; Unbounded_String)
 
    procedure Set_Routine_Name (Place : in out Result_Place; Name : String);
    -- A helper function, which calls Set_Routine_Name (.. ; Unbounded_String)
+   
+   procedure Set_Message (Place : in out Result_Place; Message : String);
+   -- A helper function, which calls Set_Message (.. ; Unbounded_String)
 
    function Test_Name (Place : Result_Place) return Unbounded_String;
    -- Return the test name of the result place.
 
    function Routine_Name (Place : Result_Place) return Unbounded_String;
    -- Return the routine name of the result place.
+   
+   function Message (Place : Result_Place) return Unbounded_String;
+   -- Return the message of the result place.
 
    type Result_Collection is new Ada.Finalization.Controlled with private;
    type Result_Collection_Access is access Result_Collection;
@@ -125,6 +135,7 @@ private
    type Result_Place is record
       Test_Name    : Unbounded_String := Null_Unbounded_String;
       Routine_Name : Unbounded_String := Null_Unbounded_String;
+      Message      : Unbounded_String := Null_Unbounded_String;
    end record;
 
    package Result_Place_List is

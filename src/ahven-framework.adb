@@ -15,6 +15,7 @@
 --
 
 with Ada.Unchecked_Deallocation;
+with Ada.Exceptions;
 with Ada.Text_IO;
 
 use Ada.Text_IO;
@@ -143,16 +144,19 @@ package body Ahven.Framework is
                           Place   : Result_Place;
                           Result  : in out Test_Result) is
       Passed : Boolean := False;
+      My_Place : Result_Place := Place;
    begin
       Run (Command.all);
       Passed := True;
-      Add_Pass (Result, Place);
+      Add_Pass (Result, My_Place);
    exception
-      when Assertion_Error =>
-         Add_Failure (Result, Place);
-      when others =>
+      when E : Assertion_Error =>
+         Results.Set_Message (My_Place, Ada.Exceptions.Exception_Message (E));
+         Add_Failure (Result, My_Place);
+      when E : others =>
          if Passed = False then
-            Add_Error (Result, Place);
+            Results.Set_Message (My_Place, Ada.Exceptions.Exception_Name (E));
+            Add_Error (Result, My_Place);
          else
             raise;
          end if;

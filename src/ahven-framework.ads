@@ -132,7 +132,8 @@ package Ahven.Framework is
    -- Finalize procedure of Test_Suite. Frees all added Tests.
 
    procedure Release_Suite (T : in out Test_Suite_Access);
-   -- Delete the Test_Suite. All added tests are freed automatically.
+   -- Release the memory of Test_Suite.
+   -- All added tests are released automatically.
 
 private
    type Test_Result is record

@@ -42,10 +42,15 @@ package body Ahven.Text_Runner is
 
    procedure Print_Test (Place : Results.Result_Place;
                          Level : Natural) is
+      Msg : Unbounded_String := Message (Place);
    begin
       Pad (Level + 1);
       -- Put (To_String (Data (Iter).Test_Name) & " - ");
-      Put_Line (To_String (Routine_Name (Place)));
+      Put (To_String (Routine_Name (Place)));
+      if Length (Msg) > 0 then
+         Put (" - " & To_String (Msg));
+      end if;
+      new_Line;
    end Print_Test;
 
    procedure Print_Failures (Result : in out Results.Result_Collection;

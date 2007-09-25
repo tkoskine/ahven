@@ -17,6 +17,7 @@
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
+with Ada.Exceptions;
 
 with Ahven.Results;
 
@@ -33,9 +34,11 @@ package body Ahven.Runner is
       begin
          Framework.Execute (T, Result);
       exception
-         when Assertion_Error =>
+         when E : Assertion_Error =>
+            Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
             Framework.Add_Failure (Result, P);
-         when others =>
+         when E : others =>
+            Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
             Framework.Add_Error (Result, P);
       end;
    end Run;
