@@ -14,20 +14,10 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
-with Ahven.Framework;
 with Framework_Tests;
-with List_Tests;
-with Derived_Tests;
 
-use Ahven;
+package Derived_Tests is
+   type Test is new Framework_Tests.Test with null record;
 
-procedure Runner is
-   S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Framework.Add_Test (S.all, new Derived_Tests.Test);
-   Framework.Add_Test (S.all, new List_Tests.Test_Case);
-   Text_Runner.Run (S);
-   Framework.Release_Suite (S);
-end Runner;
+   procedure Initialize (T : in out Test);
+end Derived_Tests;
