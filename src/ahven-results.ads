@@ -30,7 +30,7 @@ package Ahven.Results is
    procedure Set_Routine_Name (Place : in out Result_Place;
                                Name : Unbounded_String);
    -- Set a routine name for the result place.
-   
+
    procedure Set_Message (Place : in out Result_Place;
                           Message : Unbounded_String);
    -- Set a message for the result place.
@@ -40,7 +40,7 @@ package Ahven.Results is
 
    procedure Set_Routine_Name (Place : in out Result_Place; Name : String);
    -- A helper function, which calls Set_Routine_Name (.. ; Unbounded_String)
-   
+
    procedure Set_Message (Place : in out Result_Place; Message : String);
    -- A helper function, which calls Set_Message (.. ; Unbounded_String)
 
@@ -49,7 +49,7 @@ package Ahven.Results is
 
    function Routine_Name (Place : Result_Place) return Unbounded_String;
    -- Return the routine name of the result place.
-   
+
    function Message (Place : Result_Place) return Unbounded_String;
    -- Return the message of the result place.
 

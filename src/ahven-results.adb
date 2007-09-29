@@ -31,7 +31,7 @@ package body Ahven.Results is
    begin
       Place.Routine_Name := Name;
    end Set_Routine_Name;
-   
+
    procedure Set_Message (Place : in out Result_Place;
                           Message : Unbounded_String) is
    begin
@@ -47,7 +47,7 @@ package body Ahven.Results is
    begin
       Set_Routine_Name (Place, To_Unbounded_String (Name));
    end Set_Routine_Name;
-   
+
    procedure Set_Message (Place : in out Result_Place; Message : String) is
    begin
       Set_Message (Place, To_Unbounded_String (Message));
@@ -62,7 +62,7 @@ package body Ahven.Results is
    begin
       return Place.Routine_Name;
    end Routine_Name;
-   
+
    function Message (Place : Result_Place) return Unbounded_String is
    begin
       return Place.Message;
