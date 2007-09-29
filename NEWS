@@ -1,0 +1,17 @@
+
+????-??-?? Ahven 1.0
+====================
+Initial release.
+
+Ahven is a simple unit test library for Ada 95.
+It is modeled after JUnit and some ideas are
+taken from AUnit. Ahven 1.0 is distributed under
+ISC license.
+
+Features
+========
+* Test, Test_Case, and Test_Suite classes (tagged types)
+* Assert and Fail procedures for triggering assertion failures
+* Text-based test runner
+
+Tero Koskinen <tero.koskinen@iki.fi>
