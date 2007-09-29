@@ -1,7 +1,6 @@
 Ahven - Unit Test Library for Ada
 =================================
-
-Ahven is a small unit test library for Ada.
+Ahven is a simple unit test library for Ada.
 It is mostly written because I had a need for
 one and the only existing unit test library,
 AUnit, requires Ada 2005 and is a pure GPL project.
@@ -11,11 +10,28 @@ under ISC license, so it can be used with older
 projects and does not infect GPL to the whole
 project.
 
+Building and Installing Ahven
+=============================
+For building Ahven source code you need Ada95
+compiler. In theory, any Ada95 compiler works,
+but only GCC (GNAT) is tested.
+
+If you want to build the API documentation, you
+need AdaBrowse tool.
+
+Installation happens by typing 'make install'
+or 'make PREFIX=/my/ada/code install'. Alternatively,
+you can simply copy the source code directory ('src')
+to your project.
+
+Contact Info
+============
 Homepage:
  http://home.gna.org/ahven/
 
 License:
- ISC. See file LICENSE for more information.
+ ISC (modified BSD license).
+ See file LICENSE for more information.
 
 Maintainer:
  Tero Koskinen <tero.koskinen@iki.fi>
