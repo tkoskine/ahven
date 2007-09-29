@@ -41,6 +41,8 @@ package body Framework_Tests is
                                   "Test_Result: Add_Error");
       Framework.Register_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
+      Framework.Register_Routine (T, Test_Test_Suite_Run'Access,
+                                  "Test_Suite: Run");
    end Initialize;
    
    procedure Set_Up (T : in out Test) is
@@ -126,5 +128,26 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Test_Case_Run;
+   
+   procedure Test_Test_Suite_Run is
+      Result : Framework.Test_Result;
+      My_Listener : Simple_Listener.Listener_Access :=
+        new Simple_Listener.Listener;
+      My_Suite : Framework.Test_Suite_Access;
+   begin
+      My_Suite := Framework.Create_Suite ("My suite");
+      Framework.Add_Test (My_Suite.all, new Dummy_Tests.Test);
+      Framework.Add_Listener
+        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
+
+      Framework.Run (My_Suite.all, Result);
+
+      Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
+      Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
+      Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+
+      Free (My_Listener);
+      Framework.Release_Suite (My_Suite);
+   end Test_Test_Suite_Run;
 
 end Framework_Tests;

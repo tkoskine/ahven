@@ -39,5 +39,7 @@ package Framework_Tests is
    procedure Test_Test_Result_Add_Error;
 
    procedure Test_Test_Case_Run;
+   
+   procedure Test_Test_Suite_Run;
 
 end Framework_Tests;
