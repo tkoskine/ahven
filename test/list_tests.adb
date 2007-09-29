@@ -183,13 +183,13 @@ package body List_Tests is
       use Ahven.Framework;
    begin
       Set_Name (T, "Double linked list tests");
-      Register_Routine (T, Test_Append'Access, "Test Append");
-      Register_Routine (T, Test_Remove'Access, "Test Remove");
-      Register_Routine (T, Test_Join'Access, "Test Join");
-      Register_Routine (T, Test_Assignment'Access, "Test Assignment");
-      Register_Routine (T, Test_Reverse_Iterator'Access,
+      Add_Test_Routine (T, Test_Append'Access, "Test Append");
+      Add_Test_Routine (T, Test_Remove'Access, "Test Remove");
+      Add_Test_Routine (T, Test_Join'Access, "Test Join");
+      Add_Test_Routine (T, Test_Assignment'Access, "Test Assignment");
+      Add_Test_Routine (T, Test_Reverse_Iterator'Access,
                         "Test Reverse Iterator");
-      Register_Routine (T, Test_Forward_Iterator'Access,
+      Add_Test_Routine (T, Test_Forward_Iterator'Access,
                         "Test Forward Iterator");
    end Initialize;
 end List_Tests;

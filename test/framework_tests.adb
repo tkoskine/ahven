@@ -29,19 +29,19 @@ package body Framework_Tests is
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Framework tests");
-      Framework.Register_Routine (T, Test_Set_Up'Access, "Set_Up");
+      Framework.Add_Test_Routine (T, Test_Set_Up'Access, "Set_Up");
 
-      Framework.Register_Routine (T, Test_Test_Result_Add_Pass'Access,
+      Framework.Add_Test_Routine (T, Test_Test_Result_Add_Pass'Access,
                                   "Test_Result: Add_Pass");
-      Framework.Register_Routine (T, Test_Test_Result_Add_Pass'Access,
+      Framework.Add_Test_Routine (T, Test_Test_Result_Add_Pass'Access,
                                   "Test_Result: Add_Pass");
-      Framework.Register_Routine (T, Test_Test_Result_Add_Failure'Access,
+      Framework.Add_Test_Routine (T, Test_Test_Result_Add_Failure'Access,
                                   "Test_Result: Add_Failure");
-      Framework.Register_Routine (T, Test_Test_Result_Add_Error'Access,
+      Framework.Add_Test_Routine (T, Test_Test_Result_Add_Error'Access,
                                   "Test_Result: Add_Error");
-      Framework.Register_Routine (T, Test_Test_Case_Run'Access,
+      Framework.Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
-      Framework.Register_Routine (T, Test_Test_Suite_Run'Access,
+      Framework.Add_Test_Routine (T, Test_Test_Suite_Run'Access,
                                   "Test_Suite: Run");
    end Initialize;
    

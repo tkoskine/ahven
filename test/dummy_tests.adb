@@ -22,7 +22,7 @@ package body Dummy_Tests is
       procedure Register (T : in out Ahven.Framework.Test_Case'Class;
                           Routine : Ahven.Framework.Simple_Test_Routine_Access;
                           Name    : String)
-        renames Ahven.Framework.Register_Routine;
+        renames Ahven.Framework.Add_Test_Routine;
    begin
       Register
         (T, This_Test_Fails'Access, "Failure");

@@ -118,7 +118,7 @@ package body Ahven.Framework is
       End_Test (Result, Place);
    end Execute;
 
-   procedure Register_Routine (T       : in out Test_Case'Class;
+   procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
                                Name    : String) is
       Command : Test_Command_Class_Access :=
@@ -128,9 +128,9 @@ package body Ahven.Framework is
 
    begin
       Test_Command_List.Append (T.Routines, Command);
-   end Register_Routine;
+   end Add_Test_Routine;
 
-   procedure Register_Routine (T       : in out Test_Case'Class;
+   procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String) is
       Command : Test_Command_Class_Access :=
@@ -138,7 +138,7 @@ package body Ahven.Framework is
                                  Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
-   end Register_Routine;
+   end Add_Test_Routine;
 
    procedure Run_Command (Command : Test_Command_Class_Access;
                           Place   : Result_Place;

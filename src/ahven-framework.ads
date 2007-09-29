@@ -96,14 +96,14 @@ package Ahven.Framework is
      access procedure (T : in out Test_Case'Class);
    type Simple_Test_Routine_Access is access procedure;
 
-   procedure Register_Routine (T       : in out Test_Case'Class;
+   procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
                                Name    : String);
    -- Register a test routine to the Test_Case.
    -- Routine must have signature
    --  "procedure R (T : in out Test_Case'Class)".
 
-   procedure Register_Routine (T       : in out Test_Case'Class;
+   procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String);
    -- Register a simple test routine to the Test_Case.

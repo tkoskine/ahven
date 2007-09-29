@@ -86,8 +86,8 @@
       begin
          Set_Name (T, "My tests");
 
-	 Ahven.Framework.Register_Routine
-	   (T, My_First_Test'Access, "My first test");
+         Ahven.Framework.Add_Test_Routine
+           (T, My_First_Test'Access, "My first test");
       end Initialize;
 
       ...
@@ -117,8 +117,8 @@
       begin
          Set_Name (T, "My tests");
 
-	 Ahven.Framework.Register_Routine
-	   (T, My_First_Test'Access, "My first test");
+         Ahven.Framework.Add_Test_Routine
+           (T, My_First_Test'Access, "My first test");
       end Initialize;
       <b>
       procedure My_First_Test is
