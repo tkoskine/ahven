@@ -23,8 +23,9 @@ PLACE=$1
 VERSION=$2
 
 cd /tmp || "cd /tmp failed"
-svn checkout $SVNROOT/$PLACE ahven-$VERSION || failure "checkout failed"
+svn export $SVNROOT/$PLACE ahven-$VERSION || failure "checkout failed"
 tar zcf ahven-$VERSION.tar.gz ahven-$VERSION || failure "tar zcf failed"
 
 echo "Release tarball ready at /tmp/ahven-$VERSION.tar.gz"
+echo "Please remove /tmp/ahven-$VERSION directory."
 
