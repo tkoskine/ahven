@@ -29,6 +29,9 @@ use Ahven.Results;
 package Ahven.Framework is
 
    type Test_Result is private;
+   -- A place where the test results are reported. Test_Result
+   -- does not store the results, but calls the listeners instead.
+   -- It is the responsibility of the listeners to store the results.
 
    procedure Add_Failure (Result : in out Test_Result; P : Result_Place);
    -- Add a test failure to the result.
@@ -52,8 +55,14 @@ package Ahven.Framework is
                            Listener : Listeners.Result_Listener_Class_Access);
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
+   -- A type, which provides the base for Test_Case and
+   -- Test_Suite types.
+
    type Test_Class_Access is access all Test'Class;
+   -- Access to Test'Class
+
    type Test_Access is access Test;
+   -- Access to Test.
 
    procedure Set_Up (T : in out Test);
    -- Set_Up is called before executing the test procedure.
@@ -110,13 +119,18 @@ package Ahven.Framework is
    -- Routine must have signature "procedure R".
 
    type Test_Suite is new Test with private;
+   -- A collection of Tests.
+
    type Test_Suite_Access is access all Test_Suite;
+   -- Access to Test_Suite.
+
    type Test_Suite_Class_Access is access Test_Suite'Class;
+   -- Access to Test_Suite'Class.
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access;
    -- Create a new Test_Suite.
-   -- Caller must free returned Test_Suite.
+   -- Caller must free the returned Test_Suite using Release_Suite.
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access);
    -- Add a Test to the suite. The suite frees the Test automatically

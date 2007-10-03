@@ -18,5 +18,6 @@ with Ahven.Framework;
 package Ahven.Text_Runner is
 
    procedure Run (Suite : Framework.Test_Suite_Access);
+   -- Run the suite and print the results.
 
 end Ahven.Text_Runner;
