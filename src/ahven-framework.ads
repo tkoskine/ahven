@@ -42,7 +42,7 @@ package Ahven.Framework is
    -- P tells which test had the error.
 
    procedure Add_Pass (Result : in out Test_Result; P : Result_Place);
-   -- Add a successful test to the result
+   -- Add a successful test to the result.
    -- P tells which test was ok.
 
    procedure Start_Test (Result : in out Test_Result; Place : Result_Place);
@@ -53,16 +53,15 @@ package Ahven.Framework is
 
    procedure Add_Listener (Result   : in out Test_Result;
                            Listener : Listeners.Result_Listener_Class_Access);
+   -- Add a new listener to the Result.
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    -- A type, which provides the base for Test_Case and
    -- Test_Suite types.
 
    type Test_Class_Access is access all Test'Class;
-   -- Access to Test'Class
 
    type Test_Access is access Test;
-   -- Access to Test.
 
    procedure Set_Up (T : in out Test);
    -- Set_Up is called before executing the test procedure.
@@ -85,7 +84,10 @@ package Ahven.Framework is
    -- Call Test class' Run method and place the test outcome to Result.
 
    type Test_Case is abstract new Test with private;
+   -- The base type for other test cases.
+
    type Test_Case_Access is access all Test_Case;
+
    type Test_Case_Class_Access is access all Test_Case'Class;
 
    function Name (T : Test_Case) return Unbounded_String;
@@ -103,7 +105,15 @@ package Ahven.Framework is
 
    type Object_Test_Routine_Access is
      access procedure (T : in out Test_Case'Class);
+   -- A pointer to a test routine which takes Test_Case'Class object
+   -- as an argument.
+   --
+   -- For this kind of test routines, the framework will
+   -- call Set_Up and Tear_Down routines before and after
+   -- test routine execution.
+
    type Simple_Test_Routine_Access is access procedure;
+   -- A pointer to a test routine which does not take arguments.
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
@@ -122,10 +132,8 @@ package Ahven.Framework is
    -- A collection of Tests.
 
    type Test_Suite_Access is access all Test_Suite;
-   -- Access to Test_Suite.
 
    type Test_Suite_Class_Access is access Test_Suite'Class;
-   -- Access to Test_Suite'Class.
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access;
