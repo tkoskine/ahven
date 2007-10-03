@@ -20,26 +20,26 @@ use Ahven.Results;
 
 package Ahven.Listeners.Basic is
    type Basic_Listener is new Result_Listener with record
-      Main_Result : Result_Collection;
+      Main_Result    : Result_Collection;
       Current_Result : Result_Collection_Access;
    end record;
 
    type Basic_Listener_Access is access all Basic_Listener;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
-                       Place : Result_Place);
+                       Place    :        Result_Place);
 
    procedure Add_Failure (Listener : in out Basic_Listener;
-                          Place : Result_Place);
+                          Place    :        Result_Place);
 
    procedure Add_Error (Listener : in out Basic_Listener;
-                        Place : Result_Place);
+                        Place    :        Result_Place);
 
    procedure Start_Test (Listener : in out Basic_Listener;
-                         Place : Result_Place);
+                         Place    :        Result_Place);
 
    procedure End_Test (Listener : in out Basic_Listener;
-                       Place : Result_Place);
+                       Place    :        Result_Place);
 
 private
 
