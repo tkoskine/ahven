@@ -171,7 +171,7 @@ package body Ahven.Text_Runner is
       procedure Free is new Ada.Unchecked_Deallocation
         (Basic_Listener, Basic_Listener_Access);
 
-      Test : Ahven.Framework.Test_Class_Access :=
+      Test : constant Ahven.Framework.Test_Class_Access :=
         Framework.Test_Class_Access (Suite);
       Result : Ahven.Framework.Test_Result;
       Listener : Listeners.Basic.Basic_Listener_Access :=

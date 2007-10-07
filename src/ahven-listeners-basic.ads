@@ -14,10 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Results;
-
-use Ahven.Results;
-
 package Ahven.Listeners.Basic is
    type Basic_Listener is new Result_Listener with record
       Main_Result    : Result_Collection;

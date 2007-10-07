@@ -99,8 +99,6 @@ package body Ahven.Results is
    end Add_Pass;
 
    procedure Finalize (Collection : in out Result_Collection) is
-      use Result_List;
-
       procedure Free is
         new Ada.Unchecked_Deallocation
           (Result_Collection, Result_Collection_Access);

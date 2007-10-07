@@ -18,7 +18,6 @@ with Ada.Strings.Unbounded;
 use Ada.Strings.Unbounded;
 
 package body Ahven.Listeners.Basic is
-   use Ahven.Results;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Place : Result_Place) is
@@ -58,6 +57,7 @@ package body Ahven.Listeners.Basic is
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Place : Result_Place) is
+      pragma Unreferenced (Place);
    begin
       if Listener.Current_Result /= null then
          Listener.Current_Result := Parent (Listener.Current_Result.all);

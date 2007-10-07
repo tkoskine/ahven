@@ -14,15 +14,9 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Unchecked_Deallocation;
-with Ada.Text_IO;
-with Ada.Strings.Unbounded;
 with Ada.Exceptions;
 
 with Ahven.Results;
-
-use Ada.Text_IO;
-use Ada.Strings.Unbounded;
 
 package body Ahven.Runner is
 
