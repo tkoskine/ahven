@@ -24,11 +24,11 @@ package body Simple_Tests is
    begin
       Set_Name (T, "Simple Tests");
 
-      Ahven.Framework.Register_Routine
+      Ahven.Framework.Add_Test_Routine
         (T, Test_Assertion'Access, "Test Assertion");
-      Ahven.Framework.Register_Routine
+      Ahven.Framework.Add_Test_Routine
         (T, Test_With_Object'Access, "Test With Object");
-      Ahven.Framework.Register_Routine
+      Ahven.Framework.Add_Test_Routine
         (T, Test_Error'Access, "Test Error (exception)");
 
    end Initialize;
