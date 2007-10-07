@@ -28,6 +28,7 @@ package body Ahven.Double_Linked_List is
    end Remove;
 
    procedure Remove (This_List : in out List; Iter : Iterator) is
+      Temp_Node : Node_Access;
    begin
       if This_List.Size = 0 then
          raise List_Empty;
@@ -39,8 +40,10 @@ package body Ahven.Double_Linked_List is
       elsif Node_Access (Iter) = This_List.Last then
          Remove_Last (This_List);
       else
+         Temp_Node := Node_Access (Iter);
          Iter.Prev.Next := Iter.Next;
          Iter.Next.Prev := Iter.Prev;
+         Remove (Temp_Node);
       end if;
    end Remove;
 
