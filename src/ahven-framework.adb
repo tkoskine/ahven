@@ -223,7 +223,7 @@ package body Ahven.Framework is
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
    begin
-     Test_List.Append (Suite.Test_Cases, T);
+      Test_List.Append (Suite.Test_Cases, T);
    end Add_Test;
 
    function Name (T : Test_Suite) return Unbounded_String is

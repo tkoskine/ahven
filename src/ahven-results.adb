@@ -20,6 +20,12 @@ package body Ahven.Results is
    use Ahven.Results.Result_List;
    use Ahven.Results.Result_Place_List;
 
+   -- Local procedures
+   procedure Next_In_List (List : in out Result_Place_List.List;
+                           Iter : in out Result_Place_List.Iterator;
+                           Place : out Result_Place;
+                           End_Of_List : out Boolean);
+
    procedure Set_Test_Name (Place : in out Result_Place;
                             Name : Unbounded_String) is
    begin

@@ -238,4 +238,3 @@ package body Ahven.Double_Linked_List is
    end Adjust;
 
 end Ahven.Double_Linked_List;
-

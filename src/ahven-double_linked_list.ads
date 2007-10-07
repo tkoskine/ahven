@@ -54,6 +54,8 @@ package Ahven.Double_Linked_List is
 private
    procedure Remove (Ptr : Node_Access);
 
+   function Data (Iter : in Node_access) return Data_Type;
+
    type Node is record
       Data : Data_Type;
       Next : Node_Access := null;
@@ -76,4 +78,3 @@ private
                                        Size  => 0);
 
 end Ahven.Double_Linked_List;
-

@@ -200,6 +200,10 @@ private
 
    procedure Run (Command : Test_Simple_Command);
 
+   procedure Run_Command (Command : Test_Command_Class_Access;
+                          Place   : Result_Place;
+                          Result  : in out Test_Result);
+
    package Test_List is new Double_Linked_List (Test_Class_Access);
 
    type Test_Suite is new Test with record

@@ -23,6 +23,6 @@ package Ahven is
    -- If Condition is false, Assert raises Assertion_Error
    -- with given Message.
 
-   procedure Fail   (Message : String);
+   procedure Fail (Message : String);
    -- Fail always raises Assertion_Error with given Message.
 end Ahven;

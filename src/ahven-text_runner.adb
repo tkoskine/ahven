@@ -33,6 +33,19 @@ use Ahven.Listeners.Basic;
 
 package body Ahven.Text_Runner is
 
+   -- Local procedures
+   procedure Pad (Level : Natural);
+   procedure Print_Test     (Place  : Results.Result_Place;
+                             Level  : Natural);
+   procedure Print_Failures (Result : in out Results.Result_Collection;
+                             Level  : Natural);
+   procedure Print_Errors   (Result : in out Results.Result_Collection;
+                             Level  : Natural);
+   procedure Print_Passes   (Result : in out Results.Result_Collection;
+                             Level  : Natural);
+   procedure Report_Results (Result  : in out Results.Result_Collection;
+                             Verbose : Boolean := False);
+
    procedure Pad (Level : Natural) is
    begin
       for A in Integer range 0 .. Level loop
@@ -172,4 +185,3 @@ package body Ahven.Text_Runner is
    end Run;
 
 end Ahven.Text_Runner;
-
