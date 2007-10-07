@@ -16,9 +16,6 @@
 
 with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
-with Ada.Text_IO;
-
-use Ada.Text_IO;
 
 package body Ahven.Framework is
    use Address_To_Access_Conversions;
@@ -93,16 +90,19 @@ package body Ahven.Framework is
    end Add_Listener;
 
    procedure Set_Up (T : in out Test) is
+      pragma Unreferenced (T);
    begin
       null;
    end Set_Up;
 
    procedure Tear_Down (T : in out Test) is
+      pragma Unreferenced (T);
    begin
       null;
    end Tear_Down;
 
    procedure Finalize (T : in out Test) is
+      pragma Unreferenced (T);
    begin
       null;
    end Finalize;
@@ -121,7 +121,7 @@ package body Ahven.Framework is
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
                                Name    : String) is
-      Command : Test_Command_Class_Access :=
+      Command : constant Test_Command_Class_Access :=
         new Test_Object_Command'(Name => To_Unbounded_String (Name),
                                  Object => To_Pointer (T'Address),
                                  Routine => Routine);
@@ -133,7 +133,7 @@ package body Ahven.Framework is
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String) is
-      Command : Test_Command_Class_Access :=
+      Command : constant Test_Command_Class_Access :=
         new Test_Simple_Command'(Name => To_Unbounded_String (Name),
                                  Routine => Routine);
    begin
@@ -213,7 +213,7 @@ package body Ahven.Framework is
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access is
-      Suite : Test_Suite_Access :=
+      Suite : constant Test_Suite_Access :=
         new Test_Suite'(Ada.Finalization.Controlled with
                         Suite_Name => To_Unbounded_String (Suite_Name),
                         Test_Cases => Test_List.Empty_List);

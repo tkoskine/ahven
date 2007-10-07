@@ -27,6 +27,7 @@ project Ahven is
                                        "-gnatVa",
                                        "-gnato",
                                        "-gnatwe",
+                                       "-gnatwa",
                                        "-gnaty3ibmhesux", "-gnat95");
   end Builder;
 
