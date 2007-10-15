@@ -85,8 +85,14 @@ package body Ahven.Framework is
    procedure Add_Listener
      (Result : in out Test_Result;
       Listener : Listeners.Result_Listener_Class_Access) is
+
+      use type Listeners.Result_Listener_Class_Access;
    begin
-      Listeners.Result_Listener_List.Append (Result.Listeners, Listener);
+      if Listener = null then
+         raise Parameter_Error;
+      else
+         Listeners.Result_Listener_List.Append (Result.Listeners, Listener);
+      end if;
    end Add_Listener;
 
    procedure Set_Up (T : in out Test) is

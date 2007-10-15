@@ -28,6 +28,8 @@ use Ahven.Results;
 
 package Ahven.Framework is
 
+   Parameter_Error : exception;
+
    type Test_Result is private;
    -- A place where the test results are reported. Test_Result
    -- does not store the results, but calls the listeners instead.
@@ -39,7 +41,7 @@ package Ahven.Framework is
 
    procedure Add_Error (Result : in out Test_Result; P : Result_Place);
    -- Add a test error to the result.
-   -- P tells which test had the error.
+   -- P tells which test had an error.
 
    procedure Add_Pass (Result : in out Test_Result; P : Result_Place);
    -- Add a successful test to the result.
@@ -54,6 +56,7 @@ package Ahven.Framework is
    procedure Add_Listener (Result   : in out Test_Result;
                            Listener : Listeners.Result_Listener_Class_Access);
    -- Add a new listener to the Result.
+   -- Passing null as Listener raises Parameter_Error.
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    -- A type, which provides the base for Test_Case and
@@ -82,6 +85,8 @@ package Ahven.Framework is
    procedure Execute (T      : in out Test'Class;
                       Result : in out Test_Result);
    -- Call Test class' Run method and place the test outcome to Result.
+   -- The procedure calls Start_Test of every listener before calling
+   -- the Run procedure and End_Test after calling the Run procedure.
 
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.

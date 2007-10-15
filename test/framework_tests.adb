@@ -39,6 +39,8 @@ package body Framework_Tests is
                                   "Test_Result: Add_Failure");
       Framework.Add_Test_Routine (T, Test_Test_Result_Add_Error'Access,
                                   "Test_Result: Add_Error");
+      Framework.Add_Test_Routine (T, Test_Add_Listener_Null'Access,
+                                  "Test_Result: Add_Listener (null)");
       Framework.Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Run'Access,
@@ -149,5 +151,17 @@ package body Framework_Tests is
       Free (My_Listener);
       Framework.Release_Suite (My_Suite);
    end Test_Test_Suite_Run;
+   
+   procedure Test_Add_Listener_Null is
+      Result : Framework.Test_Result;
+   begin
+      begin
+         Framework.Add_Listener (Result, null);
+         Fail ("No exception thrown");
+      exception
+         when Ahven.Framework.Parameter_Error =>
+            null; -- Ok, this was expected
+      end;
+   end Test_Add_Listener_Null;
 
 end Framework_Tests;

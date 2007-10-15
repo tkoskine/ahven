@@ -42,4 +42,6 @@ package Framework_Tests is
    
    procedure Test_Test_Suite_Run;
 
+   procedure Test_Add_Listener_Null;
+
 end Framework_Tests;
