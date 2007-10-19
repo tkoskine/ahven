@@ -33,8 +33,6 @@ package body Framework_Tests is
 
       Framework.Add_Test_Routine (T, Test_Test_Result_Add_Pass'Access,
                                   "Test_Result: Add_Pass");
-      Framework.Add_Test_Routine (T, Test_Test_Result_Add_Pass'Access,
-                                  "Test_Result: Add_Pass");
       Framework.Add_Test_Routine (T, Test_Test_Result_Add_Failure'Access,
                                   "Test_Result: Add_Failure");
       Framework.Add_Test_Routine (T, Test_Test_Result_Add_Error'Access,
