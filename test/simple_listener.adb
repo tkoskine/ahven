@@ -37,11 +37,13 @@ package body Simple_Listener is
                          Place : Ahven.Results.Result_Place) is
    begin
       Object.Level := Object.Level + 1;
+      Object.Start_Calls := Object.Start_Calls + 1;
    end Start_Test;
 
    procedure End_Test (Object: in out Listener;
                        Place : Ahven.Results.Result_Place) is
    begin
       Object.Level := Object.Level - 1;
+      Object.End_Calls := Object.End_Calls + 1;
    end End_Test;
 end Simple_Listener;

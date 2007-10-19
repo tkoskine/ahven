@@ -19,10 +19,12 @@ with Ahven.Results;
 
 package Simple_Listener is
    type Listener is new Ahven.Listeners.Result_Listener with record
-      Passes : Natural := 0;
-      Errors : Natural := 0;
-      Failures : Natural := 0;
-      Level : Integer := 0;
+      Passes      : Natural := 0;
+      Errors      : Natural := 0;
+      Failures    : Natural := 0;
+      Level       : Integer := 0;
+      Start_Calls : Natural := 0;
+      End_Calls   : Natural := 0;
    end record;
 
    type Listener_Access is access all Listener;

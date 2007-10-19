@@ -41,6 +41,8 @@ package body Framework_Tests is
                                   "Test_Result: Add_Listener (null)");
       Framework.Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
+      Framework.Add_Test_Routine (T, Test_Call_End_Test'Access,
+                                  "Test_Case: Run (Call End_Test)");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Run'Access,
                                   "Test_Suite: Run");
    end Initialize;
@@ -125,6 +127,10 @@ package body Framework_Tests is
       Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
       Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
       Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
+      Assert (My_Listener.Start_Calls = 3,
+              "Start_Test calls: " &
+              Integer'Image (My_Listener.Start_Calls));
 
       Free (My_Listener);
    end Test_Test_Case_Run;
@@ -145,6 +151,10 @@ package body Framework_Tests is
       Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
       Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
       Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
+      Assert (My_Listener.Start_Calls = 4,
+              "Start_Test calls: " &
+              Integer'Image (My_Listener.Start_Calls));
 
       Free (My_Listener);
       Framework.Release_Suite (My_Suite);
@@ -161,5 +171,23 @@ package body Framework_Tests is
             null; -- Ok, this was expected
       end;
    end Test_Add_Listener_Null;
+   
+   procedure Test_Call_End_Test is
+      Result : Framework.Test_Result;
+      My_Listener : Simple_Listener.Listener_Access :=
+        new Simple_Listener.Listener;
+      My_Test : Dummy_Tests.Test;
+   begin
+      Framework.Add_Listener
+        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
+
+      Dummy_Tests.Run (My_Test, Result);
+
+      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
+      Assert (My_Listener.End_Calls = 3, "End_Test calls: " &
+              Integer'Image (My_Listener.End_Calls));
+
+      Free (My_Listener);
+   end Test_Call_End_Test;
 
 end Framework_Tests;
