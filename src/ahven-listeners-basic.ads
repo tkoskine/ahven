@@ -14,6 +14,10 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Strings.Unbounded;
+
+use Ada.Strings.Unbounded;
+
 package Ahven.Listeners.Basic is
    type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
 
@@ -21,6 +25,7 @@ package Ahven.Listeners.Basic is
       Main_Result    : Result_Collection;
       Current_Result : Result_Collection_Access;
       Last_Test_Result : Result_Type := NO_RESULT;
+      Last_Test_Message : Unbounded_String := Null_Unbounded_String;
    end record;
 
    type Basic_Listener_Access is access all Basic_Listener;

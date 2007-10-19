@@ -14,30 +14,27 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
-use Ada.Strings.Unbounded;
-
 package body Ahven.Listeners.Basic is
 
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Place : Result_Place) is
-      pragma Unreferenced (Place);
    begin
       Listener.Last_Test_Result := PASS_RESULT;
+      Listener.Last_Test_Message := Message (Place);
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
                           Place : Result_Place) is
-      pragma Unreferenced (Place);
    begin
       Listener.Last_Test_Result := FAILURE_RESULT;
+      Listener.Last_Test_Message := Message (Place);
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
                         Place : Result_Place) is
-      pragma Unreferenced (Place);
    begin
       Listener.Last_Test_Result := ERROR_RESULT;
+      Listener.Last_Test_Message := Message (Place);
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
@@ -60,16 +57,18 @@ package body Ahven.Listeners.Basic is
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Place : Result_Place) is
+      My_Place : Result_Place := Place;
    begin
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
+            Set_Message (My_Place, Listener.Last_Test_Message);
             case Listener.Last_Test_Result is
                when PASS_RESULT =>
-                  Add_Pass (Listener.Current_Result.all, Place);
+                  Add_Pass (Listener.Current_Result.all, My_Place);
                when FAILURE_RESULT =>
-                  Add_Failure (Listener.Current_Result.all, Place);
+                  Add_Failure (Listener.Current_Result.all, My_Place);
                when ERROR_RESULT | NO_RESULT =>
-                  Add_Error (Listener.Current_Result.all, Place);
+                  Add_Error (Listener.Current_Result.all, My_Place);
             end case;
             Listener.Last_Test_Result := NO_RESULT;
          end if;
