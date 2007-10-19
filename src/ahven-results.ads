@@ -44,6 +44,10 @@ package Ahven.Results is
    procedure Set_Message (Place : in out Result_Place; Message : String);
    -- A helper function, which calls Set_Message (.. ; Unbounded_String)
 
+   procedure Set_Execution_Time (Place : in out Result_Place;
+                                 Elapsed_Time : Duration);
+   -- Set the execution time of the result place (test).
+
    function Test_Name (Place : Result_Place) return Unbounded_String;
    -- Return the test name of the result place.
 
@@ -52,6 +56,9 @@ package Ahven.Results is
 
    function Message (Place : Result_Place) return Unbounded_String;
    -- Return the message of the result place.
+
+   function Execution_Time (Place : Result_Place) return Duration;
+   -- Return the execution time of the result place.
 
    type Result_Collection is new Ada.Finalization.Controlled with private;
    type Result_Collection_Access is access Result_Collection;
@@ -136,6 +143,7 @@ private
       Test_Name    : Unbounded_String := Null_Unbounded_String;
       Routine_Name : Unbounded_String := Null_Unbounded_String;
       Message      : Unbounded_String := Null_Unbounded_String;
+      Execution_Time : Duration := 0.0;
    end record;
 
    package Result_Place_List is

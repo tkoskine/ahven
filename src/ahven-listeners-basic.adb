@@ -21,20 +21,23 @@ package body Ahven.Listeners.Basic is
 
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Place : Result_Place) is
+      pragma Unreferenced (Place);
    begin
-      Add_Pass (Listener.Current_Result.all, Place);
+      Listener.Last_Test_Result := PASS_RESULT;
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
                           Place : Result_Place) is
+      pragma Unreferenced (Place);
    begin
-      Add_Failure (Listener.Current_Result.all, Place);
+      Listener.Last_Test_Result := FAILURE_RESULT;
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
                         Place : Result_Place) is
+      pragma Unreferenced (Place);
    begin
-      Add_Error (Listener.Current_Result.all, Place);
+      Listener.Last_Test_Result := ERROR_RESULT;
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
@@ -44,23 +47,36 @@ package body Ahven.Listeners.Basic is
       if Routine_Name (Place) = Null_Unbounded_String then
          R := new Result_Collection;
          Set_Name (R.all, Test_Name (Place));
+         Set_Parent (R.all, Listener.Current_Result);
+
          if Listener.Current_Result = null then
             Add_Child (Listener.Main_Result, R);
-            Listener.Current_Result := R;
          else
             Add_Child (Listener.Current_Result.all, R);
          end if;
-         Set_Parent (R.all, Listener.Current_Result);
          Listener.Current_Result := R;
       end if;
    end Start_Test;
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Place : Result_Place) is
-      pragma Unreferenced (Place);
    begin
       if Listener.Current_Result /= null then
-         Listener.Current_Result := Parent (Listener.Current_Result.all);
+         if Listener.Last_Test_Result /= NO_RESULT then
+            case Listener.Last_Test_Result is
+               when PASS_RESULT =>
+                  Add_Pass (Listener.Current_Result.all, Place);
+               when FAILURE_RESULT =>
+                  Add_Failure (Listener.Current_Result.all, Place);
+               when ERROR_RESULT | NO_RESULT =>
+                  Add_Error (Listener.Current_Result.all, Place);
+            end case;
+            Listener.Last_Test_Result := NO_RESULT;
+         end if;
+
+         if Routine_Name (Place) = Null_Unbounded_String then
+            Listener.Current_Result := Parent (Listener.Current_Result.all);
+         end if;
       end if;
    end End_Test;
 

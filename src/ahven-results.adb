@@ -59,6 +59,12 @@ package body Ahven.Results is
       Set_Message (Place, To_Unbounded_String (Message));
    end Set_Message;
 
+   procedure Set_Execution_Time (Place : in out Result_Place;
+                                 Elapsed_Time : Duration) is
+   begin
+      Place.Execution_Time := Elapsed_Time;
+   end Set_Execution_Time;
+
    function Test_Name (Place : Result_Place) return Unbounded_String is
    begin
       return Place.Test_Name;
@@ -73,6 +79,11 @@ package body Ahven.Results is
    begin
       return Place.Message;
    end Message;
+
+   function Execution_Time (Place : Result_Place) return Duration is
+   begin
+      return Place.Execution_Time;
+   end Execution_Time;
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child : Result_Collection_Access) is
@@ -213,7 +224,8 @@ package body Ahven.Results is
          End_Of_List := True;
          Place := (Null_Unbounded_String,
                    Null_Unbounded_String,
-                   Null_Unbounded_String);
+                   Null_Unbounded_String,
+                   0.0);
       else
          End_of_List := False;
          Place := Data (Iter);

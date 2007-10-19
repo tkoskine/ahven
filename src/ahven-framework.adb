@@ -16,6 +16,7 @@
 
 with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
+with Ada.Calendar;
 
 package body Ahven.Framework is
    use Address_To_Access_Conversions;
@@ -176,17 +177,26 @@ package body Ahven.Framework is
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result) is
       use type Test_Command_List.Iterator;
+      use type Ada.Calendar.Time;
 
       Iter : Test_Command_List.Iterator :=
         Test_Command_List.First (T.Routines);
       Place : Result_Place;
+      Start_Time, End_Time : Ada.Calendar.Time;
    begin
       Set_Test_Name (Place, Name (T));
       loop
          exit when Iter = null;
          Set_Routine_Name (Place, Test_Command_List.Data (Iter).Name);
 
+         Start_Test (Result, Place);
+         Start_Time := Ada.Calendar.Clock;
+
          Run_Command (Test_Command_List.Data (Iter), Place, Result);
+
+         End_Time := Ada.Calendar.Clock;
+         Set_Execution_Time (Place, End_Time - Start_Time);
+         End_Test (Result, Place);
 
          Iter := Test_Command_List.Next (Iter);
       end loop;

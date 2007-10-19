@@ -17,6 +17,7 @@
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;
 
 with Ahven.Runner;
 with Ahven.Results;
@@ -26,6 +27,7 @@ with Ahven.Listeners;
 
 use Ada.Text_IO;
 use Ada.Strings.Unbounded;
+use Ada.Strings.Fixed;
 
 use Ahven.Results;
 use Ahven.Framework;
@@ -35,8 +37,10 @@ package body Ahven.Text_Runner is
 
    -- Local procedures
    procedure Pad (Level : Natural);
+   procedure Pad (Output : in out Unbounded_String; Level : Natural);
    procedure Print_Test     (Place  : Results.Result_Place;
-                             Level  : Natural);
+                             Level  : Natural;
+                             Result : String);
    procedure Print_Failures (Result : in out Results.Result_Collection;
                              Level  : Natural);
    procedure Print_Errors   (Result : in out Results.Result_Collection;
@@ -53,15 +57,52 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Print_Test (Place : Results.Result_Place;
-                         Level : Natural) is
-      Msg : Unbounded_String := Message (Place);
+   procedure Pad (Output : in out Unbounded_String; Level : Natural) is
    begin
-      Pad (Level + 1);
+      for A in Integer range 0 .. Level loop
+         Append (Output, " ");
+      end loop;
+   end Pad;
+
+   procedure Print_Test (Place : Results.Result_Place;
+                         Level : Natural;
+                         Result : String) is
+      use Ada.Strings;
+
+      Msg : Unbounded_String := Message (Place);
+      Output : Unbounded_String := Null_Unbounded_String;
+      Result_Out : String (1 .. 7) := (others => ' ');
+      Time_Out   : String (1 .. 12) := (others => ' ');
+   begin
+      Pad (Output, Level + 1);
       -- Put (To_String (Data (Iter).Test_Name) & " - ");
-      Put (To_String (Routine_Name (Place)));
+      Append (Output, Routine_Name (Place));
       if Length (Msg) > 0 then
-         Put (" - " & To_String (Msg));
+         Append (Output, " - ");
+         Append (Output, Msg);
+      end if;
+
+      if Length (Output) < 50 then
+         Pad (Output, 50 - Length (Output));
+      end if;
+
+      Put (To_String (Output));
+
+      -- If we know the name of the routine, we print it,
+      -- the result, and the execution time.
+      if Length (Routine_Name (Place)) > 0 then
+         Move (Source => Result,
+               Target => Result_Out,
+               Drop => Right,
+               Justify => Right,
+               Pad => ' ');
+         Move (Source => Duration'Image (Execution_Time (Place)),
+               Target => Time_Out,
+               Drop => Right,
+               Justify => Right,
+               Pad => ' ');
+         Put (" " & Result_Out);
+         Put (" " & Time_Out & "s");
       end if;
       new_Line;
    end Print_Test;
@@ -81,7 +122,7 @@ package body Ahven.Text_Runner is
       loop
          Next_Failure (Result, Place, End_Flag);
          exit Failure_Loop when End_Flag;
-         Print_Test (Place, Level);
+         Print_Test (Place, Level, "FAIL");
       end loop Failure_Loop;
 
       loop
@@ -108,7 +149,7 @@ package body Ahven.Text_Runner is
       loop
          Next_Error (Result, Place, End_Flag);
          exit Error_Loop when End_Flag;
-         Print_Test (Place, Level);
+         Print_Test (Place, Level, "ERROR");
       end loop Error_Loop;
 
       loop
@@ -136,7 +177,7 @@ package body Ahven.Text_Runner is
       loop
          Next_Pass (Result, Place, End_Flag);
          exit Pass_Loop when End_Flag;
-         Print_Test (Place, Level);
+         Print_Test (Place, Level, "PASS");
       end loop Pass_Loop;
 
       loop
