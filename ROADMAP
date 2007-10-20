@@ -3,14 +3,13 @@ Ahven - Roadmap
 
 Release schedule and versioning
 -------------------------------
-Ahven will use simple a.b versions. After "a.9" comes "(a+1).0".
-I plan to release a new version every three or four months.
-
+Ahven will use simple a.b version numbers. After "1.9" comes "2.0".
+I plan to release a new version two or three times a year.
 
 Planned features
 ----------------
 Version 1.1:
-* Track the execution time of the tests
+* Refactor Ahven.Results.Result_Place. It is somewhat unsafe to use now.
 
 Version ?.?:
 * Graphical (GTK+) UI for the test result reporter
