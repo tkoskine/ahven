@@ -65,7 +65,8 @@ install_lib:
 	$(INSTALL) -m 644 $(SO_LIBRARY) $(PREFIX)/lib/ahven
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
 
-test: build_tests
+check: build_tests
+	./runner
 
 docs:
 	adabrowse -c adabrowse.conf -i -I src/ -f@ahven.specs -o doc/api/
