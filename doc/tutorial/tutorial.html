@@ -5,7 +5,7 @@
 <style type="text/css">
       body { background-color: white }
 </style>
-<!-- <link rel="stylesheet" type="text/css" href="style.css"/> -->
+<!-- <link rel="stylesheet" type="text/css" href="ahven.css"/> -->
 <!-- <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> -->
 </head><body>
 <h1>Ahven Tutorial</h1>
@@ -84,10 +84,10 @@
    package My_Tests is
       procedure Initialize (T : in out Test) is
       begin
-         Set_Name (T, "My tests");
+         <b>Set_Name (T, "My tests");</b>
 
-         Ahven.Framework.Add_Test_Routine
-           (T, My_First_Test'Access, "My first test");
+         <b>Ahven.Framework.Add_Test_Routine
+           (T, My_First_Test'Access, "My first test");</b>
       end Initialize;
 
       ...
@@ -136,7 +136,7 @@
     and prints the results to the standard output.
 </p>
 <p> The best way to run the tests is to define a Test_Suite, add
-    the tests there and give the test suite to the runner.
+    the tests there, and give the test suite to the runner.
 </p>
 <p>
 <code>
@@ -159,5 +159,5 @@ end Runner;
 </code>
 </p>
 <hr/>
-<p>Tero Koskinen, 2007-09-24</p>
+<p>Tero Koskinen, 2007-10-20</p>
 </body></html>
