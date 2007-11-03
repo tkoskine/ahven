@@ -37,4 +37,22 @@ package body Ahven.Runner is
       end;
    end Run;
 
+   procedure Run (T         : Ahven.Framework.Test_Class_Access;
+                  Test_Name : String;
+                  Result    : in out Ahven.Framework.Test_Result) is
+      P : Results.Result_Place;
+   begin
+      Results.Set_Test_Name (P, Framework.Name (T.all));
+      begin
+         Framework.Execute (T.all, Test_Name, Result);
+      exception
+         when E : Assertion_Error =>
+            Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
+            Framework.Add_Failure (Result, P);
+         when E : others =>
+            Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
+            Framework.Add_Error (Result, P);
+      end;
+   end Run;
+
 end Ahven.Runner;

@@ -18,6 +18,7 @@ with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
+with Ada.Command_Line;
 
 with Ahven.Runner;
 with Ahven.Results;
@@ -220,7 +221,11 @@ package body Ahven.Text_Runner is
    begin
       Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (Listener));
-      Runner.Run (Test, Result);
+      if Ada.Command_Line.Argument_Count > 0 then
+         Runner.Run (Test, Ada.Command_Line.Argument (1), Result);
+      else
+         Runner.Run (Test, Result);
+      end if;
       Report_Results (Listener.Main_Result, True);
       Free (Listener);
    end Run;

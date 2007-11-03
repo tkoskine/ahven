@@ -79,6 +79,11 @@ package Ahven.Framework is
                   Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
 
+   procedure Run (T         : in out Test;
+                  Test_Name :        String;
+                  Result    : in out Test_Result) is abstract;
+   -- Run the test with given name and place the test result to Result.
+
    procedure Finalize (T : in out Test);
    -- Finalize procedure of Test.
 
@@ -87,6 +92,10 @@ package Ahven.Framework is
    -- Call Test class' Run method and place the test outcome to Result.
    -- The procedure calls Start_Test of every listener before calling
    -- the Run procedure and End_Test after calling the Run procedure.
+
+   procedure Execute (T         : in out Test'Class;
+                      Test_Name :        String;
+                      Result    : in out Test_Result);
 
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.
@@ -101,6 +110,11 @@ package Ahven.Framework is
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result);
    -- Run Test_Case's test routines.
+
+   procedure Run (T         : in out Test_Case;
+                  Test_Name :        String;
+                  Result    : in out Test_Result);
+   -- Run Test_Case's test routine which matches to the Name.
 
    procedure Finalize (T : in out Test_Case);
    -- Finalize procedure of the Test_Case.
@@ -155,6 +169,11 @@ package Ahven.Framework is
    procedure Run (T      : in out Test_Suite;
                   Result : in out Test_Result);
    -- Run Test_Suite's Test_Cases.
+
+   procedure Run (T         : in out Test_Suite;
+                  Test_Name :        String;
+                  Result    : in out Test_Result);
+   -- Run test suite's child which matches to the given name.
 
    procedure Finalize (T : in out Test_Suite);
    -- Finalize procedure of Test_Suite. Frees all added Tests.

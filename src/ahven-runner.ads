@@ -22,4 +22,10 @@ package Ahven.Runner is
                   Result : in out Ahven.Framework.Test_Result);
    -- Run the test T and place results to Result.
 
+   procedure Run (T         : Ahven.Framework.Test_Class_Access;
+                  Test_Name : String;
+                  Result    : in out Ahven.Framework.Test_Result);
+   -- If name matches, run the test T (or one of its children)
+   -- and place results to Result.
+
 end Ahven.Runner;

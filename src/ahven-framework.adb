@@ -125,6 +125,18 @@ package body Ahven.Framework is
       End_Test (Result, Place);
    end Execute;
 
+   procedure Execute (T           : in out Test'Class;
+                      Test_Name   :        String;
+                      Result      : in out Test_Result) is
+      N : Unbounded_String := Name (T);
+      Place : Result_Place;
+   begin
+      Set_Test_Name (Place, N);
+      Start_Test (Result, Place);
+      Run (T, Test_Name, Result);
+      End_Test (Result, Place);
+   end Execute;
+
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
                                Name    : String) is
@@ -202,6 +214,38 @@ package body Ahven.Framework is
       end loop;
    end Run;
 
+   procedure Run (T           : in out Test_Case;
+                  Test_Name   :        String;
+                  Result      : in out Test_Result) is
+      use type Test_Command_List.Iterator;
+      use type Ada.Calendar.Time;
+
+      Iter : Test_Command_List.Iterator :=
+        Test_Command_List.First (T.Routines);
+      Place : Result_Place;
+      Start_Time, End_Time : Ada.Calendar.Time;
+   begin
+      Set_Test_Name (Place, Name (T));
+      loop
+         exit when Iter = null;
+         if To_String (Test_Command_List.Data (Iter).Name) = Test_Name then
+            Set_Routine_Name (Place, Test_Command_List.Data (Iter).Name);
+
+            Start_Test (Result, Place);
+            Start_Time := Ada.Calendar.Clock;
+
+            Run_Command (Test_Command_List.Data (Iter), Place, Result);
+
+            End_Time := Ada.Calendar.Clock;
+            Set_Execution_Time (Place, End_Time - Start_Time);
+            End_Test (Result, Place);
+         end if;
+
+         Iter := Test_Command_List.Next (Iter);
+      end loop;
+
+   end Run;
+
    procedure Finalize  (T : in out Test_Case) is
       procedure Free is
         new Ada.Unchecked_Deallocation (Test_Command'Class,
@@ -259,6 +303,29 @@ package body Ahven.Framework is
          Execute (Test_List.Data (Iter).all, Result);
          Iter := Test_List.Next (Iter);
       end loop;
+   end Run;
+
+   procedure Run (T         : in out Test_Suite;
+                  Test_Name :        String;
+                  Result    : in out Test_Result) is
+      use type Test_List.Iterator;
+
+      Iter : Test_List.Iterator := Test_List.First (T.Test_Cases);
+   begin
+      if Test_Name = To_String (T.Suite_Name) then
+         Run (T, Result);
+      else
+         loop
+            exit when Iter = null;
+
+            if To_String (Name (Test_List.Data (Iter).all)) = Test_Name then
+               Execute (Test_List.Data (Iter).all, Result);
+            else
+               Execute (Test_List.Data (Iter).all, Test_Name, Result);
+            end if;
+            Iter := Test_List.Next (Iter);
+         end loop;
+      end if;
    end Run;
 
    procedure Finalize  (T : in out Test_Suite) is
