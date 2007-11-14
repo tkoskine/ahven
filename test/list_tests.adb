@@ -15,13 +15,13 @@
 --
 
 with Ahven.Framework;
-with Ahven.Double_Linked_List;
+with Ahven.Doubly_Linked_List;
 
 use Ahven;
      
 package body List_Tests is
    package Integer_Linked_List is
-     new Ahven.Double_Linked_List ( Integer );
+     new Ahven.Doubly_Linked_List ( Integer );
 
    procedure Test_Append is
       My_List : Integer_Linked_List.List := Integer_Linked_List.Empty_List;
@@ -57,7 +57,7 @@ package body List_Tests is
       Remove_All (My_List);
    end Test_Remove;
 
-   procedure Test_Join is
+   procedure Test_Move is
       use Integer_Linked_List;
 
       My_List : List;
@@ -69,7 +69,7 @@ package body List_Tests is
       Append (Extra_List, 3);
       Append (Extra_List, 4);
       Append (Extra_List, 5);
-      Join (My_List, Extra_List);
+      Move (My_List, Extra_List);
       Assert (Size (My_List) = 5, "Size of My_List does not match");
       Assert (Size (Extra_List) = 0, "Size of Extra_List does not match");
 
@@ -89,7 +89,7 @@ package body List_Tests is
          Iter := Prev (Iter);
       end loop;
  
-   end Test_Join;
+   end Test_Move;
 
    procedure Test_Assignment is
       use Integer_Linked_List;
@@ -185,7 +185,7 @@ package body List_Tests is
       Set_Name (T, "Double linked list tests");
       Add_Test_Routine (T, Test_Append'Access, "Test Append");
       Add_Test_Routine (T, Test_Remove'Access, "Test Remove");
-      Add_Test_Routine (T, Test_Join'Access, "Test Join");
+      Add_Test_Routine (T, Test_Move'Access, "Test Move");
       Add_Test_Routine (T, Test_Assignment'Access, "Test Assignment");
       Add_Test_Routine (T, Test_Reverse_Iterator'Access,
                         "Test Reverse Iterator");

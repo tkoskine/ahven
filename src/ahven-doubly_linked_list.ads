@@ -18,7 +18,7 @@ with Ada.Finalization;
 
 generic
    type Data_Type is private;
-package Ahven.Double_Linked_List is
+package Ahven.Doubly_Linked_List is
 
    type Node is private;
    type Node_Access is access Node;
@@ -49,11 +49,10 @@ package Ahven.Double_Linked_List is
 
    function Size (This_List : in List) return Natural;
 
-   procedure Join (Target : in out List; Addition : in out List);
+   procedure Move (Target : in out List; Source : in out List);
 
 private
    procedure Remove (Ptr : Node_Access);
-
    function Data (Iter : in Node_access) return Data_Type;
 
    type Node is record
@@ -77,4 +76,4 @@ private
                                        Last  => null,
                                        Size  => 0);
 
-end Ahven.Double_Linked_List;
+end Ahven.Doubly_Linked_List;

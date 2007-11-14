@@ -16,7 +16,7 @@
 
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
-with Ahven.Double_Linked_List;
+with Ahven.Doubly_Linked_List;
 
 use Ada.Strings.Unbounded;
 
@@ -147,10 +147,10 @@ private
    end record;
 
    package Result_Place_List is
-     new Ahven.Double_Linked_List (Result_Place);
+     new Ahven.Doubly_Linked_List (Result_Place);
 
    package Result_List is
-     new Ahven.Double_Linked_List (Result_Collection_Access);
+     new Ahven.Doubly_Linked_List (Result_Collection_Access);
 
    type Result_Collection is new Ada.Finalization.Controlled with record
       Test_Name : Unbounded_String := Null_Unbounded_String;

@@ -18,7 +18,7 @@ with Ada.Finalization;
 with Ada.Strings.Unbounded;
 with System.Address_To_Access_Conversions;
 
-with Ahven.Double_Linked_List;
+with Ahven.Doubly_Linked_List;
 with Ahven.Results;
 with Ahven.Listeners;
 
@@ -197,7 +197,7 @@ private
    type Test_Command_Class_Access is access Test_Command'Class;
 
    package Test_Command_List is
-     new Double_Linked_List (Test_Command_Class_Access);
+     new Doubly_Linked_List (Test_Command_Class_Access);
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
@@ -228,7 +228,7 @@ private
                           Place   : Result_Place;
                           Result  : in out Test_Result);
 
-   package Test_List is new Double_Linked_List (Test_Class_Access);
+   package Test_List is new Doubly_Linked_List (Test_Class_Access);
 
    type Test_Suite is new Test with record
       Suite_Name : Unbounded_String;

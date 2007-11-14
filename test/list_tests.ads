@@ -25,7 +25,7 @@ package List_Tests is
 private
    procedure Test_Append;
    procedure Test_Remove;
-   procedure Test_Join;
+   procedure Test_Move;
    procedure Test_Assignment;
    procedure Test_Forward_Iterator;
    procedure Test_Reverse_Iterator;

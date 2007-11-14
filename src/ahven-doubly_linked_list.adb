@@ -16,7 +16,7 @@
 
 with Ada.Unchecked_Deallocation;
 
-package body Ahven.Double_Linked_List is
+package body Ahven.Doubly_Linked_List is
 
    procedure Remove (Ptr : in Node_Access) is
       procedure Free is new Ada.Unchecked_Deallocation (Node, Node_Access);
@@ -182,24 +182,24 @@ package body Ahven.Double_Linked_List is
       return This_List.Size;
    end Size;
 
-   procedure Join (Target : in out List; Addition : in out List) is
+   procedure Move (Target : in out List; Source : in out List) is
    begin
       if Target.Size = 0 then
-         Target.First := Addition.First;
+         Target.First := Source.First;
       else
-         Target.Last.Next := Addition.First;
-         Addition.First.Prev := Target.Last;
+         Target.Last.Next := Source.First;
+         Source.First.Prev := Target.Last;
       end if;
 
-      Target.Last := Addition.Last;
-      Target.Size := Target.Size + Addition.Size;
+      Target.Last := Source.Last;
+      Target.Size := Target.Size + Source.Size;
 
-      -- No need to release Addition's memory
+      -- No need to release Source's memory
       -- because all nodes are transferred to Target
-      Addition.Last := null;
-      Addition.First := null;
-      Addition.Size := 0;
-   end Join;
+      Source.Last := null;
+      Source.First := null;
+      Source.Size := 0;
+   end Move;
 
    procedure Initialize (Object : in out List) is
    begin
@@ -237,4 +237,4 @@ package body Ahven.Double_Linked_List is
       Object.Last := Target_Last;
    end Adjust;
 
-end Ahven.Double_Linked_List;
+end Ahven.Doubly_Linked_List;

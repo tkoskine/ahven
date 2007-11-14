@@ -14,7 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Double_Linked_List;
+with Ahven.Doubly_Linked_List;
 with Ahven.Results;
 
 use Ahven.Results;
@@ -49,7 +49,7 @@ package Ahven.Listeners is
    -- Called after the test ends. Add_* procedures are called before this.
 
    package Result_Listener_List is
-     new Ahven.Double_Linked_List (Result_Listener_Class_Access);
+     new Ahven.Doubly_Linked_List (Result_Listener_Class_Access);
    -- A package for Result_Listener list.
 
 end Ahven.Listeners;
