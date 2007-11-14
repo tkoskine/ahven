@@ -1,3 +1,10 @@
+????-??-?? Ahven 1.1
+====================
+
+Changes
+-------
+* The Ahven.Framework and the test runners are able to run
+  only the tests which match the given name.
 
 2007-10-24 Ahven 1.0
 ====================
