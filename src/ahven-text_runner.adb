@@ -39,7 +39,7 @@ package body Ahven.Text_Runner is
    -- Local procedures
    procedure Pad (Level : Natural);
    procedure Pad (Output : in out Unbounded_String; Level : Natural);
-   procedure Print_Test     (Place  : Results.Result_Place;
+   procedure Print_Test     (Place  : Results.Result_Info;
                              Level  : Natural;
                              Result : String);
    procedure Print_Failures (Result : in out Results.Result_Collection;
@@ -65,7 +65,7 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Print_Test (Place : Results.Result_Place;
+   procedure Print_Test (Place : Results.Result_Info;
                          Level : Natural;
                          Result : String) is
       use Ada.Strings;
@@ -111,7 +111,7 @@ package body Ahven.Text_Runner is
    procedure Print_Failures (Result : in out Results.Result_Collection;
                              Level : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Place;
+      Place : Results.Result_Info;
       Child : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
@@ -138,7 +138,7 @@ package body Ahven.Text_Runner is
    procedure Print_Errors (Result : in out Results.Result_Collection;
                            Level : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Place;
+      Place : Results.Result_Info;
       Child : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
@@ -166,7 +166,7 @@ package body Ahven.Text_Runner is
    procedure Print_Passes (Result : in out Results.Result_Collection;
                            Level : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Place;
+      Place : Results.Result_Info;
       Child : Results.Result_Collection_Access := null;
    begin
       if Length (Test_Name (Result)) > 0 then

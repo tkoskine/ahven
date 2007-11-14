@@ -66,7 +66,7 @@ package body Framework_Tests is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
-      Place : Results.Result_Place;
+      Place : Results.Result_Info;
    begin
       Ahven.Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (My_Listener));
@@ -83,7 +83,7 @@ package body Framework_Tests is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
-      Place : Results.Result_Place;
+      Place : Results.Result_Info;
    begin
       Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (My_Listener));
@@ -100,7 +100,7 @@ package body Framework_Tests is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
-      Place : Results.Result_Place;
+      Place : Results.Result_Info;
    begin
       Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (My_Listener));

@@ -21,43 +21,43 @@ with Ahven.Doubly_Linked_List;
 use Ada.Strings.Unbounded;
 
 package Ahven.Results is
-   type Result_Place is private;
+   type Result_Info is private;
 
-   procedure Set_Test_Name (Place : in out Result_Place;
+   procedure Set_Test_Name (Info : in out Result_Info;
                             Name : Unbounded_String);
    -- Set a test name for the result place.
 
-   procedure Set_Routine_Name (Place : in out Result_Place;
+   procedure Set_Routine_Name (Info : in out Result_Info;
                                Name : Unbounded_String);
    -- Set a routine name for the result place.
 
-   procedure Set_Message (Place : in out Result_Place;
+   procedure Set_Message (Info : in out Result_Info;
                           Message : Unbounded_String);
    -- Set a message for the result place.
 
-   procedure Set_Test_Name (Place : in out Result_Place; Name : String);
+   procedure Set_Test_Name (Info : in out Result_Info; Name : String);
    -- A helper function, which calls Set_Test_Name (.. ; Unbounded_String)
 
-   procedure Set_Routine_Name (Place : in out Result_Place; Name : String);
+   procedure Set_Routine_Name (Info : in out Result_Info; Name : String);
    -- A helper function, which calls Set_Routine_Name (.. ; Unbounded_String)
 
-   procedure Set_Message (Place : in out Result_Place; Message : String);
+   procedure Set_Message (Info : in out Result_Info; Message : String);
    -- A helper function, which calls Set_Message (.. ; Unbounded_String)
 
-   procedure Set_Execution_Time (Place : in out Result_Place;
+   procedure Set_Execution_Time (Info : in out Result_Info;
                                  Elapsed_Time : Duration);
    -- Set the execution time of the result place (test).
 
-   function Test_Name (Place : Result_Place) return Unbounded_String;
+   function Test_Name (Info : Result_Info) return Unbounded_String;
    -- Return the test name of the result place.
 
-   function Routine_Name (Place : Result_Place) return Unbounded_String;
+   function Routine_Name (Info : Result_Info) return Unbounded_String;
    -- Return the routine name of the result place.
 
-   function Message (Place : Result_Place) return Unbounded_String;
+   function Message (Info : Result_Info) return Unbounded_String;
    -- Return the message of the result place.
 
-   function Execution_Time (Place : Result_Place) return Duration;
+   function Execution_Time (Info : Result_Info) return Duration;
    -- Return the execution time of the result place.
 
    type Result_Collection is new Ada.Finalization.Controlled with private;
@@ -68,15 +68,15 @@ package Ahven.Results is
    -- Add a child collection to the collection.
 
    procedure Add_Error (Collection : in out Result_Collection;
-                        Place : Result_Place);
+                        Info : Result_Info);
    -- Add a test error to the collection.
 
    procedure Add_Failure (Collection : in out Result_Collection;
-                          Place : Result_Place);
+                          Info : Result_Info);
    -- Add a test failure to the collection.
 
    procedure Add_Pass (Collection : in out Result_Collection;
-                       Place : Result_Place);
+                       Info : Result_Info);
    -- Add a passed test to the collection
 
    procedure Finalize (Collection : in out Result_Collection);
@@ -115,19 +115,19 @@ package Ahven.Results is
    -- Return the parent of the collection.
 
    procedure Next_Error (Collection : in out Result_Collection;
-                         Place : out Result_Place;
+                         Info : out Result_Info;
                          End_Of_Errors : out Boolean);
    -- Return the next error in the collection.
    -- If there are no more errors, End_Of_Errors is set to True.
 
    procedure Next_Failure (Collection : in out Result_Collection;
-                           Place : out Result_Place;
+                           Info : out Result_Info;
                            End_Of_Failures: out Boolean);
    -- Return the next failure in the collection.
    -- If there are no more failures, End_Of_Failures is set to True.
 
    procedure Next_Pass (Collection : in out Result_Collection;
-                        Place : out Result_Place;
+                        Info : out Result_Info;
                         End_Of_Passes : out Boolean);
    -- Return the next pass in the collection.
    -- If there are no more passes, End_Of_Passes is set to True.
@@ -139,30 +139,30 @@ package Ahven.Results is
    -- If there are no more children, End_Of_Children is set to True.
 
 private
-   type Result_Place is record
+   type Result_Info is record
       Test_Name    : Unbounded_String := Null_Unbounded_String;
       Routine_Name : Unbounded_String := Null_Unbounded_String;
       Message      : Unbounded_String := Null_Unbounded_String;
       Execution_Time : Duration := 0.0;
    end record;
 
-   package Result_Place_List is
-     new Ahven.Doubly_Linked_List (Result_Place);
+   package Result_Info_List is
+     new Ahven.Doubly_Linked_List (Result_Info);
 
    package Result_List is
      new Ahven.Doubly_Linked_List (Result_Collection_Access);
 
    type Result_Collection is new Ada.Finalization.Controlled with record
       Test_Name : Unbounded_String := Null_Unbounded_String;
-      Passes    : Result_Place_List.List := Result_Place_List.Empty_List;
-      Failures  : Result_Place_List.List := Result_Place_List.Empty_List;
-      Errors    : Result_Place_List.List := Result_Place_List.Empty_List;
+      Passes    : Result_Info_List.List := Result_Info_List.Empty_List;
+      Failures  : Result_Info_List.List := Result_Info_List.Empty_List;
+      Errors    : Result_Info_List.List := Result_Info_List.Empty_List;
       Children  : Result_List.List       := Result_List.Empty_List;
       Parent    : Result_Collection_Access := null;
 
-      Pass_Iter    : Result_Place_List.Iterator := null;
-      Failure_Iter : Result_Place_List.Iterator := null;
-      Error_Iter   : Result_Place_List.Iterator := null;
+      Pass_Iter    : Result_Info_List.Iterator := null;
+      Failure_Iter : Result_Info_List.Iterator := null;
+      Error_Iter   : Result_Info_List.Iterator := null;
       Child_Iter   : Result_List.Iterator       := null;
    end record;
 

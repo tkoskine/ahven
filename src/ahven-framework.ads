@@ -35,22 +35,22 @@ package Ahven.Framework is
    -- does not store the results, but calls the listeners instead.
    -- It is the responsibility of the listeners to store the results.
 
-   procedure Add_Failure (Result : in out Test_Result; P : Result_Place);
+   procedure Add_Failure (Result : in out Test_Result; P : Result_Info);
    -- Add a test failure to the result.
    -- P tells which test failed.
 
-   procedure Add_Error (Result : in out Test_Result; P : Result_Place);
+   procedure Add_Error (Result : in out Test_Result; P : Result_Info);
    -- Add a test error to the result.
    -- P tells which test had an error.
 
-   procedure Add_Pass (Result : in out Test_Result; P : Result_Place);
+   procedure Add_Pass (Result : in out Test_Result; P : Result_Info);
    -- Add a successful test to the result.
    -- P tells which test was ok.
 
-   procedure Start_Test (Result : in out Test_Result; Place : Result_Place);
+   procedure Start_Test (Result : in out Test_Result; Info : Result_Info);
    -- Informs result that the test is about to start.
 
-   procedure End_Test (Result: in out Test_Result; Place : Result_Place);
+   procedure End_Test (Result: in out Test_Result; Info : Result_Info);
    -- Informs the result that the test has ended.
 
    procedure Add_Listener (Result   : in out Test_Result;
@@ -225,7 +225,7 @@ private
    procedure Run (Command : Test_Simple_Command);
 
    procedure Run_Command (Command : Test_Command_Class_Access;
-                          Place   : Result_Place;
+                          Info    : Result_Info;
                           Result  : in out Test_Result);
 
    package Test_List is new Doubly_Linked_List (Test_Class_Access);

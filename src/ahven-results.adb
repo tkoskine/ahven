@@ -18,71 +18,71 @@ with Ada.Unchecked_Deallocation;
 
 package body Ahven.Results is
    use Ahven.Results.Result_List;
-   use Ahven.Results.Result_Place_List;
+   use Ahven.Results.Result_Info_List;
 
    -- Local procedures
-   procedure Next_In_List (List : in out Result_Place_List.List;
-                           Iter : in out Result_Place_List.Iterator;
-                           Place : out Result_Place;
+   procedure Next_In_List (List : in out Result_Info_List.List;
+                           Iter : in out Result_Info_List.Iterator;
+                           Info : out Result_Info;
                            End_Of_List : out Boolean);
 
-   procedure Set_Test_Name (Place : in out Result_Place;
+   procedure Set_Test_Name (Info : in out Result_Info;
                             Name : Unbounded_String) is
    begin
-      Place.Test_Name := Name;
+      Info.Test_Name := Name;
    end Set_Test_Name;
 
-   procedure Set_Routine_Name (Place : in out Result_Place;
+   procedure Set_Routine_Name (Info : in out Result_Info;
                                Name : Unbounded_String) is
    begin
-      Place.Routine_Name := Name;
+      Info.Routine_Name := Name;
    end Set_Routine_Name;
 
-   procedure Set_Message (Place : in out Result_Place;
+   procedure Set_Message (Info : in out Result_Info;
                           Message : Unbounded_String) is
    begin
-      Place.Message := Message;
+      Info.Message := Message;
    end Set_Message;
 
-   procedure Set_Test_Name (Place : in out Result_Place; Name : String) is
+   procedure Set_Test_Name (Info : in out Result_Info; Name : String) is
    begin
-      Set_Test_Name (Place, To_Unbounded_String (Name));
+      Set_Test_Name (Info, To_Unbounded_String (Name));
    end Set_Test_Name;
 
-   procedure Set_Routine_Name (Place : in out Result_Place; Name : String) is
+   procedure Set_Routine_Name (Info : in out Result_Info; Name : String) is
    begin
-      Set_Routine_Name (Place, To_Unbounded_String (Name));
+      Set_Routine_Name (Info, To_Unbounded_String (Name));
    end Set_Routine_Name;
 
-   procedure Set_Message (Place : in out Result_Place; Message : String) is
+   procedure Set_Message (Info : in out Result_Info; Message : String) is
    begin
-      Set_Message (Place, To_Unbounded_String (Message));
+      Set_Message (Info, To_Unbounded_String (Message));
    end Set_Message;
 
-   procedure Set_Execution_Time (Place : in out Result_Place;
+   procedure Set_Execution_Time (Info : in out Result_Info;
                                  Elapsed_Time : Duration) is
    begin
-      Place.Execution_Time := Elapsed_Time;
+      Info.Execution_Time := Elapsed_Time;
    end Set_Execution_Time;
 
-   function Test_Name (Place : Result_Place) return Unbounded_String is
+   function Test_Name (Info : Result_Info) return Unbounded_String is
    begin
-      return Place.Test_Name;
+      return Info.Test_Name;
    end Test_Name;
 
-   function Routine_Name (Place : Result_Place) return Unbounded_String is
+   function Routine_Name (Info : Result_Info) return Unbounded_String is
    begin
-      return Place.Routine_Name;
+      return Info.Routine_Name;
    end Routine_Name;
 
-   function Message (Place : Result_Place) return Unbounded_String is
+   function Message (Info : Result_Info) return Unbounded_String is
    begin
-      return Place.Message;
+      return Info.Message;
    end Message;
 
-   function Execution_Time (Place : Result_Place) return Duration is
+   function Execution_Time (Info : Result_Info) return Duration is
    begin
-      return Place.Execution_Time;
+      return Info.Execution_Time;
    end Execution_Time;
 
    procedure Add_Child (Collection : in out Result_Collection;
@@ -92,21 +92,21 @@ package body Ahven.Results is
    end Add_Child;
 
    procedure Add_Error (Collection : in out Result_Collection;
-                        Place : Result_Place) is
+                        Info : Result_Info) is
    begin
-      Append (Collection.Errors, Place);
+      Append (Collection.Errors, Info);
    end Add_Error;
 
    procedure Add_Failure (Collection : in out Result_Collection;
-                          Place : Result_Place) is
+                          Info : Result_Info) is
    begin
-      Append (Collection.Failures, Place);
+      Append (Collection.Failures, Info);
    end Add_Failure;
 
    procedure Add_Pass (Collection : in out Result_Collection;
-                       Place : Result_Place) is
+                       Info : Result_Info) is
    begin
-      Append (Collection.Passes, Place);
+      Append (Collection.Passes, Info);
    end Add_Pass;
 
    procedure Finalize (Collection : in out Result_Collection) is
@@ -209,9 +209,9 @@ package body Ahven.Results is
       return Collection.Parent;
    end Parent;
 
-   procedure Next_In_List (List : in out Result_Place_List.List;
-                           Iter : in out Result_Place_List.Iterator;
-                           Place : out Result_Place;
+   procedure Next_In_List (List : in out Result_Info_List.List;
+                           Iter : in out Result_Info_List.Iterator;
+                           Info : out Result_Info;
                            End_Of_List : out Boolean) is
    begin
       if Iter = null then
@@ -222,43 +222,43 @@ package body Ahven.Results is
 
       if Iter = null then
          End_Of_List := True;
-         Place := (Null_Unbounded_String,
+         Info := (Null_Unbounded_String,
                    Null_Unbounded_String,
                    Null_Unbounded_String,
                    0.0);
       else
          End_of_List := False;
-         Place := Data (Iter);
+         Info := Data (Iter);
       end if;
    end Next_In_List;
 
    procedure Next_Error (Collection : in out Result_Collection;
-                         Place : out Result_Place;
+                         Info : out Result_Info;
                          End_Of_Errors : out Boolean) is
    begin
       Next_In_list (Collection.Errors,
                     Collection.Error_Iter,
-                    Place,
+                    Info,
                     End_Of_Errors);
    end Next_Error;
 
    procedure Next_Failure (Collection : in out Result_Collection;
-                           Place : out Result_Place;
+                           Info : out Result_Info;
                            End_Of_Failures : out Boolean) is
    begin
       Next_In_list (Collection.Failures,
                     Collection.Failure_Iter,
-                    Place,
+                    Info,
                     End_Of_Failures);
    end Next_Failure;
 
    procedure Next_Pass (Collection : in out Result_Collection;
-                        Place : out Result_Place;
+                        Info : out Result_Info;
                         End_Of_Passes : out Boolean) is
    begin
       Next_In_list (Collection.Passes,
                     Collection.Pass_Iter,
-                    Place,
+                    Info,
                     End_Of_Passes);
    end Next_Pass;
 

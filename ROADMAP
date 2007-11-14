@@ -8,9 +8,6 @@ I plan to release a new version two or three times a year.
 
 Planned features
 ----------------
-Version 1.1:
-* Refactor Ahven.Results.Result_Place. It is somewhat unsafe to use now.
-
-Version ?.?:
+Version 1.x:
 * Graphical (GTK+) UI for the test result reporter
 * Improve documentation

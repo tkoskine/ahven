@@ -21,7 +21,7 @@ with Ada.Calendar;
 package body Ahven.Framework is
    use Address_To_Access_Conversions;
 
-   procedure Add_Failure (Result : in out Test_Result; P : Result_Place) is
+   procedure Add_Failure (Result : in out Test_Result; P : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
@@ -34,7 +34,7 @@ package body Ahven.Framework is
 
    end Add_Failure;
 
-   procedure Add_Error (Result : in out Test_Result; P : Result_Place) is
+   procedure Add_Error (Result : in out Test_Result; P : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
@@ -46,7 +46,7 @@ package body Ahven.Framework is
       end loop;
    end Add_Error;
 
-   procedure Add_Pass (Result : in out Test_Result; P : Result_Place) is
+   procedure Add_Pass (Result : in out Test_Result; P : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
@@ -59,26 +59,26 @@ package body Ahven.Framework is
    end Add_Pass;
 
    procedure Start_Test
-     (Result : in out Test_Result ; Place : Result_Place) is
+     (Result : in out Test_Result ; Info : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
          exit when Iter = null;
-         Listeners.Start_Test (Data (Iter).all, Place);
+         Listeners.Start_Test (Data (Iter).all, Info);
          Iter := Next (Iter);
       end loop;
    end Start_Test;
 
-   procedure End_Test (Result: in out Test_Result; Place : Result_Place) is
+   procedure End_Test (Result: in out Test_Result; Info : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
          exit when Iter = null;
-         Listeners.End_Test (Data (Iter).all, Place);
+         Listeners.End_Test (Data (Iter).all, Info);
          Iter := Next (Iter);
       end loop;
    end End_Test;
@@ -117,24 +117,24 @@ package body Ahven.Framework is
    procedure Execute (T : in out Test'Class;
                       Result : in out Test_Result) is
       N : Unbounded_String := Name (T);
-      Place : Result_Place;
+      Info : Result_Info;
    begin
-      Set_Test_Name (Place, N);
-      Start_Test (Result, Place);
+      Set_Test_Name (Info, N);
+      Start_Test (Result, Info);
       Run (T, Result);
-      End_Test (Result, Place);
+      End_Test (Result, Info);
    end Execute;
 
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
       N : Unbounded_String := Name (T);
-      Place : Result_Place;
+      Info : Result_Info;
    begin
-      Set_Test_Name (Place, N);
-      Start_Test (Result, Place);
+      Set_Test_Name (Info, N);
+      Start_Test (Result, Info);
       Run (T, Test_Name, Result);
-      End_Test (Result, Place);
+      End_Test (Result, Info);
    end Execute;
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
@@ -160,22 +160,22 @@ package body Ahven.Framework is
    end Add_Test_Routine;
 
    procedure Run_Command (Command : Test_Command_Class_Access;
-                          Place   : Result_Place;
+                          Info   : Result_Info;
                           Result  : in out Test_Result) is
       Passed : Boolean := False;
-      My_Place : Result_Place := Place;
+      My_Info : Result_Info := Info;
    begin
       Run (Command.all);
       Passed := True;
-      Add_Pass (Result, My_Place);
+      Add_Pass (Result, My_Info);
    exception
       when E : Assertion_Error =>
-         Results.Set_Message (My_Place, Ada.Exceptions.Exception_Message (E));
-         Add_Failure (Result, My_Place);
+         Results.Set_Message (My_Info, Ada.Exceptions.Exception_Message (E));
+         Add_Failure (Result, My_Info);
       when E : others =>
          if Passed = False then
-            Results.Set_Message (My_Place, Ada.Exceptions.Exception_Name (E));
-            Add_Error (Result, My_Place);
+            Results.Set_Message (My_Info, Ada.Exceptions.Exception_Name (E));
+            Add_Error (Result, My_Info);
          else
             raise;
          end if;
@@ -193,22 +193,22 @@ package body Ahven.Framework is
 
       Iter : Test_Command_List.Iterator :=
         Test_Command_List.First (T.Routines);
-      Place : Result_Place;
+      Info : Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
-      Set_Test_Name (Place, Name (T));
+      Set_Test_Name (Info, Name (T));
       loop
          exit when Iter = null;
-         Set_Routine_Name (Place, Test_Command_List.Data (Iter).Name);
+         Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
 
-         Start_Test (Result, Place);
+         Start_Test (Result, Info);
          Start_Time := Ada.Calendar.Clock;
 
-         Run_Command (Test_Command_List.Data (Iter), Place, Result);
+         Run_Command (Test_Command_List.Data (Iter), Info, Result);
 
          End_Time := Ada.Calendar.Clock;
-         Set_Execution_Time (Place, End_Time - Start_Time);
-         End_Test (Result, Place);
+         Set_Execution_Time (Info, End_Time - Start_Time);
+         End_Test (Result, Info);
 
          Iter := Test_Command_List.Next (Iter);
       end loop;
@@ -222,23 +222,23 @@ package body Ahven.Framework is
 
       Iter : Test_Command_List.Iterator :=
         Test_Command_List.First (T.Routines);
-      Place : Result_Place;
+      Info : Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
-      Set_Test_Name (Place, Name (T));
+      Set_Test_Name (Info, Name (T));
       loop
          exit when Iter = null;
          if To_String (Test_Command_List.Data (Iter).Name) = Test_Name then
-            Set_Routine_Name (Place, Test_Command_List.Data (Iter).Name);
+            Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
 
-            Start_Test (Result, Place);
+            Start_Test (Result, Info);
             Start_Time := Ada.Calendar.Clock;
 
-            Run_Command (Test_Command_List.Data (Iter), Place, Result);
+            Run_Command (Test_Command_List.Data (Iter), Info, Result);
 
             End_Time := Ada.Calendar.Clock;
-            Set_Execution_Time (Place, End_Time - Start_Time);
-            End_Test (Result, Place);
+            Set_Execution_Time (Info, End_Time - Start_Time);
+            End_Test (Result, Info);
          end if;
 
          Iter := Test_Command_List.Next (Iter);

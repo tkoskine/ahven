@@ -17,28 +17,28 @@
 package body Ahven.Listeners.Basic is
 
    procedure Add_Pass (Listener : in out Basic_Listener;
-                       Place : Result_Place) is
+                       Place : Result_Info) is
    begin
       Listener.Last_Test_Result := PASS_RESULT;
       Listener.Last_Test_Message := Message (Place);
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
-                          Place : Result_Place) is
+                          Place : Result_Info) is
    begin
       Listener.Last_Test_Result := FAILURE_RESULT;
       Listener.Last_Test_Message := Message (Place);
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
-                        Place : Result_Place) is
+                        Place : Result_Info) is
    begin
       Listener.Last_Test_Result := ERROR_RESULT;
       Listener.Last_Test_Message := Message (Place);
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
-                         Place : Result_Place) is
+                         Place : Result_Info) is
       R : Result_Collection_Access := null;
    begin
       if Routine_Name (Place) = Null_Unbounded_String then
@@ -56,8 +56,8 @@ package body Ahven.Listeners.Basic is
    end Start_Test;
 
    procedure End_Test (Listener : in out Basic_Listener;
-                       Place : Result_Place) is
-      My_Place : Result_Place := Place;
+                       Place : Result_Info) is
+      My_Place : Result_Info := Place;
    begin
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
