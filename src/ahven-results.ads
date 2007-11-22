@@ -48,6 +48,10 @@ package Ahven.Results is
                                  Elapsed_Time : Duration);
    -- Set the execution time of the result place (test).
 
+   procedure Set_Output_File (Info : in out Result_Info;
+                              Filename : Unbounded_String);
+   -- Set the name of the test output file.
+
    function Test_Name (Info : Result_Info) return Unbounded_String;
    -- Return the test name of the result place.
 
@@ -59,6 +63,8 @@ package Ahven.Results is
 
    function Execution_Time (Info : Result_Info) return Duration;
    -- Return the execution time of the result place.
+
+   function Output_File (Info : Result_Info) return Unbounded_String;
 
    type Result_Collection is new Ada.Finalization.Controlled with private;
    type Result_Collection_Access is access Result_Collection;
@@ -144,6 +150,7 @@ private
       Routine_Name : Unbounded_String := Null_Unbounded_String;
       Message      : Unbounded_String := Null_Unbounded_String;
       Execution_Time : Duration := 0.0;
+      Output_File  : Unbounded_String := Null_Unbounded_String;
    end record;
 
    package Result_Info_List is

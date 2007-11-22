@@ -50,6 +50,7 @@ package body Ahven.Text_Runner is
                              Level  : Natural);
    procedure Report_Results (Result  : in out Results.Result_Collection;
                              Verbose : Boolean := False);
+   procedure Print_Log_File (Filename : String);
 
    procedure Pad (Level : Natural) is
    begin
@@ -124,6 +125,9 @@ package body Ahven.Text_Runner is
          Next_Failure (Result, Place, End_Flag);
          exit Failure_Loop when End_Flag;
          Print_Test (Place, Level, "FAIL");
+         if Length (Output_File (Place)) > 0 then
+            Print_Log_File (To_String (Output_File (Place)));
+         end if;
       end loop Failure_Loop;
 
       loop
@@ -151,6 +155,9 @@ package body Ahven.Text_Runner is
          Next_Error (Result, Place, End_Flag);
          exit Error_Loop when End_Flag;
          Print_Test (Place, Level, "ERROR");
+         if Length (Output_File (Place)) > 0 then
+            Print_Log_File (To_String (Output_File (Place)));
+         end if;
       end loop Error_Loop;
 
       loop
@@ -208,6 +215,31 @@ package body Ahven.Text_Runner is
          Print_Errors (Result, 0);
       end if;
    end Report_Results;
+
+   procedure Print_Log_File (Filename : String) is
+      Handle : File_Type;
+      Char   : Character;
+      First  : Boolean := True;
+   begin
+      Open (Handle, In_File, Filename);
+      loop
+         exit when End_Of_File (Handle);
+         Get (Handle, Char);
+         if First then
+            Put_Line ("===== Output =======");
+            First := False;
+         end if;
+         Put (Char);
+         if End_Of_Line (Handle) then
+            New_Line;
+         end if;
+      end loop;
+      Close (Handle);
+      if First = False then
+         -- New_Line;
+         Put_Line ("====================");
+      end if;
+   end Print_Log_File;
 
    procedure Run (Suite : Framework.Test_Suite_Access) is
       procedure Free is new Ada.Unchecked_Deallocation

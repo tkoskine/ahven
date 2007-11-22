@@ -15,6 +15,7 @@
 --
 
 with Ada.Strings.Unbounded;
+with Ahven.Temporary_Output;
 
 use Ada.Strings.Unbounded;
 
@@ -26,6 +27,7 @@ package Ahven.Listeners.Basic is
       Current_Result : Result_Collection_Access;
       Last_Test_Result : Result_Type := NO_RESULT;
       Last_Test_Message : Unbounded_String := Null_Unbounded_String;
+      Output_File       : Temporary_Output.Temporary_File;
    end record;
 
    type Basic_Listener_Access is access all Basic_Listener;
@@ -45,6 +47,10 @@ package Ahven.Listeners.Basic is
    procedure End_Test (Listener : in out Basic_Listener;
                        Place    :        Result_Info);
 
+   procedure Remove_File (Name : String);
+   procedure Remove_Files (Collection : in out Result_Collection);
+
+   procedure Finalize (Listener : in out Basic_Listener);
 private
 
 end Ahven.Listeners.Basic;

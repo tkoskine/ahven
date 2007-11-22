@@ -14,13 +14,15 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Finalization;
 with Ahven.Doubly_Linked_List;
 with Ahven.Results;
 
 use Ahven.Results;
 
 package Ahven.Listeners is
-   type Result_Listener is abstract tagged null record;
+   type Result_Listener is
+     abstract new Ada.Finalization.Limited_Controlled with null record;
    -- Result_Listener is a listener for test results.
    -- Whenever a test is run, the framework calls
    -- registered listeners and tells them the result of the test.

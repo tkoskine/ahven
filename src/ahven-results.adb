@@ -65,6 +65,12 @@ package body Ahven.Results is
       Info.Execution_Time := Elapsed_Time;
    end Set_Execution_Time;
 
+   procedure Set_Output_File (Info : in out Result_Info;
+                              Filename : Unbounded_String) is
+   begin
+      Info.Output_File := Filename;
+   end Set_Output_File;
+
    function Test_Name (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Test_Name;
@@ -84,6 +90,11 @@ package body Ahven.Results is
    begin
       return Info.Execution_Time;
    end Execution_Time;
+
+   function Output_File (Info : Result_Info) return Unbounded_String is
+   begin
+      return Info.Output_File;
+   end Output_File;
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child : Result_Collection_Access) is
@@ -225,7 +236,8 @@ package body Ahven.Results is
          Info := (Null_Unbounded_String,
                    Null_Unbounded_String,
                    Null_Unbounded_String,
-                   0.0);
+                   0.0,
+                   Null_Unbounded_String);
       else
          End_of_List := False;
          Info := Data (Iter);
