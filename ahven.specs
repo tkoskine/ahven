@@ -1,8 +1,10 @@
-ahven-double_linked_list.ads
+ahven-doubly_linked_list.ads
 ahven-framework.ads
 ahven-listeners-basic.ads
+ahven-listeners-output_capture.ads
 ahven-listeners.ads
 ahven-results.ads
 ahven-runner.ads
+ahven-temporary_output.ads
 ahven-text_runner.ads
 ahven.ads
