@@ -22,7 +22,7 @@ with Ada.Command_Line;
 
 with Ahven.Runner;
 with Ahven.Results;
-with Ahven.Listeners.Basic;
+with Ahven.Listeners.Output_Capture;
 with Ahven.Framework;
 with Ahven.Listeners;
 
@@ -32,7 +32,7 @@ use Ada.Strings.Fixed;
 
 use Ahven.Results;
 use Ahven.Framework;
-use Ahven.Listeners.Basic;
+use Ahven.Listeners.Output_Capture;
 
 package body Ahven.Text_Runner is
 
@@ -243,13 +243,13 @@ package body Ahven.Text_Runner is
 
    procedure Run (Suite : Framework.Test_Suite_Access) is
       procedure Free is new Ada.Unchecked_Deallocation
-        (Basic_Listener, Basic_Listener_Access);
+        (Output_Capture_Listener, Output_Capture_Listener_Access);
 
       Test : constant Ahven.Framework.Test_Class_Access :=
         Framework.Test_Class_Access (Suite);
       Result : Ahven.Framework.Test_Result;
-      Listener : Listeners.Basic.Basic_Listener_Access :=
-        new Listeners.Basic.Basic_Listener;
+      Listener : Output_Capture_Listener_Access :=
+        new Output_Capture_Listener;
    begin
       Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (Listener));
