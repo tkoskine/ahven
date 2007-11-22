@@ -3,8 +3,21 @@
 
 Changes
 -------
-* The Ahven.Framework and the test runners are able to run
-  only the tests which match the given name.
+	* The Ahven.Framework and the test runners are able to run
+	  only the tests which match the given name.
+
+	* The default Text_Runner will capture Ada.Text_IO output
+	  from a test into a temporary file and show the output if
+	  the test does not pass.
+
+Internal
+--------
+	* Type Ahven.Results.Result_Place is renamed to
+	  Ahven.Results.Result_Info.
+
+	* Ahven.Double_Linked_List is renamed to Ahven.Doubly_Linked_List,
+	  because other Ada linked list implementations also use
+	  similar naming scheme.
 
 2007-10-24 Ahven 1.0
 ====================
