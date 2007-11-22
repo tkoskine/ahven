@@ -15,36 +15,42 @@
 --
 
 with Ada.Strings.Unbounded;
+with Ahven.Temporary_Output;
 
 use Ada.Strings.Unbounded;
 
-package Ahven.Listeners.Basic is
+package Ahven.Listeners.Output_Capture is
    type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
 
-   type Basic_Listener is new Result_Listener with record
+   type Output_Capture_Listener is new Result_Listener with record
       Main_Result    : Result_Collection;
       Current_Result : Result_Collection_Access;
       Last_Test_Result : Result_Type := NO_RESULT;
       Last_Test_Message : Unbounded_String := Null_Unbounded_String;
+      Output_File       : Temporary_Output.Temporary_File;
    end record;
 
-   type Basic_Listener_Access is access all Basic_Listener;
+   type Output_Capture_Listener_Access is access all Output_Capture_Listener;
 
-   procedure Add_Pass (Listener : in out Basic_Listener;
+   procedure Add_Pass (Listener : in out Output_Capture_Listener;
                        Place    :        Result_Info);
 
-   procedure Add_Failure (Listener : in out Basic_Listener;
+   procedure Add_Failure (Listener : in out Output_Capture_Listener;
                           Place    :        Result_Info);
 
-   procedure Add_Error (Listener : in out Basic_Listener;
+   procedure Add_Error (Listener : in out Output_Capture_Listener;
                         Place    :        Result_Info);
 
-   procedure Start_Test (Listener : in out Basic_Listener;
+   procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Place    :        Result_Info);
 
-   procedure End_Test (Listener : in out Basic_Listener;
+   procedure End_Test (Listener : in out Output_Capture_Listener;
                        Place    :        Result_Info);
 
+   procedure Remove_File (Name : String);
+   procedure Remove_Files (Collection : in out Result_Collection);
+
+   procedure Finalize (Listener : in out Output_Capture_Listener);
 private
 
-end Ahven.Listeners.Basic;
+end Ahven.Listeners.Output_Capture;
