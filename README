@@ -31,7 +31,7 @@ or 'make PREFIX=/my/ada/code install'. Alternatively,
 you can simply copy the source code directory ('src')
 to your project.
 
-Contact Info
+Project Info
 ============
 Homepage:
  http://home.gna.org/ahven/
@@ -39,6 +39,9 @@ Homepage:
 License:
  ISC (modified BSD license).
  See file LICENSE for more information.
+
+Bug reports (a gna.org account is required for new reports):
+ https://gna.org/bugs/?group=ahven
 
 Author:
  Tero Koskinen <tero.koskinen@iki.fi>
