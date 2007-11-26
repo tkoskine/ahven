@@ -84,9 +84,6 @@ package Ahven.Framework is
                   Result    : in out Test_Result) is abstract;
    -- Run the test with given name and place the test result to Result.
 
-   procedure Finalize (T : in out Test);
-   -- Finalize procedure of Test.
-
    procedure Execute (T      : in out Test'Class;
                       Result : in out Test_Result);
    -- Call Test class' Run method and place the test outcome to Result.

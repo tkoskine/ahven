@@ -58,6 +58,11 @@ package body Ahven.Framework is
       end loop;
    end Add_Pass;
 
+   -- Notify listeners that the test is about to begin.
+   --
+   -- Execute procedure calls this for testsuites and testcases.
+   -- Test case's Run procedure should call this for the test case's
+   -- test routines.
    procedure Start_Test
      (Result : in out Test_Result ; Info : Result_Info) is
       use Listeners.Result_Listener_List;
@@ -71,6 +76,7 @@ package body Ahven.Framework is
       end loop;
    end Start_Test;
 
+   -- Same as Start_Test, but for the end of the test.
    procedure End_Test (Result: in out Test_Result; Info : Result_Info) is
       use Listeners.Result_Listener_List;
 
@@ -107,12 +113,6 @@ package body Ahven.Framework is
    begin
       null;
    end Tear_Down;
-
-   procedure Finalize (T : in out Test) is
-      pragma Unreferenced (T);
-   begin
-      null;
-   end Finalize;
 
    procedure Execute (T : in out Test'Class;
                       Result : in out Test_Result) is
@@ -172,7 +172,10 @@ package body Ahven.Framework is
       when E : Assertion_Error =>
          Results.Set_Message (My_Info, Ada.Exceptions.Exception_Message (E));
          Add_Failure (Result, My_Info);
+
       when E : others =>
+         -- Did the exception come from the test (Passed = False) or
+         -- from the library routines (Passed = True)?
          if Passed = False then
             Results.Set_Message (My_Info, Ada.Exceptions.Exception_Name (E));
             Add_Error (Result, My_Info);
