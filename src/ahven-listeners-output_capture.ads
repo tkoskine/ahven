@@ -14,32 +14,15 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
 with Ahven.Temporary_Output;
-
-use Ada.Strings.Unbounded;
+with Ahven.Listeners.Basic;
 
 package Ahven.Listeners.Output_Capture is
-   type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
-
-   type Output_Capture_Listener is new Result_Listener with record
-      Main_Result    : Result_Collection;
-      Current_Result : Result_Collection_Access;
-      Last_Test_Result : Result_Type := NO_RESULT;
-      Last_Test_Message : Unbounded_String := Null_Unbounded_String;
+   type Output_Capture_Listener is new Basic.Basic_Listener with record
       Output_File       : Temporary_Output.Temporary_File;
    end record;
 
    type Output_Capture_Listener_Access is access all Output_Capture_Listener;
-
-   procedure Add_Pass (Listener : in out Output_Capture_Listener;
-                       Place    :        Result_Info);
-
-   procedure Add_Failure (Listener : in out Output_Capture_Listener;
-                          Place    :        Result_Info);
-
-   procedure Add_Error (Listener : in out Output_Capture_Listener;
-                        Place    :        Result_Info);
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Place    :        Result_Info);

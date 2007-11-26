@@ -13,35 +13,21 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
+
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
+with Ahven.Listeners.Basic;
+
+use Ada.Strings.Unbounded;
+use Ahven.Listeners.Basic;
 
 package body Ahven.Listeners.Output_Capture is
-
-   procedure Add_Pass (Listener : in out Output_Capture_Listener;
-                       Place : Result_Info) is
-   begin
-      Listener.Last_Test_Result := PASS_RESULT;
-      Listener.Last_Test_Message := Message (Place);
-   end Add_Pass;
-
-   procedure Add_Failure (Listener : in out Output_Capture_Listener;
-                          Place : Result_Info) is
-   begin
-      Listener.Last_Test_Result := FAILURE_RESULT;
-      Listener.Last_Test_Message := Message (Place);
-   end Add_Failure;
-
-   procedure Add_Error (Listener : in out Output_Capture_Listener;
-                        Place : Result_Info) is
-   begin
-      Listener.Last_Test_Result := ERROR_RESULT;
-      Listener.Last_Test_Message := Message (Place);
-   end Add_Error;
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Place : Result_Info) is
       R : Result_Collection_Access := null;
    begin
+      -- Empty routine name means a test suite or test case
       if Routine_Name (Place) = Null_Unbounded_String then
          R := new Result_Collection;
          Set_Name (R.all, Test_Name (Place));
@@ -63,6 +49,7 @@ package body Ahven.Listeners.Output_Capture is
                        Place : Result_Info) is
       My_Place : Result_Info := Place;
    begin
+      -- Sanity check: if we have existing Result_Collection then...
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
             Set_Message (My_Place, Listener.Last_Test_Message);
