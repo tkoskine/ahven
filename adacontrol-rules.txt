@@ -1,0 +1,16 @@
+check header_comments (minimum, 10);
+search header_comments (model, "licenseheader.pat");
+
+check improper_initialization (out_parameter);
+-- check improper_initialization (access variable);
+search improper_initialization (initialized_variable);
+
+check expressions (and_then, or_else);
+search global_references (all, ahven);
+
+check naming_convention
+  (variable, case_sensitive "^[A-Z][a-z0-9]*(_[A-Z0-9][a-z0-9]*)*$");
+check naming_convention
+  (type, case_sensitive "^[A-Z][a-z0-9]*(_[A-Z0-9][a-z0-9]*)*$");
+check naming_convention
+  (enumeration, case_sensitive "^[A-Z][A-Z0-9]*(_[A-Z0-9][A-Z0-9]*)*$");
