@@ -31,23 +31,23 @@ package Ahven.Listeners is
    type Result_Listener_Class_Access is access all Result_Listener'Class;
 
    procedure Add_Pass (Listener : in out Result_Listener;
-                       Place    :        Result_Info) is abstract;
+                       Info     :        Result_Info) is abstract;
    -- Called after test passes.
 
    procedure Add_Failure (Listener : in out Result_Listener;
-                          Place    :        Result_Info) is abstract;
+                          Info     :        Result_Info) is abstract;
    -- Called after test fails.
 
    procedure Add_Error (Listener : in out Result_Listener;
-                        Place    :        Result_Info) is abstract;
+                        Info     :        Result_Info) is abstract;
    -- Called after there is an error in the test.
 
    procedure Start_Test (Listener : in out Result_Listener;
-                         Place    :        Result_Info) is abstract;
+                         Info     :        Result_Info) is abstract;
    -- Called before the test begins.
 
    procedure End_Test (Listener : in out Result_Listener;
-                       Place    :        Result_Info) is abstract;
+                       Info     :        Result_Info) is abstract;
    -- Called after the test ends. Add_* procedures are called before this.
 
    package Result_Listener_List is

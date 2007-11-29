@@ -28,7 +28,7 @@ package body Ahven.Doubly_Linked_List is
    end Remove;
 
    procedure Remove (This_List : in out List; Iter : Iterator) is
-      Temp_Node : Node_Access;
+      Temp_Node : Node_Access := null;
    begin
       if This_List.Size = 0 then
          raise List_Empty;
@@ -217,7 +217,7 @@ package body Ahven.Doubly_Linked_List is
       Target_Last : Node_Access := null;
       Target_First : Node_Access := null;
       Current : Node_Access := Object.First;
-      New_Node : Node_Access;
+      New_Node : Node_Access := null;
    begin
       while Current /= null loop
          New_Node := new Node'(Data => Current.Data,

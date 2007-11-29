@@ -117,7 +117,7 @@ package body Ahven.Framework is
    procedure Execute (T : in out Test'Class;
                       Result : in out Test_Result) is
       N : Unbounded_String := Name (T);
-      Info : Result_Info;
+      Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
       Start_Test (Result, Info);
@@ -129,7 +129,7 @@ package body Ahven.Framework is
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
       N : Unbounded_String := Name (T);
-      Info : Result_Info;
+      Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
       Start_Test (Result, Info);
@@ -160,9 +160,9 @@ package body Ahven.Framework is
    end Add_Test_Routine;
 
    procedure Run_Command (Command : Test_Command_Class_Access;
-                          Info   : Result_Info;
+                          Info    : Result_Info;
                           Result  : in out Test_Result) is
-      Passed : Boolean := False;
+      Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
       My_Info : Result_Info := Info;
    begin
       Run (Command.all);
@@ -196,7 +196,7 @@ package body Ahven.Framework is
 
       Iter : Test_Command_List.Iterator :=
         Test_Command_List.First (T.Routines);
-      Info : Result_Info;
+      Info : Result_Info := Empty_Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
       Set_Test_Name (Info, Name (T));
@@ -217,15 +217,20 @@ package body Ahven.Framework is
       end loop;
    end Run;
 
-   procedure Run (T           : in out Test_Case;
-                  Test_Name   :        String;
-                  Result      : in out Test_Result) is
+   -- Purpose of the procedure is to run all
+   -- test routines with name Test_Name.
+   --
+   -- The procedure also tracks the execution time of the
+   -- test routines and records them to the Result_Info.
+   procedure Run (T         : in out Test_Case;
+                  Test_Name :        String;
+                  Result    : in out Test_Result) is
       use type Test_Command_List.Iterator;
       use type Ada.Calendar.Time;
 
       Iter : Test_Command_List.Iterator :=
         Test_Command_List.First (T.Routines);
-      Info : Result_Info;
+      Info : Result_Info := Empty_Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
       Set_Test_Name (Info, Name (T));
@@ -246,7 +251,6 @@ package body Ahven.Framework is
 
          Iter := Test_Command_List.Next (Iter);
       end loop;
-
    end Run;
 
    procedure Finalize  (T : in out Test_Case) is
@@ -254,10 +258,8 @@ package body Ahven.Framework is
         new Ada.Unchecked_Deallocation (Test_Command'Class,
                                         Test_Command_Class_Access);
 
-      use type Test_Command_List.Iterator;
       use Test_Command_List;
-      Ptr : Test_Command_Class_Access;
-
+      Ptr  : Test_Command_Class_Access := null;
       Iter : Iterator := First (T.Routines);
    begin
       loop

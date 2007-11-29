@@ -20,11 +20,11 @@ package body Ahven.Temporary_Output is
    Temp_Counter : Natural := 0;
 
    procedure Create_Temp (File : out Temporary_File) is
-      Filename : Unbounded_String := Null_Unbounded_String;
-   begin
-      Filename := To_Unbounded_String ("ahven_temp_") &
+      Filename : constant Unbounded_String :=
+        To_Unbounded_String ("ahven_temp_") &
         Trim (To_Unbounded_String(Integer'Image (Temp_Counter)),
               Ada.Strings.Both);
+      begin
       if Temp_Counter < Natural'Last then
          Temp_Counter := Temp_Counter + 1;
       else

@@ -86,8 +86,8 @@ package body Ahven.Listeners.Output_Capture is
 
    procedure Remove_Files (Collection : in out Result_Collection) is
       Collection_End : Boolean := False;
-      Info : Result_Info;
-      Child : Result_Collection_Access := null;
+      Info           : Result_Info := Empty_Result_Info;
+      Child          : Result_Collection_Access := null;
    begin
       Pass_File_Loop:
       loop

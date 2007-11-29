@@ -68,6 +68,10 @@ install_lib:
 check: build_tests
 	./runner
 
+control:
+	rm -f objects/*.adt objects/*.ali
+	cd objects && adactl -f ../adacontrol-rules.txt ../src/*.ad[bs]
+
 docs:
 	adabrowse -c adabrowse.conf -i -I src/ -f@ahven.specs -o doc/api/
 

@@ -39,7 +39,7 @@ package body Ahven.Text_Runner is
    -- Local procedures
    procedure Pad (Level : Natural);
    procedure Pad (Output : in out Unbounded_String; Level : Natural);
-   procedure Print_Test     (Place  : Results.Result_Info;
+   procedure Print_Test     (Info   : Results.Result_Info;
                              Level  : Natural;
                              Result : String);
    procedure Print_Failures (Result : in out Results.Result_Collection;
@@ -66,19 +66,19 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Print_Test (Place : Results.Result_Info;
+   procedure Print_Test (Info  : Results.Result_Info;
                          Level : Natural;
                          Result : String) is
       use Ada.Strings;
 
-      Msg : Unbounded_String := Message (Place);
+      Msg : constant Unbounded_String := Message (Info);
       Output : Unbounded_String := Null_Unbounded_String;
       Result_Out : String (1 .. 7) := (others => ' ');
       Time_Out   : String (1 .. 12) := (others => ' ');
    begin
       Pad (Output, Level + 1);
       -- Put (To_String (Data (Iter).Test_Name) & " - ");
-      Append (Output, Routine_Name (Place));
+      Append (Output, Routine_Name (Info));
       if Length (Msg) > 0 then
          Append (Output, " - ");
          Append (Output, Msg);
@@ -92,13 +92,13 @@ package body Ahven.Text_Runner is
 
       -- If we know the name of the routine, we print it,
       -- the result, and the execution time.
-      if Length (Routine_Name (Place)) > 0 then
+      if Length (Routine_Name (Info)) > 0 then
          Move (Source => Result,
                Target => Result_Out,
                Drop => Right,
                Justify => Right,
                Pad => ' ');
-         Move (Source => Duration'Image (Execution_Time (Place)),
+         Move (Source => Duration'Image (Execution_Time (Info)),
                Target => Time_Out,
                Drop => Right,
                Justify => Right,
@@ -106,13 +106,13 @@ package body Ahven.Text_Runner is
          Put (" " & Result_Out);
          Put (" " & Time_Out & "s");
       end if;
-      new_Line;
+      New_Line;
    end Print_Test;
 
    procedure Print_Failures (Result : in out Results.Result_Collection;
                              Level : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Info;
+      Place : Results.Result_Info := Results.Empty_Result_Info;
       Child : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
@@ -142,7 +142,7 @@ package body Ahven.Text_Runner is
    procedure Print_Errors (Result : in out Results.Result_Collection;
                            Level : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Info;
+      Info : Results.Result_Info := Results.Empty_Result_Info;
       Child : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
@@ -152,11 +152,11 @@ package body Ahven.Text_Runner is
 
       Error_Loop:
       loop
-         Next_Error (Result, Place, End_Flag);
+         Next_Error (Result, Info, End_Flag);
          exit Error_Loop when End_Flag;
-         Print_Test (Place, Level, "ERROR");
-         if Length (Output_File (Place)) > 0 then
-            Print_Log_File (To_String (Output_File (Place)));
+         Print_Test (Info, Level, "ERROR");
+         if Length (Output_File (Info)) > 0 then
+            Print_Log_File (To_String (Output_File (Info)));
          end if;
       end loop Error_Loop;
 
@@ -173,8 +173,8 @@ package body Ahven.Text_Runner is
    procedure Print_Passes (Result : in out Results.Result_Collection;
                            Level : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Info;
-      Child : Results.Result_Collection_Access := null;
+      Info     : Results.Result_Info := Results.Empty_Result_Info;
+      Child    : Results.Result_Collection_Access := null;
    begin
       if Length (Test_Name (Result)) > 0 then
          Pad (Level);
@@ -183,9 +183,9 @@ package body Ahven.Text_Runner is
 
       Pass_Loop:
       loop
-         Next_Pass (Result, Place, End_Flag);
+         Next_Pass (Result, Info, End_Flag);
          exit Pass_Loop when End_Flag;
-         Print_Test (Place, Level, "PASS");
+         Print_Test (Info, Level, "PASS");
       end loop Pass_Loop;
 
       loop
@@ -218,7 +218,7 @@ package body Ahven.Text_Runner is
 
    procedure Print_Log_File (Filename : String) is
       Handle : File_Type;
-      Char   : Character;
+      Char   : Character := ' ';
       First  : Boolean := True;
    begin
       Open (Handle, In_File, Filename);
@@ -245,9 +245,9 @@ package body Ahven.Text_Runner is
       procedure Free is new Ada.Unchecked_Deallocation
         (Output_Capture_Listener, Output_Capture_Listener_Access);
 
-      Test : constant Ahven.Framework.Test_Class_Access :=
+      Test     : constant Framework.Test_Class_Access :=
         Framework.Test_Class_Access (Suite);
-      Result : Ahven.Framework.Test_Result;
+      Result   : Framework.Test_Result;
       Listener : Output_Capture_Listener_Access :=
         new Output_Capture_Listener;
    begin

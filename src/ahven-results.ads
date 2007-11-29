@@ -23,6 +23,8 @@ use Ada.Strings.Unbounded;
 package Ahven.Results is
    type Result_Info is private;
 
+   Empty_Result_Info : constant Result_Info;
+
    procedure Set_Test_Name (Info : in out Result_Info;
                             Name : Unbounded_String);
    -- Set a test name for the result place.
@@ -160,6 +162,13 @@ private
       Execution_Time : Duration := 0.0;
       Output_File  : Unbounded_String := Null_Unbounded_String;
    end record;
+
+   Empty_Result_Info : constant Result_Info :=
+     (Test_Name => Null_Unbounded_String,
+      Routine_Name => Null_Unbounded_String,
+      Message => Null_Unbounded_String,
+      Execution_Time => 0.0,
+      Output_File => Null_Unbounded_String);
 
    package Result_Info_List is
      new Ahven.Doubly_Linked_List (Result_Info);

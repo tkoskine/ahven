@@ -40,7 +40,7 @@ package body Ahven.Runner is
    procedure Run (T         : Ahven.Framework.Test_Class_Access;
                   Test_Name : String;
                   Result    : in out Ahven.Framework.Test_Result) is
-      P : Results.Result_Info;
+      P : Results.Result_Info := Results.Empty_Result_Info;
    begin
       Results.Set_Test_Name (P, Framework.Name (T.all));
       begin
