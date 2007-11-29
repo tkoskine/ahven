@@ -17,3 +17,5 @@ check naming_convention
 
 check max_statement_nesting (loop, 2);
 search max_statement_nesting (all, 3);
+
+check simplifiable_statements (if_for_case);
