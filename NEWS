@@ -12,6 +12,9 @@ Changes
 
 Internal
 --------
+	* New listener: Output_Capture_Listener, which will
+	  forward Ada.Text_IO output into a temporary file.
+
 	* Type Ahven.Results.Result_Place is renamed to
 	  Ahven.Results.Result_Info.
 
