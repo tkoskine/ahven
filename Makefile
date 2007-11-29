@@ -17,7 +17,7 @@
 PREFIX?=$(HOME)/libraries/ahven
 INSTALL=install
 
-SOURCES=src/ahven-double_linked_list.adb src/ahven-double_linked_list.ads \
+SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
 	src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-listeners-basic.adb src/ahven-listeners-basic.ads \
 	src/ahven-listeners.ads src/ahven-results.adb \
@@ -26,7 +26,7 @@ SOURCES=src/ahven-double_linked_list.adb src/ahven-double_linked_list.ads \
 	src/ahven-text_runner.ads src/ahven.adb \
 	src/ahven.ads
 
-ALI_FILES=lib/ahven.ali lib/ahven-double_linked_list.ali \
+ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-framework.ali lib/ahven-listeners-basic.ali \
 	lib/ahven-listeners.ali lib/ahven-results.ali \
 	lib/ahven-runner.ali lib/ahven-text_runner.ali
