@@ -24,13 +24,13 @@ use Ahven.Listeners.Basic;
 package body Ahven.Listeners.Output_Capture is
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
-                         Place : Result_Info) is
+                         Info  : Result_Info) is
       R : Result_Collection_Access := null;
    begin
       -- Empty routine name means a test suite or test case
-      if Routine_Name (Place) = Null_Unbounded_String then
+      if Routine_Name (Info) = Null_Unbounded_String then
          R := new Result_Collection;
-         Set_Name (R.all, Test_Name (Place));
+         Set_Name (R.all, Test_Name (Info));
          Set_Parent (R.all, Listener.Current_Result);
 
          if Listener.Current_Result = null then
@@ -40,35 +40,43 @@ package body Ahven.Listeners.Output_Capture is
          end if;
          Listener.Current_Result := R;
       else
+         -- A test routine? Let's create a temporary file
+         -- and direct Ada.Text_IO output there.
          Temporary_Output.Create_Temp (Listener.Output_File);
          Temporary_Output.Redirect_Output (Listener.Output_File);
       end if;
    end Start_Test;
 
    procedure End_Test (Listener : in out Output_Capture_Listener;
-                       Place : Result_Info) is
-      My_Place : Result_Info := Place;
+                       Info : Result_Info) is
+      My_Info : Result_Info := Info;
    begin
       -- Sanity check: if we have existing Result_Collection then...
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
-            Set_Message (My_Place, Listener.Last_Test_Message);
+            Set_Message (My_Info, Listener.Last_Test_Message);
+
+            -- End of the test routine, so we can restore
+            -- the normal output now and close the temporary file.
             Temporary_Output.Restore_Output;
             Temporary_Output.Close_Temp (Listener.Output_File);
-            Set_Output_File (My_Place, Listener.Output_File.Name);
+
+            -- Saving the name of the temporary file to the test result,
+            -- so the file can be deleted later
+            Set_Output_File (My_Info, Listener.Output_File.Name);
 
             case Listener.Last_Test_Result is
                when PASS_RESULT =>
-                  Add_Pass (Listener.Current_Result.all, My_Place);
+                  Add_Pass (Listener.Current_Result.all, My_Info);
                when FAILURE_RESULT =>
-                  Add_Failure (Listener.Current_Result.all, My_Place);
+                  Add_Failure (Listener.Current_Result.all, My_Info);
                when ERROR_RESULT | NO_RESULT =>
-                  Add_Error (Listener.Current_Result.all, My_Place);
+                  Add_Error (Listener.Current_Result.all, My_Info);
             end case;
             Listener.Last_Test_Result := NO_RESULT;
          end if;
 
-         if Routine_Name (Place) = Null_Unbounded_String then
+         if Routine_Name (Info) = Null_Unbounded_String then
             Listener.Current_Result := Parent (Listener.Current_Result.all);
          end if;
       end if;

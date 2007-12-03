@@ -19,16 +19,16 @@ with Ahven.Listeners.Basic;
 
 package Ahven.Listeners.Output_Capture is
    type Output_Capture_Listener is new Basic.Basic_Listener with record
-      Output_File       : Temporary_Output.Temporary_File;
+      Output_File : Temporary_Output.Temporary_File;
    end record;
 
    type Output_Capture_Listener_Access is access all Output_Capture_Listener;
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
-                         Place    :        Result_Info);
+                         Info     :        Result_Info);
 
    procedure End_Test (Listener : in out Output_Capture_Listener;
-                       Place    :        Result_Info);
+                       Info     :        Result_Info);
 
    procedure Remove_File (Name : String);
    procedure Remove_Files (Collection : in out Result_Collection);

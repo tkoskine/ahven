@@ -31,19 +31,19 @@ package Ahven.Listeners.Basic is
    type Basic_Listener_Access is access all Basic_Listener;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
-                       Place    :        Result_Info);
+                       Info     :        Result_Info);
 
    procedure Add_Failure (Listener : in out Basic_Listener;
-                          Place    :        Result_Info);
+                          Info     :        Result_Info);
 
    procedure Add_Error (Listener : in out Basic_Listener;
-                        Place    :        Result_Info);
+                        Info     :        Result_Info);
 
    procedure Start_Test (Listener : in out Basic_Listener;
-                         Place    :        Result_Info);
+                         Info     :        Result_Info);
 
    procedure End_Test (Listener : in out Basic_Listener;
-                       Place    :        Result_Info);
+                       Info     :        Result_Info);
 
 private
 
