@@ -29,4 +29,5 @@ private
    procedure Test_Assignment;
    procedure Test_Forward_Iterator;
    procedure Test_Reverse_Iterator;
+   procedure Test_Move_Empty_List;
 end List_Tests;

@@ -179,6 +179,16 @@ package body List_Tests is
       Assert (Count = 3, "Iteration loop did not loop all items!");
    end Test_Reverse_Iterator;
 
+   procedure Test_Move_Empty_List is
+      use Integer_Linked_List;
+
+      My_List : List;
+      Extra_List : List;
+   begin
+      Append (My_List, 3);
+      Move (Target => My_List, Source => Extra_List);
+   end Test_Move_Empty_List;
+
    procedure Initialize (T: in out Test_Case) is
       use Ahven.Framework;
    begin
@@ -186,6 +196,8 @@ package body List_Tests is
       Add_Test_Routine (T, Test_Append'Access, "Test Append");
       Add_Test_Routine (T, Test_Remove'Access, "Test Remove");
       Add_Test_Routine (T, Test_Move'Access, "Test Move");
+      Add_Test_Routine (T, Test_Move_Empty_List'Access,
+                        "Move (Empty Source)");
       Add_Test_Routine (T, Test_Assignment'Access, "Test Assignment");
       Add_Test_Routine (T, Test_Reverse_Iterator'Access,
                         "Test Reverse Iterator");

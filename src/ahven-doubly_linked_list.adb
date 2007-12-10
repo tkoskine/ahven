@@ -184,6 +184,10 @@ package body Ahven.Doubly_Linked_List is
 
    procedure Move (Target : in out List; Source : in out List) is
    begin
+      if Source.Size = 0 then
+         return;
+      end if;
+
       if Target.Size = 0 then
          Target.First := Source.First;
       else
