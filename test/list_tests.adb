@@ -192,16 +192,16 @@ package body List_Tests is
    procedure Initialize (T: in out Test_Case) is
       use Ahven.Framework;
    begin
-      Set_Name (T, "Doubly linked list tests");
-      Add_Test_Routine (T, Test_Append'Access, "Test Append");
-      Add_Test_Routine (T, Test_Remove'Access, "Test Remove");
-      Add_Test_Routine (T, Test_Move'Access, "Test Move");
+      Set_Name (T, "Doubly linked list");
+      Add_Test_Routine (T, Test_Append'Access, "Append");
+      Add_Test_Routine (T, Test_Remove'Access, "Remove");
+      Add_Test_Routine (T, Test_Move'Access, "Move");
       Add_Test_Routine (T, Test_Move_Empty_List'Access,
                         "Move (Empty Source)");
-      Add_Test_Routine (T, Test_Assignment'Access, "Test Assignment");
+      Add_Test_Routine (T, Test_Assignment'Access, "Assignment");
       Add_Test_Routine (T, Test_Reverse_Iterator'Access,
-                        "Test Reverse Iterator");
+                        "Reverse Iterator");
       Add_Test_Routine (T, Test_Forward_Iterator'Access,
-                        "Test Forward Iterator");
+                        "Forward Iterator");
    end Initialize;
 end List_Tests;
