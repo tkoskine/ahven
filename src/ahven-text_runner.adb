@@ -39,17 +39,22 @@ package body Ahven.Text_Runner is
    -- Local procedures
    procedure Pad (Level : Natural);
    procedure Pad (Output : in out Unbounded_String; Level : Natural);
-   procedure Print_Test     (Info   : Results.Result_Info;
-                             Level  : Natural;
-                             Result : String);
+   procedure Print_Test (Info   : Results.Result_Info;
+                         Level  : Natural;
+                         Result : String);
+
    procedure Print_Failures (Result : in out Results.Result_Collection;
                              Level  : Natural);
-   procedure Print_Errors   (Result : in out Results.Result_Collection;
-                             Level  : Natural);
-   procedure Print_Passes   (Result : in out Results.Result_Collection;
-                             Level  : Natural);
+
+   procedure Print_Errors (Result : in out Results.Result_Collection;
+                           Level  : Natural);
+
+   procedure Print_Passes (Result : in out Results.Result_Collection;
+                           Level  : Natural);
+
    procedure Report_Results (Result  : in out Results.Result_Collection;
                              Verbose : Boolean := False);
+
    procedure Print_Log_File (Filename : String);
 
    procedure Pad (Level : Natural) is
@@ -66,13 +71,13 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Print_Test (Info  : Results.Result_Info;
-                         Level : Natural;
+   procedure Print_Test (Info   : Results.Result_Info;
+                         Level  : Natural;
                          Result : String) is
       use Ada.Strings;
 
-      Msg : constant Unbounded_String := Message (Info);
-      Output : Unbounded_String := Null_Unbounded_String;
+      Msg        : constant Unbounded_String := Message (Info);
+      Output     : Unbounded_String := Null_Unbounded_String;
       Result_Out : String (1 .. 7) := (others => ' ');
       Time_Out   : String (1 .. 12) := (others => ' ');
    begin
@@ -110,10 +115,10 @@ package body Ahven.Text_Runner is
    end Print_Test;
 
    procedure Print_Failures (Result : in out Results.Result_Collection;
-                             Level : Natural) is
+                             Level  : Natural) is
       End_Flag : Boolean := False;
-      Place : Results.Result_Info := Results.Empty_Result_Info;
-      Child : Results.Result_Collection_Access := null;
+      Place    : Results.Result_Info := Results.Empty_Result_Info;
+      Child    : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
          Pad (Level);
@@ -140,10 +145,10 @@ package body Ahven.Text_Runner is
    end Print_Failures;
 
    procedure Print_Errors (Result : in out Results.Result_Collection;
-                           Level : Natural) is
+                           Level  : Natural) is
       End_Flag : Boolean := False;
-      Info : Results.Result_Info := Results.Empty_Result_Info;
-      Child : Results.Result_Collection_Access := null;
+      Info     : Results.Result_Info := Results.Empty_Result_Info;
+      Child    : Results.Result_Collection_Access := null;
    begin
       if Length (Results.Test_Name (Result)) > 0 then
          Pad (Level);
@@ -171,7 +176,7 @@ package body Ahven.Text_Runner is
    end Print_Errors;
 
    procedure Print_Passes (Result : in out Results.Result_Collection;
-                           Level : Natural) is
+                           Level  : Natural) is
       End_Flag : Boolean := False;
       Info     : Results.Result_Info := Results.Empty_Result_Info;
       Child    : Results.Result_Collection_Access := null;
