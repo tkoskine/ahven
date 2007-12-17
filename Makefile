@@ -71,7 +71,7 @@ install_lib:
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
 
 check: build_tests
-	./runner
+	./tester
 
 control:
 	rm -f objects/*.adt objects/*.ali

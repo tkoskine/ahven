@@ -22,7 +22,7 @@ with Derived_Tests;
 
 use Ahven;
 
-procedure Runner is
+procedure Tester is
    S : Framework.Test_Suite_Access := Framework.Create_Suite ("All");
 begin
    Framework.Add_Test (S.all, new Framework_Tests.Test);
@@ -30,4 +30,4 @@ begin
    Framework.Add_Test (S.all, new List_Tests.Test_Case);
    Text_Runner.Run (S);
    Framework.Release_Suite (S);
-end Runner;
+end Tester;
