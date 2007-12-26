@@ -44,6 +44,7 @@ package body Ahven.Doubly_Linked_List is
          Iter.Prev.Next := Iter.Next;
          Iter.Next.Prev := Iter.Prev;
          Remove (Temp_Node);
+         This_List.Size := This_List.Size - 1;
       end if;
    end Remove;
 

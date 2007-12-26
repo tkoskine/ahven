@@ -24,15 +24,18 @@ package body List_Tests is
      new Ahven.Doubly_Linked_List ( Integer );
 
    procedure Test_Append is
-      My_List : Integer_Linked_List.List := Integer_Linked_List.Empty_List;
-      use type Integer_Linked_List.Iterator;
+      use Integer_Linked_List;
+
+      My_List : List := Empty_List;
    begin
-      Integer_Linked_List.Append ( My_List, 1);
-      Integer_Linked_List.Append ( My_List, 2);
-      Assert ( 2 = Integer_Linked_List.Data
-         (Integer_Linked_List.Last (My_List)),
-         "Append does not work properly");
-      Integer_Linked_List.Remove_All (My_List);
+      Append ( My_List, 1);
+      Append ( My_List, 2);
+      Assert (2 = Data (Last (My_List)),
+         "Append does not work properly (last /= 2)");
+      Assert (1 = Data (First (My_List)),
+         "Append does not work properly (first /= 1)");
+
+      Remove_All (My_List);
    end Test_Append;
    
    procedure Test_Remove is
@@ -46,14 +49,16 @@ package body List_Tests is
       Append (My_List, 3);
       Append (My_List, 4);
       Append (My_List, 5);
-      Iter := Next ( First ( My_List ));
-      Remove ( My_List, Iter );
-      Iter := Next ( First ( My_List ));
+      Iter := Next (First (My_List));
+      Remove (My_List, Iter);
+      Iter := Next (First (My_List));
      
-      Assert ( 3 = Data ( Iter ),
+      Assert (3 = Data (Iter),
          "Remove does not work properly, data item 3 in a wrong place");
-      Assert ( 5 = Data (Last ( My_List )),
+      Assert (5 = Data (Last (My_List)),
          "Remove does not work properly, data item 5 in a wrong place");
+      Assert (4 = Size (My_List),
+         "Remove does not work properly, Size /= 4");
       Remove_All (My_List);
    end Test_Remove;
 
