@@ -24,12 +24,9 @@ package body Dummy_Tests is
                           Name    : String)
         renames Ahven.Framework.Add_Test_Routine;
    begin
-      Register
-        (T, This_Test_Fails'Access, "Failure");
-      Register
-        (T, This_Test_Passes'Access, "Pass");
-      Register
-        (T, This_Test_Raises_Error'Access, "Error");
+      Register (T, This_Test_Fails'Access, "Failure");
+      Register (T, This_Test_Passes'Access, "Pass");
+      Register (T, This_Test_Raises_Error'Access, "Error");
    end Initialize;
 
    procedure This_Test_Fails is
