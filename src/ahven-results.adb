@@ -26,6 +26,8 @@ package body Ahven.Results is
                            Info : out Result_Info;
                            End_Of_List : out Boolean);
 
+   -- Bunch of setters and getters.
+   -- The implementation is straightforward.
    procedure Set_Test_Name (Info : in out Result_Info;
                             Name : Unbounded_String) is
    begin
@@ -120,6 +122,8 @@ package body Ahven.Results is
       Append (Collection.Passes, Info);
    end Add_Pass;
 
+   -- When Result_Collection is finalized, it recursively releases
+   -- its all children.
    procedure Finalize (Collection : in out Result_Collection) is
       procedure Free is
         new Ada.Unchecked_Deallocation
@@ -137,6 +141,9 @@ package body Ahven.Results is
          Iter := Next (Iter);
       end loop;
       Remove_All (Collection.Children);
+
+      -- No need to call Free for these three since
+      -- they are stored as plain objects instead of pointers.
       Remove_All (Collection.Errors);
       Remove_All (Collection.Failures);
       Remove_All (Collection.Passes);

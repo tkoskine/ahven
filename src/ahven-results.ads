@@ -20,10 +20,18 @@ with Ahven.Doubly_Linked_List;
 
 use Ada.Strings.Unbounded;
 
+-- Like the name implies, Results package is used for
+-- storing the test results.
+--
+-- Result_Info holds one invidual result and
+-- Result_Collection holds multiple Result_Infos.
+--
 package Ahven.Results is
    type Result_Info is private;
 
    Empty_Result_Info : constant Result_Info;
+   -- Result_Info object which holds no result. It can be used
+   -- to initialize a new Result_Info object.
 
    procedure Set_Test_Name (Info : in out Result_Info;
                             Name : Unbounded_String);
@@ -67,6 +75,8 @@ package Ahven.Results is
    -- Return the execution time of the result place.
 
    function Output_File (Info : Result_Info) return Unbounded_String;
+   -- Return the name of the output file.
+   -- Empty string is returned in case there is no output file.
 
    type Result_Collection is new Ada.Finalization.Controlled with private;
    type Result_Collection_Access is access Result_Collection;
