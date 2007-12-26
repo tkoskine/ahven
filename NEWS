@@ -10,6 +10,9 @@ Changes
 	  from a test into a temporary file and show the output if
 	  the test does not pass.
 
+	* The GNAT project file is now called 'ahven.gpr' instead of
+	  old 'ahven_lib.gpr'.
+
 Internal
 --------
 	* New listener: Output_Capture_Listener, which will
