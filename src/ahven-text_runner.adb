@@ -39,20 +39,20 @@ package body Ahven.Text_Runner is
    -- Local procedures
    procedure Pad (Level : Natural);
    procedure Pad (Output : in out Unbounded_String; Level : Natural);
-   procedure Print_Test (Info   : Results.Result_Info;
+   procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
                          Result : String);
 
-   procedure Print_Failures (Result : in out Results.Result_Collection;
+   procedure Print_Failures (Result : in out Result_Collection;
                              Level  : Natural);
 
-   procedure Print_Errors (Result : in out Results.Result_Collection;
+   procedure Print_Errors (Result : in out Result_Collection;
                            Level  : Natural);
 
-   procedure Print_Passes (Result : in out Results.Result_Collection;
+   procedure Print_Passes (Result : in out Result_Collection;
                            Level  : Natural);
 
-   procedure Report_Results (Result  : in out Results.Result_Collection;
+   procedure Report_Results (Result  : in out Result_Collection;
                              Verbose : Boolean := False);
 
    procedure Print_Log_File (Filename : String);
@@ -71,7 +71,7 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Print_Test (Info   : Results.Result_Info;
+   procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
                          Result : String) is
       use Ada.Strings;
@@ -114,15 +114,15 @@ package body Ahven.Text_Runner is
       New_Line;
    end Print_Test;
 
-   procedure Print_Failures (Result : in out Results.Result_Collection;
+   procedure Print_Failures (Result : in out Result_Collection;
                              Level  : Natural) is
       End_Flag : Boolean := False;
-      Place    : Results.Result_Info := Results.Empty_Result_Info;
-      Child    : Results.Result_Collection_Access := null;
+      Place    : Result_Info := Empty_Result_Info;
+      Child    : Result_Collection_Access := null;
    begin
-      if Length (Results.Test_Name (Result)) > 0 then
+      if Length (Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Results.Test_Name (Result)) & ":");
+         Put_Line (To_String (Test_Name (Result)) & ":");
       end if;
 
       Failure_Loop:
@@ -144,15 +144,15 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Failures;
 
-   procedure Print_Errors (Result : in out Results.Result_Collection;
+   procedure Print_Errors (Result : in out Result_Collection;
                            Level  : Natural) is
       End_Flag : Boolean := False;
-      Info     : Results.Result_Info := Results.Empty_Result_Info;
-      Child    : Results.Result_Collection_Access := null;
+      Info     : Result_Info := Empty_Result_Info;
+      Child    : Result_Collection_Access := null;
    begin
-      if Length (Results.Test_Name (Result)) > 0 then
+      if Length (Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Results.Test_Name (Result)) & ":");
+         Put_Line (To_String (Test_Name (Result)) & ":");
       end if;
 
       Error_Loop:
@@ -175,11 +175,11 @@ package body Ahven.Text_Runner is
 
    end Print_Errors;
 
-   procedure Print_Passes (Result : in out Results.Result_Collection;
+   procedure Print_Passes (Result : in out Result_Collection;
                            Level  : Natural) is
       End_Flag : Boolean := False;
-      Info     : Results.Result_Info := Results.Empty_Result_Info;
-      Child    : Results.Result_Collection_Access := null;
+      Info     : Result_Info := Empty_Result_Info;
+      Child    : Result_Collection_Access := null;
    begin
       if Length (Test_Name (Result)) > 0 then
          Pad (Level);
@@ -202,7 +202,7 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Passes;
 
-   procedure Report_Results (Result  : in out Results.Result_Collection;
+   procedure Report_Results (Result  : in out Result_Collection;
                              Verbose : Boolean := False) is
    begin
       Put_Line ("Passed : " & Integer'Image (Pass_Count (Result)));
@@ -248,22 +248,22 @@ package body Ahven.Text_Runner is
 
    procedure Run (Suite : Framework.Test_Suite_Access) is
       procedure Free is new Ada.Unchecked_Deallocation
-        (Output_Capture_Listener, Output_Capture_Listener_Access);
+        (Listeners.Result_Listener'Class,
+         Listeners.Result_Listener_Class_Access);
 
-      Test     : constant Framework.Test_Class_Access :=
-        Framework.Test_Class_Access (Suite);
-      Result   : Framework.Test_Result;
-      Listener : Output_Capture_Listener_Access :=
+      Test     : constant Test_Class_Access := Test_Class_Access (Suite);
+      Result   : Test_Result;
+      Listener : Listeners.Result_Listener_Class_Access :=
         new Output_Capture_Listener;
    begin
-      Framework.Add_Listener
-        (Result, Listeners.Result_Listener_Class_Access (Listener));
+      Add_Listener (Result, Listener);
       if Ada.Command_Line.Argument_Count > 0 then
          Runner.Run (Test, Ada.Command_Line.Argument (1), Result);
       else
          Runner.Run (Test, Result);
       end if;
-      Report_Results (Listener.Main_Result, True);
+      Report_Results
+        (Output_Capture_Listener (Listener.all).Main_Result, True);
       Free (Listener);
    end Run;
 

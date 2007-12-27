@@ -22,7 +22,7 @@ package Ahven.Listeners.Output_Capture is
       Output_File : Temporary_Output.Temporary_File;
    end record;
 
-   type Output_Capture_Listener_Access is access all Output_Capture_Listener;
+   type Output_Capture_Listener_Access is access Output_Capture_Listener;
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Info     :        Result_Info);
