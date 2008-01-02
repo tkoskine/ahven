@@ -21,41 +21,63 @@ with Ada.Calendar;
 package body Ahven.Framework is
    use Address_To_Access_Conversions;
 
-   procedure Add_Failure (Result : in out Test_Result; P : Result_Info) is
+   procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
+                            I : Result_Info);
+   procedure Add_Error_L (L : access Listeners.Result_Listener'Class;
+                          I : Result_Info);
+   procedure Add_Pass_L (L : access Listeners.Result_Listener'Class;
+                         I : Result_Info);
+
+   type Add_Procedure is access
+     procedure (L : access Listeners.Result_Listener'Class; I : Result_Info);
+
+   procedure Add_Result (Result : in out Test_Result; I : Result_Info;
+                         Add : Add_Procedure);
+
+   procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
+                          I : Result_Info) is
+   begin
+      Listeners.Add_Failure (L.all, I);
+   end Add_Failure_L;
+
+   procedure Add_Error_L (L : access Listeners.Result_Listener'Class;
+                        I : Result_Info) is
+   begin
+      Listeners.Add_Error (L.all, I);
+   end Add_Error_L;
+
+   procedure Add_Pass_L (L : access Listeners.Result_Listener'Class;
+                       I : Result_Info) is
+   begin
+      Listeners.Add_Pass (L.all, I);
+   end Add_Pass_L;
+
+   procedure Add_Result (Result : in out Test_Result; I : Result_Info;
+                         Add : Add_Procedure) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
          exit when Iter = null;
-         Listeners.Add_Failure (Data (Iter).all, P);
+         Add (Data (Iter), I);
          Iter := Next (Iter);
       end loop;
+   end Add_Result;
 
+   procedure Add_Failure (Result : in out Test_Result; I : Result_Info) is
+   begin
+      Add_Result (Result, I, Add_Failure_L'Access);
    end Add_Failure;
 
-   procedure Add_Error (Result : in out Test_Result; P : Result_Info) is
-      use Listeners.Result_Listener_List;
-
-      Iter : Iterator := First (Result.Listeners);
+   procedure Add_Error (Result : in out Test_Result; I : Result_Info) is
    begin
-      loop
-         exit when Iter = null;
-         Listeners.Add_Error (Data (Iter).all, P);
-         Iter := Next (Iter);
-      end loop;
+      Add_Result (Result, I, Add_Error_L'Access);
    end Add_Error;
 
-   procedure Add_Pass (Result : in out Test_Result; P : Result_Info) is
-      use Listeners.Result_Listener_List;
-
-      Iter : Iterator := First (Result.Listeners);
+   procedure Add_Pass (Result : in out Test_Result; I : Result_Info) is
    begin
-      loop
-         exit when Iter = null;
-         Listeners.Add_Pass (Data (Iter).all, P);
-         Iter := Next (Iter);
-      end loop;
+      Add_Result (Result, I, Add_Pass_L'Access);
    end Add_Pass;
 
    -- Notify listeners that the test is about to begin.
