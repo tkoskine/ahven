@@ -13,18 +13,20 @@ project.
 Building and Installing Ahven
 =============================
 For building Ahven source code you need Ada95
-compiler. In theory, any Ada95 compiler works,
-but only GCC (GNAT) is tested.
+compiler, for example GNAT or ObjectAda. Optionally,
+you need AdaBrowse to build the documentation and
+AdaControl to run coding style checks.
 
-The default Makefile compiles code using gnatmake,
-so if you use another compiler, you need to customize
+The default Makefile compiles code using gnatmake.
+If you use another compiler, you need to customize
 the Makefile by yourself. When using GNAT, simple
 'make' will compile the library and the unit tests.
 
 Command 'make check' will run the unit tests.
 
 If you want to build the API documentation, you
-need AdaBrowse tool.
+need AdaBrowse tool. Command 'make docs' will
+build the API documentation.
 
 Installation happens by typing 'make install'
 or 'make PREFIX=/my/ada/code install'. Alternatively,
