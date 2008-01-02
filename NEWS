@@ -25,6 +25,8 @@ Internal
 	  because other Ada linked list implementations also use
 	  similar naming scheme.
 
+	* AdaControl is used to enforce some parts of the coding style.
+
 2007-10-24 Ahven 1.0
 ====================
 Initial release.
