@@ -18,11 +18,11 @@ with Ahven.Temporary_Output;
 with Ahven.Listeners.Basic;
 
 package Ahven.Listeners.Output_Capture is
-   type Output_Capture_Listener is new Basic.Basic_Listener with record
-      Output_File : Temporary_Output.Temporary_File;
-   end record;
+   type Output_Capture_Listener is new Basic.Basic_Listener with private;
 
    type Output_Capture_Listener_Access is access Output_Capture_Listener;
+
+   function Create return Result_Listener_Class_Access;
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Info     :        Result_Info);
@@ -30,10 +30,14 @@ package Ahven.Listeners.Output_Capture is
    procedure End_Test (Listener : in out Output_Capture_Listener;
                        Info     :        Result_Info);
 
+private
+   type Output_Capture_Listener is new Basic.Basic_Listener with record
+      Output_File : Temporary_Output.Temporary_File;
+   end record;
+
    procedure Remove_File (Name : String);
    procedure Remove_Files (Collection : in out Result_Collection);
 
    procedure Finalize (Listener : in out Output_Capture_Listener);
-private
 
 end Ahven.Listeners.Output_Capture;

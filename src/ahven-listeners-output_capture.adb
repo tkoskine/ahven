@@ -23,6 +23,11 @@ use Ahven.Listeners.Basic;
 
 package body Ahven.Listeners.Output_Capture is
 
+   function Create return Result_Listener_Class_Access is
+   begin
+      return new Output_Capture_Listener;
+   end Create;
+
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Info  : Result_Info) is
       R : Result_Collection_Access := null;

@@ -254,7 +254,7 @@ package body Ahven.Text_Runner is
       Test     : constant Test_Class_Access := Test_Class_Access (Suite);
       Result   : Test_Result;
       Listener : Listeners.Result_Listener_Class_Access :=
-        new Output_Capture_Listener;
+        Listeners.Output_Capture.Create;
    begin
       Add_Listener (Result, Listener);
       if Ada.Command_Line.Argument_Count > 0 then
