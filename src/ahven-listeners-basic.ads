@@ -22,9 +22,9 @@ package Ahven.Listeners.Basic is
    type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
 
    type Basic_Listener is new Result_Listener with record
-      Main_Result    : Result_Collection;
-      Current_Result : Result_Collection_Access;
-      Last_Test_Result : Result_Type := NO_RESULT;
+      Main_Result       : Result_Collection;
+      Current_Result    : Result_Collection_Access;
+      Last_Test_Result  : Result_Type      := NO_RESULT;
       Last_Test_Message : Unbounded_String := Null_Unbounded_String;
    end record;
 
@@ -32,18 +32,23 @@ package Ahven.Listeners.Basic is
 
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Info     :        Result_Info);
+   -- New implementation for Listeners.Add_Pass
 
    procedure Add_Failure (Listener : in out Basic_Listener;
                           Info     :        Result_Info);
+   -- New implementation for Listeners.Add_Failure
 
    procedure Add_Error (Listener : in out Basic_Listener;
                         Info     :        Result_Info);
+   -- New implementation for Listeners.Add_Error
 
    procedure Start_Test (Listener : in out Basic_Listener;
                          Info     :        Result_Info);
+   -- New implementation for Listeners.Start_Test
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Info     :        Result_Info);
+   -- New implementation for Listeners.End_Test
 
 private
 
