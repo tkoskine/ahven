@@ -81,7 +81,7 @@
 <code>
 <pre>
    -- my_tests.adb
-   package My_Tests is
+   package body My_Tests is
       procedure Initialize (T : in out Test) is
       begin
          <b>Set_Name (T, "My tests");</b>
@@ -112,12 +112,15 @@
 <code>
 <pre>
    -- my_tests.adb
-   package My_Tests is
+   <b>with Ahven;
+   use Ahven;</b>
+
+   package body My_Tests is
       procedure Initialize (T : in out Test) is
       begin
          Set_Name (T, "My tests");
 
-         Ahven.Framework.Add_Test_Routine
+         Framework.Add_Test_Routine
            (T, My_First_Test'Access, "My first test");
       end Initialize;
       <b>
