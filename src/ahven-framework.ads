@@ -83,6 +83,8 @@ package Ahven.Framework is
                   Test_Name :        String;
                   Result    : in out Test_Result) is abstract;
    -- Run the test with given name and place the test result to Result.
+   -- Notice: If multiple tests have same name this might call all of
+   -- them.
 
    procedure Execute (T      : in out Test'Class;
                       Result : in out Test_Result);
@@ -93,6 +95,8 @@ package Ahven.Framework is
    procedure Execute (T         : in out Test'Class;
                       Test_Name :        String;
                       Result    : in out Test_Result);
+   -- Same as Execute above, but call the Run procedure which
+   -- takes Test_Name parameter.
 
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.
@@ -135,14 +139,15 @@ package Ahven.Framework is
                                Routine : Object_Test_Routine_Access;
                                Name    : String);
    -- Register a test routine to the Test_Case.
-   -- Routine must have signature
+   -- The routine must have signature
    --  "procedure R (T : in out Test_Case'Class)".
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String);
    -- Register a simple test routine to the Test_Case.
-   -- Routine must have signature "procedure R".
+   -- The routine must have signature
+   --  "procedure R".
 
    type Test_Suite is new Test with private;
    -- A collection of Tests.
@@ -183,12 +188,19 @@ private
    type Test_Result is record
       Listeners : Ahven.Listeners.Result_Listener_List.List;
    end record;
+   -- A container for test result listeners.
+   -- In theory, this type could hold also the test results
+   -- but currently it just notifies the listeners.
 
    type Test_Command is abstract tagged record
       Name : Unbounded_String;
    end record;
+   -- Test routine type modeled using Command design pattern.
+   -- Name attribute tells the name of the test routine.
 
    procedure Run (Command : Test_Command) is abstract;
+   -- Run the test routine attached to the Test_Command.
+   -- Child types must implement this procedure.
 
    type Test_Command_Access is access all Test_Command;
    type Test_Command_Class_Access is access Test_Command'Class;
@@ -200,6 +212,8 @@ private
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
       Name : Unbounded_String := Null_Unbounded_String;
    end record;
+   -- Our test case type. It holds a list of test routines
+   -- (test command objects) and the name of the test case.
 
    package Address_To_Access_Conversions is
      new System.Address_To_Access_Conversions (Test_Case'Class);
@@ -208,22 +222,30 @@ private
       Routine : Object_Test_Routine_Access;
       Object  : Address_To_Access_Conversions.Object_Pointer;
    end record;
+   -- Test_Command type with a test object attached to the test routine.
 
    type Test_Object_Command_Access is access all Test_Object_Command;
 
    procedure Run (Command : Test_Object_Command);
+   -- Implementation of Run (Command : Test_Command) procedure.
+   -- Calls Set_Up and Tear_Down.
 
    type Test_Simple_Command is new Test_Command with record
       Routine : Simple_Test_Routine_Access;
    end record;
+   -- Test_Command type without object (only the test routine).
 
    type Test_Simple_Command_Access is access all Test_Simple_Command;
 
    procedure Run (Command : Test_Simple_Command);
+   -- Implementation of Run (Command : Test_Command) procedure.
+   -- Does not call Set_Up and Tear_Down.
 
    procedure Run_Command (Command : Test_Command_Class_Access;
                           Info    : Result_Info;
                           Result  : in out Test_Result);
+   -- Handle dispatching to the right Run (Command : Test_Command)
+   -- procedure and record test routine result to the Result object.
 
    package Test_List is new Doubly_Linked_List (Test_Class_Access);
 
@@ -231,5 +253,7 @@ private
       Suite_Name : Unbounded_String;
       Test_Cases : Test_List.List;
    end record;
+   -- A suite type which holds a list of test cases and the name
+   -- of the suite.
 
 end Ahven.Framework;
