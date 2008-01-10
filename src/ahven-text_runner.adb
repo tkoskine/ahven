@@ -142,7 +142,7 @@ package body Ahven.Text_Runner is
    procedure Print_Failures (Result : in out Result_Collection;
                              Level  : Natural) is
       End_Flag : Boolean := False;
-      Place    : Result_Info := Empty_Result_Info;
+      Info     : Result_Info := Empty_Result_Info;
       Child    : Result_Collection_Access := null;
    begin
       if Length (Test_Name (Result)) > 0 then
@@ -152,11 +152,11 @@ package body Ahven.Text_Runner is
 
       Failure_Loop:
       loop
-         Next_Failure (Result, Place, End_Flag);
+         Next_Failure (Result, Info, End_Flag);
          exit Failure_Loop when End_Flag;
-         Print_Test (Place, Level, "FAIL");
-         if Length (Output_File (Place)) > 0 then
-            Print_Log_File (To_String (Output_File (Place)));
+         Print_Test (Info, Level, "FAIL");
+         if Length (Output_File (Info)) > 0 then
+            Print_Log_File (To_String (Output_File (Info)));
          end if;
       end loop Failure_Loop;
 
