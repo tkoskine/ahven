@@ -3,15 +3,23 @@
 
 Changes
 -------
-	* The Ahven.Framework and the test runners are able to run
-	  only the tests which match the given name.
+	* The Ahven.Framework and the test runners are able to optionally
+	  run only the tests which match the given name.
 
 	* The default Text_Runner will capture Ada.Text_IO output
 	  from a test into a temporary file and show the output if
 	  the test does not pass.
 
+	* The default Text_Runner shows the exception message in addition
+	  to the exception name when the test ends in error.
+	  (Idea and original patch from Alexander Senier)
+
 	* The GNAT project file is now called 'ahven.gpr' instead of
 	  old 'ahven_lib.gpr'.
+
+	* ALI files (*.ali) are now installed read-only, so GNAT
+	  does not try to rebuild the library.
+	  (Patch from Alexander Senier)
 
 Internal
 --------
