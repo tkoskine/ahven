@@ -61,6 +61,17 @@ package body Ahven.Results is
       Set_Message (Info, To_Unbounded_String (Message));
    end Set_Message;
 
+   procedure Set_Long_Message (Info : in out Result_Info;
+                               Message : Unbounded_String) is
+   begin
+      Info.Long_Message := Message;
+   end Set_Long_Message;
+
+   procedure Set_Long_Message (Info : in out Result_Info; Message : String) is
+   begin
+      Set_Long_Message (Info, To_Unbounded_String (Message));
+   end Set_Long_Message;
+
    procedure Set_Execution_Time (Info : in out Result_Info;
                                  Elapsed_Time : Duration) is
    begin
@@ -87,6 +98,11 @@ package body Ahven.Results is
    begin
       return Info.Message;
    end Message;
+
+   function Long_Message (Info : Result_Info) return Unbounded_String is
+   begin
+      return Info.Long_Message;
+   end Long_Message;
 
    function Execution_Time (Info : Result_Info) return Duration is
    begin
@@ -240,11 +256,12 @@ package body Ahven.Results is
 
       if Iter = null then
          End_Of_List := True;
-         Info := (Null_Unbounded_String,
-                   Null_Unbounded_String,
-                   Null_Unbounded_String,
-                   0.0,
-                   Null_Unbounded_String);
+         Info := (Test_Name => Null_Unbounded_String,
+                  Routine_Name => Null_Unbounded_String,
+                  Message => Null_Unbounded_String,
+                  Long_Message => Null_Unbounded_String,
+                  Execution_Time => 0.0,
+                  Output_File => Null_Unbounded_String);
       else
          End_of_List := False;
          Info := Data (Iter);

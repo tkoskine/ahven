@@ -60,6 +60,7 @@ package body Ahven.Listeners.Output_Capture is
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
             Set_Message (My_Info, Listener.Last_Test_Message);
+            Set_Long_Message (My_Info, Listener.Last_Test_Long_Message);
 
             -- End of the test routine, so we can restore
             -- the normal output now and close the temporary file.

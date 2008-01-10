@@ -26,6 +26,7 @@ package Ahven.Listeners.Basic is
       Current_Result    : Result_Collection_Access;
       Last_Test_Result  : Result_Type      := NO_RESULT;
       Last_Test_Message : Unbounded_String := Null_Unbounded_String;
+      Last_Test_Long_Message : Unbounded_String := Null_Unbounded_String;
    end record;
 
    type Basic_Listener_Access is access Basic_Listener;

@@ -54,25 +54,35 @@ package Ahven.Results is
    procedure Set_Message (Info : in out Result_Info; Message : String);
    -- A helper function, which calls Set_Message (.. ; Unbounded_String)
 
+   procedure Set_Long_Message (Info : in out Result_Info;
+                               Message : Unbounded_String);
+   -- A helper function, which calls Set_Message (.. ; Unbounded_String)
+
+   procedure Set_Long_Message (Info : in out Result_Info; Message : String);
+   -- A helper function, which calls Set_Long_Message (.. ; Unbounded_String)
+
    procedure Set_Execution_Time (Info : in out Result_Info;
                                  Elapsed_Time : Duration);
-   -- Set the execution time of the result place (test).
+   -- Set the execution time of the result info (test).
 
    procedure Set_Output_File (Info : in out Result_Info;
                               Filename : Unbounded_String);
    -- Set the name of the test output file.
 
    function Test_Name (Info : Result_Info) return Unbounded_String;
-   -- Return the test name of the result place.
+   -- Return the test name of the result info.
 
    function Routine_Name (Info : Result_Info) return Unbounded_String;
-   -- Return the routine name of the result place.
+   -- Return the routine name of the result info.
 
    function Message (Info : Result_Info) return Unbounded_String;
-   -- Return the message of the result place.
+   -- Return the message of the result info.
+
+   function Long_Message (Info : Result_Info) return Unbounded_String;
+   -- Return the long message of the result info.
 
    function Execution_Time (Info : Result_Info) return Duration;
-   -- Return the execution time of the result place.
+   -- Return the execution time of the result info.
 
    function Output_File (Info : Result_Info) return Unbounded_String;
    -- Return the name of the output file.
@@ -167,21 +177,23 @@ package Ahven.Results is
 private
    type Result_Info is record
       Test_Name    : Unbounded_String := Null_Unbounded_String;
-      Routine_Name : Unbounded_String := Null_Unbounded_String;
-      Message      : Unbounded_String := Null_Unbounded_String;
-      Execution_Time : Duration := 0.0;
       Output_File  : Unbounded_String := Null_Unbounded_String;
+      Routine_Name : Unbounded_String := Null_Unbounded_String;
+      Execution_Time : Duration := 0.0;
+      Message      : Unbounded_String := Null_Unbounded_String;
+      Long_Message : Unbounded_String := Null_Unbounded_String;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
      (Test_Name => Null_Unbounded_String,
       Routine_Name => Null_Unbounded_String,
       Message => Null_Unbounded_String,
+      Long_Message => Null_Unbounded_String,
       Execution_Time => 0.0,
       Output_File => Null_Unbounded_String);
 
    package Result_Info_List is
-     new Ahven.Doubly_Linked_List (Result_Info);
+     new Ahven.Doubly_Linked_List (Data_Type => Result_Info);
 
    package Result_List is
      new Ahven.Doubly_Linked_List (Result_Collection_Access);

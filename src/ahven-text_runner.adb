@@ -19,6 +19,7 @@ with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Command_Line;
+with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
 with Ahven.Results;
@@ -39,6 +40,10 @@ package body Ahven.Text_Runner is
    -- Local procedures
    procedure Pad (Level : Natural);
    procedure Pad (Output : in out Unbounded_String; Level : Natural);
+   procedure Multiline_Pad (Output : in out Unbounded_String;
+                            Input  :        String;
+                            Level  :        Natural);
+
    procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
                          Result : String);
@@ -70,6 +75,19 @@ package body Ahven.Text_Runner is
          Append (Output, " ");
       end loop;
    end Pad;
+
+   procedure Multiline_Pad (Output : in out Unbounded_String;
+                            Input  :        String;
+                            Level  :        Natural) is
+   begin
+      Pad (Output, Level);
+      for A in Input'Range loop
+         Append (Output, Input (A));
+         if Input (A) = Ada.Characters.Latin_1.LF and A /= Input'Last then
+            Pad (Output, Level);
+         end if;
+      end loop;
+   end Multiline_Pad;
 
    procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
@@ -111,6 +129,13 @@ package body Ahven.Text_Runner is
          Put (" " & Result_Out);
          Put (" " & Time_Out & "s");
       end if;
+      if Length (Long_Message (Info)) > 0 then
+         New_Line;
+         Output := Null_Unbounded_String;
+         Multiline_Pad (Output, To_String (Long_Message (Info)), Level + 2);
+         Put (To_String (Output));
+      end if;
+
       New_Line;
    end Print_Test;
 

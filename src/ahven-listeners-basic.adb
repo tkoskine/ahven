@@ -21,6 +21,7 @@ package body Ahven.Listeners.Basic is
    begin
       Listener.Last_Test_Result := PASS_RESULT;
       Listener.Last_Test_Message := Message (Info);
+      Listener.Last_Test_Long_Message := Long_Message (Info);
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
@@ -28,6 +29,7 @@ package body Ahven.Listeners.Basic is
    begin
       Listener.Last_Test_Result := FAILURE_RESULT;
       Listener.Last_Test_Message := Message (Info);
+      Listener.Last_Test_Long_Message := Long_Message (Info);
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
@@ -35,6 +37,7 @@ package body Ahven.Listeners.Basic is
    begin
       Listener.Last_Test_Result := ERROR_RESULT;
       Listener.Last_Test_Message := Message (Info);
+      Listener.Last_Test_Long_Message := Long_Message (Info);
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
@@ -62,6 +65,7 @@ package body Ahven.Listeners.Basic is
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
             Set_Message (My_Info, Listener.Last_Test_Message);
+            Set_Long_Message (My_Info, Listener.Last_Test_Long_Message);
             case Listener.Last_Test_Result is
                when PASS_RESULT =>
                   Add_Pass (Listener.Current_Result.all, My_Info);

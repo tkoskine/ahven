@@ -199,7 +199,9 @@ package body Ahven.Framework is
          -- Did the exception come from the test (Passed = False) or
          -- from the library routines (Passed = True)?
          if Passed = False then
-            Results.Set_Message (My_Info, Ada.Exceptions.Exception_Name (E));
+            Set_Message (My_Info, Ada.Exceptions.Exception_Name (E));
+            Set_Long_Message
+              (My_Info, Ada.Exceptions.Exception_Message (E));
             Add_Error (Result, My_Info);
          else
             raise;
