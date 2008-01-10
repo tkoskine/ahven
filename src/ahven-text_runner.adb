@@ -64,14 +64,14 @@ package body Ahven.Text_Runner is
 
    procedure Pad (Level : Natural) is
    begin
-      for A in Integer range 0 .. Level loop
+      for A in Integer range 1 .. Level loop
          Put (" ");
       end loop;
    end Pad;
 
    procedure Pad (Output : in out Unbounded_String; Level : Natural) is
    begin
-      for A in Integer range 0 .. Level loop
+      for A in Integer range 1 .. Level loop
          Append (Output, " ");
       end loop;
    end Pad;
