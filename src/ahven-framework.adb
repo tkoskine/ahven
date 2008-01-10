@@ -142,8 +142,17 @@ package body Ahven.Framework is
       Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
+
+      -- This Start_Test here is called for Test_Suites and Test_Cases.
+      -- Info includes only the name of the test suite/case.
+      --
+      -- There is a separate Start_Test/End_Test pair for test routines
+      -- in the Run (T : in out Test_Case; ...) procedure.
       Start_Test (Result, Info);
+
       Run (T, Result);
+
+      -- Like Start_Test, only for Test_Suites and Test_Cases.
       End_Test (Result, Info);
    end Execute;
 
@@ -154,6 +163,8 @@ package body Ahven.Framework is
       Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
+
+      -- Like in the Ececute procedure above.
       Start_Test (Result, Info);
       Run (T, Test_Name, Result);
       End_Test (Result, Info);
