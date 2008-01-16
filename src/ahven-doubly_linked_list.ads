@@ -21,39 +21,73 @@ generic
 package Ahven.Doubly_Linked_List is
 
    type Node is private;
-   type Node_Access is access Node;
-   type Iterator is new Node_Access;
+   type Iterator is private;
 
    List_Empty : exception;
    Out_Of_Range : exception;
    Invalid_Iterator : exception;
 
    type List is new Ada.Finalization.Controlled with private;
+   -- List is a Controlled type. You can safely copy it.
+   -- Although, notice that if you have a list of pointers (access types),
+   -- only the pointers are copied, not the objects they point at.
 
    Empty_List : constant List;
+   -- A list with zero elements.
+   -- For example, can be used for initialization.
 
-   procedure Append  (This_List : in out List; Node_Data : Data_Type);
+   procedure Append (This_List : in out List; Node_Data : Data_Type);
+   -- Append an element at the end of the list.
+
    procedure Prepend (This_List : in out List; Node_Data : Data_Type);
-   procedure Remove  (This_List : in out List; Iter : Iterator);
-   procedure Remove_All   (This_List : in out List);
+   -- Prepend an element at the beginning of the list.
+
+   procedure Remove (This_List : in out List; Iter : Iterator);
+   -- Remove an elemenent pointed by the iterator.
+
+   procedure Remove_All (This_List : in out List);
+   -- Remove all elements from the list.
+
    procedure Remove_First (This_List : in out List);
+   -- Remove the first element from the list.
+
    procedure Remove_Last  (This_List : in out List);
+   -- Remove the last element from the list.
 
-   function Empty (This_List : in List) return Boolean;
-   function First (This_List : in List ) return Iterator;
-   function Last  (This_List : in List) return Iterator;
-   function Next  (Iter      : in Iterator) return Iterator;
-   function Prev  (Iter      : in Iterator) return Iterator;
+   function Empty (This_List : List) return Boolean;
+   -- Is the list empty?
 
-   function Data (Iter : in Iterator) return Data_Type;
+   function First (This_List : List) return Iterator;
+   -- Return an iterator to the first element of the list.
 
-   function Size (This_List : in List) return Natural;
+   function Last (This_List : List) return Iterator;
+   -- Return an iterator to the last element of the list.
+
+   function Next (Iter : Iterator) return Iterator;
+   -- Move the iterator to point to the next element on the list.
+
+   function Prev (Iter : Iterator) return Iterator;
+   -- Move the iterator to point to the previous element on the list.
+
+   function Data (Iter : Iterator) return Data_Type;
+   -- Return element pointed by the iterator.
+
+   function Size (This_List : List) return Natural;
+   -- Return the size of the list.
 
    procedure Move (Target : in out List; Source : in out List);
+   -- Move all elements from the Source list to the Target list.
 
+   function Is_Valid (Iter : Iterator) return Boolean;
+   -- Is Iterator still valid or out of range?
 private
+   type Node_Access is access Node;
+   type Iterator is new Node_Access;
+
    procedure Remove (Ptr : Node_Access);
-   function Data (Iter : in Node_access) return Data_Type;
+   -- A procedure to release memory pointed by Ptr.
+
+   function Data (Iter : Node_access) return Data_Type;
 
    type Node is record
       Data : Data_Type;

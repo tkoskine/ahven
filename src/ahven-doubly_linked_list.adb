@@ -18,7 +18,7 @@ with Ada.Unchecked_Deallocation;
 
 package body Ahven.Doubly_Linked_List is
 
-   procedure Remove (Ptr : in Node_Access) is
+   procedure Remove (Ptr : Node_Access) is
       procedure Free is new Ada.Unchecked_Deallocation (Node, Node_Access);
       My_Ptr : Node_Access := Ptr;
    begin
@@ -28,7 +28,7 @@ package body Ahven.Doubly_Linked_List is
    end Remove;
 
    procedure Remove (This_List : in out List; Iter : Iterator) is
-      Temp_Node : Node_Access := null;
+      Temp_Node : Node_Access;
    begin
       if This_List.Size = 0 then
          raise List_Empty;
@@ -126,7 +126,7 @@ package body Ahven.Doubly_Linked_List is
       This_List.Size := This_List.Size - 1;
    end Remove_Last;
 
-   function Empty (This_List : in List) return Boolean is
+   function Empty (This_List : List) return Boolean is
    begin
       if This_List.Size = 0 then
          return True;
@@ -134,7 +134,7 @@ package body Ahven.Doubly_Linked_List is
       return False;
    end Empty;
 
-   function First (This_List : in List) return Iterator is
+   function First (This_List : List) return Iterator is
    begin
       if This_List.Size = 0 then
          return null;
@@ -143,7 +143,7 @@ package body Ahven.Doubly_Linked_List is
       return Iterator (This_List.First);
    end First;
 
-   function Last (This_List : in List ) return Iterator is
+   function Last (This_List : List) return Iterator is
    begin
       if This_List.Size = 0 then
          return null;
@@ -152,7 +152,7 @@ package body Ahven.Doubly_Linked_List is
       return Iterator (This_List.Last);
    end Last;
 
-   function Next (Iter : in Iterator) return Iterator is
+   function Next (Iter : Iterator) return Iterator is
    begin
       if Iter = null then
          raise Invalid_Iterator;
@@ -160,7 +160,7 @@ package body Ahven.Doubly_Linked_List is
       return Iterator (Iter.Next);
    end Next;
 
-   function Prev (Iter : in Iterator) return Iterator is
+   function Prev (Iter : Iterator) return Iterator is
    begin
       if Iter = null then
          raise Invalid_Iterator;
@@ -168,17 +168,17 @@ package body Ahven.Doubly_Linked_List is
       return Iterator (Iter.Prev);
    end Prev;
 
-   function Data (Iter : in Iterator) return Data_Type is
+   function Data (Iter : Iterator) return Data_Type is
    begin
       return Iter.Data;
    end Data;
 
-   function Data (Iter : in Node_access) return Data_Type is
+   function Data (Iter : Node_access) return Data_Type is
    begin
       return Iter.Data;
    end Data;
 
-   function Size (This_List : in List) return Natural is
+   function Size (This_List : List) return Natural is
    begin
       return This_List.Size;
    end Size;
@@ -206,6 +206,11 @@ package body Ahven.Doubly_Linked_List is
       Source.Size := 0;
    end Move;
 
+   function Is_Valid (Iter : Iterator) return Boolean is
+   begin
+      return Iter /= null;
+   end Is_Valid;
+
    procedure Initialize (Object : in out List) is
    begin
       Object.Last := null;
@@ -222,7 +227,7 @@ package body Ahven.Doubly_Linked_List is
       Target_Last : Node_Access := null;
       Target_First : Node_Access := null;
       Current : Node_Access := Object.First;
-      New_Node : Node_Access := null;
+      New_Node : Node_Access;
    begin
       while Current /= null loop
          New_Node := new Node'(Data => Current.Data,

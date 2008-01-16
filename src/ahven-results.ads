@@ -206,10 +206,10 @@ private
       Children  : Result_List.List       := Result_List.Empty_List;
       Parent    : Result_Collection_Access := null;
 
-      Pass_Iter    : Result_Info_List.Iterator := null;
-      Failure_Iter : Result_Info_List.Iterator := null;
-      Error_Iter   : Result_Info_List.Iterator := null;
-      Child_Iter   : Result_List.Iterator      := null;
+      Pass_Iter    : Result_Info_List.Iterator;
+      Failure_Iter : Result_Info_List.Iterator;
+      Error_Iter   : Result_Info_List.Iterator;
+      Child_Iter   : Result_List.Iterator;
    end record;
 
 end Ahven.Results;

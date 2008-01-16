@@ -81,7 +81,7 @@ package body List_Tests is
       -- Testing forward iteration
       Iter := First (My_List);
       for A in Integer range 1 .. 5 loop
-         Assert (Iter /= null, "Iterator went to null");
+         Assert (Is_Valid (Iter), "Iterator went to null");
          Assert (Data (Iter) = A, "Data does not match");
          Iter := Next (Iter);
       end loop;
@@ -89,7 +89,7 @@ package body List_Tests is
       -- And backward iteration
       Iter := Last (My_List);
       for A in reverse Integer range 1 .. 5 loop
-         Assert (Iter /= null, "Iterator went to null");
+         Assert (Is_Valid (Iter), "Iterator went to null");
          Assert (Data (Iter) = A, "Data does not match");
          Iter := Prev (Iter);
       end loop;
@@ -139,16 +139,16 @@ package body List_Tests is
    begin
       Append (My_List, 1);
       Iter := First (My_List);
-      Assert (Iter /= null, "First returned null!");
+      Assert (Is_Valid (Iter), "First returned null!");
       Iter := Next (Iter);
-      Assert (Iter = null, "Next after First returned non-null!");
+      Assert (not Is_Valid (Iter), "Next after First returned non-null!");
 
       Append (My_List, 2);
       Append (My_List, 3);
 
       Iter := First (My_List);
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Iter := Next (Iter);
          Count := Count + 1;
       end loop;
@@ -165,18 +165,18 @@ package body List_Tests is
    begin
       Append (My_List, 1);
       Iter := Last (My_List);
-      Assert (Iter /= null, "Last returned null!");
+      Assert (Is_Valid (Iter), "Last returned null!");
       Assert (Data (Iter) = 1, "Iterator points to invalid item!");
 
       Iter := Next (Iter);
-      Assert (Iter = null, "Next after First returned non-null!");
+      Assert (not Is_Valid (Iter), "Next after First returned non-null!");
 
       Append (My_List, 2);
       Append (My_List, 3);
 
       Iter := Last (My_List);
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Count := Count + 1;
          Assert (Data (Iter) = 4 - Count, "Iterator points to wrong item!"); 
          Iter := Prev (Iter);

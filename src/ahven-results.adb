@@ -149,7 +149,7 @@ package body Ahven.Results is
       Ptr  : Result_Collection_Access := null;
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
 
          Ptr := Data (Iter);
          Free (Ptr);
@@ -184,7 +184,7 @@ package body Ahven.Results is
       Iter : Result_List.Iterator := First (Collection.Children);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
 
          Count := Count + Test_Count (Data (Iter).all);
          Iter := Next (Iter);
@@ -197,7 +197,7 @@ package body Ahven.Results is
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
 
          Count := Count + Pass_Count (Data (Iter).all);
          Iter := Next (Iter);
@@ -210,7 +210,7 @@ package body Ahven.Results is
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
 
          Count := Count + Error_Count (Data (Iter).all);
          Iter := Next (Iter);
@@ -223,7 +223,7 @@ package body Ahven.Results is
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
 
          Count := Count + Failure_Count (Data (Iter).all);
          Iter := Next (Iter);
@@ -248,13 +248,13 @@ package body Ahven.Results is
                            Info : out Result_Info;
                            End_Of_List : out Boolean) is
    begin
-      if Iter = null then
+      if not Is_Valid (Iter) then
          Iter := First (List);
       else
          Iter := Next (Iter);
       end if;
 
-      if Iter = null then
+      if not Is_Valid (Iter) then
          End_Of_List := True;
          Info := (Test_Name => Null_Unbounded_String,
                   Routine_Name => Null_Unbounded_String,
@@ -302,12 +302,12 @@ package body Ahven.Results is
                          Child : out Result_Collection_Access;
                          End_Of_Children : out Boolean) is
    begin
-      if Collection.Child_Iter = null then
+      if not Is_Valid (Collection.Child_Iter) then
          Collection.Child_Iter := First (Collection.Children);
       else
          Collection.Child_Iter := Next (Collection.Child_Iter);
       end if;
-      if Collection.Child_Iter = null then
+      if not Is_Valid (Collection.Child_Iter) then
          End_Of_Children := True;
          Child := null;
       else

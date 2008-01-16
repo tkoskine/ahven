@@ -59,7 +59,7 @@ package body Ahven.Framework is
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Add (Data (Iter), I);
          Iter := Next (Iter);
       end loop;
@@ -92,7 +92,7 @@ package body Ahven.Framework is
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Listeners.Start_Test (Data (Iter).all, Info);
          Iter := Next (Iter);
       end loop;
@@ -105,7 +105,7 @@ package body Ahven.Framework is
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Listeners.End_Test (Data (Iter).all, Info);
          Iter := Next (Iter);
       end loop;
@@ -226,7 +226,7 @@ package body Ahven.Framework is
 
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result) is
-      use type Test_Command_List.Iterator;
+      use Test_Command_List;
       use type Ada.Calendar.Time;
 
       Iter : Test_Command_List.Iterator :=
@@ -236,7 +236,7 @@ package body Ahven.Framework is
    begin
       Set_Test_Name (Info, Name (T));
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
 
          Start_Test (Result, Info);
@@ -260,7 +260,7 @@ package body Ahven.Framework is
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
                   Result    : in out Test_Result) is
-      use type Test_Command_List.Iterator;
+      use Test_Command_List;
       use type Ada.Calendar.Time;
 
       Iter : Test_Command_List.Iterator :=
@@ -270,7 +270,7 @@ package body Ahven.Framework is
    begin
       Set_Test_Name (Info, Name (T));
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          if To_String (Test_Command_List.Data (Iter).Name) = Test_Name then
             Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
 
@@ -298,7 +298,7 @@ package body Ahven.Framework is
       Iter : Iterator := First (T.Routines);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Ptr := Data (Iter);
          Free (Ptr);
          Iter := Next (Iter);
@@ -333,37 +333,37 @@ package body Ahven.Framework is
 
    procedure Run (T      : in out Test_Suite;
                   Result : in out Test_Result) is
-      use type Test_List.Iterator;
+      use Test_List;
 
-      Iter : Test_List.Iterator := Test_List.First (T.Test_Cases);
+      Iter : Iterator := First (T.Test_Cases);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
 
-         Execute (Test_List.Data (Iter).all, Result);
-         Iter := Test_List.Next (Iter);
+         Execute (Data (Iter).all, Result);
+         Iter := Next (Iter);
       end loop;
    end Run;
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
                   Result    : in out Test_Result) is
-      use type Test_List.Iterator;
+      use Test_List;
 
-      Iter : Test_List.Iterator := Test_List.First (T.Test_Cases);
+      Iter : Iterator := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
          Run (T, Result);
       else
          loop
-            exit when Iter = null;
+            exit when not Is_Valid (Iter);
 
-            if To_String (Name (Test_List.Data (Iter).all)) = Test_Name then
-               Execute (Test_List.Data (Iter).all, Result);
+            if To_String (Name (Data (Iter).all)) = Test_Name then
+               Execute (Data (Iter).all, Result);
             else
-               Execute (Test_List.Data (Iter).all, Test_Name, Result);
+               Execute (Data (Iter).all, Test_Name, Result);
             end if;
-            Iter := Test_List.Next (Iter);
+            Iter := Next (Iter);
          end loop;
       end if;
    end Run;
@@ -377,7 +377,7 @@ package body Ahven.Framework is
       Iter : Iterator := First (T.Test_Cases);
    begin
       loop
-         exit when Iter = null;
+         exit when not Is_Valid (Iter);
          Ptr := Data (Iter);
          Free (Ptr);
          Iter := Next (Iter);
