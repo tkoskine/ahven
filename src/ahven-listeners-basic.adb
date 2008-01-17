@@ -16,6 +16,15 @@
 
 package body Ahven.Listeners.Basic is
 
+   procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
+                                 Info     : Result_Info;
+                                 Result   : Result_Type) is
+   begin
+      Listener.Last_Test_Result := Result;
+      Listener.Last_Test_Message := Get_Message (Info);
+      Listener.Last_Test_Long_Message := Get_Long_Message (Info);
+   end Set_Last_Test_Info;
+
    function Create return Result_Listener_Class_Access is
    begin
       return new Basic_Listener;
@@ -24,34 +33,28 @@ package body Ahven.Listeners.Basic is
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Info  : Result_Info) is
    begin
-      Listener.Last_Test_Result := PASS_RESULT;
-      Listener.Last_Test_Message := Message (Info);
-      Listener.Last_Test_Long_Message := Long_Message (Info);
+      Set_Last_Test_Info (Listener, Info, PASS_RESULT);
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
                           Info  : Result_Info) is
    begin
-      Listener.Last_Test_Result := FAILURE_RESULT;
-      Listener.Last_Test_Message := Message (Info);
-      Listener.Last_Test_Long_Message := Long_Message (Info);
+      Set_Last_Test_Info (Listener, Info, FAILURE_RESULT);
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
                         Info  : Result_Info) is
    begin
-      Listener.Last_Test_Result := ERROR_RESULT;
-      Listener.Last_Test_Message := Message (Info);
-      Listener.Last_Test_Long_Message := Long_Message (Info);
+      Set_Last_Test_Info (Listener, Info, ERROR_RESULT);
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
                          Info  : Result_Info) is
       R : Result_Collection_Access := null;
    begin
-      if Routine_Name (Info) = Null_Unbounded_String then
+      if Get_Routine_Name (Info) = Null_Unbounded_String then
          R := new Result_Collection;
-         Set_Name (R.all, Test_Name (Info));
+         Set_Name (R.all, Get_Test_Name (Info));
          Set_Parent (R.all, Listener.Current_Result);
 
          if Listener.Current_Result = null then
@@ -82,8 +85,9 @@ package body Ahven.Listeners.Basic is
             Listener.Last_Test_Result := NO_RESULT;
          end if;
 
-         if Routine_Name (Info) = Null_Unbounded_String then
-            Listener.Current_Result := Parent (Listener.Current_Result.all);
+         if Get_Routine_Name (Info) = Null_Unbounded_String then
+            Listener.Current_Result :=
+              Get_Parent (Listener.Current_Result.all);
          end if;
       end if;
    end End_Test;

@@ -73,22 +73,22 @@ package Ahven.Results is
                               Filename : String);
    -- Set the name of the test output file.
 
-   function Test_Name (Info : Result_Info) return Unbounded_String;
+   function Get_Test_Name (Info : Result_Info) return Unbounded_String;
    -- Return the test name of the result info.
 
-   function Routine_Name (Info : Result_Info) return Unbounded_String;
+   function Get_Routine_Name (Info : Result_Info) return Unbounded_String;
    -- Return the routine name of the result info.
 
-   function Message (Info : Result_Info) return Unbounded_String;
+   function Get_Message (Info : Result_Info) return Unbounded_String;
    -- Return the message of the result info.
 
-   function Long_Message (Info : Result_Info) return Unbounded_String;
+   function Get_Long_Message (Info : Result_Info) return Unbounded_String;
    -- Return the long message of the result info.
 
-   function Execution_Time (Info : Result_Info) return Duration;
+   function Get_Execution_Time (Info : Result_Info) return Duration;
    -- Return the execution time of the result info.
 
-   function Output_File (Info : Result_Info) return Unbounded_String;
+   function Get_Output_File (Info : Result_Info) return Unbounded_String;
    -- Return the name of the output file.
    -- Empty string is returned in case there is no output file.
 
@@ -139,10 +139,11 @@ package Ahven.Results is
    -- Return the amount of test errors in the collection.
    -- Tests in child collections are included.
 
-   function Test_Name (Collection : Result_Collection) return Unbounded_String;
+   function Get_Test_Name (Collection : Result_Collection)
+     return Unbounded_String;
    -- Return the name of the collection's test.
 
-   function Parent (Collection : Result_Collection)
+   function Get_Parent (Collection : Result_Collection)
      return Result_Collection_Access;
    -- Return the parent of the collection.
 

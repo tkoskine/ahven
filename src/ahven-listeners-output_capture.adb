@@ -33,9 +33,9 @@ package body Ahven.Listeners.Output_Capture is
       R : Result_Collection_Access := null;
    begin
       -- Empty routine name means a test suite or test case
-      if Routine_Name (Info) = Null_Unbounded_String then
+      if Get_Routine_Name (Info) = Null_Unbounded_String then
          R := new Result_Collection;
-         Set_Name (R.all, Test_Name (Info));
+         Set_Name (R.all, Get_Test_Name (Info));
          Set_Parent (R.all, Listener.Current_Result);
 
          if Listener.Current_Result = null then
@@ -83,8 +83,9 @@ package body Ahven.Listeners.Output_Capture is
             Listener.Last_Test_Result := NO_RESULT;
          end if;
 
-         if Routine_Name (Info) = Null_Unbounded_String then
-            Listener.Current_Result := Parent (Listener.Current_Result.all);
+         if Get_Routine_Name (Info) = Null_Unbounded_String then
+            Listener.Current_Result :=
+              Get_Parent (Listener.Current_Result.all);
          end if;
       end if;
    end End_Test;
@@ -108,8 +109,8 @@ package body Ahven.Listeners.Output_Capture is
       loop
          Next_Pass (Collection, Info, Collection_End);
          exit Pass_File_Loop when Collection_End;
-         If Length (Output_File (Info)) > 0 then
-            Remove_File (To_String (Output_File (Info)));
+         If Length (Get_Output_File (Info)) > 0 then
+            Remove_File (To_String (Get_Output_File (Info)));
          end if;
       end loop Pass_File_Loop;
 
@@ -117,8 +118,8 @@ package body Ahven.Listeners.Output_Capture is
       loop
          Next_Failure (Collection, Info, Collection_End);
          exit Failure_File_Loop when Collection_End;
-         If Length (Output_File (Info)) > 0 then
-            Remove_File (To_String (Output_File (Info)));
+         If Length (Get_Output_File (Info)) > 0 then
+            Remove_File (To_String (Get_Output_File (Info)));
          end if;
       end loop Failure_File_Loop;
 
@@ -126,8 +127,8 @@ package body Ahven.Listeners.Output_Capture is
       loop
          Next_Error (Collection, Info, Collection_End);
          exit Error_File_Loop when Collection_End;
-         If Length (Output_File (Info)) > 0 then
-            Remove_File (To_String (Output_File (Info)));
+         If Length (Get_Output_File (Info)) > 0 then
+            Remove_File (To_String (Get_Output_File (Info)));
          end if;
       end loop Error_File_Loop;
 

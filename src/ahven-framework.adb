@@ -19,7 +19,7 @@ with Ada.Exceptions;
 with Ada.Calendar;
 
 package body Ahven.Framework is
-   use Address_To_Access_Conversions;
+   use Test_Case_Address_Conversion;
 
    procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
                             I : Result_Info);
@@ -138,7 +138,7 @@ package body Ahven.Framework is
 
    procedure Execute (T : in out Test'Class;
                       Result : in out Test_Result) is
-      N : Unbounded_String := Name (T);
+      N : Unbounded_String := Get_Name (T);
       Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
@@ -159,7 +159,7 @@ package body Ahven.Framework is
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
-      N : Unbounded_String := Name (T);
+      N : Unbounded_String := Get_Name (T);
       Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
@@ -219,10 +219,10 @@ package body Ahven.Framework is
          end if;
    end Run_Command;
 
-   function Name (T : Test_Case) return Unbounded_String is
+   function Get_Name (T : Test_Case) return Unbounded_String is
    begin
       return T.Name;
-   end Name;
+   end Get_Name;
 
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result) is
@@ -234,7 +234,7 @@ package body Ahven.Framework is
       Info : Result_Info := Empty_Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
-      Set_Test_Name (Info, Name (T));
+      Set_Test_Name (Info, Get_Name (T));
       loop
          exit when not Is_Valid (Iter);
          Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
@@ -268,7 +268,7 @@ package body Ahven.Framework is
       Info : Result_Info := Empty_Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
-      Set_Test_Name (Info, Name (T));
+      Set_Test_Name (Info, Get_Name (T));
       loop
          exit when not Is_Valid (Iter);
          if To_String (Test_Command_List.Data (Iter).Name) = Test_Name then
@@ -326,10 +326,10 @@ package body Ahven.Framework is
       Test_List.Append (Suite.Test_Cases, T);
    end Add_Test;
 
-   function Name (T : Test_Suite) return Unbounded_String is
+   function Get_Name (T : Test_Suite) return Unbounded_String is
    begin
       return T.Suite_Name;
-   end Name;
+   end Get_Name;
 
    procedure Run (T      : in out Test_Suite;
                   Result : in out Test_Result) is
@@ -358,7 +358,7 @@ package body Ahven.Framework is
          loop
             exit when not Is_Valid (Iter);
 
-            if To_String (Name (Data (Iter).all)) = Test_Name then
+            if To_String (Get_Name (Data (Iter).all)) = Test_Name then
                Execute (Data (Iter).all, Result);
             else
                Execute (Data (Iter).all, Test_Name, Result);

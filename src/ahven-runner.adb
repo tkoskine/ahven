@@ -24,7 +24,7 @@ package body Ahven.Runner is
                   Result : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Info;
    begin
-      Results.Set_Test_Name (P, Framework.Name (T.all));
+      Results.Set_Test_Name (P, Framework.Get_Name (T.all));
       begin
          Framework.Execute (T.all, Result);
       exception
@@ -42,7 +42,7 @@ package body Ahven.Runner is
                   Result    : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Info := Results.Empty_Result_Info;
    begin
-      Results.Set_Test_Name (P, Framework.Name (T.all));
+      Results.Set_Test_Name (P, Framework.Get_Name (T.all));
       begin
          Framework.Execute (T.all, Test_Name, Result);
       exception

@@ -72,7 +72,7 @@ package Ahven.Framework is
    procedure Tear_Down (T : in out Test);
    -- Tear_Down is called after the test procedure is executed.
 
-   function Name (T : Test) return Unbounded_String is abstract;
+   function Get_Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
 
    procedure Run (T      : in out Test;
@@ -105,7 +105,7 @@ package Ahven.Framework is
 
    type Test_Case_Class_Access is access all Test_Case'Class;
 
-   function Name (T : Test_Case) return Unbounded_String;
+   function Get_Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
 
    procedure Run (T      : in out Test_Case;
@@ -165,7 +165,7 @@ package Ahven.Framework is
    -- Add a Test to the suite. The suite frees the Test automatically
    -- when it is no longer needed.
 
-   function Name (T : Test_Suite) return Unbounded_String;
+   function Get_Name (T : Test_Suite) return Unbounded_String;
    -- Return the name of Test_Suite.
 
    procedure Run (T      : in out Test_Suite;
@@ -215,12 +215,12 @@ private
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
 
-   package Address_To_Access_Conversions is
+   package Test_Case_Address_Conversion is
      new System.Address_To_Access_Conversions (Test_Case'Class);
 
    type Test_Object_Command is new Test_Command with record
       Routine : Object_Test_Routine_Access;
-      Object  : Address_To_Access_Conversions.Object_Pointer;
+      Object  : Test_Case_Address_Conversion.Object_Pointer;
    end record;
    -- Test_Command type with a test object attached to the test routine.
 

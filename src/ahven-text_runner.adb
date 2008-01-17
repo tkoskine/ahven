@@ -85,7 +85,7 @@ package body Ahven.Text_Runner is
       Pad (Output, Level);
       for A in Input'Range loop
          Append (Output, Input (A));
-         if Input (A) = Ada.Characters.Latin_1.LF and A /= Input'Last then
+         if (Input (A) = Ada.Characters.Latin_1.LF) and (A /= Input'Last) then
             Pad (Output, Level);
          end if;
       end loop;
@@ -96,14 +96,13 @@ package body Ahven.Text_Runner is
                          Result : String) is
       use Ada.Strings;
 
-      Msg        : constant Unbounded_String := Message (Info);
+      Msg        : constant Unbounded_String := Get_Message (Info);
       Output     : Unbounded_String := Null_Unbounded_String;
       Result_Out : String (1 .. 7) := (others => ' ');
       Time_Out   : String (1 .. 12) := (others => ' ');
    begin
       Pad (Output, Level + 1);
-      -- Put (To_String (Data (Iter).Test_Name) & " - ");
-      Append (Output, Routine_Name (Info));
+      Append (Output, Get_Routine_Name (Info));
       if Length (Msg) > 0 then
          Append (Output, " - ");
          Append (Output, Msg);
@@ -117,13 +116,13 @@ package body Ahven.Text_Runner is
 
       -- If we know the name of the routine, we print it,
       -- the result, and the execution time.
-      if Length (Routine_Name (Info)) > 0 then
+      if Length (Get_Routine_Name (Info)) > 0 then
          Move (Source => Result,
                Target => Result_Out,
                Drop => Right,
                Justify => Right,
                Pad => ' ');
-         Move (Source => Duration'Image (Execution_Time (Info)),
+         Move (Source => Duration'Image (Get_Execution_Time (Info)),
                Target => Time_Out,
                Drop => Right,
                Justify => Right,
@@ -131,10 +130,11 @@ package body Ahven.Text_Runner is
          Put (" " & Result_Out);
          Put (" " & Time_Out & "s");
       end if;
-      if Length (Long_Message (Info)) > 0 then
+      if Length (Get_Long_Message (Info)) > 0 then
          New_Line;
          Output := Null_Unbounded_String;
-         Multiline_Pad (Output, To_String (Long_Message (Info)), Level + 2);
+         Multiline_Pad
+           (Output, To_String (Get_Long_Message (Info)), Level + 2);
          Put (To_String (Output));
       end if;
 
@@ -147,9 +147,9 @@ package body Ahven.Text_Runner is
       Info     : Result_Info := Empty_Result_Info;
       Child    : Result_Collection_Access := null;
    begin
-      if Length (Test_Name (Result)) > 0 then
+      if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Test_Name (Result)) & ":");
+         Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
       Failure_Loop:
@@ -157,8 +157,8 @@ package body Ahven.Text_Runner is
          Next_Failure (Result, Info, End_Flag);
          exit Failure_Loop when End_Flag;
          Print_Test (Info, Level, "FAIL");
-         if Length (Output_File (Info)) > 0 then
-            Print_Log_File (To_String (Output_File (Info)));
+         if Length (Get_Output_File (Info)) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Info)));
          end if;
       end loop Failure_Loop;
 
@@ -177,9 +177,9 @@ package body Ahven.Text_Runner is
       Info     : Result_Info := Empty_Result_Info;
       Child    : Result_Collection_Access := null;
    begin
-      if Length (Test_Name (Result)) > 0 then
+      if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Test_Name (Result)) & ":");
+         Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
       Error_Loop:
@@ -187,8 +187,8 @@ package body Ahven.Text_Runner is
          Next_Error (Result, Info, End_Flag);
          exit Error_Loop when End_Flag;
          Print_Test (Info, Level, "ERROR");
-         if Length (Output_File (Info)) > 0 then
-            Print_Log_File (To_String (Output_File (Info)));
+         if Length (Get_Output_File (Info)) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Info)));
          end if;
       end loop Error_Loop;
 
@@ -208,9 +208,9 @@ package body Ahven.Text_Runner is
       Info     : Result_Info := Empty_Result_Info;
       Child    : Result_Collection_Access := null;
    begin
-      if Length (Test_Name (Result)) > 0 then
+      if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
-         Put_Line (To_String (Test_Name (Result)) & ":");
+         Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
       Pass_Loop:

@@ -90,35 +90,35 @@ package body Ahven.Results is
       Set_Output_File (Info, To_Unbounded_String (Filename));
    end Set_Output_File;
 
-   function Test_Name (Info : Result_Info) return Unbounded_String is
+   function Get_Test_Name (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Test_Name;
-   end Test_Name;
+   end Get_Test_Name;
 
-   function Routine_Name (Info : Result_Info) return Unbounded_String is
+   function Get_Routine_Name (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Routine_Name;
-   end Routine_Name;
+   end Get_Routine_Name;
 
-   function Message (Info : Result_Info) return Unbounded_String is
+   function Get_Message (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Message;
-   end Message;
+   end Get_Message;
 
-   function Long_Message (Info : Result_Info) return Unbounded_String is
+   function Get_Long_Message (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Long_Message;
-   end Long_Message;
+   end Get_Long_Message;
 
-   function Execution_Time (Info : Result_Info) return Duration is
+   function Get_Execution_Time (Info : Result_Info) return Duration is
    begin
       return Info.Execution_Time;
-   end Execution_Time;
+   end Get_Execution_Time;
 
-   function Output_File (Info : Result_Info) return Unbounded_String is
+   function Get_Output_File (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Output_File;
-   end Output_File;
+   end Get_Output_File;
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child : Result_Collection_Access) is
@@ -237,17 +237,17 @@ package body Ahven.Results is
       return Count;
    end Failure_Count;
 
-   function Test_Name (Collection : Result_Collection)
+   function Get_Test_Name (Collection : Result_Collection)
      return Unbounded_String is
    begin
       return Collection.Test_Name;
-   end Test_Name;
+   end Get_Test_Name;
 
-   function Parent (Collection : Result_Collection)
+   function Get_Parent (Collection : Result_Collection)
      return Result_Collection_Access is
    begin
       return Collection.Parent;
-   end Parent;
+   end Get_Parent;
 
    procedure Next_In_List (List : in out Result_Info_List.List;
                            Iter : in out Result_Info_List.Iterator;

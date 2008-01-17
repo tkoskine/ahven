@@ -54,5 +54,7 @@ package Ahven.Listeners.Basic is
    -- New implementation for Listeners.End_Test
 
 private
-
+   procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
+                                 Info     : Result_Info;
+                                 Result   : Result_Type);
 end Ahven.Listeners.Basic;
