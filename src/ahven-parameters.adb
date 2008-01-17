@@ -48,26 +48,30 @@ package body Ahven.Parameters is
    -- Option "--" can be used to separate options and test names.
    --
    procedure Parse_Parameters (Info : out Parameter_Info) is
+      procedure Handle_Parameter (P : in out Parameter_Info; Arg : String);
+      -- Parse one parameter and update P if necessary.
+
       Files_Only : Boolean := False;
-   begin
-      for A in Natural range 1 .. Argument_Count loop
-         if Argument (A)'Size > 0 then
-            declare
-               Arg : String renames Argument (A);
-            begin
-               if Arg'Size > 1 and then Arg = "--" then
-                  Files_Only := True;
-               end if;
-               if Files_Only = False and then
-                  Arg'Size > 1       and then
-                  Arg (Arg'First) = '-'
-               then
-                  Parse_Options (Info, Arg (Arg'First + 1 .. Arg'Last));
-               else
-                  Info.Test_Name := To_Unbounded_String (Arg);
-               end if;
-            end;
+
+      procedure Handle_Parameter (P : in out Parameter_Info; Arg : String) is
+      begin
+         if Arg = "--" then
+            Files_Only := True;
+         elsif Arg'Size > 1 then
+            if Files_Only = False and Arg (Arg'First) = '-' then
+               Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last));
+            else
+               P.Test_Name := To_Unbounded_String (Arg);
+            end if;
          end if;
+      end Handle_Parameter;
+   begin
+      -- Default values: verbose mode, no capture
+      Info := (Verbose_Output => True,
+               Capture_Output => False,
+               Test_Name => Null_Unbounded_String);
+      for A in Natural range 1 .. Argument_Count loop
+         Handle_Parameter (Info, Argument (A));
       end loop;
    end Parse_Parameters;
 
