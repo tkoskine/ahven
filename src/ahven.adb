@@ -20,7 +20,7 @@ package body Ahven is
 
    procedure Assert (Condition : Boolean; Message : String) is
    begin
-      if Condition = False then
+      if not Condition then
          Ada.Exceptions.Raise_Exception (Assertion_Error'Identity, Message);
       end if;
    end Assert;

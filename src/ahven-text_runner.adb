@@ -267,7 +267,7 @@ package body Ahven.Text_Runner is
          end if;
       end loop;
       Close (Handle);
-      if First = False then
+      if not First then
          -- New_Line;
          Put_Line ("====================");
       end if;

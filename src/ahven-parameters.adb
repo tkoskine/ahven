@@ -58,7 +58,7 @@ package body Ahven.Parameters is
          if Arg = "--" then
             Files_Only := True;
          elsif Arg'Size > 1 then
-            if (Files_Only = False) and (Arg (Arg'First) = '-') then
+            if (not Files_Only) and (Arg (Arg'First) = '-') then
                Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last));
             else
                P.Test_Name := To_Unbounded_String (Arg);

@@ -254,14 +254,14 @@ package body Ahven.Results is
                            Info : out Result_Info;
                            End_Of_List : out Boolean) is
    begin
-      if not Is_Valid (Iter) then
-         Iter := First (List);
-      else
+      if Is_Valid (Iter) then
          Iter := Next (Iter);
+      else
+         Iter := First (List);
       end if;
 
-      if not Is_Valid (Iter) then
-         End_Of_List := True;
+      End_Of_List := not Is_Valid (Iter);
+      if End_Of_List then
          Info := (Test_Name => Null_Unbounded_String,
                   Routine_Name => Null_Unbounded_String,
                   Message => Null_Unbounded_String,
@@ -269,7 +269,6 @@ package body Ahven.Results is
                   Execution_Time => 0.0,
                   Output_File => Null_Unbounded_String);
       else
-         End_of_List := False;
          Info := Data (Iter);
       end if;
    end Next_In_List;
@@ -308,17 +307,17 @@ package body Ahven.Results is
                          Child : out Result_Collection_Access;
                          End_Of_Children : out Boolean) is
    begin
-      if not Is_Valid (Collection.Child_Iter) then
-         Collection.Child_Iter := First (Collection.Children);
-      else
+      if Is_Valid (Collection.Child_Iter) then
          Collection.Child_Iter := Next (Collection.Child_Iter);
-      end if;
-      if not Is_Valid (Collection.Child_Iter) then
-         End_Of_Children := True;
-         Child := null;
       else
+         Collection.Child_Iter := First (Collection.Children);
+      end if;
+      if Is_Valid (Collection.Child_Iter) then
          End_of_Children := False;
          Child := Data (Collection.Child_Iter);
+      else
+         End_Of_Children := True;
+         Child := null;
       end if;
    end Next_Child;
 
