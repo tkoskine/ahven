@@ -18,7 +18,6 @@ with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
-with Ada.Command_Line;
 with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
@@ -26,6 +25,7 @@ with Ahven.Results;
 with Ahven.Listeners.Output_Capture;
 with Ahven.Framework;
 with Ahven.Listeners;
+with Ahven.Parameters;
 
 use Ada.Text_IO;
 use Ada.Strings.Unbounded;
@@ -280,16 +280,22 @@ package body Ahven.Text_Runner is
       Result   : Test_Result;
       Listener : Listeners.Result_Listener_Class_Access :=
         Listeners.Output_Capture.Create;
+      Params   : Parameters.Parameter_Info;
    begin
+      Parameters.Parse_Parameters (Params);
       Add_Listener (Result, Listener);
-      if Ada.Command_Line.Argument_Count > 0 then
-         Runner.Run (Test, Ada.Command_Line.Argument (1), Result);
+      if Parameters.Single_Test (Params) then
+         Runner.Run (Test, Parameters.Test_Name (Params), Result);
       else
          Runner.Run (Test, Result);
       end if;
       Report_Results
-        (Output_Capture_Listener (Listener.all).Main_Result, True);
+        (Output_Capture_Listener (Listener.all).Main_Result,
+         Parameters.Verbose (Params));
       Free (Listener);
+   exception
+      when Parameters.Invalid_Parameter =>
+         Parameters.Usage;
    end Run;
 
 end Ahven.Text_Runner;
