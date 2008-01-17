@@ -28,7 +28,7 @@ package Ahven.Temporary_Output is
    function Get_Name (File : Temporary_File) return String;
    -- Return the name of the file.
 
-   procedure Redirect_OutPut (To_File : in out Temporary_File);
+   procedure Redirect_Output (To_File : in out Temporary_File);
    -- Redirect the standard output to the file.
    -- To_File must be opened using Create_Temp.
 

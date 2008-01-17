@@ -173,7 +173,7 @@ package body Ahven.Doubly_Linked_List is
       return Iter.Data;
    end Data;
 
-   function Data (Iter : Node_access) return Data_Type is
+   function Data (Iter : Node_Access) return Data_Type is
    begin
       return Iter.Data;
    end Data;

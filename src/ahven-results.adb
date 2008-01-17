@@ -277,7 +277,7 @@ package body Ahven.Results is
                          Info : out Result_Info;
                          End_Of_Errors : out Boolean) is
    begin
-      Next_In_list (Collection.Errors,
+      Next_In_List (Collection.Errors,
                     Collection.Error_Iter,
                     Info,
                     End_Of_Errors);
@@ -287,7 +287,7 @@ package body Ahven.Results is
                            Info : out Result_Info;
                            End_Of_Failures : out Boolean) is
    begin
-      Next_In_list (Collection.Failures,
+      Next_In_List (Collection.Failures,
                     Collection.Failure_Iter,
                     Info,
                     End_Of_Failures);
@@ -297,7 +297,7 @@ package body Ahven.Results is
                         Info : out Result_Info;
                         End_Of_Passes : out Boolean) is
    begin
-      Next_In_list (Collection.Passes,
+      Next_In_List (Collection.Passes,
                     Collection.Pass_Iter,
                     Info,
                     End_Of_Passes);
@@ -312,12 +312,12 @@ package body Ahven.Results is
       else
          Collection.Child_Iter := First (Collection.Children);
       end if;
-      if Is_Valid (Collection.Child_Iter) then
-         End_of_Children := False;
-         Child := Data (Collection.Child_Iter);
-      else
-         End_Of_Children := True;
+
+      End_Of_Children := not Is_Valid (Collection.Child_Iter);
+      if End_Of_Children then
          Child := null;
+      else
+         Child := Data (Collection.Child_Iter);
       end if;
    end Next_Child;
 

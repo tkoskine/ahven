@@ -87,7 +87,7 @@ private
    procedure Remove (Ptr : Node_Access);
    -- A procedure to release memory pointed by Ptr.
 
-   function Data (Iter : Node_access) return Data_Type;
+   function Data (Iter : Node_Access) return Data_Type;
 
    type Node is record
       Data : Data_Type;

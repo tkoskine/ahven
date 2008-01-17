@@ -18,12 +18,14 @@ check naming_convention
 check max_statement_nesting (loop, 2);
 search max_statement_nesting (all, 3);
 
-check simplifiable_statements (if_for_case);
+check simplifiable_statements (if_for_case, block, null);
+check simplifiable_expressions (range, logical);
 
 check characters (control, trailing_space);
 search characters (not_iso_646);
 
 check declarations (integer_type);
+check declarations (task);
 
 check directly_accessed_globals;
 
@@ -36,3 +38,7 @@ Hiding: check local_hiding (strict);
 check Max_Size (if_branch, 30);
 check Max_Size (unnamed_loop, 20);
 check Max_Size (block, 25);
+
+check style (negative_condition);
+check style (casing_identifier, original);
+check style (multiple_elements);
