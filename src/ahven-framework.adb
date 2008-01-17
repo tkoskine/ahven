@@ -192,6 +192,9 @@ package body Ahven.Framework is
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
 
+   -- The heart of the package.
+   -- Run one test routine (well, Command at this point) and
+   -- store the result to the Result object.
    procedure Run_Command (Command : Test_Command_Class_Access;
                           Info    : Result_Info;
                           Result  : in out Test_Result) is
@@ -224,6 +227,10 @@ package body Ahven.Framework is
       return T.Name;
    end Get_Name;
 
+   -- Run procedure for Test_Case.
+   --
+   -- Loops over the test routine list, executes the routines,
+   -- and calculates the time spent in the routine.
    procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result) is
       use Test_Command_List;
@@ -385,7 +392,7 @@ package body Ahven.Framework is
       Remove_All (T.Test_Cases);
    end Finalize;
 
-   procedure Release_Suite (T : in out Test_Suite_Access) is
+   procedure Release_Suite (T : Test_Suite_Access) is
       procedure Free is
         new Ada.Unchecked_Deallocation (Test_Suite, Test_Suite_Access);
       Ptr : Test_Suite_Access := T;

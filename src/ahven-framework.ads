@@ -180,7 +180,7 @@ package Ahven.Framework is
    procedure Finalize (T : in out Test_Suite);
    -- Finalize procedure of Test_Suite. Frees all added Tests.
 
-   procedure Release_Suite (T : in out Test_Suite_Access);
+   procedure Release_Suite (T : Test_Suite_Access);
    -- Release the memory of Test_Suite.
    -- All added tests are released automatically.
 
