@@ -37,11 +37,14 @@ package body Ahven.Temporary_Output is
                           To_String (File.Name));
    end Create_Temp;
 
-   procedure Redirect_OutPut (To_File : in out Temporary_File) is
+   function Get_Name (File : Temporary_File) return String is
+   begin
+      return To_String (File.Name);
+   end Get_Name;
 
+   procedure Redirect_OutPut (To_File : in out Temporary_File) is
    begin
       Ada.Text_IO.Flush;
-
       Ada.Text_IO.Set_Output (To_File.Handle);
    end Redirect_Output;
 

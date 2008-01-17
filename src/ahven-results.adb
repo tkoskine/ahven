@@ -84,6 +84,12 @@ package body Ahven.Results is
       Info.Output_File := Filename;
    end Set_Output_File;
 
+   procedure Set_Output_File (Info : in out Result_Info;
+                              Filename : String) is
+   begin
+      Set_Output_File (Info, To_Unbounded_String (Filename));
+   end Set_Output_File;
+
    function Test_Name (Info : Result_Info) return Unbounded_String is
    begin
       return Info.Test_Name;

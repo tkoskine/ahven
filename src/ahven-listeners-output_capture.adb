@@ -69,7 +69,8 @@ package body Ahven.Listeners.Output_Capture is
 
             -- Saving the name of the temporary file to the test result,
             -- so the file can be deleted later
-            Set_Output_File (My_Info, Listener.Output_File.Name);
+            Set_Output_File
+              (My_Info, Temporary_Output.Get_Name (Listener.Output_File));
 
             case Listener.Last_Test_Result is
                when PASS_RESULT =>

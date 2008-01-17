@@ -69,6 +69,10 @@ package Ahven.Results is
                               Filename : Unbounded_String);
    -- Set the name of the test output file.
 
+   procedure Set_Output_File (Info : in out Result_Info;
+                              Filename : String);
+   -- Set the name of the test output file.
+
    function Test_Name (Info : Result_Info) return Unbounded_String;
    -- Return the test name of the result info.
 

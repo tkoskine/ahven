@@ -19,21 +19,32 @@ with Ada.Text_IO;
 package Ahven.Temporary_Output is
    Temporary_File_Error : exception;
 
-   type Temporary_File is limited record
-      Name    : Ada.Strings.Unbounded.Unbounded_String;
-      Handle  : Ada.Text_IO.File_Type;
-   end record;
+   type Temporary_File is limited private;
 
    procedure Create_Temp (File : out Temporary_File);
    -- Create a new temporary file. Exception Temporary_File_Error
    -- is raised if the procedure cannot create a new temp file.
 
+   function Get_Name (File : Temporary_File) return String;
+   -- Return the name of the file.
+
    procedure Redirect_OutPut (To_File : in out Temporary_File);
+   -- Redirect the standard output to the file.
+   -- To_File must be opened using Create_Temp.
 
    procedure Restore_Output;
+   -- Restore the standard output to its default settings.
 
    procedure Remove_Temp (File : in out Temporary_File);
+   -- Remove the temporary file. File can be either open or closed.
 
    procedure Close_Temp (File : in out Temporary_File);
+   -- Close the temporary file.
+
+private
+   type Temporary_File is limited record
+      Name    : Ada.Strings.Unbounded.Unbounded_String;
+      Handle  : Ada.Text_IO.File_Type;
+   end record;
 
 end Ahven.Temporary_Output;
