@@ -30,6 +30,9 @@ package Ahven.Parameters is
    procedure Usage;
    -- Print usage.
 
+   function Capture (Info : Parameter_Info) return Boolean;
+   -- Capture Ada.Text_IO output?
+
    function Verbose (Info : Parameter_Info) return Boolean;
    -- Use verbose mode?
 
@@ -41,6 +44,7 @@ package Ahven.Parameters is
 private
    type Parameter_Info is record
       Verbose_Output : Boolean          := True;
+      Capture_Output : Boolean          := False;
       Test_Name      : Unbounded_String := Null_Unbounded_String;
    end record;
 end Ahven.Parameters;

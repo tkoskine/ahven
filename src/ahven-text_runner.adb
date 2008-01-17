@@ -23,6 +23,7 @@ with Ada.Characters.Latin_1;
 with Ahven.Runner;
 with Ahven.Results;
 with Ahven.Listeners.Output_Capture;
+with Ahven.Listeners.Basic;
 with Ahven.Framework;
 with Ahven.Listeners;
 with Ahven.Parameters;
@@ -34,6 +35,7 @@ use Ada.Strings.Fixed;
 use Ahven.Results;
 use Ahven.Framework;
 use Ahven.Listeners.Output_Capture;
+use Ahven.Listeners.Basic;
 
 package body Ahven.Text_Runner is
 
@@ -278,11 +280,16 @@ package body Ahven.Text_Runner is
 
       Test     : constant Test_Class_Access := Test_Class_Access (Suite);
       Result   : Test_Result;
-      Listener : Listeners.Result_Listener_Class_Access :=
-        Listeners.Output_Capture.Create;
+      Listener : Listeners.Result_Listener_Class_Access;
       Params   : Parameters.Parameter_Info;
    begin
       Parameters.Parse_Parameters (Params);
+      if Parameters.Capture (Params) then
+         Listener := Listeners.Output_Capture.Create;
+      else
+         Listener := Listeners.Basic.Create;
+      end if;
+
       Add_Listener (Result, Listener);
       if Parameters.Single_Test (Params) then
          Runner.Run (Test, Parameters.Test_Name (Params), Result);
@@ -290,7 +297,7 @@ package body Ahven.Text_Runner is
          Runner.Run (Test, Result);
       end if;
       Report_Results
-        (Output_Capture_Listener (Listener.all).Main_Result,
+        (Basic_Listener (Listener.all).Main_Result,
          Parameters.Verbose (Params));
       Free (Listener);
    exception

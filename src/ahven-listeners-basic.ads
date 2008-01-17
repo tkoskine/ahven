@@ -31,6 +31,8 @@ package Ahven.Listeners.Basic is
 
    type Basic_Listener_Access is access Basic_Listener;
 
+   function Create return Result_Listener_Class_Access;
+
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Info     :        Result_Info);
    -- New implementation for Listeners.Add_Pass

@@ -16,6 +16,11 @@
 
 package body Ahven.Listeners.Basic is
 
+   function Create return Result_Listener_Class_Access is
+   begin
+      return new Basic_Listener;
+   end Create;
+
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Info  : Result_Info) is
    begin

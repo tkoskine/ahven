@@ -23,10 +23,17 @@ use Ada.Text_IO;
 package body Ahven.Parameters is
    procedure Parse_Options (Info : in out Parameter_Info; Option : String);
 
+   -- Possible options:
+   --  -c : capture output
+   --  -q : quiet mode
+   --  -v : verbose mode (default)
+   --
    procedure Parse_Options (Info : in out Parameter_Info; Option : String) is
    begin
       for A in Option'Range loop
          case Option (A) is
+            when 'c' =>
+               Info.Capture_Output := True;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
@@ -38,10 +45,7 @@ package body Ahven.Parameters is
    end Parse_Options;
 
    -- Recognize command line parameters.
-   --
-   -- Usage: tester [-vq] [testname]
-   --  -q : quiet mode
-   --  -v : verbose mode (default)
+   -- Option "--" can be used to separate options and test names.
    --
    procedure Parse_Parameters (Info : out Parameter_Info) is
       Files_Only : Boolean := False;
@@ -69,11 +73,17 @@ package body Ahven.Parameters is
 
    procedure Usage is
    begin
-      Put_Line ("Text_Runner:");
-      Put_Line ("Possible parameters: [-qv] [testname]");
-      Put_Line ("   -v    : verbose output (default)");
-      Put_Line ("   -q    : quiet output");
+      Put_Line ("Possible parameters: [-cqv] [--] [testname]");
+      Put_Line ("   -c    : capture and report test outputs");
+      Put_Line ("   -v    : verbose results (default)");
+      Put_Line ("   -q    : quiet results");
+      Put_Line ("   --    : end of parameters (optional)");
    end Usage;
+
+   function Capture (Info : Parameter_Info) return Boolean is
+   begin
+      return Info.Capture_Output;
+   end Capture;
 
    function Verbose (Info : Parameter_Info) return Boolean is
    begin
