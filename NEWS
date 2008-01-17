@@ -26,6 +26,9 @@ Changes
 	  does not try to rebuild the library.
 	  (Patch from Alexander Senier)
 
+	* Function Ahven.Framework.Name is renamed
+	  to Ahven.Framework.Get_Name.
+
 Internal
 --------
 	* New listener: Output_Capture_Listener, which will
@@ -39,6 +42,8 @@ Internal
 	  similar naming scheme.
 
 	* AdaControl is used to enforce some parts of the coding style.
+	  This caused some API changes, but in most cases the changes
+	  are invisible.
 
 2007-10-24 Ahven 1.0
 ====================
