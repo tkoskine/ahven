@@ -27,14 +27,16 @@ SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
 	src/ahven.ads src/ahven-listeners-output_capture.adb \
 	src/ahven-listeners-output_capture.ads \
 	src/ahven-temporary_output.adb \
-	src/ahven-temporary_output.ads
+	src/ahven-temporary_output.ads \
+	src/ahven-parameters.adb src/ahven-parameters.ads
 
 ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-framework.ali lib/ahven-listeners-basic.ali \
 	lib/ahven-listeners.ali lib/ahven-results.ali \
 	lib/ahven-runner.ali lib/ahven-text_runner.ali \
 	lib/ahven-listeners-output_capture.ali \
-	lib/ahven-temporary_output.ali
+	lib/ahven-temporary_output.ali \
+	lib/ahven-parameters.ali
 
 SO_LIBRARY=lib/libahven.so
 GPR_FILE=ahven.gpr
