@@ -49,7 +49,7 @@ build_lib:
 	gnatmake -Pahven_lib
 
 build_tests: build_lib
-	gprmake -Pahven_tests
+	gnatmake -Pahven_tests
 
 clean: clean_lib clean_tests clean_docs
 
