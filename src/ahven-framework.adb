@@ -138,7 +138,7 @@ package body Ahven.Framework is
 
    procedure Execute (T : in out Test'Class;
                       Result : in out Test_Result) is
-      N : Unbounded_String := Get_Name (T);
+      N : constant Unbounded_String := Get_Name (T);
       Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
@@ -159,7 +159,7 @@ package body Ahven.Framework is
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
-      N : Unbounded_String := Get_Name (T);
+      N : constant Unbounded_String := Get_Name (T);
       Info : Result_Info   := Empty_Result_Info;
    begin
       Set_Test_Name (Info, N);
