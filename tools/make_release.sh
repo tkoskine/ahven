@@ -30,14 +30,14 @@ failure()
 }
 
 if [ x"$2" = x"" ]; then
-    echo "usage: make_release <place> <version>"
+    echo "usage: make_release <branch> <version>"
     exit 1
 fi
 
 PLACE=$1
 VERSION=$2
 
-cd /tmp || "cd /tmp failed"
+cd /tmp || failure "cd /tmp failed"
 svn export $SVNROOT/$PLACE ahven-$VERSION || failure "checkout failed"
 tar zcf ahven-$VERSION.tar.gz ahven-$VERSION || failure "tar zcf failed"
 
