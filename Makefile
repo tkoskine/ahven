@@ -38,7 +38,7 @@ ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-temporary_output.ali \
 	lib/ahven-parameters.ali
 
-SO_LIBRARY=lib/libahven.so
+SO_LIBRARY=libahven.so.11.0
 GPR_FILE=ahven.gpr
 
 default: build_all
@@ -69,7 +69,8 @@ install_lib:
 	mkdir -p $(PREFIX)/lib/ahven
 	$(INSTALL) -m 644 $(SOURCES) $(PREFIX)/include/ahven
 	$(INSTALL) -m 444 $(ALI_FILES) $(PREFIX)/lib/ahven
-	$(INSTALL) -m 644 $(SO_LIBRARY) $(PREFIX)/lib/ahven
+	$(INSTALL) -m 644 lib/$(SO_LIBRARY) $(PREFIX)/lib/ahven
+	ln -sf $(PREFIX)/lib/ahven/$(SO_LIBRARY) $(PREFIX)/lib/libahven.so
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
 
 check: build_tests
