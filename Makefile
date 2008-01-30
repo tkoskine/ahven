@@ -67,6 +67,7 @@ install: install_lib
 install_lib:
 	mkdir -p $(PREFIX)/include/ahven
 	mkdir -p $(PREFIX)/lib/ahven
+	mkdir -p $(PREFIX)/lib/gnat
 	$(INSTALL) -m 644 $(SOURCES) $(PREFIX)/include/ahven
 	$(INSTALL) -m 444 $(ALI_FILES) $(PREFIX)/lib/ahven
 	$(INSTALL) -m 644 lib/$(SO_LIBRARY) $(PREFIX)/lib/ahven
