@@ -29,6 +29,8 @@ Changes
 	* Function Ahven.Framework.Name is renamed
 	  to Ahven.Framework.Get_Name.
 
+	* Shared library produced by GNAT now includes the version number.
+
 Internal
 --------
 	* New listener: Output_Capture_Listener, which will
