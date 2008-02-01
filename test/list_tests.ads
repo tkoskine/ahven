@@ -14,7 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ahven.Framework;
 
 package List_Tests is

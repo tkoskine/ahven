@@ -14,10 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
 with Ahven.Framework;
-
-use Ada.Strings.Unbounded;
 
 package Framework_Tests is
    type Test is new Ahven.Framework.Test_Case with record

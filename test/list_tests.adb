@@ -14,7 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Framework;
 with Ahven.Doubly_Linked_List;
 
 use Ahven;

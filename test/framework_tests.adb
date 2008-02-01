@@ -15,7 +15,6 @@
 --
 
 with Ada.Unchecked_Deallocation;
-with Ahven.Framework;
 with Ahven.Listeners;
 with Ahven.Results;
 with Simple_Listener;

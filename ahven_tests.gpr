@@ -24,7 +24,9 @@ project Ahven_Tests is
    for Main use ("tester.adb");
 
    package Builder is
-      for Default_Switches ("ada") use ("-g", "-gnatQ");
+      for Default_Switches ("Ada") use ("-g", "-gnatQ",
+                                        "-gnatwa",
+                                        "-gnat95");
    end Builder;
 
    package Linker is

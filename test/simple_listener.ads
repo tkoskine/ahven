@@ -30,19 +30,19 @@ package Simple_Listener is
    type Listener_Access is access all Listener;
 
    procedure Add_Pass (Object: in out Listener;
-                       Place : Ahven.Results.Result_Info);
+                       Info : Ahven.Results.Result_Info);
 
    procedure Add_Failure (Object: in out Listener;
-                          Place : Ahven.Results.Result_Info);
+                          Info : Ahven.Results.Result_Info);
 
    procedure Add_Error (Object: in out Listener;
-                        Place : Ahven.Results.Result_Info);
+                        Info : Ahven.Results.Result_Info);
 
    procedure Start_Test (Object: in out Listener;
-                         Place : Ahven.Results.Result_Info);
+                         Info : Ahven.Results.Result_Info);
 
    procedure End_Test (Object: in out Listener;
-                       Place : Ahven.Results.Result_Info);
+                       Info : Ahven.Results.Result_Info);
 
 end Simple_Listener;
 

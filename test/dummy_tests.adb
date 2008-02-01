@@ -15,7 +15,6 @@
 --
 
 with Ahven;
-with Ahven.Framework;
 
 package body Dummy_Tests is
    procedure Initialize (T : in out Test) is
@@ -36,7 +35,7 @@ package body Dummy_Tests is
 
    procedure This_Test_Passes is
    begin
-      Ahven.Assert (1 = 1, "1 /= 1!");
+      Ahven.Assert (True, "True was not true!");
    end This_Test_Passes;
 
    procedure This_Test_Raises_Error is
