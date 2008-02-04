@@ -27,7 +27,6 @@ package Ahven.Listeners is
    -- Whenever a test is run, the framework calls
    -- registered listeners and tells them the result of the test.
 
-   type Result_Listener_Access is access Result_Listener;
    type Result_Listener_Class_Access is access all Result_Listener'Class;
 
    procedure Add_Pass (Listener : in out Result_Listener;

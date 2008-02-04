@@ -1,3 +1,11 @@
+????-??-?? Ahven 1.2
+
+Changes
+-------
+	* Unused access types Test_Access, Test_Case_Class_Access,
+	  Test_Case_Access, Test_Suite_Class_Access, and
+	  Result_Listener_Access removed.
+
 2008-01-30 Ahven 1.1
 ====================
 

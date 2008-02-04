@@ -64,8 +64,6 @@ package Ahven.Framework is
 
    type Test_Class_Access is access all Test'Class;
 
-   type Test_Access is access Test;
-
    procedure Set_Up (T : in out Test);
    -- Set_Up is called before executing the test procedure.
 
@@ -100,10 +98,6 @@ package Ahven.Framework is
 
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.
-
-   type Test_Case_Access is access all Test_Case;
-
-   type Test_Case_Class_Access is access all Test_Case'Class;
 
    function Get_Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
@@ -153,8 +147,6 @@ package Ahven.Framework is
    -- A collection of Tests.
 
    type Test_Suite_Access is access all Test_Suite;
-
-   type Test_Suite_Class_Access is access Test_Suite'Class;
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access;
