@@ -24,7 +24,7 @@ package body Framework_Tests is
    use Ahven;
    procedure Free is new Ada.Unchecked_Deallocation
      (Simple_Listener.Listener, Simple_Listener.Listener_Access);
-   
+
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Framework tests");
@@ -45,7 +45,7 @@ package body Framework_Tests is
       Framework.Add_Test_Routine (T, Test_Test_Suite_Run'Access,
                                   "Test_Suite: Run");
    end Initialize;
-   
+
    procedure Set_Up (T : in out Test) is
    begin
       T.Value := 2;
@@ -55,12 +55,12 @@ package body Framework_Tests is
    begin
       T.Value := -3;
    end Tear_Down;
-   
+
    procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class) is
    begin
       Assert (Test (T).Value = 2, "Set_Up not called!");
    end Test_Set_Up;
-   
+
    procedure Test_Test_Result_Add_Pass is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
@@ -111,7 +111,7 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Test_Result_Add_Error;
-   
+
    procedure Test_Test_Case_Run is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
@@ -133,7 +133,7 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Test_Case_Run;
-   
+
    procedure Test_Test_Suite_Run is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
@@ -158,7 +158,7 @@ package body Framework_Tests is
       Free (My_Listener);
       Framework.Release_Suite (My_Suite);
    end Test_Test_Suite_Run;
-   
+
    procedure Test_Add_Listener_Null is
       Result : Framework.Test_Result;
    begin
@@ -170,7 +170,7 @@ package body Framework_Tests is
             null; -- Ok, this was expected
       end;
    end Test_Add_Listener_Null;
-   
+
    procedure Test_Call_End_Test is
       Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
@@ -188,5 +188,4 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Call_End_Test;
-
 end Framework_Tests;

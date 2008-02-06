@@ -1,6 +1,6 @@
 *
-^-- Ahven.*$
-^--.*$
+^-- Ahven Unit Test Library$
+^--$
 ^-- Copyright \(c\) 20.+$
 ^--$
 ^-- Permission to use, copy, modify, and distribute this software for any$

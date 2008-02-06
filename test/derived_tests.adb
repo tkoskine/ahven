@@ -15,7 +15,7 @@
 --
 
 package body Derived_Tests is
-   
+
    procedure Initialize (T : in out Test) is
    begin
       Framework_Tests.Initialize (Framework_Tests.Test (T));

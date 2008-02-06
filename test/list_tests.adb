@@ -17,7 +17,7 @@
 with Ahven.Doubly_Linked_List;
 
 use Ahven;
-     
+
 package body List_Tests is
    package Integer_Linked_List is
      new Ahven.Doubly_Linked_List ( Integer );
@@ -36,7 +36,7 @@ package body List_Tests is
 
       Remove_All (My_List);
    end Test_Append;
-   
+
    procedure Test_Remove is
       use Integer_Linked_List;
 
@@ -51,7 +51,7 @@ package body List_Tests is
       Iter := Next (First (My_List));
       Remove (My_List, Iter);
       Iter := Next (First (My_List));
-     
+
       Assert (3 = Data (Iter),
          "Remove does not work properly, data item 3 in a wrong place");
       Assert (5 = Data (Last (My_List)),
@@ -92,7 +92,7 @@ package body List_Tests is
          Assert (Data (Iter) = A, "Data does not match");
          Iter := Prev (Iter);
       end loop;
- 
+
    end Test_Move;
 
    procedure Test_Assignment is
@@ -177,7 +177,7 @@ package body List_Tests is
       loop
          exit when not Is_Valid (Iter);
          Count := Count + 1;
-         Assert (Data (Iter) = 4 - Count, "Iterator points to wrong item!"); 
+         Assert (Data (Iter) = (4 - Count), "Iterator points to wrong item!");
          Iter := Prev (Iter);
       end loop;
       Assert (Count = 3, "Iteration loop did not loop all items!");

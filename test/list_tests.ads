@@ -19,7 +19,7 @@ with Ahven.Framework;
 package List_Tests is
 
    type Test_Case is new Ahven.Framework.Test_Case with null record;
-   
+
    procedure Initialize (T: in out Test_Case);
 private
    procedure Test_Append;

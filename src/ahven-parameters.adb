@@ -96,7 +96,7 @@ package body Ahven.Parameters is
 
    function Single_Test (Info : Parameter_Info) return Boolean is
    begin
-      return not (Length (Info.Test_Name) = 0);
+      return (Length (Info.Test_Name) /= 0);
    end Single_Test;
 
    function Test_Name (Info : Parameter_Info) return String is

@@ -31,6 +31,7 @@ check directly_accessed_globals;
 
 -- No variables in package specs
 check usage (variable, from_spec);
+Removable : search usage (object, not from_spec, not read);
 
 Hiding: check local_hiding (strict);
 
