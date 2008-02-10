@@ -194,7 +194,6 @@ private
    -- Run the test routine attached to the Test_Command.
    -- Child types must implement this procedure.
 
-   type Test_Command_Access is access all Test_Command;
    type Test_Command_Class_Access is access Test_Command'Class;
 
    package Test_Command_List is
@@ -215,8 +214,6 @@ private
       Object  : Test_Case_Address_Conversion.Object_Pointer;
    end record;
    -- Test_Command type with a test object attached to the test routine.
-
-   type Test_Object_Command_Access is access all Test_Object_Command;
 
    procedure Run (Command : Test_Object_Command);
    -- Implementation of Run (Command : Test_Command) procedure.

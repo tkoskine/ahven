@@ -29,8 +29,6 @@ package Ahven.Listeners.Basic is
       Last_Test_Long_Message : Unbounded_String := Null_Unbounded_String;
    end record;
 
-   type Basic_Listener_Access is access Basic_Listener;
-
    function Create return Result_Listener_Class_Access;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
