@@ -181,34 +181,34 @@ package Ahven.Results is
 
 private
    type Result_Info is record
-      Test_Name    : Unbounded_String := Null_Unbounded_String;
-      Output_File  : Unbounded_String := Null_Unbounded_String;
-      Routine_Name : Unbounded_String := Null_Unbounded_String;
-      Execution_Time : Duration := 0.0;
-      Message      : Unbounded_String := Null_Unbounded_String;
-      Long_Message : Unbounded_String := Null_Unbounded_String;
+      Test_Name      : Unbounded_String := Null_Unbounded_String;
+      Output_File    : Unbounded_String := Null_Unbounded_String;
+      Routine_Name   : Unbounded_String := Null_Unbounded_String;
+      Execution_Time : Duration         := 0.0;
+      Message        : Unbounded_String := Null_Unbounded_String;
+      Long_Message   : Unbounded_String := Null_Unbounded_String;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
-     (Test_Name => Null_Unbounded_String,
-      Routine_Name => Null_Unbounded_String,
-      Message => Null_Unbounded_String,
-      Long_Message => Null_Unbounded_String,
+     (Test_Name      => Null_Unbounded_String,
+      Routine_Name   => Null_Unbounded_String,
+      Message        => Null_Unbounded_String,
+      Long_Message   => Null_Unbounded_String,
       Execution_Time => 0.0,
-      Output_File => Null_Unbounded_String);
+      Output_File    => Null_Unbounded_String);
 
    package Result_Info_List is
      new Ahven.Doubly_Linked_List (Data_Type => Result_Info);
 
    package Result_List is
-     new Ahven.Doubly_Linked_List (Result_Collection_Access);
+     new Ahven.Doubly_Linked_List (Data_Type => Result_Collection_Access);
 
    type Result_Collection is new Ada.Finalization.Controlled with record
       Test_Name : Unbounded_String := Null_Unbounded_String;
-      Passes    : Result_Info_List.List := Result_Info_List.Empty_List;
-      Failures  : Result_Info_List.List := Result_Info_List.Empty_List;
-      Errors    : Result_Info_List.List := Result_Info_List.Empty_List;
-      Children  : Result_List.List       := Result_List.Empty_List;
+      Passes    : Result_Info_List.List    := Result_Info_List.Empty_List;
+      Failures  : Result_Info_List.List    := Result_Info_List.Empty_List;
+      Errors    : Result_Info_List.List    := Result_Info_List.Empty_List;
+      Children  : Result_List.List         := Result_List.Empty_List;
       Parent    : Result_Collection_Access := null;
 
       Pass_Iter    : Result_Info_List.Iterator;
@@ -216,5 +216,4 @@ private
       Error_Iter   : Result_Info_List.Iterator;
       Child_Iter   : Result_List.Iterator;
    end record;
-
 end Ahven.Results;
