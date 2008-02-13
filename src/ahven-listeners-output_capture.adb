@@ -30,20 +30,10 @@ package body Ahven.Listeners.Output_Capture is
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Info  : Result_Info) is
-      R : Result_Collection_Access := null;
    begin
       -- Empty routine name means a test suite or test case
       if Get_Routine_Name (Info) = Null_Unbounded_String then
-         R := new Result_Collection;
-         Set_Name (R.all, Get_Test_Name (Info));
-         Set_Parent (R.all, Listener.Current_Result);
-
-         if Listener.Current_Result = null then
-            Add_Child (Listener.Main_Result, R);
-         else
-            Add_Child (Listener.Current_Result.all, R);
-         end if;
-         Listener.Current_Result := R;
+         Start_Test (Basic.Basic_Listener (Listener), Info);
       else
          -- A test routine? Let's create a temporary file
          -- and direct Ada.Text_IO output there.
@@ -59,9 +49,6 @@ package body Ahven.Listeners.Output_Capture is
       -- Sanity check: if we have existing Result_Collection then...
       if Listener.Current_Result /= null then
          if Listener.Last_Test_Result /= NO_RESULT then
-            Set_Message (My_Info, Listener.Last_Test_Message);
-            Set_Long_Message (My_Info, Listener.Last_Test_Long_Message);
-
             -- End of the test routine, so we can restore
             -- the normal output now and close the temporary file.
             Temporary_Output.Restore_Output;
@@ -71,23 +58,9 @@ package body Ahven.Listeners.Output_Capture is
             -- so the file can be deleted later
             Set_Output_File
               (My_Info, Temporary_Output.Get_Name (Listener.Output_File));
-
-            case Listener.Last_Test_Result is
-               when PASS_RESULT =>
-                  Add_Pass (Listener.Current_Result.all, My_Info);
-               when FAILURE_RESULT =>
-                  Add_Failure (Listener.Current_Result.all, My_Info);
-               when ERROR_RESULT | NO_RESULT =>
-                  Add_Error (Listener.Current_Result.all, My_Info);
-            end case;
-            Listener.Last_Test_Result := NO_RESULT;
-         end if;
-
-         if Get_Routine_Name (Info) = Null_Unbounded_String then
-            Listener.Current_Result :=
-              Get_Parent (Listener.Current_Result.all);
          end if;
       end if;
+      End_Test (Basic.Basic_Listener (Listener), My_Info);
    end End_Test;
 
    procedure Remove_File (Name : String) is
