@@ -73,24 +73,24 @@ package Ahven.Framework is
    function Get_Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
 
-   procedure Run (T      : in out Test;
+   procedure Run (T      :        Test;
                   Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
 
-   procedure Run (T         : in out Test;
+   procedure Run (T         :        Test;
                   Test_Name :        String;
                   Result    : in out Test_Result) is abstract;
    -- Run the test with given name and place the test result to Result.
    -- Notice: If multiple tests have same name this might call all of
    -- them.
 
-   procedure Execute (T      : in out Test'Class;
+   procedure Execute (T      :        Test'Class;
                       Result : in out Test_Result);
    -- Call Test class' Run method and place the test outcome to Result.
    -- The procedure calls Start_Test of every listener before calling
    -- the Run procedure and End_Test after calling the Run procedure.
 
-   procedure Execute (T         : in out Test'Class;
+   procedure Execute (T         :        Test'Class;
                       Test_Name :        String;
                       Result    : in out Test_Result);
    -- Same as Execute above, but call the Run procedure which
@@ -102,11 +102,11 @@ package Ahven.Framework is
    function Get_Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
 
-   procedure Run (T      : in out Test_Case;
+   procedure Run (T      :        Test_Case;
                   Result : in out Test_Result);
    -- Run Test_Case's test routines.
 
-   procedure Run (T         : in out Test_Case;
+   procedure Run (T         :        Test_Case;
                   Test_Name :        String;
                   Result    : in out Test_Result);
    -- Run Test_Case's test routine which matches to the Name.
@@ -160,11 +160,11 @@ package Ahven.Framework is
    function Get_Name (T : Test_Suite) return Unbounded_String;
    -- Return the name of Test_Suite.
 
-   procedure Run (T      : in out Test_Suite;
+   procedure Run (T      :        Test_Suite;
                   Result : in out Test_Result);
    -- Run Test_Suite's Test_Cases.
 
-   procedure Run (T         : in out Test_Suite;
+   procedure Run (T         :        Test_Suite;
                   Test_Name :        String;
                   Result    : in out Test_Result);
    -- Run test suite's child which matches to the given name.

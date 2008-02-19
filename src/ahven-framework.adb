@@ -136,7 +136,7 @@ package body Ahven.Framework is
       null;
    end Tear_Down;
 
-   procedure Execute (T : in out Test'Class;
+   procedure Execute (T      :        Test'Class;
                       Result : in out Test_Result) is
       N : constant Unbounded_String := Get_Name (T);
       Info : Result_Info   := Empty_Result_Info;
@@ -156,7 +156,7 @@ package body Ahven.Framework is
       End_Test (Result, Info);
    end Execute;
 
-   procedure Execute (T           : in out Test'Class;
+   procedure Execute (T           :        Test'Class;
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
       N : constant Unbounded_String := Get_Name (T);
@@ -231,7 +231,7 @@ package body Ahven.Framework is
    --
    -- Loops over the test routine list, executes the routines,
    -- and calculates the time spent in the routine.
-   procedure Run (T      : in out Test_Case;
+   procedure Run (T      :        Test_Case;
                   Result : in out Test_Result) is
       use Test_Command_List;
       use type Ada.Calendar.Time;
@@ -264,7 +264,7 @@ package body Ahven.Framework is
    --
    -- The procedure also tracks the execution time of the
    -- test routines and records them to the Result_Info.
-   procedure Run (T         : in out Test_Case;
+   procedure Run (T         :        Test_Case;
                   Test_Name :        String;
                   Result    : in out Test_Result) is
       use Test_Command_List;
@@ -338,7 +338,7 @@ package body Ahven.Framework is
       return T.Suite_Name;
    end Get_Name;
 
-   procedure Run (T      : in out Test_Suite;
+   procedure Run (T      :        Test_Suite;
                   Result : in out Test_Result) is
       use Test_List;
 
@@ -346,13 +346,12 @@ package body Ahven.Framework is
    begin
       loop
          exit when not Is_Valid (Iter);
-
          Execute (Data (Iter).all, Result);
          Iter := Next (Iter);
       end loop;
    end Run;
 
-   procedure Run (T         : in out Test_Suite;
+   procedure Run (T         :        Test_Suite;
                   Test_Name :        String;
                   Result    : in out Test_Result) is
       use Test_List;

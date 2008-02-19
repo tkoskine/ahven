@@ -292,9 +292,9 @@ package body Ahven.Text_Runner is
 
       Add_Listener (Result, Listener);
       if Parameters.Single_Test (Params) then
-         Runner.Run (Test, Parameters.Test_Name (Params), Result);
+         Runner.Run (Test.all, Parameters.Test_Name (Params), Result);
       else
-         Runner.Run (Test, Result);
+         Runner.Run (Test.all, Result);
       end if;
       Report_Results
         (Basic_Listener (Listener.all).Main_Result,

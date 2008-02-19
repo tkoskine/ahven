@@ -18,11 +18,11 @@ with Ahven.Framework;
 
 package Ahven.Runner is
 
-   procedure Run (T      : Ahven.Framework.Test_Class_Access;
+   procedure Run (T      : Ahven.Framework.Test'Class;
                   Result : in out Ahven.Framework.Test_Result);
    -- Run the test T and place results to Result.
 
-   procedure Run (T         : Ahven.Framework.Test_Class_Access;
+   procedure Run (T         : Ahven.Framework.Test'Class;
                   Test_Name : String;
                   Result    : in out Ahven.Framework.Test_Result);
    -- If name matches, run the test T (or one of its children)

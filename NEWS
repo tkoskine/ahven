@@ -7,6 +7,10 @@ Changes
 	  Test_Command_Access, Test_Object_Command_Access,
 	  Basic_Listener_Access, and Output_Capture_Listener_Access removed.
 
+	* Ahven.Framework.Run (T : in out Test;...) is changed to
+	  Ahven.Framework.Run (T : Test;...), because 'in out' mode
+	  was not necessary.
+
 2008-01-30 Ahven 1.1
 ====================
 

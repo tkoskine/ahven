@@ -20,13 +20,13 @@ with Ahven.Results;
 
 package body Ahven.Runner is
 
-   procedure Run (T      : Ahven.Framework.Test_Class_Access;
+   procedure Run (T      : Ahven.Framework.Test'Class;
                   Result : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Info;
    begin
-      Results.Set_Test_Name (P, Framework.Get_Name (T.all));
+      Results.Set_Test_Name (P, Framework.Get_Name (T));
       begin
-         Framework.Execute (T.all, Result);
+         Framework.Execute (T, Result);
       exception
          when E : Assertion_Error =>
             Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
@@ -37,14 +37,14 @@ package body Ahven.Runner is
       end;
    end Run;
 
-   procedure Run (T         : Ahven.Framework.Test_Class_Access;
+   procedure Run (T         : Ahven.Framework.Test'Class;
                   Test_Name : String;
                   Result    : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Info := Results.Empty_Result_Info;
    begin
-      Results.Set_Test_Name (P, Framework.Get_Name (T.all));
+      Results.Set_Test_Name (P, Framework.Get_Name (T));
       begin
-         Framework.Execute (T.all, Test_Name, Result);
+         Framework.Execute (T, Test_Name, Result);
       exception
          when E : Assertion_Error =>
             Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
