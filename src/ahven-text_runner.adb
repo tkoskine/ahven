@@ -278,7 +278,6 @@ package body Ahven.Text_Runner is
         (Listeners.Result_Listener'Class,
          Listeners.Result_Listener_Class_Access);
 
-      Test     : constant Test_Class_Access := Test_Class_Access (Suite);
       Result   : Test_Result;
       Listener : Listeners.Result_Listener_Class_Access;
       Params   : Parameters.Parameter_Info;
@@ -292,9 +291,9 @@ package body Ahven.Text_Runner is
 
       Add_Listener (Result, Listener);
       if Parameters.Single_Test (Params) then
-         Runner.Run (Test.all, Parameters.Test_Name (Params), Result);
+         Runner.Run (Suite.all, Parameters.Test_Name (Params), Result);
       else
-         Runner.Run (Test.all, Result);
+         Runner.Run (Suite.all, Result);
       end if;
       Report_Results
         (Basic_Listener (Listener.all).Main_Result,

@@ -21,6 +21,8 @@ with Ada.Calendar;
 package body Ahven.Framework is
    use Test_Case_Address_Conversion;
 
+   -- Few local wrapper functions, so we can use Add_Result procedure
+   -- for Passes, Failures, and Errors.
    procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
                             I : Result_Info);
    procedure Add_Error_L (L : access Listeners.Result_Listener'Class;
@@ -113,8 +115,8 @@ package body Ahven.Framework is
 
    procedure Add_Listener
      (Result : in out Test_Result;
-      Listener : Listeners.Result_Listener_Class_Access) is
-
+      Listener : Listeners.Result_Listener_Class_Access)
+   is
       use type Listeners.Result_Listener_Class_Access;
    begin
       if Listener = null then
@@ -138,10 +140,9 @@ package body Ahven.Framework is
 
    procedure Execute (T      :        Test'Class;
                       Result : in out Test_Result) is
-      N : constant Unbounded_String := Get_Name (T);
-      Info : Result_Info   := Empty_Result_Info;
+      Info : Result_Info := Empty_Result_Info;
    begin
-      Set_Test_Name (Info, N);
+      Set_Test_Name (Info, Get_Name (T));
 
       -- This Start_Test here is called for Test_Suites and Test_Cases.
       -- Info includes only the name of the test suite/case.
@@ -159,10 +160,9 @@ package body Ahven.Framework is
    procedure Execute (T           :        Test'Class;
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
-      N : constant Unbounded_String := Get_Name (T);
-      Info : Result_Info   := Empty_Result_Info;
+      Info : Result_Info := Empty_Result_Info;
    begin
-      Set_Test_Name (Info, N);
+      Set_Test_Name (Info, Get_Name (T));
 
       -- Like in the Ececute procedure above.
       Start_Test (Result, Info);
@@ -236,26 +236,25 @@ package body Ahven.Framework is
       use Test_Command_List;
       use type Ada.Calendar.Time;
 
-      Iter : Test_Command_List.Iterator :=
-        Test_Command_List.First (T.Routines);
+      Iter : Iterator := First (T.Routines);
       Info : Result_Info := Empty_Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
       Set_Test_Name (Info, Get_Name (T));
       loop
          exit when not Is_Valid (Iter);
-         Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
+         Set_Routine_Name (Info, Data (Iter).Name);
 
          Start_Test (Result, Info);
          Start_Time := Ada.Calendar.Clock;
 
-         Run_Command (Test_Command_List.Data (Iter), Info, Result);
+         Run_Command (Data (Iter), Info, Result);
 
          End_Time := Ada.Calendar.Clock;
          Set_Execution_Time (Info, End_Time - Start_Time);
          End_Test (Result, Info);
 
-         Iter := Test_Command_List.Next (Iter);
+         Iter := Next (Iter);
       end loop;
    end Run;
 
@@ -270,28 +269,27 @@ package body Ahven.Framework is
       use Test_Command_List;
       use type Ada.Calendar.Time;
 
-      Iter : Test_Command_List.Iterator :=
-        Test_Command_List.First (T.Routines);
-      Info : Result_Info := Empty_Result_Info;
+      Iter                 : Iterator    := First (T.Routines);
+      Info                 : Result_Info := Empty_Result_Info;
       Start_Time, End_Time : Ada.Calendar.Time;
    begin
       Set_Test_Name (Info, Get_Name (T));
       loop
          exit when not Is_Valid (Iter);
-         if To_String (Test_Command_List.Data (Iter).Name) = Test_Name then
-            Set_Routine_Name (Info, Test_Command_List.Data (Iter).Name);
+         if To_String (Data (Iter).Name) = Test_Name then
+            Set_Routine_Name (Info, Data (Iter).Name);
 
             Start_Test (Result, Info);
             Start_Time := Ada.Calendar.Clock;
 
-            Run_Command (Test_Command_List.Data (Iter), Info, Result);
+            Run_Command (Data (Iter), Info, Result);
 
             End_Time := Ada.Calendar.Clock;
             Set_Execution_Time (Info, End_Time - Start_Time);
             End_Test (Result, Info);
          end if;
 
-         Iter := Test_Command_List.Next (Iter);
+         Iter := Next (Iter);
       end loop;
    end Run;
 
@@ -320,12 +318,11 @@ package body Ahven.Framework is
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access is
-      Suite : constant Test_Suite_Access :=
+   begin
+      return
         new Test_Suite'(Ada.Finalization.Controlled with
                         Suite_Name => To_Unbounded_String (Suite_Name),
                         Test_Cases => Test_List.Empty_List);
-   begin
-      return Suite;
    end Create_Suite;
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
