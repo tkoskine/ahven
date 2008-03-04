@@ -67,7 +67,7 @@ package body Framework_Tests is
         new Simple_Listener.Listener;
       Place : Results.Result_Info;
    begin
-      Ahven.Framework.Add_Listener
+      Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (My_Listener));
       Framework.Add_Pass (Result, Place);
 
@@ -166,7 +166,7 @@ package body Framework_Tests is
          Framework.Add_Listener (Result, null);
          Fail ("No exception thrown");
       exception
-         when Ahven.Framework.Parameter_Error =>
+         when Framework.Parameter_Error =>
             null; -- Ok, this was expected
       end;
    end Test_Add_Listener_Null;
