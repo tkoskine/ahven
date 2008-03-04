@@ -273,7 +273,7 @@ package body Ahven.Text_Runner is
       end if;
    end Print_Log_File;
 
-   procedure Run (Suite : Framework.Test_Suite_Access) is
+   procedure Run (Suite : Framework.Test_Suite'Class) is
       procedure Free is new Ada.Unchecked_Deallocation
         (Listeners.Result_Listener'Class,
          Listeners.Result_Listener_Class_Access);
@@ -291,9 +291,9 @@ package body Ahven.Text_Runner is
 
       Add_Listener (Result, Listener);
       if Parameters.Single_Test (Params) then
-         Runner.Run (Suite.all, Parameters.Test_Name (Params), Result);
+         Runner.Run (Suite, Parameters.Test_Name (Params), Result);
       else
-         Runner.Run (Suite.all, Result);
+         Runner.Run (Suite, Result);
       end if;
       Report_Results
         (Basic_Listener (Listener.all).Main_Result,
@@ -304,4 +304,8 @@ package body Ahven.Text_Runner is
          Parameters.Usage;
    end Run;
 
+   procedure Run (Suite : Framework.Test_Suite_Access) is
+   begin
+      Run (Suite.all);
+   end Run;
 end Ahven.Text_Runner;

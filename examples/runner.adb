@@ -19,10 +19,8 @@ with Ahven.Framework;
 with Simple_Tests;
 
 procedure Runner is
-   S : Ahven.Framework.Test_Suite_Access :=
-     Ahven.Framework.Create_Suite ("All");
+   S : Ahven.Framework.Test_Suite := Ahven.Framework.Create_Suite ("All");
 begin
-   Ahven.Framework.Add_Test (S.all, new Simple_Tests.Test);
+   Ahven.Framework.Add_Test (S, new Simple_Tests.Test);
    Ahven.Text_Runner.Run (S);
-   Ahven.Framework.Release_Suite (S);
 end Runner;

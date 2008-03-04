@@ -325,6 +325,14 @@ package body Ahven.Framework is
                         Test_Cases => Test_List.Empty_List);
    end Create_Suite;
 
+   function Create_Suite (Suite_Name : String)
+     return Test_Suite is
+   begin
+      return (Ada.Finalization.Controlled with
+              Suite_Name => To_Unbounded_String (Suite_Name),
+              Test_Cases => Test_List.Empty_List);
+   end Create_Suite;
+
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
    begin
       Test_List.Append (Suite.Test_Cases, T);

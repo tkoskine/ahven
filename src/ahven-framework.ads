@@ -153,6 +153,11 @@ package Ahven.Framework is
    -- Create a new Test_Suite.
    -- Caller must free the returned Test_Suite using Release_Suite.
 
+   function Create_Suite (Suite_Name : String)
+     return Test_Suite;
+   -- Create a new Test_Suite. The suite and its children are
+   -- released automatically.
+
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access);
    -- Add a Test to the suite. The suite frees the Test automatically
    -- when it is no longer needed.

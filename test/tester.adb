@@ -23,11 +23,10 @@ with Derived_Tests;
 use Ahven;
 
 procedure Tester is
-   S : constant Framework.Test_Suite_Access := Framework.Create_Suite ("All");
+   S : Framework.Test_Suite := Framework.Create_Suite ("All");
 begin
-   Framework.Add_Test (S.all, new Framework_Tests.Test);
-   Framework.Add_Test (S.all, new Derived_Tests.Test);
-   Framework.Add_Test (S.all, new List_Tests.Test_Case);
+   Framework.Add_Test (S, new Framework_Tests.Test);
+   Framework.Add_Test (S, new Derived_Tests.Test);
+   Framework.Add_Test (S, new List_Tests.Test_Case);
    Text_Runner.Run (S);
-   Framework.Release_Suite (S);
 end Tester;
