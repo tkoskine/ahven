@@ -19,8 +19,6 @@ with Ada.Finalization;
 generic
    type Data_Type is private;
 package Ahven.Doubly_Linked_List is
-
-   type Node is private;
    type Iterator is private;
 
    List_Empty : exception;
@@ -81,6 +79,7 @@ package Ahven.Doubly_Linked_List is
    function Is_Valid (Iter : Iterator) return Boolean;
    -- Is Iterator still valid or out of range?
 private
+   type Node;
    type Node_Access is access Node;
    type Iterator is new Node_Access;
 
