@@ -338,6 +338,11 @@ package body Ahven.Framework is
       Test_List.Append (Suite.Test_Cases, T);
    end Add_Test;
 
+   procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access) is
+   begin
+      Add_Test (Suite, Test_Class_Access (T));
+   end Add_Test;
+
    function Get_Name (T : Test_Suite) return Unbounded_String is
    begin
       return T.Suite_Name;

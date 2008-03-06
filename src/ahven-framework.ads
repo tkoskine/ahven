@@ -162,6 +162,12 @@ package Ahven.Framework is
    -- Add a Test to the suite. The suite frees the Test automatically
    -- when it is no longer needed.
 
+   procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access);
+   -- Add a Test suite to the suite. The suite frees the Test automatically
+   -- when it is no longer needed.
+   -- This is a helper function, which internally calls
+   -- Add_Test (Suite : in out Test_Suite; T : Test_Class_Access).
+
    function Get_Name (T : Test_Suite) return Unbounded_String;
    -- Return the name of Test_Suite.
 

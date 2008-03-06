@@ -202,7 +202,7 @@ package body Framework_Tests is
       Framework.Add_Test (Child.all, new Dummy_Tests.Test);
 
       Parent := Framework.Create_Suite ("Parent suite");
-      Framework.Add_Test (Parent, Framework.Test_Class_Access (Child));
+      Framework.Add_Test (Parent, Child);
 
       Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (My_Listener));
