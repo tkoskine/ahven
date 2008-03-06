@@ -79,7 +79,7 @@ check: build_tests
 
 control:
 	rm -f objects/*.adt objects/*.ali
-	cd objects && adactl -f ../adacontrol-rules.txt ../src/*.ad[bs] ../test/*.ad[bs]
+	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs]
 	rm -f objects/*.adt objects/*.ali
 
 docs:
