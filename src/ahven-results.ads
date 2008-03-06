@@ -20,7 +20,7 @@ with Ahven.Doubly_Linked_List;
 
 use Ada.Strings.Unbounded;
 
--- Like the name implies, Results package is used for
+-- Like the name implies, the Results package is used for
 -- storing the test results.
 --
 -- Result_Info holds one invidual result and
