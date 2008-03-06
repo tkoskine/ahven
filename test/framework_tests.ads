@@ -43,4 +43,6 @@ package Framework_Tests is
 
    procedure Test_Call_End_Test;
 
+   procedure Test_Test_Suite_Inside_Suite;
+
 end Framework_Tests;
