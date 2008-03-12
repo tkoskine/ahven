@@ -46,7 +46,7 @@ default: build_all
 build_all: build_lib build_tests
 
 build_lib:
-	gnatmake -Pahven_lib
+	OS=UNIX gnatmake -Pahven_lib
 
 build_tests: build_lib
 	gnatmake -Pahven_tests
