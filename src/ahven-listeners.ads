@@ -43,7 +43,7 @@ package Ahven.Listeners is
 
    procedure Start_Test (Listener : in out Result_Listener;
                          Info     :        Result_Info) is abstract;
-   -- Called before the test begins.
+   -- Called before the test begins. This is called before Add_* procedures.
 
    procedure End_Test (Listener : in out Result_Listener;
                        Info     :        Result_Info) is abstract;
@@ -51,6 +51,6 @@ package Ahven.Listeners is
 
    package Result_Listener_List is
      new Ahven.Doubly_Linked_List (Result_Listener_Class_Access);
-   -- A package for Result_Listener list.
+   -- A package for a list of Result_Listeners.
 
 end Ahven.Listeners;
