@@ -15,24 +15,28 @@
 --
 
 project Ahven_Lib is
-  type OS_Type is ("UNIX", "Windows");
-  OS : OS_Type := external ("OS", "Windows");
+  type OS_Type is ("unix", "windows");
+  OS : OS_Type := external ("OS", "windows");
 
   Version := "11";
 
   for Languages use ("Ada");
-  for Source_Dirs use ("src");
   for Object_Dir use "objects";
   for Library_Name use "ahven";
   for Library_Dir use "lib";
   for Library_Kind use "dynamic";
 
+  OS_Dir := ();
+
   case OS is
-    when "UNIX" =>
+    when "unix" =>
       for Library_Version use "libahven.so." & Version & ".0";
-    when "Windows" =>
-      null;
+      OS_Dir := ("src/unix");
+    when "windows" =>
+      OS_Dir := ("src/windows");
   end case;
+
+  for Source_Dirs use ("src") & OS_Dir;
 
   package Builder is
      -- for Default_Switches ("Ada") use ("-Iinclude","-x","-O2","-pg");
