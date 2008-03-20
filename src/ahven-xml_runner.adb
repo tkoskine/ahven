@@ -14,12 +14,12 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Command_Line;
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings;
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
--- with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
 with Ahven.Results;
@@ -28,6 +28,8 @@ with Ahven.Listeners.Basic;
 with Ahven.Framework;
 with Ahven.Listeners;
 with Ahven.Parameters;
+
+with Ahven.Compat;
 
 use Ada.Text_IO;
 use Ada.Strings.Unbounded;
@@ -51,9 +53,11 @@ package body Ahven.XML_Runner is
                                Parent_Test : String;
                                Info : Result_Info);
 
-   procedure Print_Test_Case (Result : in out Result_Collection);
+   procedure Print_Test_Case (Result : in out Result_Collection;
+                              Dir : String);
 
-   procedure Report_Results (Result  : in out Result_Collection);
+   procedure Report_Results (Result : in out Result_Collection;
+                             Dir    : String);
 
    procedure Print_Log_File (File : in out File_Type; Filename : String);
 
@@ -64,11 +68,13 @@ package body Ahven.XML_Runner is
                                  Parent : String; Name : String;
                                  Execution_Time : String);
 
+   function Create_Name (Dir : String; Name : String) return String;
+
    function Filter_String (Str : String) return String is
       Result : String (Str'Range);
    begin
       for I in Str'Range loop
-         if Str (I) = ''' or Str (I) = ' ' then
+         if Str (I) = ''' then
             Result (I) := '_';
          else
             Result (I) := Str (I);
@@ -96,6 +102,22 @@ package body Ahven.XML_Runner is
       Print_Attribute (File, "time", Filter_String (Execution_Time));
       Put_Line (File, ">");
    end Print_Testcase_Tag;
+
+   function Create_Name (Dir : String; Name : String) return String is
+      function Filename (Test : String) return String;
+      -- Create a filename for the test.
+
+      function Filename (Test : String) return String is
+      begin
+         return "TEST-" & Filter_String (Test) & ".xml";
+      end Filename;
+   begin
+      if Dir'Length > 0 then
+         return Dir & Ahven.Compat.Directory_Separator & Filename (Name);
+      else
+         return Filename (Name);
+      end if;
+   end Create_Name;
 
    procedure Print_Test_Pass (File : in out File_Type;
                               Parent_Test : String;
@@ -142,14 +164,14 @@ package body Ahven.XML_Runner is
       Put_Line (File, "</testcase>");
    end Print_Test_Error;
 
-   procedure Print_Test_Case (Result : in out Result_Collection) is
+   procedure Print_Test_Case (Result : in out Result_Collection;
+                              Dir : String) is
       End_Flag : Boolean;
       Info     : Result_Info;
       File     : Ada.Text_IO.File_Type;
    begin
       Create (File => File, Mode => Ada.Text_IO.Out_File,
-              Name => "TEST-" & Filter_String
-                (To_String (Get_Test_Name (Result))) & ".xml");
+              Name => Create_Name (Dir, To_String (Get_Test_Name (Result))));
 
       Put_Line (File, "<?xml version=" & '"' & "1.0" & '"' &
                 " encoding=" & '"' & "iso-8859-1" & '"' &
@@ -194,7 +216,8 @@ package body Ahven.XML_Runner is
       Ada.Text_IO.Close (File);
    end Print_Test_Case;
 
-   procedure Report_Results (Result  : in out Result_Collection) is
+   procedure Report_Results (Result : in out Result_Collection;
+                             Dir    : String) is
       Child : Result_Collection_Access := null;
       End_Flag : Boolean;
    begin
@@ -202,9 +225,14 @@ package body Ahven.XML_Runner is
          Next_Child (Result, Child, End_Flag);
          exit when End_Flag;
          if Child_Depth (Child.all) = 0 then
-            Print_Test_Case (Child.all);
+            Print_Test_Case (Child.all, Dir);
          else
-            Report_Results (Child.all);
+            Report_Results (Child.all, Dir);
+
+            -- Handle the test cases in this collection
+            if Direct_Test_Count (Result) > 0 then
+               Print_Test_Case (Result, Dir);
+            end if;
          end if;
       end loop;
    end Report_Results;
@@ -256,7 +284,12 @@ package body Ahven.XML_Runner is
          Runner.Run (Suite, Result);
       end if;
 
-      Report_Results (Basic_Listener (Listener.all).Main_Result);
+      Report_Results (Basic_Listener (Listener.all).Main_Result,
+                      Parameters.Result_Dir (Params));
+      if Error_Count (Basic_Listener (Listener.all).Main_Result) > 0 or
+         Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0 then
+         Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
+      end if;
       Free (Listener);
    exception
       when Parameters.Invalid_Parameter =>

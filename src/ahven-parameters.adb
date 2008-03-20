@@ -21,19 +21,25 @@ use Ada.Command_Line;
 use Ada.Text_IO;
 
 package body Ahven.Parameters is
-   procedure Parse_Options (Info : in out Parameter_Info; Option : String);
+   procedure Parse_Options (Info : in out Parameter_Info; Option : String;
+                            Dir_Next : out Boolean);
 
    -- Possible options:
    --  -c : capture output
+   --  -d : result directory
    --  -q : quiet mode
    --  -v : verbose mode (default)
    --
-   procedure Parse_Options (Info : in out Parameter_Info; Option : String) is
+   procedure Parse_Options (Info : in out Parameter_Info; Option : String;
+                            Dir_Next : out Boolean) is
    begin
+      Dir_Next := False;
       for A in Option'Range loop
          case Option (A) is
             when 'c' =>
                Info.Capture_Output := True;
+            when 'd' =>
+               Dir_Next := True;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
@@ -52,14 +58,18 @@ package body Ahven.Parameters is
       -- Parse one parameter and update P if necessary.
 
       Files_Only : Boolean := False;
+      Dir_Next   : Boolean := False;
 
       procedure Handle_Parameter (P : in out Parameter_Info; Arg : String) is
       begin
-         if Arg = "--" then
+         if Dir_Next then
+            P.Result_Dir := To_Unbounded_String (Arg);
+            Dir_Next := False;
+         elsif Arg = "--" then
             Files_Only := True;
          elsif Arg'Size > 1 then
             if (not Files_Only) and (Arg (Arg'First) = '-') then
-               Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last));
+               Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last), Dir_Next);
             else
                P.Test_Name := To_Unbounded_String (Arg);
             end if;
@@ -69,16 +79,21 @@ package body Ahven.Parameters is
       -- Default values: verbose mode, no capture
       Info := (Verbose_Output => True,
                Capture_Output => False,
-               Test_Name => Null_Unbounded_String);
+               Test_Name => Null_Unbounded_String,
+               Result_Dir => Null_Unbounded_String);
       for A in Natural range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A));
       end loop;
+      if Dir_Next then
+         raise Invalid_Parameter;
+      end if;
    end Parse_Parameters;
 
    procedure Usage is
    begin
       Put_Line ("Possible parameters: [-cqv] [--] [testname]");
       Put_Line ("   -c    : capture and report test outputs");
+      Put_Line ("   -d    : directory for test results");
       Put_Line ("   -v    : verbose results (default)");
       Put_Line ("   -q    : quiet results");
       Put_Line ("   --    : end of parameters (optional)");
@@ -103,4 +118,9 @@ package body Ahven.Parameters is
    begin
       return To_String (Info.Test_Name);
    end Test_Name;
+
+   function Result_Dir (Info : Parameter_Info) return String is
+   begin
+      return To_String (Info.Result_Dir);
+   end Result_Dir;
 end Ahven.Parameters;

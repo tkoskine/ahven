@@ -41,10 +41,15 @@ package Ahven.Parameters is
 
    function Test_Name (Info : Parameter_Info) return String;
    -- Return the name of the test passed as a parameter.
+
+   function Result_Dir (Info : Parameter_Info) return String;
+   -- Return the directory for XML results.
+
 private
    type Parameter_Info is record
       Verbose_Output : Boolean          := True;
       Capture_Output : Boolean          := False;
       Test_Name      : Unbounded_String := Null_Unbounded_String;
+      Result_Dir     : Unbounded_String := Null_Unbounded_String;
    end record;
 end Ahven.Parameters;
