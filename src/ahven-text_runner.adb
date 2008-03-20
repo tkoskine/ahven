@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Command_Line;
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
@@ -298,6 +299,10 @@ package body Ahven.Text_Runner is
       Report_Results
         (Basic_Listener (Listener.all).Main_Result,
          Parameters.Verbose (Params));
+      if Error_Count (Basic_Listener (Listener.all).Main_Result) > 0 or
+         Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0 then
+         Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
+      end if;
       Free (Listener);
    exception
       when Parameters.Invalid_Parameter =>
