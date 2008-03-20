@@ -43,13 +43,13 @@ use Ahven.Listeners.Basic;
 package body Ahven.XML_Runner is
    function Filter_String (Str : String) return String;
 
-   procedure Print_Test_Pass (File : in out File_Type;
+   procedure Print_Test_Pass (File : File_Type;
                               Parent_Test : String;
                               Info : Result_Info);
-   procedure Print_Test_Failure (File : in out File_Type;
+   procedure Print_Test_Failure (File : File_Type;
                                  Parent_Test : String;
                                  Info : Result_Info);
-   procedure Print_Test_Error (File : in out File_Type;
+   procedure Print_Test_Error (File : File_Type;
                                Parent_Test : String;
                                Info : Result_Info);
 
@@ -59,14 +59,16 @@ package body Ahven.XML_Runner is
    procedure Report_Results (Result : in out Result_Collection;
                              Dir    : String);
 
-   procedure Print_Log_File (File : in out File_Type; Filename : String);
+   procedure Print_Log_File (File : File_Type; Filename : String);
 
-   procedure Print_Attribute (File : in out File_Type; Attr : String;
+   procedure Print_Attribute (File : File_Type; Attr : String;
                               Value : String);
 
-   procedure Print_Testcase_Tag (File : in out File_Type;
+   procedure Start_Testcase_Tag (File : File_Type;
                                  Parent : String; Name : String;
                                  Execution_Time : String);
+
+   procedure End_Testcase_Tag (File : File_Type);
 
    function Create_Name (Dir : String; Name : String) return String;
 
@@ -84,13 +86,13 @@ package body Ahven.XML_Runner is
       return Result;
    end Filter_String;
 
-   procedure Print_Attribute (File : in out File_Type; Attr : String;
+   procedure Print_Attribute (File : File_Type; Attr : String;
                               Value : String) is
    begin
       Put (File, Attr & "=" & '"' & Value & '"');
    end Print_Attribute;
 
-   procedure Print_Testcase_Tag (File : in out File_Type;
+   procedure Start_Testcase_Tag (File : File_Type;
                                  Parent : String; Name : String;
                                  Execution_Time : String) is
    begin
@@ -101,9 +103,15 @@ package body Ahven.XML_Runner is
       Put (File, " ");
       Print_Attribute (File, "time", Filter_String (Execution_Time));
       Put_Line (File, ">");
-   end Print_Testcase_Tag;
+   end Start_Testcase_Tag;
 
-   function Create_Name (Dir : String; Name : String) return String is
+   procedure End_Testcase_Tag (File : File_Type) is
+   begin
+      Put_Line (File, "</testcase>");
+   end End_Testcase_Tag;
+
+   function Create_Name (Dir : String; Name : String) return String
+   is
       function Filename (Test : String) return String;
       -- Create a filename for the test.
 
@@ -119,11 +127,11 @@ package body Ahven.XML_Runner is
       end if;
    end Create_Name;
 
-   procedure Print_Test_Pass (File : in out File_Type;
+   procedure Print_Test_Pass (File : File_Type;
                               Parent_Test : String;
                               Info : Result_Info) is
    begin
-      Print_Testcase_Tag (File, Parent_Test,
+      Start_Testcase_Tag (File, Parent_Test,
         To_String (Get_Routine_Name (Info)),
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both));
       if Length (Get_Output_File (Info)) > 0 then
@@ -131,89 +139,119 @@ package body Ahven.XML_Runner is
          Print_Log_File (File, To_String (Get_Output_File (Info)));
          Put_Line (File, "</system-out>");
       end if;
-      Put_Line (File, "</testcase>");
+      End_Testcase_Tag (File);
    end Print_Test_Pass;
 
-   procedure Print_Test_Failure (File : in out File_Type;
+   procedure Print_Test_Failure (File : File_Type;
                                  Parent_Test : String;
                                  Info : Result_Info) is
    begin
-      Print_Testcase_Tag (File, Parent_Test,
+      Start_Testcase_Tag (File, Parent_Test,
         To_String (Get_Routine_Name (Info)),
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both));
+      Put (File, "<failure ");
+      Print_Attribute (File, "type",
+        Trim (To_String (Get_Message (Info)), Ada.Strings.Both));
+      Put (File, ">");
+      Put_Line (File, To_String (Get_Message (Info)));
+      Put_Line (File, "</failure>");
       if Length (Get_Output_File (Info)) > 0 then
          Put (File, "<system-out>");
          Print_Log_File (File, To_String (Get_Output_File (Info)));
          Put_Line (File, "</system-out>");
       end if;
-      Put_Line (File, "</testcase>");
+      End_Testcase_Tag (File);
    end Print_Test_Failure;
 
-   procedure Print_Test_Error (File : in out File_Type;
+   procedure Print_Test_Error (File : File_Type;
                                Parent_Test : String;
                                Info : Result_Info) is
    begin
-      Print_Testcase_Tag (File, Parent_Test,
+      Start_Testcase_Tag (File, Parent_Test,
         To_String (Get_Routine_Name (Info)),
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both));
+      Put (File, "<error ");
+      Print_Attribute (File, "type",
+        Trim (To_String (Get_Message (Info)), Ada.Strings.Both));
+      Put (File, ">");
+      Put_Line (File, To_String (Get_Message (Info)));
+      Put_Line (File, "</error>");
       if Length (Get_Output_File (Info)) > 0 then
          Put (File, "<system-out>");
          Print_Log_File (File, To_String (Get_Output_File (Info)));
          Put_Line (File, "</system-out>");
       end if;
-      Put_Line (File, "</testcase>");
+      End_Testcase_Tag (File);
    end Print_Test_Error;
 
    procedure Print_Test_Case (Result : in out Result_Collection;
                               Dir : String) is
-      End_Flag : Boolean;
-      Info     : Result_Info;
-      File     : Ada.Text_IO.File_Type;
-   begin
-      Create (File => File, Mode => Ada.Text_IO.Out_File,
-              Name => Create_Name (Dir, To_String (Get_Test_Name (Result))));
+      procedure Print (Output : File_Type;
+                       Result : in out Result_Collection);
+      -- Internal procedure to print the testcase into given file.
 
-      Put_Line (File, "<?xml version=" & '"' & "1.0" & '"' &
-                " encoding=" & '"' & "iso-8859-1" & '"' &
-                "?>");
-      Put (File, "<testsuite ");
-      Print_Attribute (File, "errors",
+      procedure Print (Output : File_Type;
+                       Result : in out Result_Collection) is
+         End_Flag : Boolean;
+         Info     : Result_Info;
+      begin
+         Put_Line (Output, "<?xml version=" & '"' & "1.0" & '"' &
+                   " encoding=" & '"' & "iso-8859-1" & '"' &
+                   "?>");
+         Put (Output, "<testsuite ");
+         Print_Attribute (Output, "errors",
            Trim (Integer'Image (Error_Count (Result)), Ada.Strings.Both));
-      Put (File, " ");
-      Print_Attribute (File, "failures",
+         Put (Output, " ");
+         Print_Attribute (Output, "failures",
            Trim (Integer'Image (Failure_Count (Result)), Ada.Strings.Both));
-      Put (File, " ");
-      Print_Attribute (File, "tests",
+         Put (Output, " ");
+         Print_Attribute (Output, "tests",
            Trim (Integer'Image (Test_Count (Result)), Ada.Strings.Both));
-      Put (File, " ");
-      Print_Attribute (File, "time", "0.0001");
-      Put (File, " ");
-      Print_Attribute (File, "name", To_String (Get_Test_Name (Result)));
-      Put_Line (File, ">");
+         Put (Output, " ");
+         Print_Attribute (Output, "time",
+           Trim (Duration'Image (Get_Execution_Time (Result)),
+                 Ada.Strings.Both));
+         Put (Output, " ");
+         Print_Attribute (Output,
+           "name", To_String (Get_Test_Name (Result)));
+         Put_Line (Output, ">");
 
-      Error_Loop:
-      loop
-         Next_Error (Result, Info, End_Flag);
-         exit Error_Loop when End_Flag;
-         Print_Test_Error (File, To_String (Get_Test_Name (Result)), Info);
-      end loop Error_Loop;
+         Error_Loop:
+         loop
+            Next_Error (Result, Info, End_Flag);
+            exit Error_Loop when End_Flag;
+            Print_Test_Error (Output,
+              To_String (Get_Test_Name (Result)), Info);
+         end loop Error_Loop;
 
-      Failure_Loop:
-      loop
-         Next_Failure (Result, Info, End_Flag);
-         exit Failure_Loop when End_Flag;
-         Print_Test_Failure (File, To_String (Get_Test_Name (Result)), Info);
-      end loop Failure_Loop;
+         Failure_Loop:
+         loop
+            Next_Failure (Result, Info, End_Flag);
+            exit Failure_Loop when End_Flag;
+            Print_Test_Failure (Output,
+              To_String (Get_Test_Name (Result)), Info);
+         end loop Failure_Loop;
 
-      Pass_Loop:
-      loop
-         Next_Pass (Result, Info, End_Flag);
-         exit Pass_Loop when End_Flag;
-         Print_Test_Pass (File, To_String (Get_Test_Name (Result)), Info);
-      end loop Pass_Loop;
+         Pass_Loop:
+         loop
+            Next_Pass (Result, Info, End_Flag);
+            exit Pass_Loop when End_Flag;
+            Print_Test_Pass (Output,
+              To_String (Get_Test_Name (Result)), Info);
+         end loop Pass_Loop;
+         Put_Line (Output, "</testsuite>");
+      end Print;
 
-      Put_Line (File, "</testsuite>");
-      Ada.Text_IO.Close (File);
+      File : File_Type;
+   begin
+      if Dir = "-" then
+         Print (Standard_Output, Result);
+      else
+         Create (File => File, Mode => Ada.Text_IO.Out_File,
+           Name => Create_Name (Dir, To_String (Get_Test_Name (Result))));
+         Print (File, Result);
+         Ada.Text_IO.Close (File);
+      end if;
    end Print_Test_Case;
 
    procedure Report_Results (Result : in out Result_Collection;
@@ -237,7 +275,7 @@ package body Ahven.XML_Runner is
       end loop;
    end Report_Results;
 
-   procedure Print_Log_File (File : in out File_Type; Filename : String) is
+   procedure Print_Log_File (File : File_Type; Filename : String) is
       Handle : File_Type;
       Char   : Character := ' ';
       First  : Boolean := True;
