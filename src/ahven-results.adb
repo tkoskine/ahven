@@ -198,6 +198,15 @@ package body Ahven.Results is
       return Count;
    end Test_Count;
 
+   function Direct_Test_Count (Collection : Result_Collection)
+     return Natural
+   is
+   begin
+      return Size (Collection.Errors) +
+             Size (Collection.Failures) +
+             Size (Collection.Passes);
+   end Direct_Test_Count;
+
    function Pass_Count (Collection : Result_Collection) return Natural is
       Count : Natural              := Size (Collection.Passes);
       Iter  : Result_List.Iterator := First (Collection.Children);
