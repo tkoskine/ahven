@@ -3,6 +3,8 @@
 
 Changes
 -------
+	* New XML_Runner which generates JUnit compatible XML test results.
+
 	* Unused access types Test_Access, Test_Case_Class_Access,
 	  Test_Case_Access, Test_Suite_Class_Access, Result_Listener_Access,
 	  Test_Command_Access, Test_Object_Command_Access,
@@ -17,7 +19,6 @@ Changes
 	    Ahven.Framework.Create_Suite return Test_Suite;
 	  With these, the suite can be created on stack and one does not
 	  need to play with access types.
-
 
 2008-01-30 Ahven 1.1
 ====================
