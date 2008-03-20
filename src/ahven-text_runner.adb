@@ -299,8 +299,8 @@ package body Ahven.Text_Runner is
       Report_Results
         (Basic_Listener (Listener.all).Main_Result,
          Parameters.Verbose (Params));
-      if Error_Count (Basic_Listener (Listener.all).Main_Result) > 0 or
-         Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0 then
+      if (Error_Count (Basic_Listener (Listener.all).Main_Result) > 0) or
+         (Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0) then
          Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
       end if;
       Free (Listener);

@@ -53,7 +53,7 @@ package body Ahven.XML_Runner is
                                Parent_Test : String;
                                Info : Result_Info);
 
-   procedure Print_Test_Case (Result : in out Result_Collection;
+   procedure Print_Test_Case (Collection : in out Result_Collection;
                               Dir : String);
 
    procedure Report_Results (Result : in out Result_Collection;
@@ -184,7 +184,7 @@ package body Ahven.XML_Runner is
       End_Testcase_Tag (File);
    end Print_Test_Error;
 
-   procedure Print_Test_Case (Result : in out Result_Collection;
+   procedure Print_Test_Case (Collection : in out Result_Collection;
                               Dir : String) is
       procedure Print (Output : File_Type;
                        Result : in out Result_Collection);
@@ -245,11 +245,11 @@ package body Ahven.XML_Runner is
       File : File_Type;
    begin
       if Dir = "-" then
-         Print (Standard_Output, Result);
+         Print (Standard_Output, Collection);
       else
          Create (File => File, Mode => Ada.Text_IO.Out_File,
-           Name => Create_Name (Dir, To_String (Get_Test_Name (Result))));
-         Print (File, Result);
+           Name => Create_Name (Dir, To_String (Get_Test_Name (Collection))));
+         Print (File, Collection);
          Ada.Text_IO.Close (File);
       end if;
    end Print_Test_Case;
@@ -324,8 +324,8 @@ package body Ahven.XML_Runner is
 
       Report_Results (Basic_Listener (Listener.all).Main_Result,
                       Parameters.Result_Dir (Params));
-      if Error_Count (Basic_Listener (Listener.all).Main_Result) > 0 or
-         Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0 then
+      if (Error_Count (Basic_Listener (Listener.all).Main_Result) > 0) or
+         (Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0) then
          Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
       end if;
       Free (Listener);

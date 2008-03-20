@@ -374,17 +374,17 @@ package body Ahven.Results is
 
    function Child_Depth (Collection : in Result_Collection) return Natural
    is
-      function Child_Depth_Impl (Collection : in Result_Collection;
+      function Child_Depth_Impl (Coll : in Result_Collection;
                                  Level : Natural) return Natural;
 
-      function Child_Depth_Impl (Collection : in Result_Collection;
+      function Child_Depth_Impl (Coll : in Result_Collection;
                                  Level : Natural)
         return Natural
       is
          Max     : Natural := 0;
          Current : Natural := 0;
          Iter    : Result_List.Iterator
-           := Result_List.First (Collection.Children);
+           := Result_List.First (Coll.Children);
       begin
          loop
             exit when not Is_Valid (Iter);
