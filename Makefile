@@ -16,6 +16,7 @@
 
 PREFIX?=$(HOME)/libraries/ahven
 INSTALL=install
+OS_VERSION?=unix
 
 SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
 	src/ahven-framework.adb src/ahven-framework.ads \
@@ -28,7 +29,8 @@ SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
 	src/ahven-listeners-output_capture.ads \
 	src/ahven-temporary_output.adb \
 	src/ahven-temporary_output.ads \
-	src/ahven-parameters.adb src/ahven-parameters.ads
+	src/ahven-parameters.adb src/ahven-parameters.ads \
+	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads
 
 ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-framework.ali lib/ahven-listeners-basic.ali \
@@ -36,7 +38,8 @@ ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-runner.ali lib/ahven-text_runner.ali \
 	lib/ahven-listeners-output_capture.ali \
 	lib/ahven-temporary_output.ali \
-	lib/ahven-parameters.ali
+	lib/ahven-parameters.ali \
+	lib/ahven-compat.ali
 
 SO_LIBRARY=libahven.so.11.0
 GPR_FILE=ahven.gpr
@@ -46,18 +49,18 @@ default: build_all
 build_all: build_lib build_tests
 
 build_lib:
-	OS=UNIX gnatmake -Pahven_lib
+	OS=$(OS_VERSION) gnatmake -Pahven_lib
 
 build_tests: build_lib
-	gnatmake -Pahven_tests
+	OS=$(OS_VERSION) gnatmake -Pahven_tests
 
 clean: clean_lib clean_tests clean_docs
 
 clean_lib:
-	gnatclean -Pahven_lib
+	OS=$(OS_VERSION) gnatclean -Pahven_lib
 
 clean_tests:
-	gnatclean -Pahven_tests
+	OS=$(OS_VERSION) gnatclean -Pahven_tests
 
 clean_docs:
 	rm -f doc/api/*.html
@@ -75,7 +78,7 @@ install_lib:
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
 
 check: build_tests
-	./tester
+	./tester -c
 
 control:
 	rm -f objects/*.adt objects/*.ali
