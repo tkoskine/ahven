@@ -151,6 +151,10 @@ package Ahven.Results is
      return Result_Collection_Access;
    -- Return the parent of the collection.
 
+   function Get_Execution_Time (Collection : Result_Collection)
+     return Duration;
+   -- Return the execution time of the whole collection.
+
    procedure Next_Error (Collection : in out Result_Collection;
                          Info : out Result_Info;
                          End_Of_Errors : out Boolean);

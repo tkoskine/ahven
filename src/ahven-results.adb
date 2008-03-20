@@ -258,6 +258,48 @@ package body Ahven.Results is
       return Collection.Parent;
    end Get_Parent;
 
+   function Get_Execution_Time (Collection : Result_Collection)
+     return Duration
+   is
+      Iter : Result_Info_List.Iterator;
+      Total_Time : Duration := 0.0;
+      Child_Iter : Result_List.Iterator;
+   begin
+      Iter := First (Collection.Passes);
+      Pass_Loop:
+      loop
+         exit Pass_Loop when not Is_Valid (Iter);
+         Total_Time := Total_Time + Get_Execution_Time (Data (Iter));
+         Iter := Next (Iter);
+      end loop Pass_Loop;
+
+      Iter := First (Collection.Failures);
+      Failure_Loop:
+      loop
+         exit Failure_Loop when not Is_Valid (Iter);
+         Total_Time := Total_Time + Get_Execution_Time (Data (Iter));
+         Iter := Next (Iter);
+      end loop Failure_Loop;
+
+      Iter := First (Collection.Errors);
+      Error_Loop:
+      loop
+         exit Error_Loop when not Is_Valid (Iter);
+         Total_Time := Total_Time + Get_Execution_Time (Data (Iter));
+         Iter := Next (Iter);
+      end loop Error_Loop;
+
+      Child_Loop:
+      loop
+         exit Child_Loop when not Result_List.Is_Valid (Child_Iter);
+         Total_Time := Total_Time +
+                       Get_Execution_Time (Result_List.Data (Child_Iter).all);
+         Child_Iter := Result_List.Next (Child_Iter);
+      end loop Child_Loop;
+
+      return Total_Time;
+   end Get_Execution_Time;
+
    procedure Next_In_List (List : in out Result_Info_List.List;
                            Iter : in out Result_Info_List.Iterator;
                            Info : out Result_Info;
