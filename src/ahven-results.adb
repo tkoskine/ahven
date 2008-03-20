@@ -321,4 +321,32 @@ package body Ahven.Results is
       end if;
    end Next_Child;
 
+   function Child_Depth (Collection : in Result_Collection) return Natural
+   is
+      function Child_Depth_Impl (Collection : in Result_Collection;
+                                 Level : Natural) return Natural;
+
+      function Child_Depth_Impl (Collection : in Result_Collection;
+                                 Level : Natural)
+        return Natural
+      is
+         Max     : Natural := 0;
+         Current : Natural := 0;
+         Iter    : Result_List.Iterator
+           := Result_List.First (Collection.Children);
+      begin
+         loop
+            exit when not Is_Valid (Iter);
+            Current := Child_Depth_Impl (Data (Iter).all, Level + 1);
+            if Max < Current then
+               Max := Current;
+            end if;
+            Iter := Result_List.Next (Iter);
+         end loop;
+         return Level + Max;
+      end Child_Depth_Impl;
+   begin
+      return Child_Depth_Impl (Collection, 0);
+   end Child_Depth;
+
 end Ahven.Results;

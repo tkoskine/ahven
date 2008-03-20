@@ -179,6 +179,9 @@ package Ahven.Results is
    -- Calling the procedure again after End_Of_Error is set to True
    -- starts the iteration from the beginning.
 
+   function Child_Depth (Collection : in Result_Collection) return Natural;
+   -- Return the maximum depth of children. (a child of a child, etc.)
+
 private
    type Result_Info is record
       Test_Name      : Unbounded_String := Null_Unbounded_String;
