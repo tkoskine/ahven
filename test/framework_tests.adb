@@ -27,7 +27,7 @@ package body Framework_Tests is
 
    procedure Initialize (T : in out Test) is
    begin
-      Set_Name (T, "Framework tests");
+      Set_Name (T, "Ahven.Framework");
       Framework.Add_Test_Routine (T, Test_Set_Up'Access, "Set_Up");
 
       Framework.Add_Test_Routine (T, Test_Test_Result_Add_Pass'Access,

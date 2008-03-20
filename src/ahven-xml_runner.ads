@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2007, 2008 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -13,13 +13,14 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
+with Ahven.Framework;
 
-package body Derived_Tests is
+package Ahven.XML_Runner is
 
-   procedure Initialize (T : in out Test) is
-   begin
-      Framework_Tests.Initialize (Framework_Tests.Test (T));
-      Set_Name (T, "Ahven.Derived_Tests");
-   end Initialize;
+   procedure Run (Suite : Framework.Test_Suite'Class);
+   -- Run the suite and print the results.
 
-end Derived_Tests;
+   procedure Run (Suite : Framework.Test_Suite_Access);
+   -- Run the suite and print the results.
+
+end Ahven.XML_Runner;
