@@ -36,17 +36,11 @@ project Ahven_Lib is
 
   package Builder is
 
-     -- for Default_Switches ("Ada") use ("-Iinclude","-x","-O2","-pg");
-     for Default_Switches ("Ada") use ("-Iinclude","-x","-g","-gnatf",
+     for Default_Switches ("Ada") use ("-g","-gnatf",
                                        "-gnatVa",
                                        "-gnato",
                                        "-gnatwe",
                                        "-gnatwa",
                                        "-gnaty3ibmhesux", "-gnat95");
   end Builder;
-
-  package Naming is
-    for Spec_Suffix ("Ada") use ".ads";
-    for Body_Suffix ("Ada") use ".adb";
-  end Naming;
 end Ahven_Lib;
