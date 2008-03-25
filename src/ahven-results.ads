@@ -18,6 +18,8 @@ with Ada.Finalization;
 with Ada.Strings.Unbounded;
 with Ahven.Doubly_Linked_List;
 
+pragma Elaborate_All (Ahven.Doubly_Linked_List);
+
 use Ada.Strings.Unbounded;
 
 -- Like the name implies, the Results package is used for
