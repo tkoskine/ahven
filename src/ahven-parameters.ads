@@ -36,6 +36,9 @@ package Ahven.Parameters is
    function Verbose (Info : Parameter_Info) return Boolean;
    -- Use verbose mode?
 
+   function XML_Results (Info : Parameter_Info) return Boolean;
+   -- Output XML?
+
    function Single_Test (Info : Parameter_Info) return Boolean;
    -- Run a single test (case/suite/routine) only?
 
@@ -48,6 +51,7 @@ package Ahven.Parameters is
 private
    type Parameter_Info is record
       Verbose_Output : Boolean          := True;
+      XML_Output     : Boolean          := False;
       Capture_Output : Boolean          := False;
       Test_Name      : Unbounded_String := Null_Unbounded_String;
       Result_Dir     : Unbounded_String := Null_Unbounded_String;

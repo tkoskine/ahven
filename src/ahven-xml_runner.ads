@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 with Ahven.Framework;
+with Ahven.Results;
 
 package Ahven.XML_Runner is
 
@@ -23,4 +24,7 @@ package Ahven.XML_Runner is
    procedure Run (Suite : Framework.Test_Suite_Access);
    -- Run the suite and print the results.
 
+   procedure Report_Results (Result : in out Results.Result_Collection;
+                             Dir    : String);
+   -- Report results to the given directory.
 end Ahven.XML_Runner;

@@ -29,6 +29,7 @@ package body Ahven.Parameters is
    --  -d : result directory
    --  -q : quiet mode
    --  -v : verbose mode (default)
+   --  -x : XML output
    --
    procedure Parse_Options (Info : in out Parameter_Info; Option : String;
                             Dir_Next : out Boolean) is
@@ -44,6 +45,8 @@ package body Ahven.Parameters is
                Info.Verbose_Output := True;
             when 'q' =>
                Info.Verbose_Output := False;
+            when 'x' =>
+               Info.XML_Output := True;
             when others =>
                raise Invalid_Parameter;
          end case;
@@ -76,8 +79,9 @@ package body Ahven.Parameters is
          end if;
       end Handle_Parameter;
    begin
-      -- Default values: verbose mode, no capture
+      -- Default values: verbose mode, no xml, no capture
       Info := (Verbose_Output => True,
+               XML_Output     => False,
                Capture_Output => False,
                Test_Name => Null_Unbounded_String,
                Result_Dir => Null_Unbounded_String);
@@ -94,8 +98,9 @@ package body Ahven.Parameters is
       Put_Line ("Possible parameters: [-cqv] [--] [testname]");
       Put_Line ("   -c    : capture and report test outputs");
       Put_Line ("   -d    : directory for test results");
-      Put_Line ("   -v    : verbose results (default)");
       Put_Line ("   -q    : quiet results");
+      Put_Line ("   -v    : verbose results (default)");
+      Put_Line ("   -x    : output in XML format");
       Put_Line ("   --    : end of parameters (optional)");
    end Usage;
 
@@ -108,6 +113,11 @@ package body Ahven.Parameters is
    begin
       return Info.Verbose_Output;
    end Verbose;
+
+   function XML_Results (Info : Parameter_Info) return Boolean is
+   begin
+      return Info.XML_Output;
+   end XML_Results;
 
    function Single_Test (Info : Parameter_Info) return Boolean is
    begin

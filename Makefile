@@ -80,6 +80,10 @@ install_lib:
 check: build_tests
 	./tester -c
 
+check_xml: build_tests
+	-mkdir -p results
+	./tester -c -x -d results
+
 control:
 	rm -f objects/*.adt objects/*.ali
 	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs]

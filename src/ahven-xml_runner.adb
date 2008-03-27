@@ -56,9 +56,6 @@ package body Ahven.XML_Runner is
    procedure Print_Test_Case (Collection : in out Result_Collection;
                               Dir : String);
 
-   procedure Report_Results (Result : in out Result_Collection;
-                             Dir    : String);
-
    procedure Print_Log_File (File : File_Type; Filename : String);
 
    procedure Print_Attribute (File : File_Type; Attr : String;

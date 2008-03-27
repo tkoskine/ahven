@@ -28,6 +28,7 @@ with Ahven.Listeners.Basic;
 with Ahven.Framework;
 with Ahven.Listeners;
 with Ahven.Parameters;
+with Ahven.XML_Runner;
 
 use Ada.Text_IO;
 use Ada.Strings.Unbounded;
@@ -296,9 +297,15 @@ package body Ahven.Text_Runner is
       else
          Runner.Run (Suite, Result);
       end if;
-      Report_Results
-        (Basic_Listener (Listener.all).Main_Result,
-         Parameters.Verbose (Params));
+      if Parameters.XML_Results (Params) then
+         XML_Runner.Report_Results
+           (Basic_Listener (Listener.all).Main_Result,
+            Parameters.Result_Dir (Params));
+      else
+         Report_Results
+           (Basic_Listener (Listener.all).Main_Result,
+            Parameters.Verbose (Params));
+      end if;
       if (Error_Count (Basic_Listener (Listener.all).Main_Result) > 0) or
          (Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0) then
          Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
