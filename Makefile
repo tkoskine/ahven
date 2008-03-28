@@ -61,6 +61,7 @@ clean_lib:
 
 clean_tests:
 	OS=$(OS_VERSION) gnatclean -Pahven_tests
+	rm -rf results
 
 clean_docs:
 	rm -f doc/api/*.html
