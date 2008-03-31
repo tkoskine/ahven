@@ -46,7 +46,7 @@ package body Ahven.Parameters is
             when 'q' =>
                Info.Verbose_Output := False;
             when 'x' =>
-               Info.XML_Output := True;
+               Info.Xml_Output := True;
             when others =>
                raise Invalid_Parameter;
          end case;
@@ -81,7 +81,7 @@ package body Ahven.Parameters is
    begin
       -- Default values: verbose mode, no xml, no capture
       Info := (Verbose_Output => True,
-               XML_Output     => False,
+               Xml_Output     => False,
                Capture_Output => False,
                Test_Name => Null_Unbounded_String,
                Result_Dir => Null_Unbounded_String);
@@ -116,7 +116,7 @@ package body Ahven.Parameters is
 
    function XML_Results (Info : Parameter_Info) return Boolean is
    begin
-      return Info.XML_Output;
+      return Info.Xml_Output;
    end XML_Results;
 
    function Single_Test (Info : Parameter_Info) return Boolean is

@@ -51,7 +51,7 @@ package Ahven.Parameters is
 private
    type Parameter_Info is record
       Verbose_Output : Boolean          := True;
-      XML_Output     : Boolean          := False;
+      Xml_Output     : Boolean          := False;
       Capture_Output : Boolean          := False;
       Test_Name      : Unbounded_String := Null_Unbounded_String;
       Result_Dir     : Unbounded_String := Null_Unbounded_String;
