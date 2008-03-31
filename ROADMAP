@@ -20,4 +20,4 @@ Planned features
 Version 1.x:
 * Graphical (GTK+) UI for the test result reporter
 * Improve documentation
-* HTML reporter
+* Replace adhoc XML writer with "a proper solution"
