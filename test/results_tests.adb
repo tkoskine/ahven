@@ -17,7 +17,7 @@ package body Results_Tests is
 
       Coll     : Result_Collection;
       Coll_Dyn : Result_Collection_Access;
-      Info     : Result_Info := Empty_Result_Info;
+      Info     : constant Result_Info := Empty_Result_Info;
    begin
       Coll_Dyn := new Result_Collection;
       Add_Error (Coll, Info);
