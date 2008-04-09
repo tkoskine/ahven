@@ -7,5 +7,6 @@ package Results_Tests is
    procedure Initialize (T : in out Test);
 private
    procedure Test_Count_Children;
+   procedure Test_Direct_Count;
 
 end Results_Tests;
