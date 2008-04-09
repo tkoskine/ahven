@@ -130,7 +130,7 @@ package Ahven.Results is
    -- Tests in child collections are included.
 
    function Direct_Test_Count (Collection : Result_Collection) return Natural;
-   -- Return the amount of test in the collection.
+   -- Return the amount of tests in the collection.
    -- The tests in the child collections are NOT included.
 
    function Pass_Count (Collection : Result_Collection) return Natural;
