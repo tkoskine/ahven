@@ -20,6 +20,14 @@ Changes
 	  With these, the suite can be created on stack and one does not
 	  need to play with access types.
 
+Internal
+--------
+	* XML_Runner introduced a need for some platform specific files.
+	  Therefore, 'src' directory now contains subdirectories 'unix'
+	  and 'windows'.
+
+	* New tests: Result_Tests.Test_*
+
 2008-01-30 Ahven 1.1
 ====================
 
