@@ -20,6 +20,12 @@ Changes
 	  With these, the suite can be created on stack and one does not
 	  need to play with access types.
 
+Bugs fixed
+----------
+	* Ahven can be now compiled with GNAT 3.15p.
+
+	* The GNAT project file should work on Windows again.
+
 Internal
 --------
 	* XML_Runner introduced a need for some platform specific files.
