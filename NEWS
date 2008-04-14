@@ -4,6 +4,8 @@
 Changes
 -------
 	* New XML_Runner which generates JUnit compatible XML test results.
+	  XML_Runner can be either run explicitly or via Text_Runner
+	  using the '-x' parameter.
 
 	* Unused access types Test_Access, Test_Case_Class_Access,
 	  Test_Case_Access, Test_Suite_Class_Access, Result_Listener_Access,
