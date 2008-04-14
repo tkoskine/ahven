@@ -95,7 +95,7 @@ package body Ahven.Parameters is
 
    procedure Usage is
    begin
-      Put_Line ("Possible parameters: [-cqv] [--] [testname]");
+      Put_Line ("Possible parameters: [-cqvx] [-d directory] [--] [testname]");
       Put_Line ("   -c    : capture and report test outputs");
       Put_Line ("   -d    : directory for test results");
       Put_Line ("   -q    : quiet results");
