@@ -24,7 +24,7 @@ package body Ahven.Temporary_Output is
         To_Unbounded_String ("ahven_temp_") &
         Trim (To_Unbounded_String(Integer'Image (Temp_Counter)),
               Ada.Strings.Both);
-      begin
+   begin
       if Temp_Counter < Natural'Last then
          Temp_Counter := Temp_Counter + 1;
       else
