@@ -36,6 +36,9 @@ Internal
 
 	* New tests: Result_Tests.Test_*
 
+	* Next_* procedures for in the Results package were replaced
+	  with proper iterators.
+
 2008-01-30 Ahven 1.1
 ====================
 
