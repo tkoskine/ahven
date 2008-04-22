@@ -74,38 +74,31 @@ package body Ahven.Listeners.Output_Capture is
    end Remove_File;
 
    procedure Remove_Files (Collection : in out Result_Collection) is
+      procedure Remove_Loop (First_Item : Result_Info_Iterator);
+      procedure Remove (Name : Unbounded_String);
+
+      procedure Remove (Name : Unbounded_String) is
+      begin
+         if Length (Name) > 0 then
+            Remove_File (To_String (Name));
+         end if;
+      end Remove;
+
+      procedure Remove_Loop (First_Item : Result_Info_Iterator) is
+         Loop_Iter : Result_Info_Iterator := First_Item;
+      begin
+         loop
+            exit when not Is_Valid (Loop_Iter);
+            Remove (Get_Output_File (Data (Loop_Iter)));
+            Loop_Iter := Next (Loop_Iter);
+         end loop;
+      end Remove_Loop;
+
       Child_Iter : Result_Collection_Iterator;
-      Iter       : Result_Info_Iterator;
    begin
-      Iter := First_Pass (Collection);
-      Pass_File_Loop:
-      loop
-         exit Pass_File_Loop when not Is_Valid (Iter);
-         If Length (Get_Output_File (Data (Iter))) > 0 then
-            Remove_File (To_String (Get_Output_File (Data (Iter))));
-         end if;
-         Iter := Next (Iter);
-      end loop Pass_File_Loop;
-
-      Iter := First_Failure (Collection);
-      Failure_File_Loop:
-      loop
-         exit Failure_File_Loop when not Is_Valid (Iter);
-         If Length (Get_Output_File (Data (Iter))) > 0 then
-            Remove_File (To_String (Get_Output_File (Data (Iter))));
-         end if;
-         Iter := Next (Iter);
-      end loop Failure_File_Loop;
-
-      Iter := First_Error (Collection);
-      Error_File_Loop:
-      loop
-         exit Error_File_Loop when not Is_Valid (Iter);
-         If Length (Get_Output_File (Data (Iter))) > 0 then
-            Remove_File (To_String (Get_Output_File (Data (Iter))));
-         end if;
-         Iter := Next (Iter);
-      end loop Error_File_Loop;
+      Remove_Loop (First_Pass (Collection));
+      Remove_Loop (First_Failure (Collection));
+      Remove_Loop (First_Error (Collection));
 
       Child_Iter := First_Child (Collection);
       Child_Loop:
