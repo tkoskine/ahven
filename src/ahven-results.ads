@@ -157,6 +157,23 @@ package Ahven.Results is
      return Duration;
    -- Return the execution time of the whole collection.
 
+   type Result_Info_Iterator is private;
+
+   function First_Pass (Collection : Result_Collection)
+     return Result_Info_Iterator;
+
+   function First_Failure (Collection : Result_Collection)
+     return Result_Info_Iterator;
+
+   function First_Error (Collection : Result_Collection)
+     return Result_Info_Iterator;
+
+   function Next (Iter : Result_Info_Iterator) return Result_Info_Iterator;
+
+   function Data (Iter : Result_Info_Iterator) return Result_Info;
+
+   function Is_Valid (Iter : Result_Info_Iterator) return Boolean;
+
    procedure Next_Error (Collection : in out Result_Collection;
                          Info : out Result_Info;
                          End_Of_Errors : out Boolean);
@@ -180,6 +197,19 @@ package Ahven.Results is
    -- If there are no more passes, End_Of_Passes is set to True.
    -- Calling the procedure again after End_Of_Error is set to True
    -- starts the iteration from the beginning.
+
+   type Result_Collection_Iterator is private;
+
+   function First_Child (Collection : in Result_Collection)
+     return Result_Collection_Iterator;
+
+   function Next (Iter : Result_Collection_Iterator)
+     return Result_Collection_Iterator;
+
+   function Is_Valid (Iter : Result_Collection_Iterator) return Boolean;
+
+   function Data (Iter : Result_Collection_Iterator)
+     return Result_Collection_Access;
 
    procedure Next_Child (Collection : in out Result_Collection;
                          Child : out Result_Collection_Access;
@@ -215,6 +245,10 @@ private
 
    package Result_List is
      new Ahven.Doubly_Linked_List (Data_Type => Result_Collection_Access);
+
+   type Result_Info_Iterator is new Result_Info_List.Iterator;
+
+   type Result_Collection_Iterator is new Result_List.Iterator;
 
    type Result_Collection is new Ada.Finalization.Controlled with record
       Test_Name : Unbounded_String := Null_Unbounded_String;

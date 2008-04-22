@@ -300,6 +300,40 @@ package body Ahven.Results is
       return Total_Time;
    end Get_Execution_Time;
 
+   function First_Pass (Collection : Result_Collection)
+     return Result_Info_Iterator is
+   begin
+      return First (Collection.Passes);
+   end First_Pass;
+
+   function First_Failure (Collection : Result_Collection)
+     return Result_Info_Iterator is
+   begin
+      return First (Collection.Failures);
+   end First_Failure;
+
+   function First_Error (Collection : Result_Collection)
+     return Result_Info_Iterator is
+   begin
+      return First (Collection.Errors);
+   end First_Error;
+
+   function Next (Iter : Result_Info_Iterator) return Result_Info_Iterator is
+   begin
+      return Result_Info_Iterator
+        (Result_Info_List.Next (Result_Info_List.Iterator (Iter)));
+   end Next;
+
+   function Data (Iter : Result_Info_Iterator) return Result_Info is
+   begin
+      return Result_Info_List.Data (Result_Info_List.Iterator (Iter));
+   end Data;
+
+   function Is_Valid (Iter : Result_Info_Iterator) return Boolean is
+   begin
+      return Result_Info_List.Is_Valid (Result_Info_List.Iterator (Iter));
+   end Is_Valid;
+
    procedure Next_In_List (List : in out Result_Info_List.List;
                            Iter : in out Result_Info_List.Iterator;
                            Info : out Result_Info;
@@ -353,6 +387,30 @@ package body Ahven.Results is
                     Info,
                     End_Of_Passes);
    end Next_Pass;
+
+   function First_Child (Collection : in Result_Collection)
+     return Result_Collection_Iterator is
+   begin
+      return First (Collection.Children);
+   end First_Child;
+
+   function Next (Iter : Result_Collection_Iterator)
+     return Result_Collection_Iterator is
+   begin
+      return Result_Collection_Iterator
+        (Result_List.Next (Result_List.Iterator (Iter)));
+   end Next;
+
+   function Is_Valid (Iter : Result_Collection_Iterator) return Boolean is
+   begin
+      return Result_List.Is_Valid (Result_List.Iterator (Iter));
+   end Is_Valid;
+
+   function Data (Iter : Result_Collection_Iterator)
+     return Result_Collection_Access is
+   begin
+      return Result_List.Data (Result_List.Iterator (Iter));
+   end Data;
 
    procedure Next_Child (Collection : in out Result_Collection;
                          Child : out Result_Collection_Access;

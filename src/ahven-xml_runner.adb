@@ -189,8 +189,7 @@ package body Ahven.XML_Runner is
 
       procedure Print (Output : File_Type;
                        Result : in out Result_Collection) is
-         End_Flag : Boolean;
-         Info     : Result_Info;
+         Iter : Result_Info_Iterator;
       begin
          Put_Line (Output, "<?xml version=" & '"' & "1.0" & '"' &
                    " encoding=" & '"' & "iso-8859-1" & '"' &
@@ -213,28 +212,31 @@ package body Ahven.XML_Runner is
            "name", To_String (Get_Test_Name (Result)));
          Put_Line (Output, ">");
 
+         Iter := First_Error (Result);
          Error_Loop:
          loop
-            Next_Error (Result, Info, End_Flag);
-            exit Error_Loop when End_Flag;
+            exit Error_Loop when not Is_Valid (Iter);
             Print_Test_Error (Output,
-              To_String (Get_Test_Name (Result)), Info);
+              To_String (Get_Test_Name (Result)), Data (Iter));
+            Iter := Next (Iter);
          end loop Error_Loop;
 
+         Iter := First_Failure (Result);
          Failure_Loop:
          loop
-            Next_Failure (Result, Info, End_Flag);
-            exit Failure_Loop when End_Flag;
+            exit Failure_Loop when not Is_Valid (Iter);
             Print_Test_Failure (Output,
-              To_String (Get_Test_Name (Result)), Info);
+              To_String (Get_Test_Name (Result)), Data (Iter));
+            Iter := Next (Iter);
          end loop Failure_Loop;
 
+         Iter := First_Pass (Result);
          Pass_Loop:
          loop
-            Next_Pass (Result, Info, End_Flag);
-            exit Pass_Loop when End_Flag;
+            exit Pass_Loop when not Is_Valid (Iter);
             Print_Test_Pass (Output,
-              To_String (Get_Test_Name (Result)), Info);
+              To_String (Get_Test_Name (Result)), Data (Iter));
+            Iter := Next (Iter);
          end loop Pass_Loop;
          Put_Line (Output, "</testsuite>");
       end Print;
@@ -253,22 +255,22 @@ package body Ahven.XML_Runner is
 
    procedure Report_Results (Result : in out Result_Collection;
                              Dir    : String) is
-      Child : Result_Collection_Access := null;
-      End_Flag : Boolean;
+      Iter : Result_Collection_Iterator;
    begin
+      Iter := First_Child (Result);
       loop
-         Next_Child (Result, Child, End_Flag);
-         exit when End_Flag;
-         if Child_Depth (Child.all) = 0 then
-            Print_Test_Case (Child.all, Dir);
+         exit when not Is_Valid (Iter);
+         if Child_Depth (Data (Iter).all) = 0 then
+            Print_Test_Case (Data (Iter).all, Dir);
          else
-            Report_Results (Child.all, Dir);
+            Report_Results (Data (Iter).all, Dir);
 
             -- Handle the test cases in this collection
             if Direct_Test_Count (Result) > 0 then
                Print_Test_Case (Result, Dir);
             end if;
          end if;
+         Iter := Next (Iter);
       end loop;
    end Report_Results;
 
