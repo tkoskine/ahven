@@ -74,42 +74,45 @@ package body Ahven.Listeners.Output_Capture is
    end Remove_File;
 
    procedure Remove_Files (Collection : in out Result_Collection) is
-      Collection_End : Boolean := False;
-      Info           : Result_Info := Empty_Result_Info;
-      Child          : Result_Collection_Access := null;
+      Child_Iter : Result_Collection_Iterator;
+      Iter       : Result_Info_Iterator;
    begin
+      Iter := First_Pass (Collection);
       Pass_File_Loop:
       loop
-         Next_Pass (Collection, Info, Collection_End);
-         exit Pass_File_Loop when Collection_End;
-         If Length (Get_Output_File (Info)) > 0 then
-            Remove_File (To_String (Get_Output_File (Info)));
+         exit Pass_File_Loop when not Is_Valid (Iter);
+         If Length (Get_Output_File (Data (Iter))) > 0 then
+            Remove_File (To_String (Get_Output_File (Data (Iter))));
          end if;
+         Iter := Next (Iter);
       end loop Pass_File_Loop;
 
+      Iter := First_Failure (Collection);
       Failure_File_Loop:
       loop
-         Next_Failure (Collection, Info, Collection_End);
-         exit Failure_File_Loop when Collection_End;
-         If Length (Get_Output_File (Info)) > 0 then
-            Remove_File (To_String (Get_Output_File (Info)));
+         exit Failure_File_Loop when not Is_Valid (Iter);
+         If Length (Get_Output_File (Data (Iter))) > 0 then
+            Remove_File (To_String (Get_Output_File (Data (Iter))));
          end if;
+         Iter := Next (Iter);
       end loop Failure_File_Loop;
 
+      Iter := First_Error (Collection);
       Error_File_Loop:
       loop
-         Next_Error (Collection, Info, Collection_End);
-         exit Error_File_Loop when Collection_End;
-         If Length (Get_Output_File (Info)) > 0 then
-            Remove_File (To_String (Get_Output_File (Info)));
+         exit Error_File_Loop when not Is_Valid (Iter);
+         If Length (Get_Output_File (Data (Iter))) > 0 then
+            Remove_File (To_String (Get_Output_File (Data (Iter))));
          end if;
+         Iter := Next (Iter);
       end loop Error_File_Loop;
 
+      Child_Iter := First_Child (Collection);
       Child_Loop:
       loop
-         Next_Child (Collection, Child, Collection_End);
-         exit Child_Loop when Collection_End;
-         Remove_Files (Child.all);
+         exit Child_Loop when not Is_Valid (Child_Iter);
+         Remove_Files (Data (Child_Iter).all);
+         Child_Iter := Next (Child_Iter);
       end loop Child_Loop;
    end Remove_Files;
 

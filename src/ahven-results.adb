@@ -20,12 +20,6 @@ package body Ahven.Results is
    use Ahven.Results.Result_List;
    use Ahven.Results.Result_Info_List;
 
-   -- Local procedures
-   procedure Next_In_List (List : in out Result_Info_List.List;
-                           Iter : in out Result_Info_List.Iterator;
-                           Info : out Result_Info;
-                           End_Of_List : out Boolean);
-
    -- Bunch of setters and getters.
    -- The implementation is straightforward.
    procedure Set_Test_Name (Info : in out Result_Info;
@@ -334,60 +328,6 @@ package body Ahven.Results is
       return Result_Info_List.Is_Valid (Result_Info_List.Iterator (Iter));
    end Is_Valid;
 
-   procedure Next_In_List (List : in out Result_Info_List.List;
-                           Iter : in out Result_Info_List.Iterator;
-                           Info : out Result_Info;
-                           End_Of_List : out Boolean) is
-   begin
-      if Is_Valid (Iter) then
-         Iter := Next (Iter);
-      else
-         Iter := First (List);
-      end if;
-
-      End_Of_List := not Is_Valid (Iter);
-      if End_Of_List then
-         Info := (Test_Name => Null_Unbounded_String,
-                  Routine_Name => Null_Unbounded_String,
-                  Message => Null_Unbounded_String,
-                  Long_Message => Null_Unbounded_String,
-                  Execution_Time => 0.0,
-                  Output_File => Null_Unbounded_String);
-      else
-         Info := Data (Iter);
-      end if;
-   end Next_In_List;
-
-   procedure Next_Error (Collection : in out Result_Collection;
-                         Info : out Result_Info;
-                         End_Of_Errors : out Boolean) is
-   begin
-      Next_In_List (Collection.Errors,
-                    Collection.Error_Iter,
-                    Info,
-                    End_Of_Errors);
-   end Next_Error;
-
-   procedure Next_Failure (Collection : in out Result_Collection;
-                           Info : out Result_Info;
-                           End_Of_Failures : out Boolean) is
-   begin
-      Next_In_List (Collection.Failures,
-                    Collection.Failure_Iter,
-                    Info,
-                    End_Of_Failures);
-   end Next_Failure;
-
-   procedure Next_Pass (Collection : in out Result_Collection;
-                        Info : out Result_Info;
-                        End_Of_Passes : out Boolean) is
-   begin
-      Next_In_List (Collection.Passes,
-                    Collection.Pass_Iter,
-                    Info,
-                    End_Of_Passes);
-   end Next_Pass;
-
    function First_Child (Collection : in Result_Collection)
      return Result_Collection_Iterator is
    begin
@@ -411,24 +351,6 @@ package body Ahven.Results is
    begin
       return Result_List.Data (Result_List.Iterator (Iter));
    end Data;
-
-   procedure Next_Child (Collection : in out Result_Collection;
-                         Child : out Result_Collection_Access;
-                         End_Of_Children : out Boolean) is
-   begin
-      if Is_Valid (Collection.Child_Iter) then
-         Collection.Child_Iter := Next (Collection.Child_Iter);
-      else
-         Collection.Child_Iter := First (Collection.Children);
-      end if;
-
-      End_Of_Children := not Is_Valid (Collection.Child_Iter);
-      if End_Of_Children then
-         Child := null;
-      else
-         Child := Data (Collection.Child_Iter);
-      end if;
-   end Next_Child;
 
    function Child_Depth (Collection : in Result_Collection) return Natural
    is

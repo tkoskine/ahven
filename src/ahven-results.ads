@@ -174,30 +174,6 @@ package Ahven.Results is
 
    function Is_Valid (Iter : Result_Info_Iterator) return Boolean;
 
-   procedure Next_Error (Collection : in out Result_Collection;
-                         Info : out Result_Info;
-                         End_Of_Errors : out Boolean);
-   -- Return the next error in the collection.
-   -- If there are no more errors, End_Of_Errors is set to True.
-   -- Calling the procedure again after End_Of_Error is set to True
-   -- starts the iteration from the beginning.
-
-   procedure Next_Failure (Collection : in out Result_Collection;
-                           Info : out Result_Info;
-                           End_Of_Failures: out Boolean);
-   -- Return the next failure in the collection.
-   -- If there are no more failures, End_Of_Failures is set to True.
-   -- Calling the procedure again after End_Of_Error is set to True
-   -- starts the iteration from the beginning.
-
-   procedure Next_Pass (Collection : in out Result_Collection;
-                        Info : out Result_Info;
-                        End_Of_Passes : out Boolean);
-   -- Return the next pass in the collection.
-   -- If there are no more passes, End_Of_Passes is set to True.
-   -- Calling the procedure again after End_Of_Error is set to True
-   -- starts the iteration from the beginning.
-
    type Result_Collection_Iterator is private;
 
    function First_Child (Collection : in Result_Collection)
@@ -210,14 +186,6 @@ package Ahven.Results is
 
    function Data (Iter : Result_Collection_Iterator)
      return Result_Collection_Access;
-
-   procedure Next_Child (Collection : in out Result_Collection;
-                         Child : out Result_Collection_Access;
-                         End_Of_Children : out Boolean);
-   -- Return the next child collection.
-   -- If there are no more children, End_Of_Children is set to True.
-   -- Calling the procedure again after End_Of_Error is set to True
-   -- starts the iteration from the beginning.
 
    function Child_Depth (Collection : in Result_Collection) return Natural;
    -- Return the maximum depth of children. (a child of a child, etc.)

@@ -145,89 +145,92 @@ package body Ahven.Text_Runner is
 
    procedure Print_Failures (Result : in out Result_Collection;
                              Level  : Natural) is
-      End_Flag : Boolean := False;
-      Info     : Result_Info := Empty_Result_Info;
-      Child    : Result_Collection_Access := null;
+      Iter       : Result_Info_Iterator;
+      Child_Iter : Result_Collection_Iterator;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
          Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
+      Iter := First_Failure (Result);
       Failure_Loop:
       loop
-         Next_Failure (Result, Info, End_Flag);
-         exit Failure_Loop when End_Flag;
-         Print_Test (Info, Level, "FAIL");
-         if Length (Get_Output_File (Info)) > 0 then
-            Print_Log_File (To_String (Get_Output_File (Info)));
+         exit Failure_Loop when not Is_Valid (Iter);
+         Print_Test (Data (Iter), Level, "FAIL");
+         if Length (Get_Output_File (Data (Iter))) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Data (Iter))));
          end if;
+         Iter := Next (Iter);
       end loop Failure_Loop;
 
+      Child_Iter := First_Child (Result);
       loop
-         Next_Child (Result, Child, End_Flag);
-         exit when End_Flag;
-         if Failure_Count (Child.all) > 0 then
-            Print_Failures (Child.all, Level + 1);
+         exit when not Is_Valid (Child_Iter);
+         if Failure_Count (Data (Child_Iter).all) > 0 then
+            Print_Failures (Data (Child_Iter).all, Level + 1);
          end if;
+         Child_Iter := Next (Child_Iter);
       end loop;
    end Print_Failures;
 
    procedure Print_Errors (Result : in out Result_Collection;
                            Level  : Natural) is
-      End_Flag : Boolean := False;
-      Info     : Result_Info := Empty_Result_Info;
-      Child    : Result_Collection_Access := null;
+      Iter       : Result_Info_Iterator;
+      Child_Iter : Result_Collection_Iterator;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
          Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
+      Iter := First_Error (Result);
       Error_Loop:
       loop
-         Next_Error (Result, Info, End_Flag);
-         exit Error_Loop when End_Flag;
-         Print_Test (Info, Level, "ERROR");
-         if Length (Get_Output_File (Info)) > 0 then
-            Print_Log_File (To_String (Get_Output_File (Info)));
+         exit Error_Loop when not Is_Valid (Iter);
+         Print_Test (Data (Iter), Level, "ERROR");
+         if Length (Get_Output_File (Data (Iter))) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Data (Iter))));
          end if;
+         Iter := Next (Iter);
       end loop Error_Loop;
 
+      Child_Iter := First_Child (Result);
       loop
-         Next_Child (Result, Child, End_Flag);
-         exit when End_Flag;
-         if Error_Count (Child.all) > 0 then
-            Print_Errors (Child.all, Level + 1);
+         exit when not Is_Valid (Child_Iter);
+         if Error_Count (Data (Child_Iter).all) > 0 then
+            Print_Errors (Data (Child_Iter).all, Level + 1);
          end if;
+         Child_Iter := Next (Child_Iter);
       end loop;
 
    end Print_Errors;
 
    procedure Print_Passes (Result : in out Result_Collection;
                            Level  : Natural) is
-      End_Flag : Boolean := False;
-      Info     : Result_Info := Empty_Result_Info;
-      Child    : Result_Collection_Access := null;
+      Iter       : Result_Info_Iterator;
+      Child_Iter : Result_Collection_Iterator;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
          Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
+      Iter := First_Pass (Result);
       Pass_Loop:
       loop
-         Next_Pass (Result, Info, End_Flag);
-         exit Pass_Loop when End_Flag;
-         Print_Test (Info, Level, "PASS");
+         exit Pass_Loop when not Is_Valid (Iter);
+         Print_Test (Data (Iter), Level, "PASS");
+         Iter := Next (Iter);
       end loop Pass_Loop;
 
+      Child_Iter := First_Child (Result);
       loop
-         Next_Child (Result, Child, End_Flag);
-         exit when End_Flag;
-         if Pass_Count (Child.all) > 0 then
-            Print_Passes (Child.all, Level + 1);
+         exit when not Is_Valid (Child_Iter);
+         if Pass_Count (Data (Child_Iter).all) > 0 then
+            Print_Passes (Data (Child_Iter).all, Level + 1);
          end if;
+         Child_Iter := Next (Child_Iter);
       end loop;
    end Print_Passes;
 
