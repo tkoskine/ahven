@@ -158,34 +158,46 @@ package Ahven.Results is
    -- Return the execution time of the whole collection.
 
    type Result_Info_Iterator is private;
+   -- An iterator type for Pass, Failure and Error results.
 
    function First_Pass (Collection : Result_Collection)
      return Result_Info_Iterator;
+   -- Get the first pass from the collection.
 
    function First_Failure (Collection : Result_Collection)
      return Result_Info_Iterator;
+   -- Get the first failure from the collection.
 
    function First_Error (Collection : Result_Collection)
      return Result_Info_Iterator;
+   -- Get the first error from the collection.
 
    function Next (Iter : Result_Info_Iterator) return Result_Info_Iterator;
+   -- Get the next pass/failure/error.
 
    function Data (Iter : Result_Info_Iterator) return Result_Info;
+   -- Get the data behind the iterator.
 
    function Is_Valid (Iter : Result_Info_Iterator) return Boolean;
+   -- Is the iterator still valid?
 
    type Result_Collection_Iterator is private;
+   -- Iterator for iterating over a set of Result_Collection access objects.
 
    function First_Child (Collection : in Result_Collection)
      return Result_Collection_Iterator;
+   -- Get the first child of the collection.
 
    function Next (Iter : Result_Collection_Iterator)
      return Result_Collection_Iterator;
+   -- Get the next child.
 
    function Is_Valid (Iter : Result_Collection_Iterator) return Boolean;
+   -- Is the iterator still valid?
 
    function Data (Iter : Result_Collection_Iterator)
      return Result_Collection_Access;
+   -- Get the data (Result_Collection_Access) behind the iterator.
 
    function Child_Depth (Collection : in Result_Collection) return Natural;
    -- Return the maximum depth of children. (a child of a child, etc.)
