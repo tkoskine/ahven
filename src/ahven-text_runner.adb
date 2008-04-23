@@ -25,7 +25,6 @@ with Ahven.Runner;
 with Ahven.Results;
 with Ahven.Listeners.Output_Capture;
 with Ahven.Listeners.Basic;
-with Ahven.Framework;
 with Ahven.Listeners;
 with Ahven.Parameters;
 with Ahven.XML_Runner;
@@ -34,12 +33,11 @@ use Ada.Text_IO;
 use Ada.Strings.Unbounded;
 use Ada.Strings.Fixed;
 
-use Ahven.Results;
-use Ahven.Framework;
-use Ahven.Listeners.Output_Capture;
-use Ahven.Listeners.Basic;
-
 package body Ahven.Text_Runner is
+   use Ahven.Results;
+   use Ahven.Framework;
+   use Ahven.Listeners.Output_Capture;
+   use Ahven.Listeners.Basic;
 
    -- Local procedures
    procedure Pad (Level : Natural);

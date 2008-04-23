@@ -13,10 +13,9 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
-with Ada.Strings.Unbounded;
-use Ada.Strings.Unbounded;
 
 package body Ahven.Temporary_Output is
+   use Ada.Strings.Unbounded;
    Temp_Counter : Natural := 0;
 
    procedure Create_Temp (File : out Temporary_File) is

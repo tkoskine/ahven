@@ -16,10 +16,8 @@
 
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Ahven.Listeners.Basic;
 
 use Ada.Strings.Unbounded;
-use Ahven.Listeners.Basic;
 
 package body Ahven.Listeners.Output_Capture is
 
@@ -33,7 +31,7 @@ package body Ahven.Listeners.Output_Capture is
    begin
       -- Empty routine name means a test suite or test case
       if Get_Routine_Name (Info) = Null_Unbounded_String then
-         Start_Test (Basic.Basic_Listener (Listener), Info);
+         Basic.Start_Test (Basic.Basic_Listener (Listener), Info);
       else
          -- A test routine? Let's create a temporary file
          -- and direct Ada.Text_IO output there.
@@ -44,11 +42,12 @@ package body Ahven.Listeners.Output_Capture is
 
    procedure End_Test (Listener : in out Output_Capture_Listener;
                        Info : Result_Info) is
+      use type Basic.Result_Type;
       My_Info : Result_Info := Info;
    begin
       -- Sanity check: if we have existing Result_Collection then...
       if Listener.Current_Result /= null then
-         if Listener.Last_Test_Result /= NO_RESULT then
+         if Listener.Last_Test_Result /= Basic.NO_RESULT then
             -- End of the test routine, so we can restore
             -- the normal output now and close the temporary file.
             Temporary_Output.Restore_Output;
@@ -60,7 +59,7 @@ package body Ahven.Listeners.Output_Capture is
               (My_Info, Temporary_Output.Get_Name (Listener.Output_File));
          end if;
       end if;
-      End_Test (Basic.Basic_Listener (Listener), My_Info);
+      Basic.End_Test (Basic.Basic_Listener (Listener), My_Info);
    end End_Test;
 
    procedure Remove_File (Name : String) is

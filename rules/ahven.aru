@@ -43,3 +43,8 @@ check Max_Size (block, 25);
 check style (negative_condition);
 check style (casing_identifier, original);
 check style (multiple_elements);
+check style (compound_statement);
+check style (casing_keyword, lowercase);
+
+check with_clauses (reduceable);
+
