@@ -35,6 +35,8 @@ Removable : search usage (object, not from_spec, not read);
 
 Hiding: check local_hiding (strict);
 
+check parameter_aliasing (certain);
+
 -- No long code blocks
 check Max_Size (if_branch, 30);
 check Max_Size (unnamed_loop, 20);
