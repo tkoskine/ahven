@@ -95,6 +95,9 @@ package Ahven.Results is
    -- Empty string is returned in case there is no output file.
 
    type Result_Collection is new Ada.Finalization.Controlled with private;
+   -- A collection of Result_Info objects.
+   -- Contains also child collections.
+
    type Result_Collection_Access is access Result_Collection;
 
    procedure Add_Child (Collection : in out Result_Collection;
@@ -237,10 +240,5 @@ private
       Errors    : Result_Info_List.List    := Result_Info_List.Empty_List;
       Children  : Result_List.List         := Result_List.Empty_List;
       Parent    : Result_Collection_Access := null;
-
-      Pass_Iter    : Result_Info_List.Iterator;
-      Failure_Iter : Result_Info_List.Iterator;
-      Error_Iter   : Result_Info_List.Iterator;
-      Child_Iter   : Result_List.Iterator;
    end record;
 end Ahven.Results;
