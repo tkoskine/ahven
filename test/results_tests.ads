@@ -23,5 +23,6 @@ package Results_Tests is
 private
    procedure Test_Count_Children;
    procedure Test_Direct_Count;
+   procedure Test_Result_Iterator;
 
 end Results_Tests;
