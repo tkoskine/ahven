@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+# Copyright (c) 2007, 2008 Tero Koskinen <tero.koskinen@iki.fi>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -30,6 +30,7 @@ SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
 	src/ahven-temporary_output.adb \
 	src/ahven-temporary_output.ads \
 	src/ahven-parameters.adb src/ahven-parameters.ads \
+	src/ahven-xml_runner.adb src/ahven-xml_runner.ads \
 	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads
 
 ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
@@ -39,7 +40,7 @@ ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-listeners-output_capture.ali \
 	lib/ahven-temporary_output.ali \
 	lib/ahven-parameters.ali \
-	lib/ahven-compat.ali
+	lib/ahven-compat.ali lib/ahven-xml_runner.ali
 
 SO_LIBRARY=libahven.so.11.0
 GPR_FILE=ahven.gpr
