@@ -50,16 +50,16 @@ package body Ahven.Text_Runner is
                          Level  : Natural;
                          Result : String);
 
-   procedure Print_Failures (Result : in out Result_Collection;
+   procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural);
 
-   procedure Print_Errors (Result : in out Result_Collection;
+   procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural);
 
-   procedure Print_Passes (Result : in out Result_Collection;
+   procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural);
 
-   procedure Report_Results (Result  : in out Result_Collection;
+   procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False);
 
    procedure Print_Log_File (Filename : String);
@@ -141,7 +141,7 @@ package body Ahven.Text_Runner is
       New_Line;
    end Print_Test;
 
-   procedure Print_Failures (Result : in out Result_Collection;
+   procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural) is
       Iter       : Result_Info_Iterator;
       Child_Iter : Result_Collection_Iterator;
@@ -172,7 +172,7 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Failures;
 
-   procedure Print_Errors (Result : in out Result_Collection;
+   procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural) is
       Iter       : Result_Info_Iterator;
       Child_Iter : Result_Collection_Iterator;
@@ -204,7 +204,7 @@ package body Ahven.Text_Runner is
 
    end Print_Errors;
 
-   procedure Print_Passes (Result : in out Result_Collection;
+   procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
       Iter       : Result_Info_Iterator;
       Child_Iter : Result_Collection_Iterator;
@@ -232,7 +232,7 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Passes;
 
-   procedure Report_Results (Result  : in out Result_Collection;
+   procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False) is
    begin
       Put_Line ("Passed : " & Integer'Image (Pass_Count (Result)));

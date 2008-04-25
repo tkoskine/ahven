@@ -51,7 +51,7 @@ package body Ahven.XML_Runner is
                                Parent_Test : String;
                                Info : Result_Info);
 
-   procedure Print_Test_Case (Collection : in out Result_Collection;
+   procedure Print_Test_Case (Collection : Result_Collection;
                               Dir : String);
 
    procedure Print_Log_File (File : File_Type; Filename : String);
@@ -179,14 +179,14 @@ package body Ahven.XML_Runner is
       End_Testcase_Tag (File);
    end Print_Test_Error;
 
-   procedure Print_Test_Case (Collection : in out Result_Collection;
+   procedure Print_Test_Case (Collection : Result_Collection;
                               Dir : String) is
       procedure Print (Output : File_Type;
-                       Result : in out Result_Collection);
+                       Result : Result_Collection);
       -- Internal procedure to print the testcase into given file.
 
       procedure Print (Output : File_Type;
-                       Result : in out Result_Collection) is
+                       Result : Result_Collection) is
          Iter : Result_Info_Iterator;
       begin
          Put_Line (Output, "<?xml version=" & '"' & "1.0" & '"' &
@@ -251,7 +251,7 @@ package body Ahven.XML_Runner is
       end if;
    end Print_Test_Case;
 
-   procedure Report_Results (Result : in out Result_Collection;
+   procedure Report_Results (Result : Result_Collection;
                              Dir    : String) is
       Iter : Result_Collection_Iterator;
    begin
