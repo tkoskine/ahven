@@ -42,7 +42,7 @@ ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
 	lib/ahven-parameters.ali \
 	lib/ahven-compat.ali lib/ahven-xml_runner.ali
 
-SO_LIBRARY=libahven.so.11.0
+SO_LIBRARY=libahven.so.12.0
 GPR_FILE=ahven.gpr
 
 default: build_all
