@@ -24,5 +24,7 @@ private
    procedure Test_Count_Children;
    procedure Test_Direct_Count;
    procedure Test_Result_Iterator;
-
+   procedure Test_Add_Pass;
+   procedure Test_Add_Failure;
+   procedure Test_Add_Error;
 end Results_Tests;

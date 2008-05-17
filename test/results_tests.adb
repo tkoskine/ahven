@@ -30,6 +30,9 @@ package body Results_Tests is
       Add_Test_Routine (T, Test_Direct_Count'Access, "Test Direct Count");
       Add_Test_Routine (T, Test_Result_Iterator'Access,
                         "Test Result Iterator");
+      Add_Test_Routine (T, Test_Add_Pass'Access, "Test Add Pass");
+      Add_Test_Routine (T, Test_Add_Failure'Access, "Test Add Failure");
+      Add_Test_Routine (T, Test_Add_Error'Access, "Test Add Error");
    end Initialize;
 
    procedure Test_Count_Children is
@@ -114,4 +117,35 @@ package body Results_Tests is
       end loop;
       Assert (Count = 1, "Invalid amount of errors");
    end Test_Result_Iterator;
+
+   procedure Test_Add_Pass is
+      use Ahven.Results;
+
+      Coll : Result_Collection;
+      Info : constant Result_Info := Empty_Result_Info;
+   begin
+      Add_Pass (Coll, Info);
+      Assert (Pass_Count (Coll) = 1, "Pass was not added!");
+   end Test_Add_Pass;
+
+   procedure Test_Add_Failure is
+      use Ahven.Results;
+
+      Coll : Result_Collection;
+      Info : constant Result_Info := Empty_Result_Info;
+   begin
+      Add_Failure (Coll, Info);
+      Assert (Failure_Count (Coll) = 1, "Failure was not added!");
+   end Test_Add_Failure;
+
+   procedure Test_Add_Error is
+      use Ahven.Results;
+
+      Coll : Result_Collection;
+      Info : constant Result_Info := Empty_Result_Info;
+   begin
+      Add_Error (Coll, Info);
+      Assert (Error_Count (Coll) = 1, "Error was not added!");
+   end Test_Add_Error;
+
 end Results_Tests;
