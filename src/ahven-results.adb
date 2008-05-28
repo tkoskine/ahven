@@ -181,7 +181,7 @@ package body Ahven.Results is
       Count : Natural := Size (Collection.Errors) +
                          Size (Collection.Failures) +
                          Size (Collection.Passes);
-      Iter : Result_List.Iterator := First (Collection.Children);
+      Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when not Is_Valid (Iter);
