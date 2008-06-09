@@ -30,16 +30,13 @@ package body Ahven.Runner is
       P : Results.Result_Info;
    begin
       Results.Set_Test_Name (P, Framework.Get_Name (T));
-      begin
-         Framework.Execute (T, Result);
-      exception
-         when E : Assertion_Error =>
-            Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
-            Framework.Add_Failure (Result, P);
-         when E : others =>
-            Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
-            Framework.Add_Error (Result, P);
-      end;
+      Framework.Execute (T, Result);
+   exception
+      -- Framework.Execute should capture the exceptions.
+      -- If we get here, it is an error in Ahven.
+      when E : others =>
+         Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
+         Framework.Add_Error (Result, P);
    end Run;
 
    procedure Run (T         : Ahven.Framework.Test'Class;
@@ -48,16 +45,13 @@ package body Ahven.Runner is
       P : Results.Result_Info := Results.Empty_Result_Info;
    begin
       Results.Set_Test_Name (P, Framework.Get_Name (T));
-      begin
-         Framework.Execute (T, Test_Name, Result);
-      exception
-         when E : Assertion_Error =>
-            Results.Set_Message (P, Ada.Exceptions.Exception_Message (E));
-            Framework.Add_Failure (Result, P);
-         when E : others =>
-            Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
-            Framework.Add_Error (Result, P);
-      end;
+      Framework.Execute (T, Test_Name, Result);
+   exception
+      -- Framework.Execute should capture the exceptions.
+      -- If we get here, it is an error in Ahven.
+      when E : others =>
+         Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
+         Framework.Add_Error (Result, P);
    end Run;
 
    procedure Run_Suite (Suite : Framework.Test_Suite'Class;
