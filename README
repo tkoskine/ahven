@@ -18,6 +18,12 @@ you need AdaBrowse to build the documentation and
 AdaControl to run coding style checks.
 
 The default Makefile compiles code using gnatmake.
+Internally, gnatmake is given a GNAT project file,
+which works with GNAT GPL series and relatively
+recent FSF GNAT. If you plan to compile Ahven
+with GNAT 3.15p, you need to modify the project
+file slightly and remove incompatible compiler flags.
+
 If you use another compiler, you need to customize
 the Makefile by yourself. When using GNAT, simple
 'make' will compile the library and the unit tests.
