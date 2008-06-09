@@ -10,6 +10,9 @@ Internal
 --------
 	* New Tests: Result_Tests.Test_Add_{Pass,Failure,Error}
 
+	* Code cleanups: Duplicate code from Text_Runner.Run and
+	  XML_Runner.Run moved into Runner.Run_Suite.
+
 2008-05-12 Ahven 1.2
 ====================
 
