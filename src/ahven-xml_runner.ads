@@ -15,6 +15,7 @@
 --
 with Ahven.Framework;
 with Ahven.Results;
+with Ahven.Parameters;
 
 package Ahven.XML_Runner is
 
@@ -22,9 +23,14 @@ package Ahven.XML_Runner is
    -- Run the suite and print the results.
 
    procedure Run (Suite : Framework.Test_Suite_Access);
-   -- Run the suite and print the results.
+   -- Run the suite and print the results. The routine is
+   -- identical to the above routine, but takes an access
+   -- parameter to a test suite.
 
    procedure Report_Results (Result : Results.Result_Collection;
                              Dir    : String);
    -- Report results to the given directory.
+private
+   procedure Do_Report (Test_Results : Results.Result_Collection;
+                        Args         : Parameters.Parameter_Info);
 end Ahven.XML_Runner;

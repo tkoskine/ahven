@@ -14,19 +14,12 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Command_Line;
-with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
-with Ahven.Results;
-with Ahven.Listeners.Output_Capture;
-with Ahven.Listeners.Basic;
-with Ahven.Listeners;
-with Ahven.Parameters;
 with Ahven.XML_Runner;
 
 use Ada.Text_IO;
@@ -36,8 +29,6 @@ use Ada.Strings.Fixed;
 package body Ahven.Text_Runner is
    use Ahven.Results;
    use Ahven.Framework;
-   use Ahven.Listeners.Output_Capture;
-   use Ahven.Listeners.Basic;
 
    -- Local procedures
    procedure Pad (Level : Natural);
@@ -275,45 +266,20 @@ package body Ahven.Text_Runner is
       end if;
    end Print_Log_File;
 
-   procedure Run (Suite : Framework.Test_Suite'Class) is
-      procedure Free is new Ada.Unchecked_Deallocation
-        (Listeners.Result_Listener'Class,
-         Listeners.Result_Listener_Class_Access);
-
-      Result   : Test_Result;
-      Listener : Listeners.Result_Listener_Class_Access;
-      Params   : Parameters.Parameter_Info;
+   procedure Do_Report (Test_Results : Results.Result_Collection;
+                        Args         : Parameters.Parameter_Info) is
    begin
-      Parameters.Parse_Parameters (Params);
-      if Parameters.Capture (Params) then
-         Listener := Listeners.Output_Capture.Create;
-      else
-         Listener := Listeners.Basic.Create;
-      end if;
-
-      Add_Listener (Result, Listener);
-      if Parameters.Single_Test (Params) then
-         Runner.Run (Suite, Parameters.Test_Name (Params), Result);
-      else
-         Runner.Run (Suite, Result);
-      end if;
-      if Parameters.XML_Results (Params) then
+      if Parameters.XML_Results (Args) then
          XML_Runner.Report_Results
-           (Basic_Listener (Listener.all).Main_Result,
-            Parameters.Result_Dir (Params));
+           (Test_Results, Parameters.Result_Dir (Args));
       else
-         Report_Results
-           (Basic_Listener (Listener.all).Main_Result,
-            Parameters.Verbose (Params));
+         Report_Results (Test_Results, Parameters.Verbose (Args));
       end if;
-      if (Error_Count (Basic_Listener (Listener.all).Main_Result) > 0) or
-         (Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0) then
-         Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
-      end if;
-      Free (Listener);
-   exception
-      when Parameters.Invalid_Parameter =>
-         Parameters.Usage;
+   end Do_Report;
+
+   procedure Run (Suite : Framework.Test_Suite'Class) is
+   begin
+      Runner.Run_Suite (Suite, Do_Report'Access);
    end Run;
 
    procedure Run (Suite : Framework.Test_Suite_Access) is

@@ -14,13 +14,16 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 with Ahven.Framework;
+with Ahven.Results;
+with Ahven.Parameters;
 
 package Ahven.Text_Runner is
-
    procedure Run (Suite : Framework.Test_Suite'Class);
    -- Run the suite and print the results.
 
    procedure Run (Suite : Framework.Test_Suite_Access);
    -- Run the suite and print the results.
-
+private
+   procedure Do_Report (Test_Results : Results.Result_Collection;
+                        Args         : Parameters.Parameter_Info);
 end Ahven.Text_Runner;

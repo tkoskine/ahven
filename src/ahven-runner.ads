@@ -15,6 +15,8 @@
 --
 
 with Ahven.Framework;
+with Ahven.Results;
+with Ahven.Parameters;
 
 package Ahven.Runner is
 
@@ -27,5 +29,12 @@ package Ahven.Runner is
                   Result    : in out Ahven.Framework.Test_Result);
    -- If name matches, run the test T (or one of its children)
    -- and place results to Result.
+
+   type Report_Proc is access procedure
+     (Test_Results : Results.Result_Collection;
+      Args         : Parameters.Parameter_Info);
+
+   procedure Run_Suite (Suite : Framework.Test_Suite'Class;
+                        Reporter : Report_Proc);
 
 end Ahven.Runner;
