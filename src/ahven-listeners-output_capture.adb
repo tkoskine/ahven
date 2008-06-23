@@ -21,7 +21,7 @@ use Ada.Strings.Unbounded;
 
 package body Ahven.Listeners.Output_Capture is
 
-   function Create return Result_Listener_Class_Access is
+   function Create return Basic.Basic_Listener_Class_Access is
    begin
       return new Output_Capture_Listener;
    end Create;

@@ -25,7 +25,7 @@ package body Ahven.Listeners.Basic is
       Listener.Last_Test_Long_Message := Get_Long_Message (Info);
    end Set_Last_Test_Info;
 
-   function Create return Result_Listener_Class_Access is
+   function Create return Basic_Listener_Class_Access is
    begin
       return new Basic_Listener;
    end Create;

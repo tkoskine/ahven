@@ -20,7 +20,7 @@ with Ahven.Listeners.Basic;
 package Ahven.Listeners.Output_Capture is
    type Output_Capture_Listener is new Basic.Basic_Listener with private;
 
-   function Create return Result_Listener_Class_Access;
+   function Create return Basic.Basic_Listener_Class_Access;
 
    procedure Start_Test (Listener : in out Output_Capture_Listener;
                          Info     :        Result_Info);

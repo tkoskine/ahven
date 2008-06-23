@@ -57,13 +57,13 @@ package body Ahven.Runner is
    procedure Run_Suite (Suite : Framework.Test_Suite'Class;
                         Reporter : Report_Proc) is
       procedure Free is new Ada.Unchecked_Deallocation
-        (Listeners.Result_Listener'Class,
-         Listeners.Result_Listener_Class_Access);
+        (Listeners.Basic.Basic_Listener'Class,
+         Listeners.Basic.Basic_Listener_Class_Access);
 
       use Ahven.Listeners.Basic;
 
       Result   : Framework.Test_Result;
-      Listener : Listeners.Result_Listener_Class_Access;
+      Listener : Listeners.Basic.Basic_Listener_Class_Access;
       Params   : Parameters.Parameter_Info;
    begin
       Parameters.Parse_Parameters (Params);
@@ -73,16 +73,17 @@ package body Ahven.Runner is
          Listener := Listeners.Basic.Create;
       end if;
 
-      Framework.Add_Listener (Result, Listener);
+      Framework.Add_Listener
+        (Result, Listeners.Result_Listener_Class_Access (Listener));
       if Parameters.Single_Test (Params) then
          Runner.Run (Suite, Parameters.Test_Name (Params), Result);
       else
          Runner.Run (Suite, Result);
       end if;
 
-      Reporter (Basic_Listener (Listener.all).Main_Result, Params);
-      if (Error_Count (Basic_Listener (Listener.all).Main_Result) > 0) or
-         (Failure_Count (Basic_Listener (Listener.all).Main_Result) > 0) then
+      Reporter (Listener.Main_Result, Params);
+      if (Error_Count (Listener.Main_Result) > 0) or
+         (Failure_Count (Listener.Main_Result) > 0) then
          Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
       end if;
       Free (Listener);
