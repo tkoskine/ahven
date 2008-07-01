@@ -6,12 +6,22 @@ Bugs fixed
 	* The API documentation is now generated also for
 	  the Ahven.Compat and Ahven.XML_Runner packages.
 
+	* The use of System.Address_To_Access_Conversions was removed.
+	  This allows Ahven to be compiled with Janus/Ada.
+	  At the same time,  Ahven.Framework.Run (T : Test;...)
+	  was changed back to Ahven.Framework.Run (T : in out Test;...).
+	  Sorry for the inconvenience.
+
 Internal
 --------
-	* New Tests: Result_Tests.Test_Add_{Pass,Failure,Error}
+	* New Tests: Result_Tests.Test_Add_{Pass,Failure,Error},
+	  Framework_Tests.Test_Tear_Down.
 
-	* Code cleanups: Duplicate code from Text_Runner.Run and
-	  XML_Runner.Run moved into Runner.Run_Suite.
+	* Code cleanups:
+	  + Duplicate code from Text_Runner.Run and XML_Runner.Run
+	    moved into Runner.Run_Suite.
+	  + Duplicate code from various Framework.Run procedures was
+	    moved into Framework.Run_Internal.
 
 2008-05-12 Ahven 1.2
 ====================
