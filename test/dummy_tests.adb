@@ -26,7 +26,20 @@ package body Dummy_Tests is
       Register (T, This_Test_Fails'Access, "Failure");
       Register (T, This_Test_Passes'Access, "Pass");
       Register (T, This_Test_Raises_Error'Access, "Error");
+      Ahven.Framework.Add_Test_Routine
+        (T, This_Test_Uses_Object'Access, "Object usage");
+      T.State := INITIALIZED;
    end Initialize;
+
+   procedure Set_Up (T : in out Test) is
+   begin
+      T.State := UP;
+   end Set_Up;
+
+   procedure Tear_Down (T : in out Test) is
+   begin
+      T.State := DOWN;
+   end Tear_Down;
 
    procedure This_Test_Fails is
    begin
@@ -42,5 +55,11 @@ package body Dummy_Tests is
    begin
       raise Constraint_Error;
    end This_Test_Raises_Error;
+
+   procedure This_Test_Uses_Object
+     (T : in out Ahven.Framework.Test_Case'Class) is
+   begin
+      Test (T).State := USED;
+   end This_Test_Uses_Object;
 
 end Dummy_Tests;

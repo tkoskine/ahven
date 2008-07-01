@@ -17,13 +17,24 @@
 with Ahven.Framework;
 
 package Dummy_Tests is
-   type Test is new Ahven.Framework.Test_Case with null record;
+   type Test_State is (INITIALIZED, UP, DOWN, USED);
+
+   type Test is new Ahven.Framework.Test_Case with record
+      State : Test_State;
+   end record;
 
    procedure Initialize (T : in out Test);
+
+   procedure Set_Up (T : in out Test);
+
+   procedure Tear_Down (T : in out Test);
 
    procedure This_Test_Fails;
 
    procedure This_Test_Passes;
 
    procedure This_Test_Raises_Error;
+
+   procedure This_Test_Uses_Object
+     (T : in out Ahven.Framework.Test_Case'Class);
 end Dummy_Tests;

@@ -28,7 +28,6 @@ package body Framework_Tests is
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Ahven.Framework");
-      Framework.Add_Test_Routine (T, Test_Set_Up'Access, "Set_Up");
 
       Framework.Add_Test_Routine (T, Test_Test_Result_Add_Pass'Access,
                                   "Test_Result: Add_Pass");
@@ -38,6 +37,10 @@ package body Framework_Tests is
                                   "Test_Result: Add_Error");
       Framework.Add_Test_Routine (T, Test_Add_Listener_Null'Access,
                                   "Test_Result: Add_Listener (null)");
+      Framework.Add_Test_Routine (T, Test_Set_Up'Access, "Test_Case: Set_Up");
+      T.Value := -1;
+      Framework.Add_Test_Routine (T, Test_Tear_Down'Access,
+                                  "Test_Case: Tear_Down");
       Framework.Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
       Framework.Add_Test_Routine (T, Test_Call_End_Test'Access,
@@ -62,6 +65,16 @@ package body Framework_Tests is
    begin
       Assert (Test (T).Value = 2, "Set_Up not called!");
    end Test_Set_Up;
+
+   procedure Test_Tear_Down is
+      use type Dummy_Tests.Test_State;
+
+      Result : Framework.Test_Result;
+      My_Test : Dummy_Tests.Test;
+   begin
+      Dummy_Tests.Run (My_Test, Result);
+      Assert (My_Test.State = Dummy_Tests.DOWN, "Tear_Down not called!");
+   end Test_Tear_Down;
 
    procedure Test_Test_Result_Add_Pass is
       Result : Framework.Test_Result;
@@ -125,11 +138,11 @@ package body Framework_Tests is
 
       Dummy_Tests.Run (My_Test, Result);
 
-      Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
+      Assert (My_Listener.Passes = 2, "Invalid amount of passes.");
       Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
       Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = 3,
+      Assert (My_Listener.Start_Calls = 4,
               "Start_Test calls: " &
               Integer'Image (My_Listener.Start_Calls));
 
@@ -149,11 +162,11 @@ package body Framework_Tests is
 
       Framework.Run (My_Suite.all, Result);
 
-      Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
+      Assert (My_Listener.Passes = 2, "Invalid amount of passes.");
       Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
       Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = 4,
+      Assert (My_Listener.Start_Calls = 5,
               "Start_Test calls: " &
               Integer'Image (My_Listener.Start_Calls));
 
@@ -185,7 +198,7 @@ package body Framework_Tests is
       Dummy_Tests.Run (My_Test, Result);
 
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.End_Calls = 3, "End_Test calls: " &
+      Assert (My_Listener.End_Calls = 4, "End_Test calls: " &
               Integer'Image (My_Listener.End_Calls));
 
       Free (My_Listener);
@@ -209,11 +222,11 @@ package body Framework_Tests is
 
       Framework.Run (Parent, Result);
 
-      Assert (My_Listener.Passes = 1, "Invalid amount of passes.");
+      Assert (My_Listener.Passes = 2, "Invalid amount of passes.");
       Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
       Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = 5,
+      Assert (My_Listener.Start_Calls = 6,
               "Start_Test calls: " &
               Integer'Image (My_Listener.Start_Calls));
 
