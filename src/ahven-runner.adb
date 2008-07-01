@@ -25,7 +25,7 @@ with Ahven.Listeners.Output_Capture;
 package body Ahven.Runner is
    use Ahven.Results;
 
-   procedure Run (T      : Ahven.Framework.Test'Class;
+   procedure Run (T      : in out Ahven.Framework.Test'Class;
                   Result : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Info;
    begin
@@ -39,7 +39,7 @@ package body Ahven.Runner is
          Framework.Add_Error (Result, P);
    end Run;
 
-   procedure Run (T         : Ahven.Framework.Test'Class;
+   procedure Run (T         : in out Ahven.Framework.Test'Class;
                   Test_Name : String;
                   Result    : in out Ahven.Framework.Test_Result) is
       P : Results.Result_Info := Results.Empty_Result_Info;
@@ -54,7 +54,7 @@ package body Ahven.Runner is
          Framework.Add_Error (Result, P);
    end Run;
 
-   procedure Run_Suite (Suite : Framework.Test_Suite'Class;
+   procedure Run_Suite (Suite : in out Framework.Test_Suite'Class;
                         Reporter : Report_Proc) is
       procedure Free is new Ada.Unchecked_Deallocation
         (Listeners.Basic.Basic_Listener'Class,

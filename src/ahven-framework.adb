@@ -19,7 +19,6 @@ with Ada.Exceptions;
 with Ada.Calendar;
 
 package body Ahven.Framework is
-   use Test_Case_Address_Conversion;
 
    -- Few local wrapper functions, so we can use Add_Result procedure
    -- for Passes, Failures, and Errors.
@@ -138,7 +137,7 @@ package body Ahven.Framework is
       null;
    end Tear_Down;
 
-   procedure Execute (T      :        Test'Class;
+   procedure Execute (T      : in out Test'Class;
                       Result : in out Test_Result) is
       Info : Result_Info := Empty_Result_Info;
    begin
@@ -157,7 +156,7 @@ package body Ahven.Framework is
       End_Test (Result, Info);
    end Execute;
 
-   procedure Execute (T           :        Test'Class;
+   procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Result      : in out Test_Result) is
       Info : Result_Info := Empty_Result_Info;
@@ -173,10 +172,10 @@ package body Ahven.Framework is
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Object_Test_Routine_Access;
                                Name    : String) is
-      Command : constant Test_Command_Class_Access :=
-        new Test_Object_Command'(Name => To_Unbounded_String (Name),
-                                 Object => To_Pointer (T'Address),
-                                 Routine => Routine);
+      Command : constant Test_Command_Access :=
+        new Test_Command'(Command_Kind => OBJECT,
+                          Name => To_Unbounded_String (Name),
+                          Object_Routine => Routine);
 
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -185,9 +184,10 @@ package body Ahven.Framework is
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine : Simple_Test_Routine_Access;
                                Name    : String) is
-      Command : constant Test_Command_Class_Access :=
-        new Test_Simple_Command'(Name => To_Unbounded_String (Name),
-                                 Routine => Routine);
+      Command : constant Test_Command_Access :=
+        new Test_Command'(Command_Kind => SIMPLE,
+                          Name => To_Unbounded_String (Name),
+                          Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
@@ -195,13 +195,14 @@ package body Ahven.Framework is
    -- The heart of the package.
    -- Run one test routine (well, Command at this point) and
    -- store the result to the Result object.
-   procedure Run_Command (Command : Test_Command_Class_Access;
+   procedure Run_Command (Command : Test_Command_Access;
                           Info    : Result_Info;
-                          Result  : in out Test_Result) is
+                          Result  : in out Test_Result;
+                          T       : in out Test_Case'Class) is
       Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
       My_Info : Result_Info := Info;
    begin
-      Run (Command.all);
+      Run (Command.all, T);
       Passed := True;
       Add_Pass (Result, My_Info);
    exception
@@ -231,7 +232,7 @@ package body Ahven.Framework is
    --
    -- Loops over the test routine list, executes the routines,
    -- and calculates the time spent in the routine.
-   procedure Run (T      :        Test_Case;
+   procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result) is
       use Test_Command_List;
       use type Ada.Calendar.Time;
@@ -248,7 +249,7 @@ package body Ahven.Framework is
          Start_Test (Result, Info);
          Start_Time := Ada.Calendar.Clock;
 
-         Run_Command (Data (Iter), Info, Result);
+         Run_Command (Data (Iter), Info, Result, T);
 
          End_Time := Ada.Calendar.Clock;
          Set_Execution_Time (Info, End_Time - Start_Time);
@@ -263,7 +264,7 @@ package body Ahven.Framework is
    --
    -- The procedure also tracks the execution time of the
    -- test routines and records them to the Result_Info.
-   procedure Run (T         :        Test_Case;
+   procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
                   Result    : in out Test_Result) is
       use Test_Command_List;
@@ -282,7 +283,7 @@ package body Ahven.Framework is
             Start_Test (Result, Info);
             Start_Time := Ada.Calendar.Clock;
 
-            Run_Command (Data (Iter), Info, Result);
+            Run_Command (Data (Iter), Info, Result, T);
 
             End_Time := Ada.Calendar.Clock;
             Set_Execution_Time (Info, End_Time - Start_Time);
@@ -295,11 +296,11 @@ package body Ahven.Framework is
 
    procedure Finalize  (T : in out Test_Case) is
       procedure Free is
-        new Ada.Unchecked_Deallocation (Test_Command'Class,
-                                        Test_Command_Class_Access);
+        new Ada.Unchecked_Deallocation (Test_Command,
+                                        Test_Command_Access);
 
       use Test_Command_List;
-      Ptr  : Test_Command_Class_Access := null;
+      Ptr  : Test_Command_Access := null;
       Iter : Iterator := First (T.Routines);
    begin
       loop
@@ -348,7 +349,7 @@ package body Ahven.Framework is
       return T.Suite_Name;
    end Get_Name;
 
-   procedure Run (T      :        Test_Suite;
+   procedure Run (T      : in out Test_Suite;
                   Result : in out Test_Result) is
       use Test_List;
 
@@ -361,7 +362,7 @@ package body Ahven.Framework is
       end loop;
    end Run;
 
-   procedure Run (T         :        Test_Suite;
+   procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
                   Result    : in out Test_Result) is
       use Test_List;
@@ -409,15 +410,15 @@ package body Ahven.Framework is
       Free (Ptr);
    end Release_Suite;
 
-   procedure Run (Command : Test_Object_Command) is
+   procedure Run (Command : Test_Command; T : in out Test_Case'Class) is
    begin
-      Set_Up (Command.Object.all);
-      Command.Routine.all (Command.Object.all);
-      Tear_Down (Command.Object.all);
-   end Run;
-
-   procedure Run (Command : Test_Simple_Command) is
-   begin
-      Command.Routine.all;
+      case Command.Command_Kind is
+         when SIMPLE =>
+            Command.Simple_Routine.all;
+         when OBJECT =>
+            Set_Up (T);
+            Command.Object_Routine.all (T);
+            Tear_Down (T);
+      end case;
    end Run;
 end Ahven.Framework;

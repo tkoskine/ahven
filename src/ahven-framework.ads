@@ -16,7 +16,6 @@
 
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
-with System.Address_To_Access_Conversions;
 
 with Ahven.Doubly_Linked_List;
 with Ahven.Results;
@@ -73,24 +72,24 @@ package Ahven.Framework is
    function Get_Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
 
-   procedure Run (T      :        Test;
+   procedure Run (T      : in out Test;
                   Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
 
-   procedure Run (T         :        Test;
+   procedure Run (T         : in out Test;
                   Test_Name :        String;
                   Result    : in out Test_Result) is abstract;
    -- Run the test with given name and place the test result to Result.
    -- Notice: If multiple tests have same name this might call all of
    -- them.
 
-   procedure Execute (T      :        Test'Class;
+   procedure Execute (T      : in out Test'Class;
                       Result : in out Test_Result);
    -- Call Test class' Run method and place the test outcome to Result.
    -- The procedure calls Start_Test of every listener before calling
    -- the Run procedure and End_Test after calling the Run procedure.
 
-   procedure Execute (T         :        Test'Class;
+   procedure Execute (T         : in out Test'Class;
                       Test_Name :        String;
                       Result    : in out Test_Result);
    -- Same as Execute above, but call the Run procedure which
@@ -99,14 +98,16 @@ package Ahven.Framework is
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.
 
+   type Test_Case_Access is access Test_Case'Class;
+
    function Get_Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
 
-   procedure Run (T      :        Test_Case;
+   procedure Run (T      : in out Test_Case;
                   Result : in out Test_Result);
    -- Run Test_Case's test routines.
 
-   procedure Run (T         :        Test_Case;
+   procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
                   Result    : in out Test_Result);
    -- Run Test_Case's test routine which matches to the Name.
@@ -171,11 +172,11 @@ package Ahven.Framework is
    function Get_Name (T : Test_Suite) return Unbounded_String;
    -- Return the name of Test_Suite.
 
-   procedure Run (T      :        Test_Suite;
+   procedure Run (T      : in out Test_Suite;
                   Result : in out Test_Result);
    -- Run Test_Suite's Test_Cases.
 
-   procedure Run (T         :        Test_Suite;
+   procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
                   Result    : in out Test_Result);
    -- Run test suite's child which matches to the given name.
@@ -195,20 +196,27 @@ private
    -- In theory, this type could hold also the test results
    -- but currently it just notifies the listeners.
 
-   type Test_Command is abstract tagged record
+   type Command_Object_Enum is (SIMPLE, OBJECT);
+
+   type Test_Command (Command_Kind : Command_Object_Enum) is record
       Name : Unbounded_String;
+      case Command_Kind is
+         when SIMPLE =>
+            Simple_Routine : Simple_Test_Routine_Access;
+         when OBJECT =>
+            Object_Routine : Object_Test_Routine_Access;
+      end case;
    end record;
-   -- Test routine type modeled using Command design pattern.
    -- Name attribute tells the name of the test routine.
 
-   procedure Run (Command : Test_Command) is abstract;
-   -- Run the test routine attached to the Test_Command.
-   -- Child types must implement this procedure.
+   type Test_Command_Access is access Test_Command;
 
-   type Test_Command_Class_Access is access Test_Command'Class;
+   procedure Run (Command : Test_Command; T : in out Test_Case'Class);
+   -- Run the specified command.
+   -- Calls Set_Up and Tear_Down if necessary.
 
    package Test_Command_List is
-     new Doubly_Linked_List (Test_Command_Class_Access);
+     new Doubly_Linked_List (Test_Command_Access);
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
@@ -217,33 +225,10 @@ private
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
 
-   package Test_Case_Address_Conversion is
-     new System.Address_To_Access_Conversions (Test_Case'Class);
-
-   type Test_Object_Command is new Test_Command with record
-      Routine : Object_Test_Routine_Access;
-      Object  : Test_Case_Address_Conversion.Object_Pointer;
-   end record;
-   -- Test_Command type with a test object attached to the test routine.
-
-   procedure Run (Command : Test_Object_Command);
-   -- Implementation of Run (Command : Test_Command) procedure.
-   -- Calls Set_Up and Tear_Down.
-
-   type Test_Simple_Command is new Test_Command with record
-      Routine : Simple_Test_Routine_Access;
-   end record;
-   -- Test_Command type without object (only the test routine).
-
-   type Test_Simple_Command_Access is access all Test_Simple_Command;
-
-   procedure Run (Command : Test_Simple_Command);
-   -- Implementation of Run (Command : Test_Command) procedure.
-   -- Does not call Set_Up and Tear_Down.
-
-   procedure Run_Command (Command : Test_Command_Class_Access;
+   procedure Run_Command (Command : Test_Command_Access;
                           Info    : Result_Info;
-                          Result  : in out Test_Result);
+                          Result  : in out Test_Result;
+                          T       : in out Test_Case'Class);
    -- Handle dispatching to the right Run (Command : Test_Command)
    -- procedure and record test routine result to the Result object.
 

@@ -295,7 +295,7 @@ package body Ahven.XML_Runner is
                       Parameters.Result_Dir (Args));
    end Do_Report;
 
-   procedure Run (Suite : Framework.Test_Suite'Class) is
+   procedure Run (Suite : in out Framework.Test_Suite'Class) is
    begin
       Runner.Run_Suite (Suite, Do_Report'Access);
    end Run;

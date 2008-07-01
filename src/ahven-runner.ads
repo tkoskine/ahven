@@ -20,11 +20,11 @@ with Ahven.Parameters;
 
 package Ahven.Runner is
 
-   procedure Run (T      : Ahven.Framework.Test'Class;
+   procedure Run (T      : in out Ahven.Framework.Test'Class;
                   Result : in out Ahven.Framework.Test_Result);
    -- Run the test T and place results to Result.
 
-   procedure Run (T         : Ahven.Framework.Test'Class;
+   procedure Run (T         : in out Ahven.Framework.Test'Class;
                   Test_Name : String;
                   Result    : in out Ahven.Framework.Test_Result);
    -- If name matches, run the test T (or one of its children)
@@ -34,7 +34,7 @@ package Ahven.Runner is
      (Test_Results : Results.Result_Collection;
       Args         : Parameters.Parameter_Info);
 
-   procedure Run_Suite (Suite : Framework.Test_Suite'Class;
+   procedure Run_Suite (Suite : in out Framework.Test_Suite'Class;
                         Reporter : Report_Proc);
 
 end Ahven.Runner;
