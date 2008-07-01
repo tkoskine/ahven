@@ -25,8 +25,13 @@ with GNAT 3.15p, you need to modify the project
 file slightly and remove incompatible compiler flags.
 
 If you use another compiler, you need to customize
-the Makefile by yourself. When using GNAT, simple
-'make' will compile the library and the unit tests.
+the Makefile by yourself. Please note, that 'src'
+directory has platform specific subdirectories 'unix'
+and 'windows. You need to select the sources from one
+of them also.
+
+When using GNAT, simple 'make' will compile the library
+and the unit tests.
 
 Command 'make check' will run the unit tests.
 
