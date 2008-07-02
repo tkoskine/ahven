@@ -24,10 +24,10 @@ package body Ahven.Framework is
    -- for Passes, Failures, and Errors.
    procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
                             I : Result_Info);
-   procedure Add_Error_L (L : access Listeners.Result_Listener'Class;
-                          I : Result_Info);
-   procedure Add_Pass_L (L : access Listeners.Result_Listener'Class;
-                         I : Result_Info);
+   procedure Add_Error_L   (L : access Listeners.Result_Listener'Class;
+                            I : Result_Info);
+   procedure Add_Pass_L    (L : access Listeners.Result_Listener'Class;
+                            I : Result_Info);
 
    type Add_Procedure is access
      procedure (L : access Listeners.Result_Listener'Class; I : Result_Info);
@@ -42,19 +42,19 @@ package body Ahven.Framework is
                            Routine_Name : Unbounded_String);
 
    procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
-                          I : Result_Info) is
+                            I : Result_Info) is
    begin
       Listeners.Add_Failure (L.all, I);
    end Add_Failure_L;
 
    procedure Add_Error_L (L : access Listeners.Result_Listener'Class;
-                        I : Result_Info) is
+                          I : Result_Info) is
    begin
       Listeners.Add_Error (L.all, I);
    end Add_Error_L;
 
    procedure Add_Pass_L (L : access Listeners.Result_Listener'Class;
-                       I : Result_Info) is
+                         I : Result_Info) is
    begin
       Listeners.Add_Pass (L.all, I);
    end Add_Pass_L;
@@ -89,11 +89,10 @@ package body Ahven.Framework is
 
    -- Notify listeners that the test is about to begin.
    --
-   -- Execute procedure calls this for testsuites and testcases.
-   -- Test case's Run procedure should call this for the test case's
-   -- test routines.
-   procedure Start_Test
-     (Result : in out Test_Result ; Info : Result_Info) is
+   -- The "Execute" procedure calls this procedure for testsuites
+   -- and testcases. Test case's "Run" procedure should call this
+   -- for the test routines of the test case.
+   procedure Start_Test (Result : in out Test_Result ; Info : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
@@ -118,9 +117,8 @@ package body Ahven.Framework is
       end loop;
    end End_Test;
 
-   procedure Add_Listener
-     (Result : in out Test_Result;
-      Listener : Listeners.Result_Listener_Class_Access)
+   procedure Add_Listener (Result : in out Test_Result;
+                           Listener : Listeners.Result_Listener_Class_Access)
    is
       use type Listeners.Result_Listener_Class_Access;
    begin
@@ -182,7 +180,6 @@ package body Ahven.Framework is
         new Test_Command'(Command_Kind => OBJECT,
                           Name => To_Unbounded_String (Name),
                           Object_Routine => Routine);
-
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
