@@ -92,7 +92,6 @@ package body List_Tests is
          Assert (Data (Iter) = A, "Data does not match");
          Iter := Prev (Iter);
       end loop;
-
    end Test_Move;
 
    procedure Test_Assignment is
