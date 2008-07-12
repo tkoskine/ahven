@@ -33,7 +33,7 @@ package body Ahven.Framework is
         (L : in out Listeners.Result_Listener'Class; I : Result_Info);
    procedure Add_Result (Result : in out Test_Result; I : Result_Info);
    -- A generic procedure do add Result_Info object I to every listener
-   -- listed in Test_Result Result.
+   -- listed in Test_Result object Result.
 
    procedure Add_Result (Result : in out Test_Result; I : Result_Info) is
       use Listeners.Result_Listener_List;
