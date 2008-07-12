@@ -23,7 +23,8 @@ with Dummy_Tests;
 package body Framework_Tests is
    use Ahven;
    procedure Free is new Ada.Unchecked_Deallocation
-     (Simple_Listener.Listener, Simple_Listener.Listener_Access);
+     (Object => Simple_Listener.Listener,
+      Name   => Simple_Listener.Listener_Access);
 
    procedure Initialize (T : in out Test) is
    begin

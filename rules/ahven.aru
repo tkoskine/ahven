@@ -30,6 +30,8 @@ check declarations (multiple_names);
 
 check directly_accessed_globals;
 
+check style (positional_association, instantiation);
+
 -- No variables in package specs
 check usage (variable, from_spec);
 Removable : search usage (object, not from_spec, not read);

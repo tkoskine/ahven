@@ -216,7 +216,7 @@ private
    -- Calls Set_Up and Tear_Down if necessary.
 
    package Test_Command_List is
-     new Doubly_Linked_List (Test_Command_Access);
+     new Doubly_Linked_List (Data_Type => Test_Command_Access);
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
@@ -232,7 +232,8 @@ private
    -- Handle dispatching to the right Run (Command : Test_Command)
    -- procedure and record test routine result to the Result object.
 
-   package Test_List is new Doubly_Linked_List (Test_Class_Access);
+   package Test_List is
+     new Doubly_Linked_List (Data_Type => Test_Class_Access);
 
    type Test_Suite is new Test with record
       Suite_Name : Unbounded_String;

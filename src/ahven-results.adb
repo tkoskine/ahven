@@ -142,8 +142,8 @@ package body Ahven.Results is
    -- its all children.
    procedure Finalize (Collection : in out Result_Collection) is
       procedure Free is
-        new Ada.Unchecked_Deallocation
-          (Result_Collection, Result_Collection_Access);
+        new Ada.Unchecked_Deallocation (Object => Result_Collection,
+                                        Name   => Result_Collection_Access);
 
       Iter : Result_List.Iterator := First (Collection.Children);
       Ptr  : Result_Collection_Access := null;

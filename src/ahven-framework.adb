@@ -307,8 +307,8 @@ package body Ahven.Framework is
 
    procedure Finalize  (T : in out Test_Case) is
       procedure Free is
-        new Ada.Unchecked_Deallocation (Test_Command,
-                                        Test_Command_Access);
+        new Ada.Unchecked_Deallocation (Object => Test_Command,
+                                        Name   => Test_Command_Access);
 
       use Test_Command_List;
       Ptr  : Test_Command_Access := null;
@@ -398,7 +398,8 @@ package body Ahven.Framework is
 
    procedure Finalize  (T : in out Test_Suite) is
       procedure Free is
-        new Ada.Unchecked_Deallocation (Test'Class, Test_Class_Access);
+        new Ada.Unchecked_Deallocation (Object => Test'Class,
+                                        Name   => Test_Class_Access);
       use Test_List;
 
       Ptr  : Test_Class_Access := null;
@@ -415,7 +416,8 @@ package body Ahven.Framework is
 
    procedure Release_Suite (T : Test_Suite_Access) is
       procedure Free is
-        new Ada.Unchecked_Deallocation (Test_Suite, Test_Suite_Access);
+        new Ada.Unchecked_Deallocation (Object => Test_Suite,
+                                        Name   => Test_Suite_Access);
       Ptr : Test_Suite_Access := T;
    begin
       Free (Ptr);

@@ -20,7 +20,7 @@ use Ahven;
 
 package body List_Tests is
    package Integer_Linked_List is
-     new Ahven.Doubly_Linked_List ( Integer );
+     new Ahven.Doubly_Linked_List (Data_Type => Integer);
 
    procedure Test_Append is
       use Integer_Linked_List;

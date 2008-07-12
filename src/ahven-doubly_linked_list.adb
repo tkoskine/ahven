@@ -19,7 +19,8 @@ with Ada.Unchecked_Deallocation;
 package body Ahven.Doubly_Linked_List is
 
    procedure Remove (Ptr : Node_Access) is
-      procedure Free is new Ada.Unchecked_Deallocation (Node, Node_Access);
+      procedure Free is
+        new Ada.Unchecked_Deallocation (Object => Node, Name => Node_Access);
       My_Ptr : Node_Access := Ptr;
    begin
       Ptr.Next := null;

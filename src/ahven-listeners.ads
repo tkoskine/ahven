@@ -50,7 +50,7 @@ package Ahven.Listeners is
    -- Called after the test ends. Add_* procedures are called before this.
 
    package Result_Listener_List is
-     new Ahven.Doubly_Linked_List (Result_Listener_Class_Access);
+     new Ahven.Doubly_Linked_List (Data_Type => Result_Listener_Class_Access);
    -- A package for a list of Result_Listeners.
 
 end Ahven.Listeners;

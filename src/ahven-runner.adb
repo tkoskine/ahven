@@ -57,8 +57,8 @@ package body Ahven.Runner is
    procedure Run_Suite (Suite : in out Framework.Test_Suite'Class;
                         Reporter : Report_Proc) is
       procedure Free is new Ada.Unchecked_Deallocation
-        (Listeners.Basic.Basic_Listener'Class,
-         Listeners.Basic.Basic_Listener_Class_Access);
+        (Object => Listeners.Basic.Basic_Listener'Class,
+         Name   => Listeners.Basic.Basic_Listener_Class_Access);
 
       use Ahven.Listeners.Basic;
 
