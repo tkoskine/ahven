@@ -42,21 +42,21 @@ package body List_Tests is
 
       My_List : List;
       Iter : Iterator;
+      Max_Item : constant := 5;
    begin
-      Append (My_List, 1);
-      Append (My_List, 2);
-      Append (My_List, 3);
-      Append (My_List, 4);
-      Append (My_List, 5);
+      for A in Integer range 1 .. Max_Item loop
+         Append (My_List, A);
+      end loop;
+
       Iter := Next (First (My_List));
       Remove (My_List, Iter);
       Iter := Next (First (My_List));
 
-      Assert (3 = Data (Iter),
+      Assert (Data (Iter) = (Max_Item - 2),
          "Remove does not work properly, data item 3 in a wrong place");
-      Assert (5 = Data (Last (My_List)),
+      Assert (Max_Item = Data (Last (My_List)),
          "Remove does not work properly, data item 5 in a wrong place");
-      Assert (4 = Size (My_List),
+      Assert (Size (My_List) = (Max_Item - 1),
          "Remove does not work properly, Size /= 4");
       Remove_All (My_List);
    end Test_Remove;
@@ -64,22 +64,28 @@ package body List_Tests is
    procedure Test_Move is
       use Integer_Linked_List;
 
+      Max_Item : constant := 5;
+      Middle_Item : constant := 3;
+
       My_List : List;
       Extra_List : List;
       Iter : Iterator;
    begin
-      Append (My_List, 1);
-      Append (My_List, 2);
-      Append (Extra_List, 3);
-      Append (Extra_List, 4);
-      Append (Extra_List, 5);
+      for A in Integer range 1 .. (Middle_Item - 1) loop
+         Append (My_List, A);
+      end loop;
+
+      for A in Integer range Middle_Item .. Max_Item loop
+         Append (Extra_List, A);
+      end loop;
+
       Move (My_List, Extra_List);
-      Assert (Size (My_List) = 5, "Size of My_List does not match");
+      Assert (Size (My_List) = Max_Item, "Size of My_List does not match");
       Assert (Size (Extra_List) = 0, "Size of Extra_List does not match");
 
       -- Testing forward iteration
       Iter := First (My_List);
-      for A in Integer range 1 .. 5 loop
+      for A in Integer range 1 .. Max_Item loop
          Assert (Is_Valid (Iter), "Iterator went to null");
          Assert (Data (Iter) = A, "Data does not match");
          Iter := Next (Iter);
@@ -87,7 +93,7 @@ package body List_Tests is
 
       -- And backward iteration
       Iter := Last (My_List);
-      for A in reverse Integer range 1 .. 5 loop
+      for A in reverse Integer range 1 .. Max_Item loop
          Assert (Is_Valid (Iter), "Iterator went to null");
          Assert (Data (Iter) = A, "Data does not match");
          Iter := Prev (Iter);
@@ -97,39 +103,56 @@ package body List_Tests is
    procedure Test_Assignment is
       use Integer_Linked_List;
 
+      Max_Item : constant := 2;
+
       My_List : List;
       Second_List : List;
       Third_List : List;
    begin
-      Append (My_List, 1);
-      Append (My_List, 2);
+      for A in Integer range 1 .. Max_Item loop
+         Append (My_List, A);
+      end loop;
 
       Second_List := My_List;
-      Assert (Size (Second_List) = 2, "Size of Second_List does not match");
+      Assert (Size (Second_List) = Max_Item,
+              "Size of Second_List does not match");
 
       Third_List := My_List;
-      Assert (Size (Third_List) = 2, "Size of Third_List does not match");
+      Assert (Size (Third_List) = Max_Item,
+              "Size of Third_List does not match");
 
       Remove (My_List, Last (My_List));
-      Assert (Size (My_List)     = 1, "Size of My_List does not match");
-      Assert (Size (Second_List) = 2, "Size of Second_List does not match");
-      Assert (Size (Third_List)  = 2, "Size of Third_List does not match");
+      Assert
+        (Size (My_List) = (Max_Item - 1), "Size of My_List does not match");
+
+      Assert
+        (Size (Second_List) = Max_Item, "Size of Second_List does not match");
+
+      Assert
+        (Size (Third_List) = Max_Item, "Size of Third_List does not match");
 
       declare
          Local_List : List := My_List;
       begin
-         Assert (Size (Local_List) = 1, "Size of Local_List does not match");
-         Append (Local_List, 3);
-         Assert (Size (Local_List) = 2, "Size of Local_List does not match");
+         Assert (Size (Local_List) = (Max_Item - 1),
+                 "Size of Local_List does not match");
+         Append (Local_List, (Max_Item + 1));
+         Assert (Size (Local_List) = Max_Item,
+                 "Size of Local_List does not match");
       end;
 
-      Assert (Size (My_List)     = 1, "Size of My_List does not match");
-      Assert (Size (Second_List) = 2, "Size of Second_List does not match");
-      Assert (Size (Third_List)  = 2, "Size of Third_List does not match");
+      Assert
+        (Size (My_List) = (Max_Item - 1), "Size of My_List does not match");
+      Assert
+        (Size (Second_List) = Max_Item, "Size of Second_List does not match");
+      Assert
+        (Size (Third_List) = Max_Item, "Size of Third_List does not match");
    end Test_Assignment;
 
    procedure Test_Forward_Iterator is
       use Integer_Linked_List;
+
+      Max_Item : constant := 3;
 
       My_List : List;
       Iter : Iterator;
@@ -141,8 +164,9 @@ package body List_Tests is
       Iter := Next (Iter);
       Assert (not Is_Valid (Iter), "Next after First returned non-null!");
 
-      Append (My_List, 2);
-      Append (My_List, 3);
+      for A in Integer range 2 .. Max_Item loop
+         Append (My_List, A);
+      end loop;
 
       Iter := First (My_List);
       loop
@@ -150,12 +174,14 @@ package body List_Tests is
          Iter := Next (Iter);
          Count := Count + 1;
       end loop;
-      Assert (Count = 3, "Iteration loop did not loop all items!");
+      Assert (Count = Max_Item, "Iteration loop did not loop all items!");
 
    end Test_Forward_Iterator;
 
    procedure Test_Reverse_Iterator is
       use Integer_Linked_List;
+
+      Max_Item : constant := 3;
 
       My_List : List;
       Iter : Iterator;
@@ -169,17 +195,19 @@ package body List_Tests is
       Iter := Next (Iter);
       Assert (not Is_Valid (Iter), "Next after First returned non-null!");
 
-      Append (My_List, 2);
-      Append (My_List, 3);
+      for A in Integer range 2 .. Max_Item loop
+         Append (My_List, A);
+      end loop;
 
       Iter := Last (My_List);
       loop
          exit when not Is_Valid (Iter);
+         Assert (Data (Iter) = (Max_Item - Count),
+                 "Iterator points to wrong item!");
          Count := Count + 1;
-         Assert (Data (Iter) = (4 - Count), "Iterator points to wrong item!");
          Iter := Prev (Iter);
       end loop;
-      Assert (Count = 3, "Iteration loop did not loop all items!");
+      Assert (Count = Max_Item, "Iteration loop did not loop all items!");
    end Test_Reverse_Iterator;
 
    procedure Test_Move_Empty_List is
@@ -188,8 +216,11 @@ package body List_Tests is
       My_List : List;
       Extra_List : List;
    begin
-      Append (My_List, 3);
+      Append (My_List, 1);
+      Assert (Size (Extra_List) = 0, "Initial size of Extra_List is not 0!");
+      Assert (Size (My_List)    = 1, "Initial size of My_List is not 1");
       Move (Target => My_List, Source => Extra_List);
+      Assert (Size (My_List) = 1, "Size of My_List is not 1");
    end Test_Move_Empty_List;
 
    procedure Initialize (T: in out Test_Case) is

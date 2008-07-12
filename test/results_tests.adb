@@ -56,15 +56,19 @@ package body Results_Tests is
       Coll     : Result_Collection;
       Coll_Dyn : Result_Collection_Access;
       Info     : constant Result_Info := Empty_Result_Info;
+      Expected_Test_Count : constant := 3;
    begin
       Coll_Dyn := new Result_Collection;
       Add_Error (Coll, Info);
       Add_Failure (Coll, Info);
       Add_Pass (Coll, Info);
+
+      -- This should not be counted in direct test count
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert (3 = Direct_Test_Count (Coll), "Invalid test count: "
+      Assert (Direct_Test_Count (Coll) = Expected_Test_Count,
+              "Invalid test count: "
               & Integer'Image (Direct_Test_Count (Coll)));
       Assert (1 = Direct_Test_Count (Coll_Dyn.all), "Invalid test count: "
               & Integer'Image (Direct_Test_Count (Coll_Dyn.all)));

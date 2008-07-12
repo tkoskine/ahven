@@ -22,6 +22,12 @@ with Dummy_Tests;
 
 package body Framework_Tests is
    use Ahven;
+
+   Dummy_Passes     : constant := 2;
+   Dummy_Failures   : constant := 1;
+   Dummy_Errors     : constant := 1;
+   Dummy_Test_Count : constant := Dummy_Passes + Dummy_Failures + Dummy_Errors;
+
    procedure Free is new Ada.Unchecked_Deallocation
      (Object => Simple_Listener.Listener,
       Name   => Simple_Listener.Listener_Access);
@@ -39,7 +45,7 @@ package body Framework_Tests is
       Framework.Add_Test_Routine (T, Test_Add_Listener_Null'Access,
                                   "Test_Result: Add_Listener (null)");
       Framework.Add_Test_Routine (T, Test_Set_Up'Access, "Test_Case: Set_Up");
-      T.Value := -1;
+      T.Value := INITIALIZED;
       Framework.Add_Test_Routine (T, Test_Tear_Down'Access,
                                   "Test_Case: Tear_Down");
       Framework.Add_Test_Routine (T, Test_Test_Case_Run'Access,
@@ -54,17 +60,17 @@ package body Framework_Tests is
 
    procedure Set_Up (T : in out Test) is
    begin
-      T.Value := 2;
+      T.Value := SETUP_DONE;
    end Set_Up;
 
    procedure Tear_Down (T : in out Test) is
    begin
-      T.Value := -3;
+      T.Value := TEARDOWN_DONE;
    end Tear_Down;
 
    procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class) is
    begin
-      Assert (Test (T).Value = 2, "Set_Up not called!");
+      Assert (Test (T).Value = SETUP_DONE, "Set_Up not called!");
    end Test_Set_Up;
 
    procedure Test_Tear_Down is
@@ -139,11 +145,12 @@ package body Framework_Tests is
 
       Dummy_Tests.Run (My_Test, Result);
 
-      Assert (My_Listener.Passes = 2, "Invalid amount of passes.");
-      Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
-      Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+      Assert (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
+      Assert (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
+      Assert
+        (My_Listener.Failures = Dummy_Failures, "Invalid amount of failures.");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = 4,
+      Assert (My_Listener.Start_Calls = Dummy_Test_Count,
               "Start_Test calls: " &
               Integer'Image (My_Listener.Start_Calls));
 
@@ -163,13 +170,15 @@ package body Framework_Tests is
 
       Framework.Run (My_Suite.all, Result);
 
-      Assert (My_Listener.Passes = 2, "Invalid amount of passes.");
-      Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
-      Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+      Assert
+        (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
+      Assert
+        (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
+      Assert
+        (My_Listener.Failures = Dummy_Failures, "Invalid amount of failures.");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = 5,
-              "Start_Test calls: " &
-              Integer'Image (My_Listener.Start_Calls));
+      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 1),
+              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
 
       Free (My_Listener);
       Framework.Release_Suite (My_Suite);
@@ -199,8 +208,8 @@ package body Framework_Tests is
       Dummy_Tests.Run (My_Test, Result);
 
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.End_Calls = 4, "End_Test calls: " &
-              Integer'Image (My_Listener.End_Calls));
+      Assert (My_Listener.End_Calls = Dummy_Test_Count,
+              "End_Test calls: " & Integer'Image (My_Listener.End_Calls));
 
       Free (My_Listener);
    end Test_Call_End_Test;
@@ -223,11 +232,14 @@ package body Framework_Tests is
 
       Framework.Run (Parent, Result);
 
-      Assert (My_Listener.Passes = 2, "Invalid amount of passes.");
-      Assert (My_Listener.Errors = 1, "Invalid amount of errors.");
-      Assert (My_Listener.Failures = 1, "Invalid amount of failures.");
+      Assert
+        (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
+      Assert
+        (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
+      Assert
+        (My_Listener.Failures = Dummy_Failures, "Invalid amount of failures.");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = 6,
+      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 2),
               "Start_Test calls: " &
               Integer'Image (My_Listener.Start_Calls));
 

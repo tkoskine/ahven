@@ -17,8 +17,9 @@
 with Ahven.Framework;
 
 package Framework_Tests is
+   type Test_State is (UNINITIALIZED, INITIALIZED, SETUP_DONE, TEARDOWN_DONE);
    type Test is new Ahven.Framework.Test_Case with record
-      Value : Integer := -1;
+      Value : Test_State := UNINITIALIZED;
    end record;
 
    procedure Initialize (T : in out Test);

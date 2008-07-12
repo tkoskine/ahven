@@ -87,10 +87,18 @@ package body Ahven.Text_Runner is
                          Result : String) is
       use Ada.Strings;
 
+      Max_Output_Width : constant := 50;
+      Max_Result_Width : constant := 7;
+      Max_Time_Out_Width : constant := 12;
+
+      subtype Result_Size is Integer range 1 .. Max_Result_Width;
+      subtype Time_Out_Size is Integer range 1 .. Max_Time_Out_Width;
+
       Msg        : constant Unbounded_String := Get_Message (Info);
       Output     : Unbounded_String := Null_Unbounded_String;
-      Result_Out : String (1 .. 7) := (others => ' ');
-      Time_Out   : String (1 .. 12) := (others => ' ');
+      Result_Out : String (Result_Size) := (others => ' ');
+      Time_Out   : String (Time_Out_Size) := (others => ' ');
+
    begin
       Pad (Output, Level + 1);
       Append (Output, Get_Routine_Name (Info));
@@ -99,8 +107,8 @@ package body Ahven.Text_Runner is
          Append (Output, Msg);
       end if;
 
-      if Length (Output) < 50 then
-         Pad (Output, 50 - Length (Output));
+      if Length (Output) < Max_Output_Width then
+         Pad (Output, Max_Output_Width - Length (Output));
       end if;
 
       Put (To_String (Output));

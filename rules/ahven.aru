@@ -59,6 +59,7 @@ check style (multiple_elements);
 check style (compound_statement);
 check style (casing_keyword, lowercase);
 check style (no_closing_name);
+check style (exposed_literal, integer, 0, 1, 2, number, constant, var_init);
 
 check with_clauses (reduceable);
 
