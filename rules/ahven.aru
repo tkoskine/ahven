@@ -1,6 +1,7 @@
 check header_comments (minimum, 10);
 search header_comments (model, "licenseheader.pat");
 
+check pragmas (nonstandard);
 check improper_initialization (out_parameter);
 -- check improper_initialization (access variable);
 search improper_initialization (initialized_variable);
@@ -22,6 +23,7 @@ check simplifiable_statements (if_for_case, block, null);
 check simplifiable_expressions (range, logical);
 
 check characters (control, trailing_space);
+check max_line_length (79);
 search characters (not_iso_646);
 
 check declarations (integer_type);

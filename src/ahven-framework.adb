@@ -135,13 +135,11 @@ package body Ahven.Framework is
    end Add_Listener;
 
    procedure Set_Up (T : in out Test) is
-      pragma Unreferenced (T);
    begin
       null;
    end Set_Up;
 
    procedure Tear_Down (T : in out Test) is
-      pragma Unreferenced (T);
    begin
       null;
    end Tear_Down;

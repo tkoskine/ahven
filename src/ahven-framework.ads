@@ -25,6 +25,8 @@ use Ada.Strings.Unbounded;
 
 use Ahven.Results;
 
+pragma Elaborate_All (Ahven.Doubly_Linked_List);
+
 package Ahven.Framework is
 
    Parameter_Error : exception;

@@ -36,12 +36,13 @@ project Ahven_Lib is
   end case;
 
   package Builder is
-
      for Default_Switches ("Ada") use ("-g","-gnatf",
                                        "-gnatVa",
                                        "-gnato",
                                        "-gnatwe",
                                        "-gnatwa",
+                                       "-gnatwl",
+                                       "-gnatwF", -- unreferenced formal off
                                        "-gnaty3ibmhesux", "-gnat95");
   end Builder;
 end Ahven_Lib;

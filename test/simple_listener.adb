@@ -17,28 +17,24 @@
 package body Simple_Listener is
    procedure Add_Pass (Object : in out Listener;
                        Info : Ahven.Results.Result_Info) is
-      pragma Unreferenced (Info);
    begin
       Object.Passes := Object.Passes + 1;
    end Add_Pass;
 
    procedure Add_Failure (Object : in out Listener;
                           Info : Ahven.Results.Result_Info) is
-      pragma Unreferenced (Info);
    begin
       Object.Failures := Object.Failures + 1;
    end Add_Failure;
 
    procedure Add_Error (Object : in out Listener;
                         Info : Ahven.Results.Result_Info) is
-      pragma Unreferenced (Info);
    begin
       Object.Errors := Object.Errors + 1;
    end Add_Error;
 
    procedure Start_Test (Object : in out Listener;
                          Info : Ahven.Results.Result_Info) is
-      pragma Unreferenced (Info);
    begin
       Object.Level := Object.Level + 1;
       Object.Start_Calls := Object.Start_Calls + 1;
@@ -46,7 +42,6 @@ package body Simple_Listener is
 
    procedure End_Test (Object : in out Listener;
                        Info : Ahven.Results.Result_Info) is
-      pragma Unreferenced (Info);
    begin
       Object.Level := Object.Level - 1;
       Object.End_Calls := Object.End_Calls + 1;

@@ -20,6 +20,8 @@ with Ahven.Results;
 
 use Ahven.Results;
 
+pragma Elaborate_All (Ahven.Doubly_Linked_List);
+
 package Ahven.Listeners is
    type Result_Listener is
      abstract new Ada.Finalization.Limited_Controlled with null record;
