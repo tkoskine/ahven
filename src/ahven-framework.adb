@@ -22,69 +22,74 @@ package body Ahven.Framework is
 
    -- Few local wrapper functions, so we can use Add_Result procedure
    -- for Passes, Failures, and Errors.
-   procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
-                            I : Result_Info);
-   procedure Add_Error_L   (L : access Listeners.Result_Listener'Class;
-                            I : Result_Info);
-   procedure Add_Pass_L    (L : access Listeners.Result_Listener'Class;
-                            I : Result_Info);
-
-   type Add_Procedure is access
-     procedure (L : access Listeners.Result_Listener'Class; I : Result_Info);
-
-   procedure Add_Result (Result : in out Test_Result; I : Result_Info;
-                         Add : Add_Procedure);
-
    procedure Run_Internal (T            : in out Test_Case;
                            Result       : in out Test_Result;
                            Command      : Test_Command_Access;
                            Test_Name    : Unbounded_String;
                            Routine_Name : Unbounded_String);
 
-   procedure Add_Failure_L (L : access Listeners.Result_Listener'Class;
-                            I : Result_Info) is
-   begin
-      Listeners.Add_Failure (L.all, I);
-   end Add_Failure_L;
+   generic
+      with procedure Add
+        (L : in out Listeners.Result_Listener'Class; I : Result_Info);
+   procedure Add_Result (Result : in out Test_Result; I : Result_Info);
+   -- A generic procedure do add Result_Info object I to every listener
+   -- listed in Test_Result Result.
 
-   procedure Add_Error_L (L : access Listeners.Result_Listener'Class;
-                          I : Result_Info) is
-   begin
-      Listeners.Add_Error (L.all, I);
-   end Add_Error_L;
-
-   procedure Add_Pass_L (L : access Listeners.Result_Listener'Class;
-                         I : Result_Info) is
-   begin
-      Listeners.Add_Pass (L.all, I);
-   end Add_Pass_L;
-
-   procedure Add_Result (Result : in out Test_Result; I : Result_Info;
-                         Add : Add_Procedure) is
+   procedure Add_Result (Result : in out Test_Result; I : Result_Info) is
       use Listeners.Result_Listener_List;
 
       Iter : Iterator := First (Result.Listeners);
    begin
       loop
          exit when not Is_Valid (Iter);
-         Add (Data (Iter), I);
+         Add (Data (Iter).all, I);
          Iter := Next (Iter);
       end loop;
    end Add_Result;
 
    procedure Add_Failure (Result : in out Test_Result; I : Result_Info) is
+      procedure Add_Internal
+        (L : in out Listeners.Result_Listener'Class; Info : Result_Info);
+
+      procedure Add_Internal (L : in out Listeners.Result_Listener'Class;
+                              Info : Result_Info) is
+      begin
+         Listeners.Add_Failure (L, Info);
+      end Add_Internal;
+
+      procedure Add_Result_Impl is new Add_Result (Add => Add_Internal);
    begin
-      Add_Result (Result, I, Add_Failure_L'Access);
+      Add_Result_Impl (Result, I);
    end Add_Failure;
 
    procedure Add_Error (Result : in out Test_Result; I : Result_Info) is
+      procedure Add_Internal
+        (L : in out Listeners.Result_Listener'Class; Info : Result_Info);
+
+      procedure Add_Internal (L : in out Listeners.Result_Listener'Class;
+                              Info : Result_Info) is
+      begin
+         Listeners.Add_Error (L, Info);
+      end Add_Internal;
+
+      procedure Add_Result_Impl is new Add_Result (Add => Add_Internal);
    begin
-      Add_Result (Result, I, Add_Error_L'Access);
+      Add_Result_Impl (Result, I);
    end Add_Error;
 
    procedure Add_Pass (Result : in out Test_Result; I : Result_Info) is
+      procedure Add_Internal
+        (L : in out Listeners.Result_Listener'Class; Info : Result_Info);
+
+      procedure Add_Internal (L : in out Listeners.Result_Listener'Class;
+                              Info : Result_Info) is
+      begin
+         Listeners.Add_Pass (L, Info);
+      end Add_Internal;
+
+      procedure Add_Result_Impl is new Add_Result (Add => Add_Internal);
    begin
-      Add_Result (Result, I, Add_Pass_L'Access);
+      Add_Result_Impl (Result, I);
    end Add_Pass;
 
    -- Notify listeners that the test is about to begin.
