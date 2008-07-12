@@ -251,7 +251,10 @@ package body Ahven.Framework is
       Start_Test (Result, Info);
       Start_Time := Ada.Calendar.Clock;
 
-      Run_Command (Command, Info, Result, T);
+      Run_Command (Command => Command,
+                   Info    => Info,
+                   Result  => Result,
+                   T       => T);
 
       End_Time := Ada.Calendar.Clock;
       Set_Execution_Time (Info, End_Time - Start_Time);

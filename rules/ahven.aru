@@ -25,6 +25,9 @@ check simplifiable_expressions (range, logical);
 check characters (control, trailing_space);
 check max_line_length (79);
 search characters (not_iso_646);
+search max_blank_lines (2);
+
+check Multiple_Assignments (repeated);
 
 check declarations (integer_type);
 check declarations (task);
@@ -32,11 +35,14 @@ check declarations (multiple_names);
 
 check directly_accessed_globals;
 
-check style (positional_association, instantiation);
+check style (positional_association, instantiation, 0, call, 3);
 
 -- No variables in package specs
 check usage (variable, from_spec);
-Removable : search usage (object, not from_spec, not read);
+
+Constantable : check usage
+  (variable, not from_spec, read, initialized, not written);
+Removable : check usage (object, not from_spec, not read);
 
 Hiding: check local_hiding (strict);
 
@@ -52,6 +58,8 @@ check style (casing_identifier, original);
 check style (multiple_elements);
 check style (compound_statement);
 check style (casing_keyword, lowercase);
+check style (no_closing_name);
 
 check with_clauses (reduceable);
 
+check units (unchecked);

@@ -117,10 +117,15 @@ package body Ahven.XML_Runner is
    procedure Print_Test_Pass (File : File_Type;
                               Parent_Test : String;
                               Info : Result_Info) is
+      Exec_Time : constant String :=
+        Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
-      Start_Testcase_Tag (File, Parent_Test,
-        To_String (Get_Routine_Name (Info)),
-        Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both));
+      Start_Testcase_Tag
+        (File           => File,
+         Parent         => Parent_Test,
+         Name           => To_String (Get_Routine_Name (Info)),
+         Execution_Time => Exec_Time);
+
       if Length (Get_Output_File (Info)) > 0 then
          Put (File, "<system-out>");
          Print_Log_File (File, To_String (Get_Output_File (Info)));
@@ -132,10 +137,15 @@ package body Ahven.XML_Runner is
    procedure Print_Test_Failure (File : File_Type;
                                  Parent_Test : String;
                                  Info : Result_Info) is
+      Exec_Time : constant String :=
+        Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
-      Start_Testcase_Tag (File, Parent_Test,
-        To_String (Get_Routine_Name (Info)),
-        Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both));
+      Start_Testcase_Tag
+        (File           => File,
+         Parent         => Parent_Test,
+         Name           => To_String (Get_Routine_Name (Info)),
+         Execution_Time => Exec_Time);
+
       Put (File, "<failure ");
       Print_Attribute (File, "type",
         Trim (To_String (Get_Message (Info)), Ada.Strings.Both));
@@ -153,10 +163,15 @@ package body Ahven.XML_Runner is
    procedure Print_Test_Error (File : File_Type;
                                Parent_Test : String;
                                Info : Result_Info) is
+      Exec_Time : constant String :=
+        Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
-      Start_Testcase_Tag (File, Parent_Test,
-        To_String (Get_Routine_Name (Info)),
-        Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both));
+      Start_Testcase_Tag
+        (File           => File,
+         Parent         => Parent_Test,
+         Name           => To_String (Get_Routine_Name (Info)),
+         Execution_Time => Exec_Time);
+
       Put (File, "<error ");
       Print_Attribute (File, "type",
         Trim (To_String (Get_Message (Info)), Ada.Strings.Both));
