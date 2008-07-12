@@ -26,6 +26,7 @@ search characters (not_iso_646);
 
 check declarations (integer_type);
 check declarations (task);
+check declarations (multiple_names);
 
 check directly_accessed_globals;
 

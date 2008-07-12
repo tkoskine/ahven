@@ -243,8 +243,9 @@ package body Ahven.Framework is
                            Routine_Name : Unbounded_String) is
       use type Ada.Calendar.Time;
 
-      Info : Result_Info := Empty_Result_Info;
-      Start_Time, End_Time : Ada.Calendar.Time;
+      Info       : Result_Info := Empty_Result_Info;
+      Start_Time : Ada.Calendar.Time;
+      End_Time   : Ada.Calendar.Time;
    begin
       Set_Test_Name (Info, Test_Name);
       Set_Routine_Name (Info, Routine_Name);
