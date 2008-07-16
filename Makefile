@@ -50,15 +50,15 @@ default: build_all
 build_all: build_lib build_tests
 
 build_lib:
-	OS=$(OS_VERSION) gnatmake -Pahven_lib
+	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_lib
 
 build_tests: build_lib
-	OS=$(OS_VERSION) gnatmake -Pahven_tests
+	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_tests
 
 clean: clean_lib clean_tests clean_docs
 
 clean_lib:
-	OS=$(OS_VERSION) gnatclean -Pahven_lib
+	OS_VERSION=$(OS_VERSION) gnatclean -Pahven_lib
 
 clean_tests:
 	OS=$(OS_VERSION) gnatclean -Pahven_tests

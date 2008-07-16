@@ -16,7 +16,7 @@
 
 project Ahven_Lib is
   type OS_Type is ("unix", "windows");
-  OS : OS_Type := external ("OS", "windows");
+  OS_Version : OS_Type := external ("OS_VERSION", "windows");
 
   Version := "13";
 
@@ -25,7 +25,7 @@ project Ahven_Lib is
   for Library_Name use "ahven";
   for Library_Dir use "lib";
 
-  case OS is
+  case OS_Version is
     when "unix" =>
       for Library_Kind use "dynamic";
       for Library_Version use "libahven.so." & Version & ".0";
