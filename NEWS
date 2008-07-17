@@ -8,9 +8,13 @@ Bugs fixed
 
 	* The use of System.Address_To_Access_Conversions was removed.
 	  This allows Ahven to be compiled with Janus/Ada.
-	  At the same time,  Ahven.Framework.Run (T : Test;...)
+	  At the same time, Ahven.Framework.Run (T : Test;...)
 	  was changed back to Ahven.Framework.Run (T : in out Test;...).
 	  Sorry for the inconvenience.
+
+	* Non-standard pragmas were removed. The code should compile
+	  now on multiple Ada compilers without warnings about
+	  unrecognised pragmas.
 
 Internal
 --------
