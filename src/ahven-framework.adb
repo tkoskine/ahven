@@ -24,7 +24,7 @@ package body Ahven.Framework is
    -- for Passes, Failures, and Errors.
    procedure Run_Internal (T            : in out Test_Case;
                            Result       : in out Test_Result;
-                           Command      : Test_Command_Access;
+                           Command      : Test_Command;
                            Test_Name    : Unbounded_String;
                            Routine_Name : Unbounded_String);
 
@@ -203,14 +203,14 @@ package body Ahven.Framework is
    -- The heart of the package.
    -- Run one test routine (well, Command at this point) and
    -- store the result to the Result object.
-   procedure Run_Command (Command :        Test_Command_Access;
+   procedure Run_Command (Command :        Test_Command;
                           Info    :        Result_Info;
                           Result  : in out Test_Result;
                           T       : in out Test_Case'Class) is
       Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
       My_Info : Result_Info := Info;
    begin
-      Run (Command.all, T);
+      Run (Command, T);
       Passed := True;
       Add_Pass (Result, My_Info);
    exception
@@ -238,7 +238,7 @@ package body Ahven.Framework is
 
    procedure Run_Internal (T            : in out Test_Case;
                            Result       : in out Test_Result;
-                           Command      :        Test_Command_Access;
+                           Command      :        Test_Command;
                            Test_Name    :        Unbounded_String;
                            Routine_Name :        Unbounded_String)
    is
@@ -279,7 +279,7 @@ package body Ahven.Framework is
          exit when not Is_Valid (Iter);
          Run_Internal (T            => T,
                        Result       => Result,
-                       Command      => Data (Iter),
+                       Command      => Data (Iter).all,
                        Test_Name    => Get_Name (T),
                        Routine_Name => Data (Iter).Name);
          Iter := Next (Iter);
@@ -304,7 +304,7 @@ package body Ahven.Framework is
          if To_String (Data (Iter).Name) = Test_Name then
             Run_Internal (T            => T,
                           Result       => Result,
-                          Command      => Data (Iter),
+                          Command      => Data (Iter).all,
                           Test_Name    => Get_Name (T),
                           Routine_Name => Data (Iter).Name);
          end if;

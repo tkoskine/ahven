@@ -227,7 +227,7 @@ private
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
 
-   procedure Run_Command (Command :        Test_Command_Access;
+   procedure Run_Command (Command :        Test_Command;
                           Info    :        Result_Info;
                           Result  : in out Test_Result;
                           T       : in out Test_Case'Class);
