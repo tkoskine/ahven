@@ -122,7 +122,7 @@ package body Ahven.Framework is
       end loop;
    end End_Test;
 
-   procedure Add_Listener (Result : in out Test_Result;
+   procedure Add_Listener (Result   : in out Test_Result;
                            Listener : Listeners.Result_Listener_Class_Access)
    is
       use type Listeners.Result_Listener_Class_Access;
@@ -177,22 +177,24 @@ package body Ahven.Framework is
    end Execute;
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
-                               Routine : Object_Test_Routine_Access;
-                               Name    : String) is
+                               Routine :        Object_Test_Routine_Access;
+                               Name    :        String)
+   is
       Command : constant Test_Command_Access :=
-        new Test_Command'(Command_Kind => OBJECT,
-                          Name => To_Unbounded_String (Name),
+        new Test_Command'(Command_Kind   => OBJECT,
+                          Name           => To_Unbounded_String (Name),
                           Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
-                               Routine : Simple_Test_Routine_Access;
-                               Name    : String) is
+                               Routine :        Simple_Test_Routine_Access;
+                               Name    :        String)
+   is
       Command : constant Test_Command_Access :=
-        new Test_Command'(Command_Kind => SIMPLE,
-                          Name => To_Unbounded_String (Name),
+        new Test_Command'(Command_Kind   => SIMPLE,
+                          Name           => To_Unbounded_String (Name),
                           Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -201,8 +203,8 @@ package body Ahven.Framework is
    -- The heart of the package.
    -- Run one test routine (well, Command at this point) and
    -- store the result to the Result object.
-   procedure Run_Command (Command : Test_Command_Access;
-                          Info    : Result_Info;
+   procedure Run_Command (Command :        Test_Command_Access;
+                          Info    :        Result_Info;
                           Result  : in out Test_Result;
                           T       : in out Test_Case'Class) is
       Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
@@ -236,9 +238,10 @@ package body Ahven.Framework is
 
    procedure Run_Internal (T            : in out Test_Case;
                            Result       : in out Test_Result;
-                           Command      : Test_Command_Access;
-                           Test_Name    : Unbounded_String;
-                           Routine_Name : Unbounded_String) is
+                           Command      :        Test_Command_Access;
+                           Test_Name    :        Unbounded_String;
+                           Routine_Name :        Unbounded_String)
+   is
       use type Ada.Calendar.Time;
 
       Info       : Result_Info := Empty_Result_Info;
@@ -266,16 +269,18 @@ package body Ahven.Framework is
    -- Loops over the test routine list, executes the routines,
    -- and calculates the time spent in the routine.
    procedure Run (T      : in out Test_Case;
-                  Result : in out Test_Result) is
+                  Result : in out Test_Result)
+   is
       use Test_Command_List;
 
       Iter : Iterator := First (T.Routines);
    begin
       loop
          exit when not Is_Valid (Iter);
-         Run_Internal (T => T, Result => Result,
-                       Command => Data (Iter),
-                       Test_Name => Get_Name (T),
+         Run_Internal (T            => T,
+                       Result       => Result,
+                       Command      => Data (Iter),
+                       Test_Name    => Get_Name (T),
                        Routine_Name => Data (Iter).Name);
          Iter := Next (Iter);
       end loop;
@@ -288,7 +293,8 @@ package body Ahven.Framework is
    -- test routines and records them to the Result_Info.
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
-                  Result    : in out Test_Result) is
+                  Result    : in out Test_Result)
+   is
       use Test_Command_List;
 
       Iter : Iterator    := First (T.Routines);
@@ -296,9 +302,10 @@ package body Ahven.Framework is
       loop
          exit when not Is_Valid (Iter);
          if To_String (Data (Iter).Name) = Test_Name then
-            Run_Internal (T => T, Result => Result,
-                          Command => Data (Iter),
-                          Test_Name => Get_Name (T),
+            Run_Internal (T            => T,
+                          Result       => Result,
+                          Command      => Data (Iter),
+                          Test_Name    => Get_Name (T),
                           Routine_Name => Data (Iter).Name);
          end if;
 
@@ -306,7 +313,7 @@ package body Ahven.Framework is
       end loop;
    end Run;
 
-   procedure Finalize  (T : in out Test_Case) is
+   procedure Finalize (T : in out Test_Case) is
       procedure Free is
         new Ada.Unchecked_Deallocation (Object => Test_Command,
                                         Name   => Test_Command_Access);
@@ -362,7 +369,8 @@ package body Ahven.Framework is
    end Get_Name;
 
    procedure Run (T      : in out Test_Suite;
-                  Result : in out Test_Result) is
+                  Result : in out Test_Result)
+   is
       use Test_List;
 
       Iter : Iterator := First (T.Test_Cases);
@@ -376,7 +384,8 @@ package body Ahven.Framework is
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
-                  Result    : in out Test_Result) is
+                  Result    : in out Test_Result)
+   is
       use Test_List;
 
       Iter : Iterator := First (T.Test_Cases);

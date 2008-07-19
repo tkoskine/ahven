@@ -133,15 +133,15 @@ package Ahven.Framework is
    -- A pointer to a test routine which does not take arguments.
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
-                               Routine : Object_Test_Routine_Access;
-                               Name    : String);
+                               Routine :        Object_Test_Routine_Access;
+                               Name    :        String);
    -- Register a test routine to the Test_Case.
    -- The routine must have signature
    --  "procedure R (T : in out Test_Case'Class)".
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
-                               Routine : Simple_Test_Routine_Access;
-                               Name    : String);
+                               Routine :        Simple_Test_Routine_Access;
+                               Name    :        String);
    -- Register a simple test routine to the Test_Case.
    -- The routine must have signature
    --  "procedure R".
@@ -227,8 +227,8 @@ private
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
 
-   procedure Run_Command (Command : Test_Command_Access;
-                          Info    : Result_Info;
+   procedure Run_Command (Command :        Test_Command_Access;
+                          Info    :        Result_Info;
                           Result  : in out Test_Result;
                           T       : in out Test_Case'Class);
    -- Handle dispatching to the right Run (Command : Test_Command)
