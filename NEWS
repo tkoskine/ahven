@@ -18,6 +18,9 @@ Bugs fixed
 
 Internal
 --------
+	* Variable "OS" in Makefile and GNAT project files was renamed
+	  to "OS_Version".
+
 	* New Tests: Result_Tests.Test_Add_{Pass,Failure,Error},
 	  Framework_Tests.Test_Tear_Down.
 
