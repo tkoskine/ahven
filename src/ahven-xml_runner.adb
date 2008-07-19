@@ -280,7 +280,10 @@ package body Ahven.XML_Runner is
    end Report_Results;
 
    procedure Print_Log_File (File : File_Type; Filename : String) is
-      type CDATA_End_State is (NONE, FIRST_BRACKET, SECOND_BRACKET);
+      type CData_End_State is (NONE, FIRST_BRACKET, SECOND_BRACKET);
+
+      function State_Change (Old_State : CData_End_State)
+        return CData_End_State;
 
       Handle : File_Type;
       Char   : Character := ' ';
@@ -288,7 +291,29 @@ package body Ahven.XML_Runner is
 
       -- We need to escape ]]>, this variable tracks
       -- the characters, so we know when to do the escaping.
-      CData_Ending : CDATA_End_State := NONE;
+      CData_Ending : CData_End_State := NONE;
+
+      function State_Change (Old_State : CData_End_State)
+        return CData_End_State
+      is
+         New_State : CData_End_State := NONE;
+      begin
+         case CData_Ending is
+            when NONE =>
+               if Char = ']' then
+                  New_State := FIRST_BRACKET;
+               end if;
+            when FIRST_BRACKET =>
+               if Char = ']' then
+                  New_State := SECOND_BRACKET;
+               end if;
+            when SECOND_BRACKET =>
+               if Char = '>' then
+                  Put (File, " ");
+               end if;
+         end case;
+         return New_State;
+      end State_Change;
    begin
       Open (Handle, In_File, Filename);
       loop
@@ -298,35 +323,14 @@ package body Ahven.XML_Runner is
             Put (File, "<![CDATA[");
             First := False;
          end if;
-         if Char = ']' or Char = '>' then
-            case CData_Ending is
-               when NONE =>
-                  if Char = ']' then
-                     CData_Ending := FIRST_BRACKET;
-                  else
-                     CData_Ending := NONE;
-                  end if;
-               when FIRST_BRACKET =>
-                  if Char = ']' then
-                     CData_Ending := SECOND_BRACKET;
-                  else
-                     CData_Ending := NONE;
-                  end if;
-               when SECOND_BRACKET =>
-                  if Char = '>' then
-                     Put (File, " ");
-                  end if;
-                  CData_Ending := NONE;
-            end case;
-         else
-            CData_Ending := NONE;
-         end if;
+         CData_Ending := State_Change (CData_Ending);
 
          Put (File, Char);
          if End_Of_Line (Handle) then
             New_Line (File);
          end if;
       end loop;
+
       Close (Handle);
       if not First then
          Put_Line (File, "]]>");
