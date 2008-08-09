@@ -7,6 +7,9 @@ Changes
 
 	* The GNAT project file for GNAT 3.15p was added. 
 
+	* Fix for bug #12165 and make test suite to work
+	  with Janus/Ada 3.1.x.
+
 Bugs fixed
 ----------
 	* The API documentation is now generated also for
@@ -35,6 +38,9 @@ Internal
 	    moved into Runner.Run_Suite.
 	  + Duplicate code from various Framework.Run procedures was
 	    moved into Framework.Run_Internal.
+
+	* Ahven.Doubly_Linked_List was removed. This is related
+	  to bug #12165.
 
 2008-05-12 Ahven 1.2
 ====================
