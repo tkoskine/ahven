@@ -16,7 +16,7 @@
 
 with Ada.Unchecked_Deallocation;
 
-package body Ahven.Doubly_Linked_List is
+package body Ahven.Listeners.Result_Listener_List is
 
    procedure Remove (Ptr : Node_Access) is
       procedure Free is
@@ -49,7 +49,8 @@ package body Ahven.Doubly_Linked_List is
       end if;
    end Remove;
 
-   procedure Prepend (This_List : in out List; Node_Data : Data_Type) is
+   procedure Prepend (This_List : in out List;
+                      Node_Data : Listeners.Result_Listener_Class_Access) is
       New_Node : Node_Access  := null;
    begin
       New_Node := new Node'(Data => Node_Data,
@@ -65,7 +66,8 @@ package body Ahven.Doubly_Linked_List is
       This_List.Size := This_List.Size + 1;
    end Prepend;
 
-   procedure Append (This_List : in out List; Node_Data : Data_Type) is
+   procedure Append (This_List : in out List;
+                     Node_Data : Listeners.Result_Listener_Class_Access) is
       New_Node : Node_Access  := null;
    begin
       New_Node := new Node'(Data => Node_Data,
@@ -169,12 +171,14 @@ package body Ahven.Doubly_Linked_List is
       return Iterator (Iter.Prev);
    end Prev;
 
-   function Data (Iter : Iterator) return Data_Type is
+   function Data (Iter : Iterator)
+     return Listeners.Result_Listener_Class_Access is
    begin
       return Iter.Data;
    end Data;
 
-   function Data (Iter : Node_Access) return Data_Type is
+   function Data (Iter : Node_Access)
+     return Listeners.Result_Listener_Class_Access is
    begin
       return Iter.Data;
    end Data;
@@ -248,4 +252,4 @@ package body Ahven.Doubly_Linked_List is
       Object.Last := Target_Last;
    end Adjust;
 
-end Ahven.Doubly_Linked_List;
+end Ahven.Listeners.Result_Listener_List;

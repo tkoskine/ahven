@@ -16,9 +16,6 @@
 
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
-with Ahven.Doubly_Linked_List;
-
-pragma Elaborate_All (Ahven.Doubly_Linked_List);
 
 use Ada.Strings.Unbounded;
 
@@ -224,10 +221,132 @@ private
       Output_File    => Null_Unbounded_String);
 
    package Result_Info_List is
-     new Ahven.Doubly_Linked_List (Data_Type => Result_Info);
+      type List is new Ada.Finalization.Controlled with private;
+      type Iterator is private;
+      Invalid_Iterator : exception;
+
+      Empty_List : constant List;
+
+      procedure Append (Target : in out List; Node_Data : Result_Info);
+      -- Append an element at the end of the list.
+
+      procedure Remove_All (Target : in out List);
+      -- Remove all elements from the list.
+
+      function Empty (Target : List) return Boolean;
+      -- Is the list empty?
+
+      function First (Target : List) return Iterator;
+      -- Return an iterator to the first element of the list.
+
+      function Last (Target : List) return Iterator;
+      -- Return an iterator to the last element of the list.
+
+      function Next (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the next element on the list.
+
+      function Prev (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the previous element on the list.
+
+      function Data (Iter : Iterator) return Result_Info;
+      -- Return element pointed by the iterator.
+
+      function Is_Valid (Iter : Iterator) return Boolean;
+
+      function Size (Target : List) return Natural;
+   private
+      type Node;
+      type Node_Access is access Node;
+      type Iterator is new Node_Access;
+
+      procedure Remove (Ptr : Node_Access);
+      -- A procedure to release memory pointed by Ptr.
+
+      type Node is record
+         Next : Node_Access := null;
+         Prev : Node_Access := null;
+         Data : Result_Info;
+      end record;
+
+      type List is new Ada.Finalization.Controlled with record
+         First : Node_Access := null;
+         Last  : Node_Access := null;
+         Size  : Natural := 0;
+      end record;
+
+      procedure Initialize (Target : in out List);
+      procedure Finalize   (Target : in out List);
+      procedure Adjust     (Target : in out List);
+
+      Empty_List : constant List :=
+        (Ada.Finalization.Controlled with First => null,
+                                          Last  => null,
+                                          Size  => 0);
+   end Result_Info_List;
 
    package Result_List is
-     new Ahven.Doubly_Linked_List (Data_Type => Result_Collection_Access);
+      type List is new Ada.Finalization.Controlled with private;
+      type Iterator is private;
+      Invalid_Iterator : exception;
+
+      Empty_List : constant List;
+
+      procedure Append (Target : in out List;
+                        Node_Data : Result_Collection_Access);
+      -- Append an element at the end of the list.
+
+      procedure Remove_All (Target : in out List);
+      -- Remove all elements from the list.
+
+      function Empty (Target : List) return Boolean;
+      -- Is the list empty?
+
+      function First (Target : List) return Iterator;
+      -- Return an iterator to the first element of the list.
+
+      function Last (Target : List) return Iterator;
+      -- Return an iterator to the last element of the list.
+
+      function Next (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the next element on the list.
+
+      function Prev (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the previous element on the list.
+
+      function Data (Iter : Iterator) return Result_Collection_Access;
+      -- Return element pointed by the iterator.
+
+      function Is_Valid (Iter : Iterator) return Boolean;
+
+   private
+      type Node;
+      type Node_Access is access Node;
+      type Iterator is new Node_Access;
+
+      procedure Remove (Ptr : Node_Access);
+      -- A procedure to release memory pointed by Ptr.
+
+      type Node is record
+         Next : Node_Access := null;
+         Prev : Node_Access := null;
+         Data : Result_Collection_Access;
+      end record;
+
+      type List is new Ada.Finalization.Controlled with record
+         First : Node_Access := null;
+         Last  : Node_Access := null;
+         Size  : Natural := 0;
+      end record;
+
+      procedure Initialize (Target : in out List);
+      procedure Finalize   (Target : in out List);
+      procedure Adjust     (Target : in out List);
+
+      Empty_List : constant List :=
+        (Ada.Finalization.Controlled with First => null,
+                                          Last  => null,
+                                          Size  => 0);
+   end Result_List;
 
    type Result_Info_Iterator is new Result_Info_List.Iterator;
 

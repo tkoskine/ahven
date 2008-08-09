@@ -17,15 +17,13 @@
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
 
-with Ahven.Doubly_Linked_List;
 with Ahven.Results;
 with Ahven.Listeners;
+with Ahven.Listeners.Result_Listener_List;
 
 use Ada.Strings.Unbounded;
 
 use Ahven.Results;
-
-pragma Elaborate_All (Ahven.Doubly_Linked_List);
 
 package Ahven.Framework is
 
@@ -67,16 +65,30 @@ package Ahven.Framework is
 
    procedure Set_Up (T : in out Test);
    -- Set_Up is called before executing the test procedure.
+   --
+   -- By default, the procedure does nothing, but derived
+   -- types can overwrite this method and add their own
+   -- customisations.
 
    procedure Tear_Down (T : in out Test);
    -- Tear_Down is called after the test procedure is executed.
+   --
+   -- By default, the procedure does nothing, but derived
+   -- types can overwrite this method and add their own
+   -- customisations.
 
    function Get_Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
+   --
+   -- Types derived from the Test type are required to overwrite
+   -- this procedure.
 
    procedure Run (T      : in out Test;
                   Result : in out Test_Result) is abstract;
    -- Run the test and place the test result to Result.
+   --
+   -- Types derived from the Test type are required to overwrite
+   -- this procedure.
 
    procedure Run (T         : in out Test;
                   Test_Name :        String;
@@ -84,12 +96,18 @@ package Ahven.Framework is
    -- Run the test with given name and place the test result to Result.
    -- Notice: If multiple tests have same name this might call all of
    -- them.
+   --
+   -- Types derived from the Test type are required to overwrite
+   -- this procedure.
 
    procedure Execute (T      : in out Test'Class;
                       Result : in out Test_Result);
    -- Call Test class' Run method and place the test outcome to Result.
    -- The procedure calls Start_Test of every listener before calling
    -- the Run procedure and End_Test after calling the Run procedure.
+   --
+   -- This procedure is meant to be called from Runner package(s).
+   -- There should be no need for other to use this.
 
    procedure Execute (T         : in out Test'Class;
                       Test_Name :        String;
@@ -135,7 +153,8 @@ package Ahven.Framework is
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine :        Object_Test_Routine_Access;
                                Name    :        String);
-   -- Register a test routine to the Test_Case.
+   -- Register a test routine to the Test_Case object.
+   --
    -- The routine must have signature
    --  "procedure R (T : in out Test_Case'Class)".
 
@@ -143,11 +162,16 @@ package Ahven.Framework is
                                Routine :        Simple_Test_Routine_Access;
                                Name    :        String);
    -- Register a simple test routine to the Test_Case.
+   --
    -- The routine must have signature
    --  "procedure R".
 
    type Test_Suite is new Test with private;
    -- A collection of Tests.
+   --
+   -- You can either fill a Test_Suite object with Test_Case objects
+   -- or nest multiple Test_Suite objects. You can even mix
+   -- Test_Case and Test_Suite objects, if necessary.
 
    type Test_Suite_Access is access all Test_Suite;
 
@@ -168,6 +192,7 @@ package Ahven.Framework is
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access);
    -- Add a Test suite to the suite. The suite frees the Test automatically
    -- when it is no longer needed.
+   --
    -- This is a helper function, which internally calls
    -- Add_Test (Suite : in out Test_Suite; T : Test_Class_Access).
 
@@ -218,7 +243,61 @@ private
    -- Calls Set_Up and Tear_Down if necessary.
 
    package Test_Command_List is
-     new Doubly_Linked_List (Data_Type => Test_Command_Access);
+      type List is new Ada.Finalization.Controlled with private;
+      type Iterator is private;
+      Invalid_Iterator : exception;
+
+      Empty_List : constant List;
+
+      procedure Append (Target : in out List; Node_Data : Test_Command_Access);
+      -- Append an element at the end of the list.
+
+      procedure Remove_All (Target : in out List);
+      -- Remove all elements from the list.
+
+      function Empty (Target : List) return Boolean;
+      -- Is the list empty?
+
+      function First (Target : List) return Iterator;
+      -- Return an iterator to the first element of the list.
+
+      function Next (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the next element on the list.
+
+      function Data (Iter : Iterator) return Test_Command_Access;
+      -- Return element pointed by the iterator.
+
+      function Is_Valid (Iter : Iterator) return Boolean;
+
+   private
+      type Node;
+      type Node_Access is access Node;
+      type Iterator is new Node_Access;
+
+      procedure Remove (Ptr : Node_Access);
+      -- A procedure to release memory pointed by Ptr.
+
+      type Node is record
+         Next : Node_Access := null;
+         Prev : Node_Access := null;
+         Data : Test_Command_Access;
+      end record;
+
+      type List is new Ada.Finalization.Controlled with record
+         First : Node_Access := null;
+         Last  : Node_Access := null;
+         Size  : Natural := 0;
+      end record;
+
+      procedure Initialize (Target : in out List);
+      procedure Finalize   (Target : in out List);
+      procedure Adjust     (Target : in out List);
+
+      Empty_List : constant List :=
+        (Ada.Finalization.Controlled with First => null,
+                                          Last  => null,
+                                          Size  => 0);
+   end Test_Command_List;
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
@@ -235,7 +314,67 @@ private
    -- procedure and record test routine result to the Result object.
 
    package Test_List is
-     new Doubly_Linked_List (Data_Type => Test_Class_Access);
+      type List is new Ada.Finalization.Controlled with private;
+      type Iterator is private;
+      Invalid_Iterator : exception;
+
+      Empty_List : constant List;
+
+      procedure Append (Target : in out List; Node_Data : Test_Class_Access);
+      -- Append an element at the end of the list.
+
+      procedure Remove_All (Target : in out List);
+      -- Remove all elements from the list.
+
+      function Empty (Target : List) return Boolean;
+      -- Is the list empty?
+
+      function First (Target : List) return Iterator;
+      -- Return an iterator to the first element of the list.
+
+      function Last (Target : List) return Iterator;
+      -- Return an iterator to the last element of the list.
+
+      function Next (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the next element on the list.
+
+      function Prev (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the previous element on the list.
+
+      function Data (Iter : Iterator) return Test_Class_Access;
+      -- Return element pointed by the iterator.
+
+      function Is_Valid (Iter : Iterator) return Boolean;
+
+   private
+      type Node;
+      type Node_Access is access Node;
+      type Iterator is new Node_Access;
+
+      procedure Remove (Ptr : Node_Access);
+      -- A procedure to release memory pointed by Ptr.
+
+      type Node is record
+         Next : Node_Access := null;
+         Prev : Node_Access := null;
+         Data : Test_Class_Access;
+      end record;
+
+      type List is new Ada.Finalization.Controlled with record
+         First : Node_Access := null;
+         Last  : Node_Access := null;
+         Size  : Natural := 0;
+      end record;
+
+      procedure Initialize (Target : in out List);
+      procedure Finalize   (Target : in out List);
+      procedure Adjust     (Target : in out List);
+
+      Empty_List : constant List :=
+        (Ada.Finalization.Controlled with First => null,
+                                          Last  => null,
+                                          Size  => 0);
+   end Test_List;
 
    type Test_Suite is new Test with record
       Suite_Name : Unbounded_String;

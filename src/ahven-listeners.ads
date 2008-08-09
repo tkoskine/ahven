@@ -15,12 +15,9 @@
 --
 
 with Ada.Finalization;
-with Ahven.Doubly_Linked_List;
 with Ahven.Results;
 
 use Ahven.Results;
-
-pragma Elaborate_All (Ahven.Doubly_Linked_List);
 
 package Ahven.Listeners is
    type Result_Listener is
@@ -50,9 +47,5 @@ package Ahven.Listeners is
    procedure End_Test (Listener : in out Result_Listener;
                        Info     :        Result_Info) is abstract;
    -- Called after the test ends. Add_* procedures are called before this.
-
-   package Result_Listener_List is
-     new Ahven.Doubly_Linked_List (Data_Type => Result_Listener_Class_Access);
-   -- A package for a list of Result_Listeners.
 
 end Ahven.Listeners;

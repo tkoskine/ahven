@@ -178,9 +178,9 @@ package body Ahven.Results is
    end Set_Parent;
 
    function Test_Count (Collection : Result_Collection) return Natural is
-      Count : Natural := Size (Collection.Errors) +
-                         Size (Collection.Failures) +
-                         Size (Collection.Passes);
+      Count : Natural := Result_Info_List.Size (Collection.Errors) +
+                         Result_Info_List.Size (Collection.Failures) +
+                         Result_Info_List.Size (Collection.Passes);
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
@@ -379,5 +379,277 @@ package body Ahven.Results is
    begin
       return Child_Depth_Impl (Collection, 0);
    end Child_Depth;
+
+   package body Result_Info_List is
+      procedure Remove (Ptr : Node_Access) is
+         procedure Free is
+           new Ada.Unchecked_Deallocation (Object => Node,
+                                           Name   => Node_Access);
+         My_Ptr : Node_Access := Ptr;
+      begin
+         Ptr.Next := null;
+         Ptr.Prev := null;
+         Free (My_Ptr);
+      end Remove;
+
+      procedure Append (Target : in out List; Node_Data : Result_Info) is
+         New_Node : Node_Access  := null;
+      begin
+         New_Node := new Node'(Data => Node_Data,
+            Next => null, Prev => Target.Last);
+
+         if Target.Last = null then
+            Target.Last := New_Node;
+            Target.First := New_Node;
+         else
+            Target.Last.Next := New_Node;
+            Target.Last := New_Node;
+         end if;
+
+         Target.Size := Target.Size + 1;
+      end Append;
+
+      procedure Remove_All (Target : in out List) is
+         Current_Node : Node_Access := Target.First;
+         Next_Node : Node_Access := null;
+      begin
+         while Current_Node /= null loop
+            Next_Node := Current_Node.Next;
+            Remove (Current_Node);
+            Current_Node := Next_Node;
+         end loop;
+
+         Target.First := null;
+         Target.Last := null;
+         Target.Size := 0;
+      end Remove_All;
+
+      function Empty (Target : List) return Boolean is
+      begin
+         if Target.Size = 0 then
+            return True;
+         end if;
+         return False;
+      end Empty;
+
+      function First (Target : List) return Iterator is
+      begin
+         if Target.Size = 0 then
+            return null;
+         end if;
+
+         return Iterator (Target.First);
+      end First;
+
+      function Last (Target : List) return Iterator is
+      begin
+         if Target.Size = 0 then
+            return null;
+         end if;
+
+         return Iterator (Target.Last);
+      end Last;
+
+      function Next (Iter : Iterator) return Iterator is
+      begin
+         if Iter = null then
+            raise Invalid_Iterator;
+         end if;
+         return Iterator (Iter.Next);
+      end Next;
+
+      function Prev (Iter : Iterator) return Iterator is
+      begin
+         if Iter = null then
+            raise Invalid_Iterator;
+         end if;
+         return Iterator (Iter.Prev);
+      end Prev;
+
+      function Data (Iter : Iterator) return Result_Info is
+      begin
+         return Iter.Data;
+      end Data;
+
+      function Is_Valid (Iter : Iterator) return Boolean is
+      begin
+         return Iter /= null;
+      end Is_Valid;
+
+      function Size (Target : List) return Natural is
+      begin
+         return Target.Size;
+      end Size;
+
+      procedure Initialize (Target : in out List) is
+      begin
+         Target.Last := null;
+         Target.First := null;
+         Target.Size := 0;
+      end Initialize;
+
+      procedure Finalize (Target : in out List) is
+      begin
+         Remove_All (Target);
+      end Finalize;
+
+      procedure Adjust (Target : in out List) is
+         Target_Last : Node_Access := null;
+         Target_First : Node_Access := null;
+         Current : Node_Access := Target.First;
+         New_Node : Node_Access;
+      begin
+         while Current /= null loop
+            New_Node := new Node'(Data => Current.Data,
+              Next => null, Prev => Target_Last);
+
+            if Target_Last = null then
+               Target_Last := New_Node;
+               Target_First := New_Node;
+            else
+               Target_Last.Next := New_Node;
+               Target_Last := New_Node;
+            end if;
+
+            Current := Current.Next;
+         end loop;
+         Target.First := Target_First;
+         Target.Last := Target_Last;
+      end Adjust;
+   end Result_Info_List;
+
+   package body Result_List is
+      procedure Remove (Ptr : Node_Access) is
+         procedure Free is
+           new Ada.Unchecked_Deallocation (Object => Node,
+                                           Name => Node_Access);
+         My_Ptr : Node_Access := Ptr;
+      begin
+         Ptr.Next := null;
+         Ptr.Prev := null;
+         Free (My_Ptr);
+      end Remove;
+
+      procedure Append (Target : in out List;
+                        Node_Data : Result_Collection_Access) is
+         New_Node : Node_Access  := null;
+      begin
+         New_Node := new Node'(Data => Node_Data,
+            Next => null, Prev => Target.Last);
+
+         if Target.Last = null then
+            Target.Last := New_Node;
+            Target.First := New_Node;
+         else
+            Target.Last.Next := New_Node;
+            Target.Last := New_Node;
+         end if;
+
+         Target.Size := Target.Size + 1;
+      end Append;
+
+      procedure Remove_All (Target : in out List) is
+         Current_Node : Node_Access := Target.First;
+         Next_Node : Node_Access := null;
+      begin
+         while Current_Node /= null loop
+            Next_Node := Current_Node.Next;
+            Remove (Current_Node);
+            Current_Node := Next_Node;
+         end loop;
+
+         Target.First := null;
+         Target.Last := null;
+         Target.Size := 0;
+      end Remove_All;
+
+      function Empty (Target : List) return Boolean is
+      begin
+         if Target.Size = 0 then
+            return True;
+         end if;
+         return False;
+      end Empty;
+
+      function First (Target : List) return Iterator is
+      begin
+         if Target.Size = 0 then
+            return null;
+         end if;
+
+         return Iterator (Target.First);
+      end First;
+
+      function Last (Target : List) return Iterator is
+      begin
+         if Target.Size = 0 then
+            return null;
+         end if;
+
+         return Iterator (Target.Last);
+      end Last;
+
+      function Next (Iter : Iterator) return Iterator is
+      begin
+         if Iter = null then
+            raise Invalid_Iterator;
+         end if;
+         return Iterator (Iter.Next);
+      end Next;
+
+      function Prev (Iter : Iterator) return Iterator is
+      begin
+         if Iter = null then
+            raise Invalid_Iterator;
+         end if;
+         return Iterator (Iter.Prev);
+      end Prev;
+
+      function Data (Iter : Iterator) return Result_Collection_Access is
+      begin
+         return Iter.Data;
+      end Data;
+
+      function Is_Valid (Iter : Iterator) return Boolean is
+      begin
+         return Iter /= null;
+      end Is_Valid;
+
+      procedure Initialize (Target : in out List) is
+      begin
+         Target.Last := null;
+         Target.First := null;
+         Target.Size := 0;
+      end Initialize;
+
+      procedure Finalize (Target : in out List) is
+      begin
+         Remove_All (Target);
+      end Finalize;
+
+      procedure Adjust (Target : in out List) is
+         Target_Last : Node_Access := null;
+         Target_First : Node_Access := null;
+         Current : Node_Access := Target.First;
+         New_Node : Node_Access;
+      begin
+         while Current /= null loop
+            New_Node := new Node'(Data => Current.Data,
+              Next => null, Prev => Target_Last);
+
+            if Target_Last = null then
+               Target_Last := New_Node;
+               Target_First := New_Node;
+            else
+               Target_Last.Next := New_Node;
+               Target_Last := New_Node;
+            end if;
+
+            Current := Current.Next;
+         end loop;
+         Target.First := Target_First;
+         Target.Last := Target_Last;
+      end Adjust;
+   end Result_List;
 
 end Ahven.Results;

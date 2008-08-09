@@ -16,9 +16,7 @@
 
 with Ada.Finalization;
 
-generic
-   type Data_Type is private;
-package Ahven.Doubly_Linked_List is
+package Ahven.Listeners.Result_Listener_List is
    type Iterator is private;
 
    List_Empty : exception;
@@ -34,10 +32,12 @@ package Ahven.Doubly_Linked_List is
    -- A list with zero elements.
    -- For example, can be used for initialization.
 
-   procedure Append (This_List : in out List; Node_Data : Data_Type);
+   procedure Append (This_List : in out List;
+                     Node_Data : Listeners.Result_Listener_Class_Access);
    -- Append an element at the end of the list.
 
-   procedure Prepend (This_List : in out List; Node_Data : Data_Type);
+   procedure Prepend (This_List : in out List;
+                      Node_Data : Listeners.Result_Listener_Class_Access);
    -- Prepend an element at the beginning of the list.
 
    procedure Remove (This_List : in out List; Iter : Iterator);
@@ -67,7 +67,8 @@ package Ahven.Doubly_Linked_List is
    function Prev (Iter : Iterator) return Iterator;
    -- Move the iterator to point to the previous element on the list.
 
-   function Data (Iter : Iterator) return Data_Type;
+   function Data (Iter : Iterator)
+     return Listeners.Result_Listener_Class_Access;
    -- Return element pointed by the iterator.
 
    function Size (This_List : List) return Natural;
@@ -86,10 +87,11 @@ private
    procedure Remove (Ptr : Node_Access);
    -- A procedure to release memory pointed by Ptr.
 
-   function Data (Iter : Node_Access) return Data_Type;
+   function Data (Iter : Node_Access)
+     return Listeners.Result_Listener_Class_Access;
 
    type Node is record
-      Data : Data_Type;
+      Data : Listeners.Result_Listener_Class_Access;
       Next : Node_Access := null;
       Prev : Node_Access := null;
    end record;
@@ -109,4 +111,4 @@ private
                                        Last  => null,
                                        Size  => 0);
 
-end Ahven.Doubly_Linked_List;
+end Ahven.Listeners.Result_Listener_List;
