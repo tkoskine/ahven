@@ -1,6 +1,12 @@
 ????-??-?? Ahven 1.3
 ====================
 
+Changes
+-------
+	* Example configuration for Cruisecontrol was added.
+
+	* The GNAT project file for GNAT 3.15p was added. 
+
 Bugs fixed
 ----------
 	* The API documentation is now generated also for
