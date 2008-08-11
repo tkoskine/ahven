@@ -13,9 +13,9 @@ project.
 Building and Installing Ahven
 =============================
 For building Ahven source code you need Ada95
-compiler, for example GNAT or ObjectAda. Optionally,
-you need AdaBrowse to build the documentation and
-AdaControl to run coding style checks.
+compiler, for example GNAT, Janus/Ada, or ObjectAda.
+Optionally, you need AdaBrowse to build the documentation
+and AdaControl to run coding style checks.
 
 The default Makefile compiles code using gnatmake.
 Internally, gnatmake is given a GNAT project file,
@@ -29,6 +29,9 @@ the Makefile by yourself. Please note, that 'src'
 directory has platform specific subdirectories 'unix'
 and 'windows. You need to select the sources from one
 of them also.
+
+Install: GNAT
+==================
 
 When using GNAT, simple 'make' will compile the library
 and the unit tests.
@@ -44,6 +47,35 @@ or 'make PREFIX=/my/ada/code install'. Alternatively,
 you can simply copy the source code directory ('src')
 to your project.
 
+Install: Janus/Ada
+==================
+
+Build scripts for Janus/Ada are located at contrib\janusada.
+First, you need to create a project file for the src directory.
+This happens by copying libmain.adb to src and running pr_lib.bat
+and makelib.bat scripts:
+  copy contrib\janusada\libmain.adb src\
+  cd src\
+  ..\contrib\janusada\pr_lib.bat
+  ..\contrib\janusada\makelib.bat
+  
+Note: When COrder asks for AHVEN#COMPAT package body, give
+it windows\ahven-compat.adb.
+
+Then you need to create a project file for test:
+  cd ..\test
+  ..\contrib\janusada\pr_test.bat
+  ..\contrib\janusada\maketest.bat
+
+Finally, you can compile the project by running ctst.bat from
+the test directory and linking the object file with lkc:
+  ctst
+  cd ..\test_objects
+  lkc tester
+
+When compilation is finished, you have tester.exe in
+the test_objects directory.
+ 
 Project Info
 ============
 Homepage:
