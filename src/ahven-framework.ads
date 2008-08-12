@@ -118,8 +118,6 @@ package Ahven.Framework is
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.
 
-   type Test_Case_Access is access Test_Case'Class;
-
    function Get_Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
 
