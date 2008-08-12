@@ -21,7 +21,7 @@
 # ./make_release /tags/ahven_1_0 1.0
 #
 
-SVNROOT=svn+ssh://${USER}@svn.gna.org/svn/ahven
+SVNROOT=http://svn.gna.org/svn/ahven
 
 failure()
 {
