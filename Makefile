@@ -18,8 +18,7 @@ PREFIX?=$(HOME)/libraries/ahven
 INSTALL=install
 OS_VERSION?=unix
 
-SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
-	src/ahven-framework.adb src/ahven-framework.ads \
+SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-listeners-basic.adb src/ahven-listeners-basic.ads \
 	src/ahven-listeners.ads src/ahven-results.adb \
 	src/ahven-results.ads src/ahven-runner.adb \
@@ -31,16 +30,19 @@ SOURCES=src/ahven-doubly_linked_list.adb src/ahven-doubly_linked_list.ads \
 	src/ahven-temporary_output.ads \
 	src/ahven-parameters.adb src/ahven-parameters.ads \
 	src/ahven-xml_runner.adb src/ahven-xml_runner.ads \
-	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads
+	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads \
+	src/ahven-listeners-result_listener_list.adb \
+	src/ahven-listeners-result_listener_list.ads
 
-ALI_FILES=lib/ahven.ali lib/ahven-doubly_linked_list.ali \
+ALI_FILES=lib/ahven.ali \
 	lib/ahven-framework.ali lib/ahven-listeners-basic.ali \
 	lib/ahven-listeners.ali lib/ahven-results.ali \
 	lib/ahven-runner.ali lib/ahven-text_runner.ali \
 	lib/ahven-listeners-output_capture.ali \
 	lib/ahven-temporary_output.ali \
 	lib/ahven-parameters.ali \
-	lib/ahven-compat.ali lib/ahven-xml_runner.ali
+	lib/ahven-compat.ali lib/ahven-xml_runner.ali \
+	lib/ahven-listeners-result_listener_list.ali
 
 SO_LIBRARY=libahven.so.13.0
 GPR_FILE=ahven.gpr
