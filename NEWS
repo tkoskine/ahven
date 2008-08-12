@@ -30,8 +30,12 @@ Internal
 	* Variable "OS" in Makefile and GNAT project files was renamed
 	  to "OS_Version".
 
-	* New Tests: Result_Tests.Test_Add_{Pass,Failure,Error},
-	  Framework_Tests.Test_Tear_Down.
+	* New tests:
+	    Result_Tests.Test_Add_{Pass,Failure,Error},
+	    Framework_Tests.Test_Tear_Down,
+	    Ahven.Result_Listener_List.Test_Append.
+
+	* Removed tests: List_Tests.*.
 
 	* Code cleanups:
 	  + Duplicate code from Text_Runner.Run and XML_Runner.Run

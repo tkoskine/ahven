@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2008 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -14,21 +14,12 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven.Text_Runner;
 with Ahven.Framework;
-with Framework_Tests;
-with Derived_Tests;
-with Results_Tests;
-with Result_Listener_List_Tests;
 
-use Ahven;
+package Result_Listener_List_Tests is
+   type Test is new Ahven.Framework.Test_Case with null record;
 
-procedure Tester is
-   S : Framework.Test_Suite := Framework.Create_Suite ("All");
-begin
-   Framework.Add_Test (S, new Framework_Tests.Test);
-   Framework.Add_Test (S, new Derived_Tests.Test);
-   Framework.Add_Test (S, new Results_Tests.Test);
-   Framework.Add_Test (S, new Result_Listener_List_Tests.Test);
-   Text_Runner.Run (S);
-end Tester;
+   procedure Initialize (T : in out Test);
+private
+   procedure Test_Append;
+end Result_Listener_List_Tests;

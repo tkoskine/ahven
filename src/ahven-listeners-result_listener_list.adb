@@ -28,44 +28,6 @@ package body Ahven.Listeners.Result_Listener_List is
       Free (My_Ptr);
    end Remove;
 
-   procedure Remove (This_List : in out List; Iter : Iterator) is
-      Temp_Node : Node_Access;
-   begin
-      if This_List.Size = 0 then
-         raise List_Empty;
-      elsif Iter = null then
-         raise Invalid_Iterator;
-      end if;
-      if Node_Access (Iter) = This_List.First then
-         Remove_First (This_List);
-      elsif Node_Access (Iter) = This_List.Last then
-         Remove_Last (This_List);
-      else
-         Temp_Node := Node_Access (Iter);
-         Iter.Prev.Next := Iter.Next;
-         Iter.Next.Prev := Iter.Prev;
-         Remove (Temp_Node);
-         This_List.Size := This_List.Size - 1;
-      end if;
-   end Remove;
-
-   procedure Prepend (This_List : in out List;
-                      Node_Data : Listeners.Result_Listener_Class_Access) is
-      New_Node : Node_Access  := null;
-   begin
-      New_Node := new Node'(Data => Node_Data,
-         Next => This_List.First, Prev => null);
-
-      if This_List.First = null then
-         This_List.Last := New_Node;
-      else
-         This_List.First.Prev := New_Node;
-      end if;
-
-      This_List.First := New_Node;
-      This_List.Size := This_List.Size + 1;
-   end Prepend;
-
    procedure Append (This_List : in out List;
                      Node_Data : Listeners.Result_Listener_Class_Access) is
       New_Node : Node_Access  := null;
@@ -98,36 +60,6 @@ package body Ahven.Listeners.Result_Listener_List is
       This_List.Last := null;
       This_List.Size := 0;
    end Remove_All;
-
-   procedure Remove_First (This_List : in out List) is
-      Temp_Node : Node_Access;
-   begin
-      if This_List.Size = 0 then
-         raise List_Empty;
-      end if;
-
-      Temp_Node := This_List.First;
-      This_List.First := This_List.First.Next;
-      This_List.First.Prev := null;
-
-      Remove (Temp_Node);
-      This_List.Size := This_List.Size - 1;
-   end Remove_First;
-
-   procedure Remove_Last (This_List : in out List) is
-      Temp_Node : Node_Access;
-   begin
-      if This_List.Size = 0 then
-         raise List_Empty;
-      end if;
-
-      Temp_Node := This_List.Last;
-      This_List.Last := This_List.Last.Prev;
-      This_List.Last.Next := null;
-
-      Remove (Temp_Node);
-      This_List.Size := This_List.Size - 1;
-   end Remove_Last;
 
    function Empty (This_List : List) return Boolean is
    begin
@@ -187,29 +119,6 @@ package body Ahven.Listeners.Result_Listener_List is
    begin
       return This_List.Size;
    end Size;
-
-   procedure Move (Target : in out List; Source : in out List) is
-   begin
-      if Source.Size = 0 then
-         return;
-      end if;
-
-      if Target.Size = 0 then
-         Target.First := Source.First;
-      else
-         Target.Last.Next := Source.First;
-         Source.First.Prev := Target.Last;
-      end if;
-
-      Target.Last := Source.Last;
-      Target.Size := Target.Size + Source.Size;
-
-      -- No need to release Source's memory
-      -- because all nodes are transferred to Target
-      Source.Last := null;
-      Source.First := null;
-      Source.Size := 0;
-   end Move;
 
    function Is_Valid (Iter : Iterator) return Boolean is
    begin

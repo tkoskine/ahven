@@ -36,21 +36,8 @@ package Ahven.Listeners.Result_Listener_List is
                      Node_Data : Listeners.Result_Listener_Class_Access);
    -- Append an element at the end of the list.
 
-   procedure Prepend (This_List : in out List;
-                      Node_Data : Listeners.Result_Listener_Class_Access);
-   -- Prepend an element at the beginning of the list.
-
-   procedure Remove (This_List : in out List; Iter : Iterator);
-   -- Remove an elemenent pointed by the iterator.
-
    procedure Remove_All (This_List : in out List);
    -- Remove all elements from the list.
-
-   procedure Remove_First (This_List : in out List);
-   -- Remove the first element from the list.
-
-   procedure Remove_Last  (This_List : in out List);
-   -- Remove the last element from the list.
 
    function Empty (This_List : List) return Boolean;
    -- Is the list empty?
@@ -73,9 +60,6 @@ package Ahven.Listeners.Result_Listener_List is
 
    function Size (This_List : List) return Natural;
    -- Return the size of the list.
-
-   procedure Move (Target : in out List; Source : in out List);
-   -- Move all elements from the Source list to the Target list.
 
    function Is_Valid (Iter : Iterator) return Boolean;
    -- Is Iterator still valid or out of range?

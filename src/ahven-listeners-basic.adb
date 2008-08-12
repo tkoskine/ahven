@@ -14,6 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Unchecked_Deallocation;
+
 package body Ahven.Listeners.Basic is
 
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
@@ -29,6 +31,14 @@ package body Ahven.Listeners.Basic is
    begin
       return new Basic_Listener;
    end Create;
+
+   procedure Free (Listener : in out Basic_Listener_Class_Access) is
+      procedure Free_Listener is
+        new Ada.Unchecked_Deallocation (Object => Basic_Listener'Class,
+                                        Name   => Basic_Listener_Class_Access);
+   begin
+      Free_Listener (Listener);
+   end Free;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Info  : Result_Info) is
