@@ -17,7 +17,6 @@
 with Ahven.Text_Runner;
 with Ahven.Framework;
 with Framework_Tests;
--- with List_Tests;
 with Derived_Tests;
 with Results_Tests;
 
@@ -29,6 +28,5 @@ begin
    Framework.Add_Test (S, new Framework_Tests.Test);
    Framework.Add_Test (S, new Derived_Tests.Test);
    Framework.Add_Test (S, new Results_Tests.Test);
-   -- Framework.Add_Test (S, new List_Tests.Test_Case);
    Text_Runner.Run (S);
 end Tester;
