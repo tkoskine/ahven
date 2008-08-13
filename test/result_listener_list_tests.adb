@@ -25,7 +25,7 @@ package body Result_Listener_List_Tests is
 
    procedure Initialize (T : in out Test) is
    begin
-      Set_Name (T, "Ahven.Result_Listener_List");
+      Set_Name (T, "Ahven.Listeners.Result_Listener_List");
       Add_Test_Routine (T, Test_Append'Access, "Test Append");
    end Initialize;
 
