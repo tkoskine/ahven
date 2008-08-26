@@ -216,9 +216,6 @@ private
       procedure Remove_All (Target : in out List);
       -- Remove all elements from the list.
 
-      function Empty (Target : List) return Boolean;
-      -- Is the list empty?
-
       function First (Target : List) return Iterator;
       -- Return an iterator to the first element of the list.
 
@@ -287,20 +284,11 @@ private
       procedure Remove_All (Target : in out List);
       -- Remove all elements from the list.
 
-      function Empty (Target : List) return Boolean;
-      -- Is the list empty?
-
       function First (Target : List) return Iterator;
       -- Return an iterator to the first element of the list.
 
-      function Last (Target : List) return Iterator;
-      -- Return an iterator to the last element of the list.
-
       function Next (Iter : Iterator) return Iterator;
       -- Move the iterator to point to the next element on the list.
-
-      function Prev (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the previous element on the list.
 
       function Data (Iter : Iterator) return Test_Class_Access;
       -- Return element pointed by the iterator.

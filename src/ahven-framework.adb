@@ -386,14 +386,6 @@ package body Ahven.Framework is
          Target.Size := 0;
       end Remove_All;
 
-      function Empty (Target : List) return Boolean is
-      begin
-         if Target.Size = 0 then
-            return True;
-         end if;
-         return False;
-      end Empty;
-
       function First (Target : List) return Iterator is
       begin
          if Target.Size = 0 then
@@ -503,14 +495,6 @@ package body Ahven.Framework is
          Target.Size := 0;
       end Remove_All;
 
-      function Empty (Target : List) return Boolean is
-      begin
-         if Target.Size = 0 then
-            return True;
-         end if;
-         return False;
-      end Empty;
-
       function First (Target : List) return Iterator is
       begin
          if Target.Size = 0 then
@@ -520,15 +504,6 @@ package body Ahven.Framework is
          return Iterator (Target.First);
       end First;
 
-      function Last (Target : List) return Iterator is
-      begin
-         if Target.Size = 0 then
-            return null;
-         end if;
-
-         return Iterator (Target.Last);
-      end Last;
-
       function Next (Iter : Iterator) return Iterator is
       begin
          if Iter = null then
@@ -536,14 +511,6 @@ package body Ahven.Framework is
          end if;
          return Iterator (Iter.Next);
       end Next;
-
-      function Prev (Iter : Iterator) return Iterator is
-      begin
-         if Iter = null then
-            raise Invalid_Iterator;
-         end if;
-         return Iterator (Iter.Prev);
-      end Prev;
 
       function Data (Iter : Iterator) return Test_Class_Access is
       begin
