@@ -45,14 +45,8 @@ package Ahven.Listeners.Result_Listener_List is
    function First (This_List : List) return Iterator;
    -- Return an iterator to the first element of the list.
 
-   function Last (This_List : List) return Iterator;
-   -- Return an iterator to the last element of the list.
-
    function Next (Iter : Iterator) return Iterator;
    -- Move the iterator to point to the next element on the list.
-
-   function Prev (Iter : Iterator) return Iterator;
-   -- Move the iterator to point to the previous element on the list.
 
    function Data (Iter : Iterator)
      return Listeners.Result_Listener_Class_Access;

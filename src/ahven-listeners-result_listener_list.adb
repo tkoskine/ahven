@@ -78,15 +78,6 @@ package body Ahven.Listeners.Result_Listener_List is
       return Iterator (This_List.First);
    end First;
 
-   function Last (This_List : List) return Iterator is
-   begin
-      if This_List.Size = 0 then
-         return null;
-      end if;
-
-      return Iterator (This_List.Last);
-   end Last;
-
    function Next (Iter : Iterator) return Iterator is
    begin
       if Iter = null then
@@ -94,14 +85,6 @@ package body Ahven.Listeners.Result_Listener_List is
       end if;
       return Iterator (Iter.Next);
    end Next;
-
-   function Prev (Iter : Iterator) return Iterator is
-   begin
-      if Iter = null then
-         raise Invalid_Iterator;
-      end if;
-      return Iterator (Iter.Prev);
-   end Prev;
 
    function Data (Iter : Iterator)
      return Listeners.Result_Listener_Class_Access is
