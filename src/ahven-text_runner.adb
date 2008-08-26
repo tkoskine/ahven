@@ -119,7 +119,7 @@ package body Ahven.Text_Runner is
          Move (Source => Result,
                Target => Result_Out,
                Drop => Right,
-               Justify => Right,
+               Justify => Left,
                Pad => ' ');
          Move (Source => Duration'Image (Get_Execution_Time (Info)),
                Target => Time_Out,
