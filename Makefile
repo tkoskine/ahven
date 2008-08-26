@@ -44,7 +44,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-compat.ali lib/ahven-xml_runner.ali \
 	lib/ahven-listeners-result_listener_list.ali
 
-SO_LIBRARY=libahven.so.13.0
+SO_LIBRARY=libahven.so.14.0
 GPR_FILE=ahven.gpr
 
 default: build_all
