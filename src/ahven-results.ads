@@ -91,7 +91,8 @@ package Ahven.Results is
    -- Return the name of the output file.
    -- Empty string is returned in case there is no output file.
 
-   type Result_Collection is new Ada.Finalization.Controlled with private;
+   type Result_Collection is
+     new Ada.Finalization.Limited_Controlled with private;
    -- A collection of Result_Info objects.
    -- Contains also child collections.
 
@@ -352,8 +353,9 @@ private
 
    type Result_Collection_Iterator is new Result_List.Iterator;
 
-   type Result_Collection is new Ada.Finalization.Controlled with record
-      Test_Name : Unbounded_String := Null_Unbounded_String;
+   type Result_Collection is
+     new Ada.Finalization.Limited_Controlled with record
+      Test_Name : Unbounded_String         := Null_Unbounded_String;
       Passes    : Result_Info_List.List    := Result_Info_List.Empty_List;
       Failures  : Result_Info_List.List    := Result_Info_List.Empty_List;
       Errors    : Result_Info_List.List    := Result_Info_List.Empty_List;
