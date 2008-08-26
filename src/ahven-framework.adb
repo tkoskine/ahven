@@ -22,11 +22,12 @@ package body Ahven.Framework is
 
    -- Few local wrapper functions, so we can use Add_Result procedure
    -- for Passes, Failures, and Errors.
-   procedure Run_Internal (T            : in out Test_Case;
-                           Result       : in out Test_Result;
-                           Command      : Test_Command;
-                           Test_Name    : Unbounded_String;
-                           Routine_Name : Unbounded_String);
+   procedure Run_Internal
+     (T            : in out Test_Case;
+      Listener     : in out Listeners.Result_Listener'Class;
+      Command      : Test_Command;
+      Test_Name    : Unbounded_String;
+      Routine_Name : Unbounded_String);
 
    generic
       with procedure Add
@@ -144,8 +145,8 @@ package body Ahven.Framework is
       null;
    end Tear_Down;
 
-   procedure Execute (T      : in out Test'Class;
-                      Result : in out Test_Result) is
+   procedure Execute (T        : in out Test'Class;
+                      Listener : in out Listeners.Result_Listener'Class) is
       Info : Result_Info := Empty_Result_Info;
    begin
       Set_Test_Name (Info, Get_Name (T));
@@ -155,25 +156,25 @@ package body Ahven.Framework is
       --
       -- There is a separate Start_Test/End_Test pair for test routines
       -- in the Run (T : in out Test_Case; ...) procedure.
-      Start_Test (Result, Info);
+      Listeners.Start_Test (Listener, Info);
 
-      Run (T, Result);
+      Run (T, Listener);
 
       -- Like Start_Test, only for Test_Suites and Test_Cases.
-      End_Test (Result, Info);
+      Listeners.End_Test (Listener, Info);
    end Execute;
 
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
-                      Result      : in out Test_Result) is
+                      Listener    : in out Listeners.Result_Listener'Class) is
       Info : Result_Info := Empty_Result_Info;
    begin
       Set_Test_Name (Info, Get_Name (T));
 
       -- Like in the Ececute procedure above.
-      Start_Test (Result, Info);
-      Run (T, Test_Name, Result);
-      End_Test (Result, Info);
+      Listeners.Start_Test (Listener, Info);
+      Run (T, Test_Name, Listener);
+      Listeners.End_Test (Listener, Info);
    end Execute;
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
@@ -203,20 +204,20 @@ package body Ahven.Framework is
    -- The heart of the package.
    -- Run one test routine (well, Command at this point) and
    -- store the result to the Result object.
-   procedure Run_Command (Command :        Test_Command;
-                          Info    :        Result_Info;
-                          Result  : in out Test_Result;
-                          T       : in out Test_Case'Class) is
+   procedure Run_Command (Command  :        Test_Command;
+                          Info     :        Result_Info;
+                          Listener : in out Listeners.Result_Listener'Class;
+                          T        : in out Test_Case'Class) is
       Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
       My_Info : Result_Info := Info;
    begin
       Run (Command, T);
       Passed := True;
-      Add_Pass (Result, My_Info);
+      Listeners.Add_Pass (Listener, My_Info);
    exception
       when E : Assertion_Error =>
          Results.Set_Message (My_Info, Ada.Exceptions.Exception_Message (E));
-         Add_Failure (Result, My_Info);
+         Listeners.Add_Failure (Listener, My_Info);
 
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
@@ -227,7 +228,7 @@ package body Ahven.Framework is
             Set_Message (My_Info, Ada.Exceptions.Exception_Name (E));
             Set_Long_Message
               (My_Info, Ada.Exceptions.Exception_Message (E));
-            Add_Error (Result, My_Info);
+            Listeners.Add_Error (Listener, My_Info);
          end if;
    end Run_Command;
 
@@ -236,11 +237,12 @@ package body Ahven.Framework is
       return T.Name;
    end Get_Name;
 
-   procedure Run_Internal (T            : in out Test_Case;
-                           Result       : in out Test_Result;
-                           Command      :        Test_Command;
-                           Test_Name    :        Unbounded_String;
-                           Routine_Name :        Unbounded_String)
+   procedure Run_Internal
+     (T            : in out Test_Case;
+      Listener     : in out Listeners.Result_Listener'Class;
+      Command      :        Test_Command;
+      Test_Name    :        Unbounded_String;
+      Routine_Name :        Unbounded_String)
    is
       use type Ada.Calendar.Time;
 
@@ -251,25 +253,25 @@ package body Ahven.Framework is
       Set_Test_Name (Info, Test_Name);
       Set_Routine_Name (Info, Routine_Name);
 
-      Start_Test (Result, Info);
+      Listeners.Start_Test (Listener, Info);
       Start_Time := Ada.Calendar.Clock;
 
-      Run_Command (Command => Command,
-                   Info    => Info,
-                   Result  => Result,
-                   T       => T);
+      Run_Command (Command  => Command,
+                   Info     => Info,
+                   Listener => Listener,
+                   T        => T);
 
       End_Time := Ada.Calendar.Clock;
       Set_Execution_Time (Info, End_Time - Start_Time);
-      End_Test (Result, Info);
+      Listeners.End_Test (Listener, Info);
    end Run_Internal;
 
    -- Run procedure for Test_Case.
    --
    -- Loops over the test routine list, executes the routines,
    -- and calculates the time spent in the routine.
-   procedure Run (T      : in out Test_Case;
-                  Result : in out Test_Result)
+   procedure Run (T        : in out Test_Case;
+                  Listener : in out Listeners.Result_Listener'Class)
    is
       use Test_Command_List;
 
@@ -278,7 +280,7 @@ package body Ahven.Framework is
       loop
          exit when not Is_Valid (Iter);
          Run_Internal (T            => T,
-                       Result       => Result,
+                       Listener     => Listener,
                        Command      => Data (Iter).all,
                        Test_Name    => Get_Name (T),
                        Routine_Name => Data (Iter).Name);
@@ -293,7 +295,7 @@ package body Ahven.Framework is
    -- test routines and records them to the Result_Info.
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
-                  Result    : in out Test_Result)
+                  Listener  : in out Listeners.Result_Listener'Class)
    is
       use Test_Command_List;
 
@@ -303,7 +305,7 @@ package body Ahven.Framework is
          exit when not Is_Valid (Iter);
          if To_String (Data (Iter).Name) = Test_Name then
             Run_Internal (T            => T,
-                          Result       => Result,
+                          Listener     => Listener,
                           Command      => Data (Iter).all,
                           Test_Name    => Get_Name (T),
                           Routine_Name => Data (Iter).Name);
@@ -368,8 +370,8 @@ package body Ahven.Framework is
       return T.Suite_Name;
    end Get_Name;
 
-   procedure Run (T      : in out Test_Suite;
-                  Result : in out Test_Result)
+   procedure Run (T        : in out Test_Suite;
+                  Listener : in out Listeners.Result_Listener'Class)
    is
       use Test_List;
 
@@ -377,29 +379,29 @@ package body Ahven.Framework is
    begin
       loop
          exit when not Is_Valid (Iter);
-         Execute (Data (Iter).all, Result);
+         Execute (Data (Iter).all, Listener);
          Iter := Next (Iter);
       end loop;
    end Run;
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
-                  Result    : in out Test_Result)
+                  Listener : in out Listeners.Result_Listener'Class)
    is
       use Test_List;
 
       Iter : Iterator := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
-         Run (T, Result);
+         Run (T, Listener);
       else
          loop
             exit when not Is_Valid (Iter);
 
             if To_String (Get_Name (Data (Iter).all)) = Test_Name then
-               Execute (Data (Iter).all, Result);
+               Execute (Data (Iter).all, Listener);
             else
-               Execute (Data (Iter).all, Test_Name, Result);
+               Execute (Data (Iter).all, Test_Name, Listener);
             end if;
             Iter := Next (Iter);
          end loop;

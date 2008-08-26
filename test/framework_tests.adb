@@ -76,10 +76,10 @@ package body Framework_Tests is
    procedure Test_Tear_Down is
       use type Dummy_Tests.Test_State;
 
-      Result : Framework.Test_Result;
       My_Test : Dummy_Tests.Test;
+      My_Listener : Simple_Listener.Listener;
    begin
-      Dummy_Tests.Run (My_Test, Result);
+      Dummy_Tests.Run (My_Test, My_Listener);
       Assert (My_Test.State = Dummy_Tests.DOWN, "Tear_Down not called!");
    end Test_Tear_Down;
 
@@ -135,15 +135,11 @@ package body Framework_Tests is
    end Test_Test_Result_Add_Error;
 
    procedure Test_Test_Case_Run is
-      Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       My_Test : Dummy_Tests.Test;
    begin
-      Framework.Add_Listener
-        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
-
-      Dummy_Tests.Run (My_Test, Result);
+      Dummy_Tests.Run (My_Test, My_Listener.all);
 
       Assert (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
       Assert (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
@@ -158,17 +154,14 @@ package body Framework_Tests is
    end Test_Test_Case_Run;
 
    procedure Test_Test_Suite_Run is
-      Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       My_Suite : Framework.Test_Suite_Access;
    begin
       My_Suite := Framework.Create_Suite ("My suite");
       Framework.Add_Test (My_Suite.all, new Dummy_Tests.Test);
-      Framework.Add_Listener
-        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
 
-      Framework.Run (My_Suite.all, Result);
+      Framework.Run (My_Suite.all, My_Listener.all);
 
       Assert
         (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
@@ -197,15 +190,11 @@ package body Framework_Tests is
    end Test_Add_Listener_Null;
 
    procedure Test_Call_End_Test is
-      Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       My_Test : Dummy_Tests.Test;
    begin
-      Framework.Add_Listener
-        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
-
-      Dummy_Tests.Run (My_Test, Result);
+      Dummy_Tests.Run (My_Test, My_Listener.all);
 
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
       Assert (My_Listener.End_Calls = Dummy_Test_Count,
@@ -215,7 +204,6 @@ package body Framework_Tests is
    end Test_Call_End_Test;
 
    procedure Test_Test_Suite_Inside_Suite is
-      Result : Framework.Test_Result;
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       Child : Framework.Test_Suite_Access;
@@ -227,10 +215,7 @@ package body Framework_Tests is
       Parent := Framework.Create_Suite ("Parent suite");
       Framework.Add_Test (Parent, Child);
 
-      Framework.Add_Listener
-        (Result, Listeners.Result_Listener_Class_Access (My_Listener));
-
-      Framework.Run (Parent, Result);
+      Framework.Run (Parent, My_Listener.all);
 
       Assert
         (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");

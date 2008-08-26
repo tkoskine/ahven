@@ -83,8 +83,9 @@ package Ahven.Framework is
    -- Types derived from the Test type are required to overwrite
    -- this procedure.
 
-   procedure Run (T      : in out Test;
-                  Result : in out Test_Result) is abstract;
+   procedure Run (T         : in out Test;
+                  Listener  : in out Listeners.Result_Listener'Class)
+     is abstract;
    -- Run the test and place the test result to Result.
    --
    -- Types derived from the Test type are required to overwrite
@@ -92,7 +93,8 @@ package Ahven.Framework is
 
    procedure Run (T         : in out Test;
                   Test_Name :        String;
-                  Result    : in out Test_Result) is abstract;
+                  Listener  : in out Listeners.Result_Listener'Class)
+     is abstract;
    -- Run the test with given name and place the test result to Result.
    -- Notice: If multiple tests have same name this might call all of
    -- them.
@@ -100,8 +102,8 @@ package Ahven.Framework is
    -- Types derived from the Test type are required to overwrite
    -- this procedure.
 
-   procedure Execute (T      : in out Test'Class;
-                      Result : in out Test_Result);
+   procedure Execute (T        : in out Test'Class;
+                      Listener : in out Listeners.Result_Listener'Class);
    -- Call Test class' Run method and place the test outcome to Result.
    -- The procedure calls Start_Test of every listener before calling
    -- the Run procedure and End_Test after calling the Run procedure.
@@ -111,7 +113,7 @@ package Ahven.Framework is
 
    procedure Execute (T         : in out Test'Class;
                       Test_Name :        String;
-                      Result    : in out Test_Result);
+                      Listener  : in out Listeners.Result_Listener'Class);
    -- Same as Execute above, but call the Run procedure which
    -- takes Test_Name parameter.
 
@@ -121,13 +123,13 @@ package Ahven.Framework is
    function Get_Name (T : Test_Case) return Unbounded_String;
    -- Return the name of the test case.
 
-   procedure Run (T      : in out Test_Case;
-                  Result : in out Test_Result);
+   procedure Run (T        : in out Test_Case;
+                  Listener : in out Listeners.Result_Listener'Class);
    -- Run Test_Case's test routines.
 
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
-                  Result    : in out Test_Result);
+                  Listener  : in out Listeners.Result_Listener'Class);
    -- Run Test_Case's test routine which matches to the Name.
 
    procedure Finalize (T : in out Test_Case);
@@ -198,12 +200,12 @@ package Ahven.Framework is
    -- Return the name of Test_Suite.
 
    procedure Run (T      : in out Test_Suite;
-                  Result : in out Test_Result);
+                  Listener  : in out Listeners.Result_Listener'Class);
    -- Run Test_Suite's Test_Cases.
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
-                  Result    : in out Test_Result);
+                  Listener  : in out Listeners.Result_Listener'Class);
    -- Run test suite's child which matches to the given name.
 
    procedure Finalize (T : in out Test_Suite);
@@ -304,10 +306,10 @@ private
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
 
-   procedure Run_Command (Command :        Test_Command;
-                          Info    :        Result_Info;
-                          Result  : in out Test_Result;
-                          T       : in out Test_Case'Class);
+   procedure Run_Command (Command  :        Test_Command;
+                          Info     :        Result_Info;
+                          Listener : in out Listeners.Result_Listener'Class;
+                          T        : in out Test_Case'Class);
    -- Handle dispatching to the right Run (Command : Test_Command)
    -- procedure and record test routine result to the Result object.
 

@@ -14,7 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Exceptions;
 with Ada.Command_Line;
 with Ada.Unchecked_Deallocation;
 
@@ -24,35 +23,6 @@ with Ahven.Listeners.Output_Capture;
 
 package body Ahven.Runner is
    use Ahven.Results;
-
-   procedure Run (T      : in out Ahven.Framework.Test'Class;
-                  Result : in out Ahven.Framework.Test_Result) is
-      P : Results.Result_Info;
-   begin
-      Results.Set_Test_Name (P, Framework.Get_Name (T));
-      Framework.Execute (T, Result);
-   exception
-      -- Framework.Execute should capture the exceptions.
-      -- If we get here, it is an error in Ahven.
-      when E : others =>
-         Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
-         Framework.Add_Error (Result, P);
-   end Run;
-
-   procedure Run (T         : in out Ahven.Framework.Test'Class;
-                  Test_Name : String;
-                  Result    : in out Ahven.Framework.Test_Result) is
-      P : Results.Result_Info := Results.Empty_Result_Info;
-   begin
-      Results.Set_Test_Name (P, Framework.Get_Name (T));
-      Framework.Execute (T, Test_Name, Result);
-   exception
-      -- Framework.Execute should capture the exceptions.
-      -- If we get here, it is an error in Ahven.
-      when E : others =>
-         Results.Set_Message (P, Ada.Exceptions.Exception_Name (E));
-         Framework.Add_Error (Result, P);
-   end Run;
 
    procedure Run_Suite (Suite : in out Framework.Test_Suite'Class;
                         Reporter : Report_Proc) is
@@ -76,9 +46,10 @@ package body Ahven.Runner is
       Framework.Add_Listener
         (Result, Listeners.Result_Listener_Class_Access (Listener));
       if Parameters.Single_Test (Params) then
-         Runner.Run (Suite, Parameters.Test_Name (Params), Result);
+         Framework.Execute
+           (Suite, Parameters.Test_Name (Params), Listener.all);
       else
-         Runner.Run (Suite, Result);
+         Framework.Execute (Suite, Listener.all);
       end if;
 
       Reporter (Listener.Main_Result, Params);

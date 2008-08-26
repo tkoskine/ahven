@@ -20,16 +20,6 @@ with Ahven.Parameters;
 
 package Ahven.Runner is
 
-   procedure Run (T      : in out Ahven.Framework.Test'Class;
-                  Result : in out Ahven.Framework.Test_Result);
-   -- Run the test T and place results to Result.
-
-   procedure Run (T         : in out Ahven.Framework.Test'Class;
-                  Test_Name : String;
-                  Result    : in out Ahven.Framework.Test_Result);
-   -- If name matches, run the test T (or one of its children)
-   -- and place results to Result.
-
    type Report_Proc is access procedure
      (Test_Results : Results.Result_Collection;
       Args         : Parameters.Parameter_Info);
