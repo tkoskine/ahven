@@ -32,7 +32,6 @@ package body Ahven.Runner is
 
       use Ahven.Listeners.Basic;
 
-      Result   : Framework.Test_Result;
       Listener : Listeners.Basic.Basic_Listener_Class_Access;
       Params   : Parameters.Parameter_Info;
    begin
@@ -43,8 +42,6 @@ package body Ahven.Runner is
          Listener := Listeners.Basic.Create;
       end if;
 
-      Framework.Add_Listener
-        (Result, Listeners.Result_Listener_Class_Access (Listener));
       if Parameters.Single_Test (Params) then
          Framework.Execute
            (Suite, Parameters.Test_Name (Params), Listener.all);

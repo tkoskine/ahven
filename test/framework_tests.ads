@@ -32,17 +32,9 @@ package Framework_Tests is
 
    procedure Test_Tear_Down;
 
-   procedure Test_Test_Result_Add_Pass;
-
-   procedure Test_Test_Result_Add_Failure;
-
-   procedure Test_Test_Result_Add_Error;
-
    procedure Test_Test_Case_Run;
 
    procedure Test_Test_Suite_Run;
-
-   procedure Test_Add_Listener_Null;
 
    procedure Test_Call_End_Test;
 

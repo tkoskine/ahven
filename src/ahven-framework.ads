@@ -19,43 +19,11 @@ with Ada.Strings.Unbounded;
 
 with Ahven.Results;
 with Ahven.Listeners;
-with Ahven.Listeners.Result_Listener_List;
 
 use Ada.Strings.Unbounded;
-
 use Ahven.Results;
 
 package Ahven.Framework is
-
-   Parameter_Error : exception;
-
-   type Test_Result is private;
-   -- A place where the test results are reported. Test_Result
-   -- does not store the results, but calls the listeners instead.
-   -- It is the responsibility of the listeners to store the results.
-
-   procedure Add_Failure (Result : in out Test_Result; I : Result_Info);
-   -- Call Add_Failure for every listener of the Result.
-   -- I tells which test failed.
-
-   procedure Add_Error (Result : in out Test_Result; I : Result_Info);
-   -- Call Add_Error for every listener of the Result.
-   -- I tells which test had an error.
-
-   procedure Add_Pass (Result : in out Test_Result; I : Result_Info);
-   -- Call Add_Pass for every listener of the Result.
-   -- I tells which test was ok.
-
-   procedure Start_Test (Result : in out Test_Result; Info : Result_Info);
-   -- Informs result that the test is about to start.
-
-   procedure End_Test (Result: in out Test_Result; Info : Result_Info);
-   -- Informs the result that the test has ended.
-
-   procedure Add_Listener (Result   : in out Test_Result;
-                           Listener : Listeners.Result_Listener_Class_Access);
-   -- Add a new listener to the Result.
-   -- Passing null as Listener raises Parameter_Error.
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    -- A type, which provides the base for Test_Case and
@@ -216,13 +184,6 @@ package Ahven.Framework is
    -- All added tests are released automatically.
 
 private
-   type Test_Result is record
-      Listeners : Ahven.Listeners.Result_Listener_List.List;
-   end record;
-   -- A container for test result listeners.
-   -- In theory, this type could hold also the test results
-   -- but currently it just notifies the listeners.
-
    type Command_Object_Enum is (SIMPLE, OBJECT);
 
    type Test_Command (Command_Kind : Command_Object_Enum) is record
