@@ -1,3 +1,11 @@
+????-??-?? Ahven 1.4
+
+Changes
+-------
+	* Type Ahven.Framework.Test_Result and related code was removed.
+	  Ahven.Framework.Execute now takes Listeners.Result_Listener'Class
+	  directly instead of Test_Result object.
+
 2008-08-13 Ahven 1.3
 ====================
 
