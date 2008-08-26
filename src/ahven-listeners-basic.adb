@@ -93,9 +93,7 @@ package body Ahven.Listeners.Basic is
                   Add_Error (Listener.Current_Result.all, My_Info);
             end case;
             Listener.Last_Test_Result := NO_RESULT;
-         end if;
-
-         if Get_Routine_Name (Info) = Null_Unbounded_String then
+         else
             Listener.Current_Result :=
               Get_Parent (Listener.Current_Result.all);
          end if;
