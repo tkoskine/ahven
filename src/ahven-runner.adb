@@ -59,5 +59,4 @@ package body Ahven.Runner is
       when Parameters.Invalid_Parameter =>
          Parameters.Usage;
    end Run_Suite;
-
 end Ahven.Runner;
