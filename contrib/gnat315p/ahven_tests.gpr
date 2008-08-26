@@ -32,7 +32,7 @@ project Ahven_Tests is
 
    package Builder is
       for Default_Switches ("Ada") use ("-g", "-gnatQ",
-                                        "-gnatwa");
+                                        "-gnatwa", "-gnatwF");
    end Builder;
 
    package Linker is
