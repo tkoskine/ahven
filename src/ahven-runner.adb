@@ -19,7 +19,6 @@ with Ada.Unchecked_Deallocation;
 
 with Ahven.Listeners;
 with Ahven.Listeners.Basic;
-with Ahven.Listeners.Output_Capture;
 
 package body Ahven.Runner is
    use Ahven.Results;
@@ -36,11 +35,8 @@ package body Ahven.Runner is
       Params   : Parameters.Parameter_Info;
    begin
       Parameters.Parse_Parameters (Params);
-      if Parameters.Capture (Params) then
-         Listener := Listeners.Output_Capture.Create;
-      else
-         Listener := Listeners.Basic.Create;
-      end if;
+      Listener := Listeners.Basic.Create;
+      Set_Output_Capture (Listener.all, Parameters.Capture (Params));
 
       if Parameters.Single_Test (Params) then
          Framework.Execute

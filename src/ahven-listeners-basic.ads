@@ -15,6 +15,7 @@
 --
 
 with Ada.Strings.Unbounded;
+with Ahven.Temporary_Output;
 
 use Ada.Strings.Unbounded;
 
@@ -27,6 +28,8 @@ package Ahven.Listeners.Basic is
       Last_Test_Result  : Result_Type      := NO_RESULT;
       Last_Test_Message : Unbounded_String := Null_Unbounded_String;
       Last_Test_Long_Message : Unbounded_String := Null_Unbounded_String;
+      Capture_Output    : Boolean := False;
+      Output_File       : Temporary_Output.Temporary_File;
    end record;
 
    type Basic_Listener_Class_Access is access Basic_Listener'Class;
@@ -57,8 +60,22 @@ package Ahven.Listeners.Basic is
                        Info     :        Result_Info);
    -- New implementation for Listeners.End_Test
 
+   procedure Set_Output_Capture (Listener : in out Basic_Listener;
+                                 Capture  : Boolean);
+   -- Enable or disable Ada.Text_IO output capturing
+
+   function Get_Output_Capture (Listener : Basic_Listener)
+     return Boolean;
+   -- Capture the Ada.Text_IO output?
+
 private
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
                                  Info     : Result_Info;
                                  Result   : Result_Type);
+
+   procedure Remove_File (Name : String);
+   procedure Remove_Files (Collection : in out Result_Collection);
+
+   procedure Finalize (Listener : in out Basic_Listener);
+
 end Ahven.Listeners.Basic;
