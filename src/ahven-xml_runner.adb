@@ -298,7 +298,7 @@ package body Ahven.XML_Runner is
       is
          New_State : CData_End_State := NONE;
       begin
-         case CData_Ending is
+         case Old_State is
             when NONE =>
                if Char = ']' then
                   New_State := FIRST_BRACKET;
