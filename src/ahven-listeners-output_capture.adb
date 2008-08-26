@@ -30,14 +30,13 @@ package body Ahven.Listeners.Output_Capture is
                          Info  : Result_Info) is
    begin
       -- Empty routine name means a test suite or test case
-      if Get_Routine_Name (Info) = Null_Unbounded_String then
-         Basic.Start_Test (Basic.Basic_Listener (Listener), Info);
-      else
+      if Get_Routine_Name (Info) /= Null_Unbounded_String then
          -- A test routine? Let's create a temporary file
          -- and direct Ada.Text_IO output there.
          Temporary_Output.Create_Temp (Listener.Output_File);
          Temporary_Output.Redirect_Output (Listener.Output_File);
       end if;
+      Basic.Start_Test (Basic.Basic_Listener (Listener), Info);
    end Start_Test;
 
    procedure End_Test (Listener : in out Output_Capture_Listener;
