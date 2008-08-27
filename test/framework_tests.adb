@@ -21,11 +21,6 @@ with Dummy_Tests;
 package body Framework_Tests is
    use Ahven;
 
-   Dummy_Passes     : constant := 2;
-   Dummy_Failures   : constant := 1;
-   Dummy_Errors     : constant := 1;
-   Dummy_Test_Count : constant := Dummy_Passes + Dummy_Failures + Dummy_Errors;
-
    procedure Free is new Ada.Unchecked_Deallocation
      (Object => Simple_Listener.Listener,
       Name   => Simple_Listener.Listener_Access);
@@ -74,6 +69,8 @@ package body Framework_Tests is
    end Test_Tear_Down;
 
    procedure Test_Test_Case_Run is
+      use Dummy_Tests;
+
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       My_Test : Dummy_Tests.Test;
@@ -93,6 +90,8 @@ package body Framework_Tests is
    end Test_Test_Case_Run;
 
    procedure Test_Test_Suite_Run is
+      use Dummy_Tests;
+
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       My_Suite : Framework.Test_Suite_Access;
@@ -117,6 +116,8 @@ package body Framework_Tests is
    end Test_Test_Suite_Run;
 
    procedure Test_Call_End_Test is
+      use Dummy_Tests;
+
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       My_Test : Dummy_Tests.Test;
@@ -131,6 +132,8 @@ package body Framework_Tests is
    end Test_Call_End_Test;
 
    procedure Test_Test_Suite_Inside_Suite is
+      use Dummy_tests;
+
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
       Child : Framework.Test_Suite_Access;

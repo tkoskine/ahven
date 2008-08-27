@@ -17,6 +17,11 @@
 with Ahven.Framework;
 
 package Dummy_Tests is
+   Dummy_Passes     : constant := 2;
+   Dummy_Failures   : constant := 1;
+   Dummy_Errors     : constant := 1;
+   Dummy_Test_Count : constant := Dummy_Passes + Dummy_Failures + Dummy_Errors;
+
    type Test_State is (INITIALIZED, UP, DOWN, USED);
 
    type Test is new Ahven.Framework.Test_Case with record
