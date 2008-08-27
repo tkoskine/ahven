@@ -132,7 +132,7 @@ package body Framework_Tests is
    end Test_Call_End_Test;
 
    procedure Test_Test_Suite_Inside_Suite is
-      use Dummy_tests;
+      use Dummy_Tests;
 
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
