@@ -14,7 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 
 package body Ahven.Listeners.Basic is
@@ -27,19 +26,6 @@ package body Ahven.Listeners.Basic is
       Listener.Last_Test_Message := Get_Message (Info);
       Listener.Last_Test_Long_Message := Get_Long_Message (Info);
    end Set_Last_Test_Info;
-
-   function Create return Basic_Listener_Class_Access is
-   begin
-      return new Basic_Listener;
-   end Create;
-
-   procedure Free (Listener : in out Basic_Listener_Class_Access) is
-      procedure Free_Listener is
-        new Ada.Unchecked_Deallocation (Object => Basic_Listener'Class,
-                                        Name   => Basic_Listener_Class_Access);
-   begin
-      Free_Listener (Listener);
-   end Free;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
                        Info  : Result_Info) is
