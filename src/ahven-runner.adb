@@ -22,7 +22,7 @@ with Ahven.Listeners.Basic;
 package body Ahven.Runner is
    use Ahven.Results;
 
-   procedure Run_Suite (Suite : in out Framework.Test_Suite'Class;
+   procedure Run_Suite (Suite : in out Framework.Test'Class;
                         Reporter : Report_Proc) is
       use Ahven.Listeners.Basic;
 
