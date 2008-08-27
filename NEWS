@@ -1,10 +1,22 @@
 ????-??-?? Ahven 1.4
+====================
 
 Changes
 -------
 	* Type Ahven.Framework.Test_Result and related code was removed.
 	  Ahven.Framework.Execute now takes Listeners.Result_Listener'Class
 	  directly instead of Test_Result object.
+
+	* The GNAT project files for GNAT 3.15p were synchronised
+	  with the GNAT GPL versions.
+
+Internal
+--------
+	* All lists were converted into singly linked lists.
+
+	* Listeners.Output_Capture was combined into Listeners.Basic.
+
+	* New tests: Runner_Tests.*.
 
 2008-08-13 Ahven 1.3
 ====================
