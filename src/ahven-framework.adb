@@ -349,7 +349,6 @@ package body Ahven.Framework is
          My_Ptr : Node_Access := Ptr;
       begin
          Ptr.Next := null;
-         Ptr.Prev := null;
          Free (My_Ptr);
       end Remove;
 
@@ -357,8 +356,7 @@ package body Ahven.Framework is
                         Node_Data : Test_Command_Access) is
          New_Node : Node_Access  := null;
       begin
-         New_Node := new Node'(Data => Node_Data,
-            Next => null, Prev => Target.Last);
+         New_Node := new Node'(Data => Node_Data, Next => null);
 
          if Target.Last = null then
             Target.Last := New_Node;
@@ -432,8 +430,7 @@ package body Ahven.Framework is
          New_Node : Node_Access;
       begin
          while Current /= null loop
-            New_Node := new Node'(Data => Current.Data,
-              Next => null, Prev => Target_Last);
+            New_Node := new Node'(Data => Current.Data, Next => null);
 
             if Target_Last = null then
                Target_Last := New_Node;
@@ -458,7 +455,6 @@ package body Ahven.Framework is
          My_Ptr : Node_Access := Ptr;
       begin
          Ptr.Next := null;
-         Ptr.Prev := null;
          Free (My_Ptr);
       end Remove;
 
@@ -466,8 +462,7 @@ package body Ahven.Framework is
                         Node_Data : Test_Class_Access) is
          New_Node : Node_Access  := null;
       begin
-         New_Node := new Node'(Data => Node_Data,
-            Next => null, Prev => Target.Last);
+         New_Node := new Node'(Data => Node_Data, Next => null);
 
          if Target.Last = null then
             Target.Last := New_Node;
@@ -541,8 +536,7 @@ package body Ahven.Framework is
          New_Node : Node_Access;
       begin
          while Current /= null loop
-            New_Node := new Node'(Data => Current.Data,
-              Next => null, Prev => Target_Last);
+            New_Node := new Node'(Data => Current.Data, Next => null);
 
             if Target_Last = null then
                Target_Last := New_Node;

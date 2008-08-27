@@ -237,7 +237,6 @@ private
 
       type Node is record
          Next : Node_Access := null;
-         Prev : Node_Access := null;
          Data : Test_Command_Access;
       end record;
 
@@ -305,7 +304,6 @@ private
 
       type Node is record
          Next : Node_Access := null;
-         Prev : Node_Access := null;
          Data : Test_Class_Access;
       end record;
 
