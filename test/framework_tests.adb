@@ -120,7 +120,7 @@ package body Framework_Tests is
 
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
-      My_Test : Dummy_Tests.Test;
+      My_Test     : Dummy_Tests.Test;
    begin
       Dummy_Tests.Run (My_Test, My_Listener.all);
 
@@ -136,8 +136,8 @@ package body Framework_Tests is
 
       My_Listener : Simple_Listener.Listener_Access :=
         new Simple_Listener.Listener;
-      Child : Framework.Test_Suite_Access;
-      Parent : Framework.Test_Suite;
+      Child       : Framework.Test_Suite_Access;
+      Parent      : Framework.Test_Suite;
    begin
       Child := Framework.Create_Suite ("Child suite");
       Framework.Add_Test (Child.all, new Dummy_Tests.Test);
