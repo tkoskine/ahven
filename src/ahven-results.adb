@@ -138,9 +138,9 @@ package body Ahven.Results is
       Append (Collection.Passes, Info);
    end Add_Pass;
 
-   -- When Result_Collection is finalized, it recursively releases
+   -- When Result_Collection is released, it recursively releases
    -- its all children.
-   procedure Finalize (Collection : in out Result_Collection) is
+   procedure Release (Collection : in out Result_Collection) is
       procedure Free is
         new Ada.Unchecked_Deallocation (Object => Result_Collection,
                                         Name   => Result_Collection_Access);
@@ -152,6 +152,7 @@ package body Ahven.Results is
          exit when not Is_Valid (Iter);
 
          Ptr := Data (Iter);
+         Release (Ptr.all);
          Free (Ptr);
 
          Iter := Next (Iter);
@@ -163,7 +164,7 @@ package body Ahven.Results is
       Remove_All (Collection.Errors);
       Remove_All (Collection.Failures);
       Remove_All (Collection.Passes);
-   end Finalize;
+   end Release;
 
    procedure Set_Name (Collection : in out Result_Collection;
                        Name : Unbounded_String) is
@@ -424,14 +425,6 @@ package body Ahven.Results is
          Target.Size := 0;
       end Remove_All;
 
-      function Empty (Target : List) return Boolean is
-      begin
-         if Target.Size = 0 then
-            return True;
-         end if;
-         return False;
-      end Empty;
-
       function First (Target : List) return Iterator is
       begin
          if Target.Size = 0 then
@@ -463,42 +456,6 @@ package body Ahven.Results is
       begin
          return Target.Size;
       end Size;
-
-      procedure Initialize (Target : in out List) is
-      begin
-         Target.Last := null;
-         Target.First := null;
-         Target.Size := 0;
-      end Initialize;
-
-      procedure Finalize (Target : in out List) is
-      begin
-         Remove_All (Target);
-      end Finalize;
-
-      procedure Adjust (Target : in out List) is
-         Target_Last : Node_Access := null;
-         Target_First : Node_Access := null;
-         Current : Node_Access := Target.First;
-         New_Node : Node_Access;
-      begin
-         while Current /= null loop
-            New_Node := new Node'(Data => Current.Data,
-              Next => null, Prev => Target_Last);
-
-            if Target_Last = null then
-               Target_Last := New_Node;
-               Target_First := New_Node;
-            else
-               Target_Last.Next := New_Node;
-               Target_Last := New_Node;
-            end if;
-
-            Current := Current.Next;
-         end loop;
-         Target.First := Target_First;
-         Target.Last := Target_Last;
-      end Adjust;
    end Result_Info_List;
 
    package body Result_List is
@@ -546,14 +503,6 @@ package body Ahven.Results is
          Target.Size := 0;
       end Remove_All;
 
-      function Empty (Target : List) return Boolean is
-      begin
-         if Target.Size = 0 then
-            return True;
-         end if;
-         return False;
-      end Empty;
-
       function First (Target : List) return Iterator is
       begin
          if Target.Size = 0 then
@@ -580,42 +529,6 @@ package body Ahven.Results is
       begin
          return Iter /= null;
       end Is_Valid;
-
-      procedure Initialize (Target : in out List) is
-      begin
-         Target.Last := null;
-         Target.First := null;
-         Target.Size := 0;
-      end Initialize;
-
-      procedure Finalize (Target : in out List) is
-      begin
-         Remove_All (Target);
-      end Finalize;
-
-      procedure Adjust (Target : in out List) is
-         Target_Last : Node_Access := null;
-         Target_First : Node_Access := null;
-         Current : Node_Access := Target.First;
-         New_Node : Node_Access;
-      begin
-         while Current /= null loop
-            New_Node := new Node'(Data => Current.Data,
-              Next => null, Prev => Target_Last);
-
-            if Target_Last = null then
-               Target_Last := New_Node;
-               Target_First := New_Node;
-            else
-               Target_Last.Next := New_Node;
-               Target_Last := New_Node;
-            end if;
-
-            Current := Current.Next;
-         end loop;
-         Target.First := Target_First;
-         Target.Last := Target_Last;
-      end Adjust;
    end Result_List;
 
 end Ahven.Results;

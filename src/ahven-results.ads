@@ -14,10 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Finalization;
 with Ada.Strings.Unbounded;
-
-use Ada.Strings.Unbounded;
 
 -- Like the name implies, the Results package is used for
 -- storing the test results.
@@ -26,6 +23,8 @@ use Ada.Strings.Unbounded;
 -- Result_Collection holds multiple Result_Infos.
 --
 package Ahven.Results is
+   use Ada.Strings.Unbounded;
+
    type Result_Info is private;
 
    Empty_Result_Info : constant Result_Info;
@@ -91,8 +90,7 @@ package Ahven.Results is
    -- Return the name of the output file.
    -- Empty string is returned in case there is no output file.
 
-   type Result_Collection is
-     new Ada.Finalization.Limited_Controlled with private;
+   type Result_Collection is limited private;
    -- A collection of Result_Info objects.
    -- Contains also child collections.
 
@@ -114,9 +112,9 @@ package Ahven.Results is
                        Info : Result_Info);
    -- Add a passed test to the collection
 
-   procedure Finalize (Collection : in out Result_Collection);
-   -- Finalize procedure for the collection. Frees also
-   -- all children added via Add_Child.
+   procedure Release (Collection : in out Result_Collection);
+   -- Release resourced held by the collection.
+   -- Frees also all children added via Add_Child.
 
    procedure Set_Name (Collection : in out Result_Collection;
                        Name : Unbounded_String);
@@ -222,20 +220,15 @@ private
       Output_File    => Null_Unbounded_String);
 
    package Result_Info_List is
-      type List is new Ada.Finalization.Controlled with private;
+      type List is limited private;
       type Iterator is private;
       Invalid_Iterator : exception;
-
-      Empty_List : constant List;
 
       procedure Append (Target : in out List; Node_Data : Result_Info);
       -- Append an element at the end of the list.
 
       procedure Remove_All (Target : in out List);
       -- Remove all elements from the list.
-
-      function Empty (Target : List) return Boolean;
-      -- Is the list empty?
 
       function First (Target : List) return Iterator;
       -- Return an iterator to the first element of the list.
@@ -263,28 +256,17 @@ private
          Data : Result_Info;
       end record;
 
-      type List is new Ada.Finalization.Controlled with record
+      type List is limited record
          First : Node_Access := null;
          Last  : Node_Access := null;
          Size  : Natural := 0;
       end record;
-
-      procedure Initialize (Target : in out List);
-      procedure Finalize   (Target : in out List);
-      procedure Adjust     (Target : in out List);
-
-      Empty_List : constant List :=
-        (Ada.Finalization.Controlled with First => null,
-                                          Last  => null,
-                                          Size  => 0);
    end Result_Info_List;
 
    package Result_List is
-      type List is new Ada.Finalization.Controlled with private;
+      type List is limited private;
       type Iterator is private;
       Invalid_Iterator : exception;
-
-      Empty_List : constant List;
 
       procedure Append (Target : in out List;
                         Node_Data : Result_Collection_Access);
@@ -292,9 +274,6 @@ private
 
       procedure Remove_All (Target : in out List);
       -- Remove all elements from the list.
-
-      function Empty (Target : List) return Boolean;
-      -- Is the list empty?
 
       function First (Target : List) return Iterator;
       -- Return an iterator to the first element of the list.
@@ -321,33 +300,23 @@ private
          Data : Result_Collection_Access;
       end record;
 
-      type List is new Ada.Finalization.Controlled with record
+      type List is limited record
          First : Node_Access := null;
          Last  : Node_Access := null;
          Size  : Natural := 0;
       end record;
-
-      procedure Initialize (Target : in out List);
-      procedure Finalize   (Target : in out List);
-      procedure Adjust     (Target : in out List);
-
-      Empty_List : constant List :=
-        (Ada.Finalization.Controlled with First => null,
-                                          Last  => null,
-                                          Size  => 0);
    end Result_List;
 
    type Result_Info_Iterator is new Result_Info_List.Iterator;
 
    type Result_Collection_Iterator is new Result_List.Iterator;
 
-   type Result_Collection is
-     new Ada.Finalization.Limited_Controlled with record
+   type Result_Collection is limited record
       Test_Name : Unbounded_String         := Null_Unbounded_String;
-      Passes    : Result_Info_List.List    := Result_Info_List.Empty_List;
-      Failures  : Result_Info_List.List    := Result_Info_List.Empty_List;
-      Errors    : Result_Info_List.List    := Result_Info_List.Empty_List;
-      Children  : Result_List.List         := Result_List.Empty_List;
+      Passes    : Result_Info_List.List;
+      Failures  : Result_Info_List.List;
+      Errors    : Result_Info_List.List;
+      Children  : Result_List.List;
       Parent    : Result_Collection_Access := null;
    end record;
 end Ahven.Results;

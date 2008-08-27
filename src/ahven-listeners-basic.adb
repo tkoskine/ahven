@@ -180,5 +180,6 @@ package body Ahven.Listeners.Basic is
    procedure Finalize (Listener : in out Basic_Listener) is
    begin
       Remove_Files (Listener.Main_Result);
+      Results.Release (Listener.Main_Result);
    end Finalize;
 end Ahven.Listeners.Basic;
