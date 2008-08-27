@@ -24,25 +24,20 @@ SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-results.ads src/ahven-runner.adb \
 	src/ahven-runner.ads src/ahven-text_runner.adb \
 	src/ahven-text_runner.ads src/ahven.adb \
-	src/ahven.ads src/ahven-listeners-output_capture.adb \
-	src/ahven-listeners-output_capture.ads \
+	src/ahven.ads \
 	src/ahven-temporary_output.adb \
 	src/ahven-temporary_output.ads \
 	src/ahven-parameters.adb src/ahven-parameters.ads \
 	src/ahven-xml_runner.adb src/ahven-xml_runner.ads \
-	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads \
-	src/ahven-listeners-result_listener_list.adb \
-	src/ahven-listeners-result_listener_list.ads
+	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads
 
 ALI_FILES=lib/ahven.ali \
 	lib/ahven-framework.ali lib/ahven-listeners-basic.ali \
 	lib/ahven-listeners.ali lib/ahven-results.ali \
 	lib/ahven-runner.ali lib/ahven-text_runner.ali \
-	lib/ahven-listeners-output_capture.ali \
 	lib/ahven-temporary_output.ali \
 	lib/ahven-parameters.ali \
-	lib/ahven-compat.ali lib/ahven-xml_runner.ali \
-	lib/ahven-listeners-result_listener_list.ali
+	lib/ahven-compat.ali lib/ahven-xml_runner.ali
 
 SO_LIBRARY=libahven.so.14.0
 GPR_FILE=ahven.gpr
