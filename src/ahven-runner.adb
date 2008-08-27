@@ -15,7 +15,6 @@
 --
 
 with Ada.Command_Line;
-with Ada.Unchecked_Deallocation;
 
 with Ahven.Listeners;
 with Ahven.Listeners.Basic;
@@ -25,24 +24,19 @@ package body Ahven.Runner is
 
    procedure Run_Suite (Suite : in out Framework.Test_Suite'Class;
                         Reporter : Report_Proc) is
-      procedure Free is new Ada.Unchecked_Deallocation
-        (Object => Listeners.Basic.Basic_Listener'Class,
-         Name   => Listeners.Basic.Basic_Listener_Class_Access);
-
       use Ahven.Listeners.Basic;
 
-      Listener : Listeners.Basic.Basic_Listener_Class_Access;
+      Listener : Listeners.Basic.Basic_Listener;
       Params   : Parameters.Parameter_Info;
    begin
       Parameters.Parse_Parameters (Params);
-      Listener := Listeners.Basic.Create;
-      Set_Output_Capture (Listener.all, Parameters.Capture (Params));
+      Set_Output_Capture (Listener, Parameters.Capture (Params));
 
       if Parameters.Single_Test (Params) then
          Framework.Execute
-           (Suite, Parameters.Test_Name (Params), Listener.all);
+           (Suite, Parameters.Test_Name (Params), Listener);
       else
-         Framework.Execute (Suite, Listener.all);
+         Framework.Execute (Suite, Listener);
       end if;
 
       Reporter (Listener.Main_Result, Params);
@@ -50,7 +44,6 @@ package body Ahven.Runner is
          (Failure_Count (Listener.Main_Result) > 0) then
          Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
       end if;
-      Free (Listener);
    exception
       when Parameters.Invalid_Parameter =>
          Parameters.Usage;
