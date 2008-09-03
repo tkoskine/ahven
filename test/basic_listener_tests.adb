@@ -28,6 +28,8 @@ package body Basic_Listener_Tests is
       Set_Name (T, "Ahven.Listeners.Basic");
       Framework.Add_Test_Routine
         (T, Test_Single_Pass'Access, "Test Single Pass");
+      Framework.Add_Test_Routine
+        (T, Test_Error_Inside_Suite'Access, "Test Error Inside Suite");
    end Initialize;
 
    procedure Test_Single_Pass is
@@ -36,6 +38,7 @@ package body Basic_Listener_Tests is
    begin
       Set_Test_Name (Info, "testname");
       Set_Routine_Name (Info, "routine");
+      Set_Execution_Time (Info, 1.0);
 
       Listeners.Basic.Start_Test (Listener, Info);
       Listeners.Basic.Add_Pass (Listener, Info);
@@ -44,4 +47,38 @@ package body Basic_Listener_Tests is
       Assert (Test_Count (Listener.Main_Result) = 1, "Invalid test count: " &
               Integer'Image (Test_Count (Listener.Main_Result)));
    end Test_Single_Pass;
+
+   procedure Test_Error_Inside_Suite is
+      Listener : Listeners.Basic.Basic_Listener;
+      Info     : Result_Info := Empty_Result_Info;
+   begin
+      Set_Test_Name (Info, "suite");
+      Listeners.Basic.Start_Test (Listener, Info);
+
+      Set_Test_Name (Info, "testname");
+      Set_Routine_Name (Info, "routine");
+      Set_Execution_Time (Info, 1.0);
+      Set_Message (Info, "hello (message)");
+      Set_Long_Message (Info, "world (long message)");
+      Listeners.Basic.Start_Test (Listener, Info);
+      Listeners.Basic.Add_Error (Listener, Info);
+      Listeners.Basic.End_Test (Listener, Info);
+
+      Info := Empty_Result_Info;
+      Set_Test_Name (Info, "suite");
+      Listeners.Basic.End_Test (Listener, Info);
+
+      Assert (Test_Count (Listener.Main_Result) = 1,
+              "Invalid test count: " &
+              Integer'Image (Test_Count (Listener.Main_Result)));
+
+      Assert (Direct_Test_Count (Listener.Main_Result) = 0,
+              "Invalid direct test count: " &
+              Integer'Image (Direct_Test_Count (Listener.Main_Result)));
+
+      Assert (Error_Count (Listener.Main_Result) = 1,
+              "Invalid Error count: " &
+              Integer'Image (Test_Count (Listener.Main_Result)));
+   end Test_Error_Inside_Suite;
+
 end Basic_Listener_Tests;

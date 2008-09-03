@@ -22,4 +22,5 @@ package Basic_Listener_Tests is
    procedure Initialize (T : in out Test);
 private
    procedure Test_Single_Pass;
+   procedure Test_Error_Inside_Suite;
 end Basic_Listener_Tests;
