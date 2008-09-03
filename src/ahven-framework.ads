@@ -243,7 +243,6 @@ private
       type List is new Ada.Finalization.Controlled with record
          First : Node_Access := null;
          Last  : Node_Access := null;
-         Size  : Natural := 0;
       end record;
 
       procedure Initialize (Target : in out List);
@@ -252,8 +251,7 @@ private
 
       Empty_List : constant List :=
         (Ada.Finalization.Controlled with First => null,
-                                          Last  => null,
-                                          Size  => 0);
+                                          Last  => null);
    end Test_Command_List;
 
    type Test_Case is abstract new Test with record
@@ -310,7 +308,6 @@ private
       type List is new Ada.Finalization.Controlled with record
          First : Node_Access := null;
          Last  : Node_Access := null;
-         Size  : Natural := 0;
       end record;
 
       procedure Initialize (Target : in out List);
@@ -319,8 +316,7 @@ private
 
       Empty_List : constant List :=
         (Ada.Finalization.Controlled with First => null,
-                                          Last  => null,
-                                          Size  => 0);
+                                          Last  => null);
    end Test_List;
 
    type Test_Suite is new Test with record

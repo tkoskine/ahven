@@ -365,8 +365,6 @@ package body Ahven.Framework is
             Target.Last.Next := New_Node;
             Target.Last := New_Node;
          end if;
-
-         Target.Size := Target.Size + 1;
       end Append;
 
       procedure Remove_All (Target : in out List) is
@@ -381,15 +379,10 @@ package body Ahven.Framework is
 
          Target.First := null;
          Target.Last := null;
-         Target.Size := 0;
       end Remove_All;
 
       function First (Target : List) return Iterator is
       begin
-         if Target.Size = 0 then
-            return null;
-         end if;
-
          return Iterator (Target.First);
       end First;
 
@@ -415,7 +408,6 @@ package body Ahven.Framework is
       begin
          Target.Last := null;
          Target.First := null;
-         Target.Size := 0;
       end Initialize;
 
       procedure Finalize (Target : in out List) is
@@ -471,8 +463,6 @@ package body Ahven.Framework is
             Target.Last.Next := New_Node;
             Target.Last := New_Node;
          end if;
-
-         Target.Size := Target.Size + 1;
       end Append;
 
       procedure Remove_All (Target : in out List) is
@@ -487,15 +477,10 @@ package body Ahven.Framework is
 
          Target.First := null;
          Target.Last := null;
-         Target.Size := 0;
       end Remove_All;
 
       function First (Target : List) return Iterator is
       begin
-         if Target.Size = 0 then
-            return null;
-         end if;
-
          return Iterator (Target.First);
       end First;
 
@@ -521,7 +506,6 @@ package body Ahven.Framework is
       begin
          Target.Last := null;
          Target.First := null;
-         Target.Size := 0;
       end Initialize;
 
       procedure Finalize (Target : in out List) is
