@@ -78,10 +78,11 @@ package body Ahven.Listeners.Basic is
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Info  : Result_Info) is
-      My_Info  : Result_Info := Info;
-   begin
-      if Listener.Current_Result /= null then
+      procedure Add_Result (Collection : in out Result_Collection);
 
+      procedure Add_Result (Collection : in out Result_Collection) is
+         My_Info : Result_Info := Info;
+      begin
          -- It is possible that only Start_Test and End_Test
          -- are called (e.g. for Test_Suite), so the latest
          -- test result can be unset (set to NO_RESULT)
@@ -105,17 +106,23 @@ package body Ahven.Listeners.Basic is
             Set_Long_Message (My_Info, Listener.Last_Test_Long_Message);
             case Listener.Last_Test_Result is
                when PASS_RESULT =>
-                  Add_Pass (Listener.Current_Result.all, My_Info);
+                  Add_Pass (Collection, My_Info);
                when FAILURE_RESULT =>
-                  Add_Failure (Listener.Current_Result.all, My_Info);
+                  Add_Failure (Collection, My_Info);
                when ERROR_RESULT | NO_RESULT =>
-                  Add_Error (Listener.Current_Result.all, My_Info);
+                  Add_Error (Collection, My_Info);
             end case;
             Listener.Last_Test_Result := NO_RESULT;
          else
             Listener.Current_Result :=
               Get_Parent (Listener.Current_Result.all);
          end if;
+      end Add_Result;
+   begin
+      if Listener.Current_Result /= null then
+         Add_Result (Listener.Current_Result.all);
+      else
+         Add_Result (Listener.Main_Result);
       end if;
    end End_Test;
 

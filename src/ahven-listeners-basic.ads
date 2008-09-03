@@ -23,7 +23,7 @@ package Ahven.Listeners.Basic is
    type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
 
    type Basic_Listener is new Result_Listener with record
-      Main_Result       : Result_Collection;
+      Main_Result       : aliased Result_Collection;
       Current_Result    : Result_Collection_Access;
       Last_Test_Result  : Result_Type      := NO_RESULT;
       Last_Test_Message : Unbounded_String := Null_Unbounded_String;
