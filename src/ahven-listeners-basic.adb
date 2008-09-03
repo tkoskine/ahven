@@ -18,6 +18,13 @@ with Ada.Text_IO;
 
 package body Ahven.Listeners.Basic is
 
+   -- Because of Ada.Text_IO output capturing, the result
+   -- recording is happening in the End_Test procedure.
+   --
+   -- Add_{Pass,Failure,Error} procedures delegate result
+   -- saving to the Set_Last_Test_Info procedure, which
+   -- records the latest result to the listener.
+
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
                                  Info     : Result_Info;
                                  Result   : Result_Type) is
@@ -74,6 +81,13 @@ package body Ahven.Listeners.Basic is
       My_Info  : Result_Info := Info;
    begin
       if Listener.Current_Result /= null then
+
+         -- It is possible that only Start_Test and End_Test
+         -- are called (e.g. for Test_Suite), so the latest
+         -- test result can be unset (set to NO_RESULT)
+         --
+         -- In that case, we simply jump to parent collection.
+         -- Otherwise, we record the result.
          if Listener.Last_Test_Result /= NO_RESULT then
             if Listener.Capture_Output then
                -- End of the test routine, so we can restore
