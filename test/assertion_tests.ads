@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007, 2008 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2008 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -13,29 +13,15 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
+with Ahven.Framework;
 
-with Ada.Exceptions;
+package Assertion_Tests is
+   type Test is new Ahven.Framework.Test_Case with null record;
 
-package body Ahven is
+   procedure Initialize (T : in out Test);
 
-   procedure Assert (Condition : Boolean; Message : String) is
-   begin
-      if not Condition then
-         Ada.Exceptions.Raise_Exception (Assertion_Error'Identity, Message);
-      end if;
-   end Assert;
-
-   procedure Assert_Equal
-      (Actual : Data_Type; Expected : Data_Type; Message : String) is
-   begin
-      Assert (Actual = Expected, Message &
-              " (Expected: " & Image (Expected) &
-              "; Got: " & Image (Actual) & ")");
-   end Assert_Equal;
-
-   procedure Fail (Message : String) is
-   begin
-      Ada.Exceptions.Raise_Exception (Assertion_Error'Identity, Message);
-   end Fail;
-
-end Ahven;
+private
+   procedure Test_Assert_Equal;
+   procedure Test_Fail;
+   procedure Test_Assert;
+end Assertion_Tests;

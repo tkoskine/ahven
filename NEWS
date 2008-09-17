@@ -30,6 +30,10 @@ Changes
 	* Fix for bug #12165 and make test suite to work
 	  with Janus/Ada 3.1.x.
 
+	* New (generic) assertion method:
+	    Assert_Equal (Expected, Actual, Message).
+	  Suggestion and the source code from Pawel Plazienski.
+
 Bugs fixed
 ----------
 	* The API documentation is now generated also for

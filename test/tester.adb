@@ -22,12 +22,14 @@ with Derived_Tests;
 with Results_Tests;
 with Runner_Tests;
 with Basic_Listener_Tests;
+with Assertion_Tests;
 
 use Ahven;
 
 procedure Tester is
    S : Framework.Test_Suite := Framework.Create_Suite ("All");
 begin
+   Framework.Add_Test (S, new Assertion_Tests.Test);
    Framework.Add_Test (S, new Framework_Tests.Test);
    Framework.Add_Test (S, new Derived_Tests.Test);
    Framework.Add_Test (S, new Results_Tests.Test);

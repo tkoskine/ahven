@@ -23,6 +23,15 @@ package Ahven is
    -- If Condition is false, Assert raises Assertion_Error
    -- with given Message.
 
+   generic
+      type Data_Type is private;
+      with function Image (Item : Data_Type) return String is <>;
+   procedure Assert_Equal (Actual   : Data_Type;
+                           Expected : Data_Type;
+                           Message  : String);
+   -- If Expected /= Actual, Assert raises Assertion_Error
+   -- with given Message + represenation of expected and acutal values
+
    procedure Fail (Message : String);
    -- Fail always raises Assertion_Error with given Message.
 end Ahven;
