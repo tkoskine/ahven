@@ -10,6 +10,10 @@ Changes
 	* The GNAT project files for GNAT 3.15p were synchronised
 	  with the GNAT GPL versions.
 
+	* New (generic) assertion method:
+	    Assert_Equal (Expected, Actual, Message).
+	  Suggestion and the source code from Pawel Plazienski.
+
 Internal
 --------
 	* All lists were converted into singly linked lists.
@@ -29,10 +33,6 @@ Changes
 
 	* Fix for bug #12165 and make test suite to work
 	  with Janus/Ada 3.1.x.
-
-	* New (generic) assertion method:
-	    Assert_Equal (Expected, Actual, Message).
-	  Suggestion and the source code from Pawel Plazienski.
 
 Bugs fixed
 ----------
