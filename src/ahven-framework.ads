@@ -186,7 +186,7 @@ package Ahven.Framework is
 private
    type Command_Object_Enum is (SIMPLE, OBJECT);
 
-   type Test_Command (Command_Kind : Command_Object_Enum) is record
+   type Test_Command (Command_Kind : Command_Object_Enum := SIMPLE) is record
       Name : Unbounded_String;
       case Command_Kind is
          when SIMPLE =>
@@ -196,8 +196,6 @@ private
       end case;
    end record;
    -- Name attribute tells the name of the test routine.
-
-   type Test_Command_Access is access Test_Command;
 
    procedure Run (Command : Test_Command; T : in out Test_Case'Class);
    -- Run the specified command.
@@ -210,7 +208,7 @@ private
 
       Empty_List : constant List;
 
-      procedure Append (Target : in out List; Node_Data : Test_Command_Access);
+      procedure Append (Target : in out List; Node_Data : Test_Command);
       -- Append an element at the end of the list.
 
       procedure Remove_All (Target : in out List);
@@ -222,7 +220,7 @@ private
       function Next (Iter : Iterator) return Iterator;
       -- Move the iterator to point to the next element on the list.
 
-      function Data (Iter : Iterator) return Test_Command_Access;
+      function Data (Iter : Iterator) return Test_Command;
       -- Return element pointed by the iterator.
 
       function Is_Valid (Iter : Iterator) return Boolean;
@@ -237,7 +235,7 @@ private
 
       type Node is record
          Next : Node_Access := null;
-         Data : Test_Command_Access;
+         Data : Test_Command;
       end record;
 
       type List is new Ada.Finalization.Controlled with record

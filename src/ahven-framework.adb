@@ -75,10 +75,10 @@ package body Ahven.Framework is
                                Routine :        Object_Test_Routine_Access;
                                Name    :        String)
    is
-      Command : constant Test_Command_Access :=
-        new Test_Command'(Command_Kind   => OBJECT,
-                          Name           => To_Unbounded_String (Name),
-                          Object_Routine => Routine);
+      Command : constant Test_Command :=
+        Test_Command'(Command_Kind   => OBJECT,
+                      Name           => To_Unbounded_String (Name),
+                      Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
@@ -87,10 +87,10 @@ package body Ahven.Framework is
                                Routine :        Simple_Test_Routine_Access;
                                Name    :        String)
    is
-      Command : constant Test_Command_Access :=
-        new Test_Command'(Command_Kind   => SIMPLE,
-                          Name           => To_Unbounded_String (Name),
-                          Simple_Routine => Routine);
+      Command : constant Test_Command :=
+        Test_Command'(Command_Kind   => SIMPLE,
+                      Name           => To_Unbounded_String (Name),
+                      Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
@@ -175,7 +175,7 @@ package body Ahven.Framework is
          exit when not Is_Valid (Iter);
          Run_Internal (T            => T,
                        Listener     => Listener,
-                       Command      => Data (Iter).all,
+                       Command      => Data (Iter),
                        Test_Name    => Get_Name (T),
                        Routine_Name => Data (Iter).Name);
          Iter := Next (Iter);
@@ -200,7 +200,7 @@ package body Ahven.Framework is
          if To_String (Data (Iter).Name) = Test_Name then
             Run_Internal (T            => T,
                           Listener     => Listener,
-                          Command      => Data (Iter).all,
+                          Command      => Data (Iter),
                           Test_Name    => Get_Name (T),
                           Routine_Name => Data (Iter).Name);
          end if;
@@ -210,21 +210,8 @@ package body Ahven.Framework is
    end Run;
 
    procedure Finalize (T : in out Test_Case) is
-      procedure Free is
-        new Ada.Unchecked_Deallocation (Object => Test_Command,
-                                        Name   => Test_Command_Access);
-
-      use Test_Command_List;
-      Ptr  : Test_Command_Access := null;
-      Iter : Iterator := First (T.Routines);
    begin
-      loop
-         exit when not Is_Valid (Iter);
-         Ptr := Data (Iter);
-         Free (Ptr);
-         Iter := Next (Iter);
-      end loop;
-      Remove_All (T.Routines);
+      Test_Command_List.Remove_All (T.Routines);
    end Finalize;
 
    procedure Set_Name (T : in out Test_Case; Name : String) is
@@ -353,7 +340,7 @@ package body Ahven.Framework is
       end Remove;
 
       procedure Append (Target : in out List;
-                        Node_Data : Test_Command_Access) is
+                        Node_Data : Test_Command) is
          New_Node : Node_Access  := null;
       begin
          New_Node := new Node'(Data => Node_Data, Next => null);
@@ -394,7 +381,7 @@ package body Ahven.Framework is
          return Iterator (Iter.Next);
       end Next;
 
-      function Data (Iter : Iterator) return Test_Command_Access is
+      function Data (Iter : Iterator) return Test_Command is
       begin
          return Iter.Data;
       end Data;
