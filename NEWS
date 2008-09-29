@@ -10,6 +10,9 @@ Changes
 	* The GNAT project files for GNAT 3.15p were synchronised
 	  with the GNAT GPL versions.
 
+	* Janus/Ada build scripts are now in the 'janusada' directory
+	  instead of 'contrib\janusada'.
+
 	* New (generic) assertion method:
 	    Assert_Equal (Expected, Actual, Message).
 	  Suggestion and the source code from Pawel Plazienski.

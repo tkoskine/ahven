@@ -54,18 +54,18 @@ Build scripts for Janus/Ada are located at contrib\janusada.
 First, you need to create a project file for the src directory.
 This happens by copying libmain.adb to src and running pr_lib.bat
 and makelib.bat scripts:
-  copy contrib\janusada\libmain.adb src\
+  copy janusada\libmain.adb src\
   cd src\
-  ..\contrib\janusada\pr_lib.bat
-  ..\contrib\janusada\makelib.bat
+  ..\janusada\pr_lib.bat
+  ..\janusada\makelib.bat
   
 Note: When COrder asks for AHVEN#COMPAT package body, give
 it windows\ahven-compat.adb.
 
 Then you need to create a project file for test:
   cd ..\test
-  ..\contrib\janusada\pr_test.bat
-  ..\contrib\janusada\maketest.bat
+  ..\janusada\pr_test.bat
+  ..\janusada\maketest.bat
 
 Finally, you can compile the project by running ctst.bat from
 the test directory and linking the object file with lkc:
