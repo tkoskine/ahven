@@ -37,6 +37,9 @@ package Ahven.Framework is
    -- By default, the procedure does nothing, but derived
    -- types can overwrite this method and add their own
    -- customisations.
+   --
+   -- One should not call this explicitly by herself.
+   -- The framework calls it when necessary.
 
    procedure Tear_Down (T : in out Test);
    -- Tear_Down is called after the test procedure is executed.
@@ -44,6 +47,9 @@ package Ahven.Framework is
    -- By default, the procedure does nothing, but derived
    -- types can overwrite this method and add their own
    -- customisations.
+   --
+   -- One should not call this explicitly by herself.
+   -- The framework calls it when necessary.
 
    function Get_Name (T : Test) return Unbounded_String is abstract;
    -- Return the name of the test.
