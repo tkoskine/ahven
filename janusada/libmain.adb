@@ -5,10 +5,11 @@ with Ahven.Compat;
 with Ahven.Text_Runner;
 with Ahven.Listeners;
 with Ahven.Listeners.Basic;
-with Ahven.Listeners.Output_Capture;
 with Ahven.XML_Runner;
 with Ahven.Runner;
 with Ahven.Parameters;
+with Ahven.Tap_Parameters;
+with Ahven.Tap_Runner;
 
 procedure LibMain is
 begin
