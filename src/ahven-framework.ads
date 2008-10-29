@@ -25,6 +25,8 @@ use Ahven.Results;
 
 package Ahven.Framework is
 
+   type Test_Count_Type is new Natural;
+
    type Test is abstract new Ada.Finalization.Controlled with null record;
    -- A type, which provides the base for Test_Case and
    -- Test_Suite types.
@@ -76,6 +78,15 @@ package Ahven.Framework is
    -- Types derived from the Test type are required to overwrite
    -- this procedure.
 
+   function Test_Count (T : Test) return Test_Count_Type is abstract;
+   -- Return the amount of tests (test routines) which will be executed when
+   -- the Run (T) procedure is called.
+
+   function Test_Count (T : Test; Test_Name : String)
+     return Test_Count_Type is abstract;
+   -- Return the amount of tests (test routines) which will be executed when
+   -- the Run (T, Test_Name) procedure is called.
+
    procedure Execute (T        : in out Test'Class;
                       Listener : in out Listeners.Result_Listener'Class);
    -- Call Test class' Run method and place the test outcome to Result.
@@ -105,6 +116,13 @@ package Ahven.Framework is
                   Test_Name :        String;
                   Listener  : in out Listeners.Result_Listener'Class);
    -- Run Test_Case's test routine which matches to the Name.
+
+   function Test_Count (T : Test_Case) return Test_Count_Type;
+   -- Implementation of Test_Count (T : Test).
+
+   function Test_Count (T : Test_Case; Test_Name : String)
+     return Test_Count_Type;
+   -- Implementation of Test_Count (T : Test, Test_Name : String).
 
    procedure Finalize (T : in out Test_Case);
    -- Finalize procedure of the Test_Case.
@@ -181,6 +199,13 @@ package Ahven.Framework is
                   Test_Name :        String;
                   Listener  : in out Listeners.Result_Listener'Class);
    -- Run test suite's child which matches to the given name.
+
+   function Test_Count (T : Test_Suite) return Test_Count_Type;
+   -- Implementation of Test_Count (T : Test).
+
+   function Test_Count (T : Test_Suite; Test_Name : String)
+     return Test_Count_Type;
+   -- Implementation of Test_Count (T : Test, Test_Name : String).
 
    procedure Finalize (T : in out Test_Suite);
    -- Finalize procedure of Test_Suite. Frees all added Tests.

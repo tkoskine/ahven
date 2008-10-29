@@ -77,10 +77,10 @@ package Ahven.Results is
    function Get_Routine_Name (Info : Result_Info) return Unbounded_String;
    -- Return the routine name of the result info.
 
-   function Get_Message (Info : Result_Info) return Unbounded_String;
+   function Get_Message (Info : Result_Info) return String;
    -- Return the message of the result info.
 
-   function Get_Long_Message (Info : Result_Info) return Unbounded_String;
+   function Get_Long_Message (Info : Result_Info) return String;
    -- Return the long message of the result info.
 
    function Get_Execution_Time (Info : Result_Info) return Duration;

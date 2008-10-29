@@ -148,9 +148,9 @@ package body Ahven.XML_Runner is
 
       Put (File, "<failure ");
       Print_Attribute (File, "type",
-        Trim (To_String (Get_Message (Info)), Ada.Strings.Both));
+        Trim (Get_Message (Info), Ada.Strings.Both));
       Put (File, ">");
-      Put_Line (File, To_String (Get_Message (Info)));
+      Put_Line (File, Get_Message (Info));
       Put_Line (File, "</failure>");
       if Length (Get_Output_File (Info)) > 0 then
          Put (File, "<system-out>");
@@ -174,9 +174,9 @@ package body Ahven.XML_Runner is
 
       Put (File, "<error ");
       Print_Attribute (File, "type",
-        Trim (To_String (Get_Message (Info)), Ada.Strings.Both));
+        Trim (Get_Message (Info), Ada.Strings.Both));
       Put (File, ">");
-      Put_Line (File, To_String (Get_Message (Info)));
+      Put_Line (File, Get_Message (Info));
       Put_Line (File, "</error>");
       if Length (Get_Output_File (Info)) > 0 then
          Put (File, "<system-out>");

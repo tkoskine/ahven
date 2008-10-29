@@ -7,6 +7,17 @@ Changes
 	  Ahven.Framework.Execute now takes Listeners.Result_Listener'Class
 	  directly instead of Test_Result object.
 
+	* New abstract function Test_Count was added to the Test type.
+	  The function returns the amount of test routines which will
+	  be executed when the Run procedure is called.
+
+	* Test Anything Protocol (TAP) support: There is now a new
+	  Ahven.Tap_Runner package, which outputs test results in
+	  TAP format (TAP version 13).
+
+	* Get_Message and Get_Long_Message functions now return String
+	  instead of Unbounded_String.
+
 	* The GNAT project files for GNAT 3.15p were synchronised
 	  with the GNAT GPL versions.
 

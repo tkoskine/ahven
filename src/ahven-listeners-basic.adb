@@ -30,8 +30,9 @@ package body Ahven.Listeners.Basic is
                                  Result   : Result_Type) is
    begin
       Listener.Last_Test_Result := Result;
-      Listener.Last_Test_Message := Get_Message (Info);
-      Listener.Last_Test_Long_Message := Get_Long_Message (Info);
+      Listener.Last_Test_Message := To_Unbounded_String (Get_Message (Info));
+      Listener.Last_Test_Long_Message :=
+        To_Unbounded_String (Get_Long_Message (Info));
    end Set_Last_Test_Info;
 
    procedure Add_Pass (Listener : in out Basic_Listener;

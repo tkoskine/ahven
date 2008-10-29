@@ -94,7 +94,8 @@ package body Ahven.Text_Runner is
       subtype Result_Size is Integer range 1 .. Max_Result_Width;
       subtype Time_Out_Size is Integer range 1 .. Max_Time_Out_Width;
 
-      Msg        : constant Unbounded_String := Get_Message (Info);
+      Msg        : constant Unbounded_String :=
+        To_Unbounded_String (Get_Message (Info));
       Output     : Unbounded_String := Null_Unbounded_String;
       Result_Out : String (Result_Size) := (others => ' ');
       Time_Out   : String (Time_Out_Size) := (others => ' ');
@@ -129,11 +130,10 @@ package body Ahven.Text_Runner is
          Put (" " & Result_Out);
          Put (" " & Time_Out & "s");
       end if;
-      if Length (Get_Long_Message (Info)) > 0 then
+      if Get_Long_Message (Info)'Length > 0 then
          New_Line;
          Output := Null_Unbounded_String;
-         Multiline_Pad
-           (Output, To_String (Get_Long_Message (Info)), Level + 2);
+         Multiline_Pad (Output, Get_Long_Message (Info), Level + 2);
          Put (To_String (Output));
       end if;
 

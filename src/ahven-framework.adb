@@ -209,6 +209,39 @@ package body Ahven.Framework is
       end loop;
    end Run;
 
+   function Test_Count (T : Test_Case) return Test_Count_Type is
+      use Test_Command_List;
+
+      Iter : Iterator := First (T.Routines);
+      Counter : Test_Count_Type := 0;
+   begin
+      loop
+         exit when not Is_Valid (Iter);
+         Counter := Counter + 1;
+         Iter := Next (Iter);
+      end loop;
+      return Counter;
+   end Test_Count;
+
+   function Test_Count (T : Test_Case; Test_Name : String)
+     return Test_Count_Type
+   is
+      use Test_Command_List;
+
+      Iter : Iterator := First (T.Routines);
+      Counter : Test_Count_Type := 0;
+   begin
+      loop
+         exit when not Is_Valid (Iter);
+         if To_String (Data (Iter).Name) = Test_Name then
+            Counter := Counter + 1;
+         end if;
+         Iter := Next (Iter);
+      end loop;
+
+      return Counter;
+   end Test_Count;
+
    procedure Finalize (T : in out Test_Case) is
    begin
       Test_Command_List.Remove_All (T.Routines);
@@ -288,6 +321,43 @@ package body Ahven.Framework is
          end loop;
       end if;
    end Run;
+
+   function Test_Count (T : Test_Suite) return Test_Count_Type is
+      use Test_List;
+
+      Iter    : Iterator        := First (T.Test_Cases);
+      Counter : Test_Count_Type := 0;
+   begin
+      loop
+         exit when not Is_Valid (Iter);
+         Counter := Counter + Test_Count (Data (Iter).all);
+         Iter := Next (Iter);
+      end loop;
+
+      return Counter;
+   end Test_Count;
+
+   function Test_Count (T : Test_Suite; Test_Name : String)
+     return Test_Count_Type is
+      use Test_List;
+
+      Iter    : Iterator        := First (T.Test_Cases);
+      Counter : Test_Count_Type := 0;
+   begin
+      if Test_Name = To_String (T.Suite_Name) then
+         return Test_Count (T);
+      else
+         loop
+            exit when not Is_Valid (Iter);
+            if To_String (Get_Name (Data (Iter).all)) = Test_Name then
+               Counter := Counter + Test_Count (Data (Iter).all);
+            end if;
+            Iter := Next (Iter);
+         end loop;
+      end if;
+
+      return Counter;
+   end Test_Count;
 
    procedure Finalize  (T : in out Test_Suite) is
       procedure Free is

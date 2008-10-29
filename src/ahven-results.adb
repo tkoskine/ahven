@@ -94,14 +94,14 @@ package body Ahven.Results is
       return Info.Routine_Name;
    end Get_Routine_Name;
 
-   function Get_Message (Info : Result_Info) return Unbounded_String is
+   function Get_Message (Info : Result_Info) return String is
    begin
-      return Info.Message;
+      return To_String (Info.Message);
    end Get_Message;
 
-   function Get_Long_Message (Info : Result_Info) return Unbounded_String is
+   function Get_Long_Message (Info : Result_Info) return String is
    begin
-      return Info.Long_Message;
+      return To_String (Info.Long_Message);
    end Get_Long_Message;
 
    function Get_Execution_Time (Info : Result_Info) return Duration is
