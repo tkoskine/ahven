@@ -29,7 +29,7 @@ Changes
 	  Suggestion and the source code from Pawel Plazienski.
 
 	* New procedure for inserting stack-allocated tests into test suites:
-	    Add_Static_Test (Suite, T'Access).
+	    Add_Static_Test (Suite, T).
 
 Bugs fixed
 ----------
