@@ -265,6 +265,7 @@ private
       -- Return element pointed by the iterator.
 
       function Is_Valid (Iter : Iterator) return Boolean;
+      -- Tell if the iterator is still valid.
 
    private
       type Node;
@@ -330,6 +331,7 @@ private
       -- Return element pointed by the iterator.
 
       function Is_Valid (Iter : Iterator) return Boolean;
+      -- Tell if the iterator is still valid.
 
    private
       type Node;
@@ -381,10 +383,13 @@ private
       -- Return element pointed by the iterator.
 
       function Is_Valid (Iter : Iterator) return Boolean;
+      -- Tell if the iterator is still valid.
 
       generic
          with procedure Action (T : in out Test'Class) is <>;
       procedure For_Each (Target : List);
+      -- A generic procedure for walk through every item
+      -- in the list and call Action procedure for them.
 
    private
       type Node;
