@@ -24,9 +24,12 @@ Changes
 	* Janus/Ada build scripts are now in the 'janusada' directory
 	  instead of 'contrib\janusada'.
 
-	* New (generic) assertion method:
+	* New (generic) assertion procedure:
 	    Assert_Equal (Expected, Actual, Message).
 	  Suggestion and the source code from Pawel Plazienski.
+
+	* New procedure for inserting stack-allocated tests into test suites:
+	    Add_Static_Test (Suite, T'Access).
 
 Bugs fixed
 ----------
