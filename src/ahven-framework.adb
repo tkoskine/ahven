@@ -335,7 +335,7 @@ package body Ahven.Framework is
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
-                  Listener : in out Listeners.Result_Listener'Class)
+                  Listener  : in out Listeners.Result_Listener'Class)
    is
       use Test_List;
 
