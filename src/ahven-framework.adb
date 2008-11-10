@@ -306,7 +306,7 @@ package body Ahven.Framework is
       procedure Execute_Cases (Cases : Test_List.List);
       -- Run Execute procedure for all tests in the Cases list.
 
-      procedure Execute_Test (T : in out Test'Class);
+      procedure Execute_Test (Current : in out Test'Class);
       -- A helper procedure which runs Execute for the given test.
 
       procedure Execute_Cases (Cases : Test_List.List) is
@@ -321,9 +321,9 @@ package body Ahven.Framework is
          end loop;
       end Execute_Cases;
 
-      procedure Execute_Test (T : in out Test'Class) is
+      procedure Execute_Test (Current : in out Test'Class) is
       begin
-         Execute (T, Listener);
+         Execute (Current, Listener);
       end Execute_Test;
 
       procedure Execute_Static_Cases is
