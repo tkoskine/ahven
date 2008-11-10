@@ -1,12 +1,12 @@
 ahven-compat.ads
 ahven-framework.ads
 ahven-listeners-basic.ads
-ahven-listeners-output_capture.ads
-ahven-listeners-result_listener_list.ads
 ahven-listeners.ads
 ahven-parameters.ads
 ahven-results.ads
 ahven-runner.ads
+ahven-tap_parameters.ads
+ahven-tap_runner.ads
 ahven-temporary_output.ads
 ahven-text_runner.ads
 ahven-xml_runner.ads
