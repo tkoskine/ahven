@@ -23,6 +23,9 @@ use Ahven.Results;
 
 package body Basic_Listener_Tests is
 
+   procedure Assert_Equal_Nat is new Ahven.Assert_Equal
+     (Data_Type => Natural, Image => Natural'Image);
+
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Ahven.Listeners.Basic");
@@ -44,8 +47,7 @@ package body Basic_Listener_Tests is
       Listeners.Basic.Add_Pass (Listener, Info);
       Listeners.Basic.End_Test (Listener, Info);
 
-      Assert (Test_Count (Listener.Main_Result) = 1, "Invalid test count: " &
-              Integer'Image (Test_Count (Listener.Main_Result)));
+      Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
    end Test_Single_Pass;
 
    procedure Test_Error_Inside_Suite is
@@ -68,17 +70,12 @@ package body Basic_Listener_Tests is
       Set_Test_Name (Info, "suite");
       Listeners.Basic.End_Test (Listener, Info);
 
-      Assert (Test_Count (Listener.Main_Result) = 1,
-              "Invalid test count: " &
-              Integer'Image (Test_Count (Listener.Main_Result)));
+      Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
 
-      Assert (Direct_Test_Count (Listener.Main_Result) = 0,
-              "Invalid direct test count: " &
-              Integer'Image (Direct_Test_Count (Listener.Main_Result)));
+      Assert_Equal_Nat (Direct_Test_Count (Listener.Main_Result), 0,
+                        "Direct Test Count");
 
-      Assert (Error_Count (Listener.Main_Result) = 1,
-              "Invalid Error count: " &
-              Integer'Image (Test_Count (Listener.Main_Result)));
+      Assert_Equal_Nat (Error_Count (Listener.Main_Result), 1, "Error Count");
    end Test_Error_Inside_Suite;
 
 end Basic_Listener_Tests;

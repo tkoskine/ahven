@@ -188,6 +188,16 @@ package Ahven.Framework is
    -- This is a helper function, which internally calls
    -- Add_Test (Suite : in out Test_Suite; T : Test_Class_Access).
 
+   procedure Add_Static_Test
+     (Suite : in out Test_Suite; T : Test'Class);
+   -- Add a Test to the suite. This procedure is meant for statically
+   -- allocated Test_Case objects.
+   --
+   -- Please note, that a copy of the Test'Class object is saved to
+   -- the suite. Original test object is not modified and changes
+   -- made to it after adding the test are not propagated to
+   -- the added object.
+
    function Get_Name (T : Test_Suite) return Unbounded_String;
    -- Return the name of Test_Suite.
 
@@ -348,9 +358,65 @@ private
                                           Last  => null);
    end Test_List;
 
+   package Indefinite_Test_List is
+      type List is new Ada.Finalization.Controlled with private;
+      type Iterator is private;
+      Invalid_Iterator : exception;
+
+      Empty_List : constant List;
+
+      procedure Append (Target : in out List; Node_Data : Test'Class);
+      -- Append an element at the end of the list.
+
+      procedure Remove_All (Target : in out List);
+      -- Remove all elements from the list.
+
+      function First (Target : List) return Iterator;
+      -- Return an iterator to the first element of the list.
+
+      function Next (Iter : Iterator) return Iterator;
+      -- Move the iterator to point to the next element on the list.
+
+      function Data (Iter : Iterator) return Test'Class;
+      -- Return element pointed by the iterator.
+
+      function Is_Valid (Iter : Iterator) return Boolean;
+
+      generic
+         with procedure Action (T : in out Test'Class) is <>;
+      procedure For_Each (Target : List);
+
+   private
+      type Node;
+      type Node_Access is access Node;
+      type Iterator is new Node_Access;
+
+      procedure Remove (Ptr : Node_Access);
+      -- A procedure to release memory pointed by Ptr.
+
+      type Node is record
+         Next : Node_Access := null;
+         Data : Test_Class_Access;
+      end record;
+
+      type List is new Ada.Finalization.Controlled with record
+         First : Node_Access := null;
+         Last  : Node_Access := null;
+      end record;
+
+      procedure Initialize (Target : in out List);
+      procedure Finalize   (Target : in out List);
+      procedure Adjust     (Target : in out List);
+
+      Empty_List : constant List :=
+        (Ada.Finalization.Controlled with First => null,
+                                          Last  => null);
+   end Indefinite_Test_List;
+
    type Test_Suite is new Test with record
       Suite_Name : Unbounded_String;
       Test_Cases : Test_List.List;
+      Static_Test_Cases : Indefinite_Test_List.List;
    end record;
    -- A suite type which holds a list of test cases and the name
    -- of the suite.

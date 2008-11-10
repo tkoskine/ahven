@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2008 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -14,9 +14,6 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven_Tests;
-
-procedure Tester is
-begin
-   Ahven_Tests.Run_Tests;
-end Tester;
+package Ahven_Tests is
+   procedure Run_Tests;
+end Ahven_Tests;

@@ -257,16 +257,18 @@ package body Ahven.Framework is
    begin
       return
         new Test_Suite'(Ada.Finalization.Controlled with
-                        Suite_Name => To_Unbounded_String (Suite_Name),
-                        Test_Cases => Test_List.Empty_List);
+                        Suite_Name        => To_Unbounded_String (Suite_Name),
+                        Test_Cases        => Test_List.Empty_List,
+                        Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite is
    begin
       return (Ada.Finalization.Controlled with
-              Suite_Name => To_Unbounded_String (Suite_Name),
-              Test_Cases => Test_List.Empty_List);
+              Suite_Name        => To_Unbounded_String (Suite_Name),
+              Test_Cases        => Test_List.Empty_List,
+              Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
@@ -279,6 +281,12 @@ package body Ahven.Framework is
       Add_Test (Suite, Test_Class_Access (T));
    end Add_Test;
 
+   procedure Add_Static_Test
+     (Suite : in out Test_Suite; T : Test'Class) is
+   begin
+      Indefinite_Test_List.Append (Suite.Static_Test_Cases, T);
+   end Add_Static_Test;
+
    function Get_Name (T : Test_Suite) return Unbounded_String is
    begin
       return T.Suite_Name;
@@ -287,15 +295,42 @@ package body Ahven.Framework is
    procedure Run (T        : in out Test_Suite;
                   Listener : in out Listeners.Result_Listener'Class)
    is
-      use Test_List;
+      -- Some nested procedure exercises here.
+      --
+      -- Execute_Cases is for normal test list
+      -- and Execute_Static_Cases is for indefinite test list.
+      --
+      -- Normal test list does not have For_Each procedure,
+      -- so we need to loop manually.
 
-      Iter : Iterator := First (T.Test_Cases);
+      procedure Execute_Cases (Cases : Test_List.List);
+      -- Run Execute procedure for all tests in the Cases list.
+
+      procedure Execute_Test (T : in out Test'Class);
+      -- A helper procedure which runs Execute for the given test.
+
+      procedure Execute_Cases (Cases : Test_List.List) is
+         use Test_List;
+
+         Iter : Iterator := First (Cases);
+      begin
+         loop
+            exit when not Is_Valid (Iter);
+            Execute_Test (Data (Iter).all);
+            Iter := Next (Iter);
+         end loop;
+      end Execute_Cases;
+
+      procedure Execute_Test (T : in out Test'Class) is
+      begin
+         Execute (T, Listener);
+      end Execute_Test;
+
+      procedure Execute_Static_Cases is
+        new Indefinite_Test_List.For_Each (Action => Execute_Test);
    begin
-      loop
-         exit when not Is_Valid (Iter);
-         Execute (Data (Iter).all, Listener);
-         Iter := Next (Iter);
-      end loop;
+      Execute_Cases (T.Test_Cases);
+      Execute_Static_Cases (T.Static_Test_Cases);
    end Run;
 
    procedure Run (T         : in out Test_Suite;
@@ -304,6 +339,17 @@ package body Ahven.Framework is
    is
       use Test_List;
 
+      procedure Execute_Test (Current : in out Test'Class);
+
+      procedure Execute_Test (Current : in out Test'Class) is
+      begin
+         if To_String (Get_Name (Current)) = Test_Name then
+            Execute (Current, Listener);
+         else
+            Execute (Current, Test_Name, Listener);
+         end if;
+      end Execute_Test;
+
       Iter : Iterator := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
@@ -311,12 +357,7 @@ package body Ahven.Framework is
       else
          loop
             exit when not Is_Valid (Iter);
-
-            if To_String (Get_Name (Data (Iter).all)) = Test_Name then
-               Execute (Data (Iter).all, Listener);
-            else
-               Execute (Data (Iter).all, Test_Name, Listener);
-            end if;
+            Execute_Test (Test'Class (Data (Iter).all));
             Iter := Next (Iter);
          end loop;
       end if;
@@ -594,4 +635,115 @@ package body Ahven.Framework is
       end Adjust;
    end Test_List;
 
+   package body Indefinite_Test_List is
+      procedure Remove (Ptr : Node_Access) is
+         procedure Free is
+           new Ada.Unchecked_Deallocation (Object => Node,
+                                           Name   => Node_Access);
+         procedure Free_Test is
+           new Ada.Unchecked_Deallocation (Object => Test'Class,
+                                           Name   => Test_Class_Access);
+         My_Ptr : Node_Access := Ptr;
+      begin
+         Ptr.Next := null;
+         Free_Test (My_Ptr.Data);
+         Free (My_Ptr);
+      end Remove;
+
+      procedure Append (Target : in out List;
+                        Node_Data : Test'Class) is
+         New_Node : Node_Access  := null;
+      begin
+         New_Node := new Node'(Data => new Test'Class'(Node_Data),
+                               Next => null);
+
+         if Target.Last = null then
+            Target.Last := New_Node;
+            Target.First := New_Node;
+         else
+            Target.Last.Next := New_Node;
+            Target.Last := New_Node;
+         end if;
+      end Append;
+
+      procedure Remove_All (Target : in out List) is
+         Current_Node : Node_Access := Target.First;
+         Next_Node : Node_Access := null;
+      begin
+         while Current_Node /= null loop
+            Next_Node := Current_Node.Next;
+            Remove (Current_Node);
+            Current_Node := Next_Node;
+         end loop;
+
+         Target.First := null;
+         Target.Last := null;
+      end Remove_All;
+
+      function First (Target : List) return Iterator is
+      begin
+         return Iterator (Target.First);
+      end First;
+
+      function Next (Iter : Iterator) return Iterator is
+      begin
+         if Iter = null then
+            raise Invalid_Iterator;
+         end if;
+         return Iterator (Iter.Next);
+      end Next;
+
+      function Data (Iter : Iterator) return Test'Class is
+      begin
+         return Iter.Data.all;
+      end Data;
+
+      function Is_Valid (Iter : Iterator) return Boolean is
+      begin
+         return Iter /= null;
+      end Is_Valid;
+
+      procedure For_Each (Target : List) is
+         Current_Node : Node_Access := Target.First;
+      begin
+         while Current_Node /= null loop
+            Action (Current_Node.Data.all);
+            Current_Node := Current_Node.Next;
+         end loop;
+      end For_Each;
+
+      procedure Initialize (Target : in out List) is
+      begin
+         Target.Last := null;
+         Target.First := null;
+      end Initialize;
+
+      procedure Finalize (Target : in out List) is
+      begin
+         Remove_All (Target);
+      end Finalize;
+
+      procedure Adjust (Target : in out List) is
+         Target_Last : Node_Access := null;
+         Target_First : Node_Access := null;
+         Current : Node_Access := Target.First;
+         New_Node : Node_Access;
+      begin
+         while Current /= null loop
+            New_Node := new Node'(Data => Current.Data, Next => null);
+
+            if Target_Last = null then
+               Target_Last := New_Node;
+               Target_First := New_Node;
+            else
+               Target_Last.Next := New_Node;
+               Target_Last := New_Node;
+            end if;
+
+            Current := Current.Next;
+         end loop;
+         Target.First := Target_First;
+         Target.Last := Target_Last;
+      end Adjust;
+   end Indefinite_Test_List;
 end Ahven.Framework;

@@ -14,9 +14,14 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ahven_Tests;
+with Ahven.Framework;
 
-procedure Tester is
-begin
-   Ahven_Tests.Run_Tests;
-end Tester;
+package Static_Test_Case_Tests is
+   type Test is new Ahven.Framework.Test_Case with null record;
+
+   procedure Initialize (T : in out Test);
+private
+   procedure Test_Test_Suite_Run;
+
+   procedure Test_Test_Suite_Inside_Suite;
+end Static_Test_Case_Tests;
