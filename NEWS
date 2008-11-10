@@ -13,7 +13,7 @@ Changes
 
 	* Test Anything Protocol (TAP) support: There is now a new
 	  Ahven.Tap_Runner package, which outputs test results in
-	  TAP format (TAP version 13).
+	  TAP format (versions 1.2 and 1.3 are supported).
 
 	* Get_Message and Get_Long_Message functions now return String
 	  instead of Unbounded_String.
