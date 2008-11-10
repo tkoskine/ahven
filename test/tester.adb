@@ -14,9 +14,12 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ahven.Framework;
+with Ahven.Text_Runner;
 with Ahven_Tests;
 
 procedure Tester is
+   Suite : Ahven.Framework.Test_Suite := Ahven_Tests.Get_Test_Suite;
 begin
-   Ahven_Tests.Run_Tests;
+   Ahven.Text_Runner.Run (Suite);
 end Tester;

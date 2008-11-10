@@ -14,6 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ahven.Framework;
+
 package Ahven_Tests is
-   procedure Run_Tests;
+   function Get_Test_Suite return Ahven.Framework.Test_Suite;
 end Ahven_Tests;
