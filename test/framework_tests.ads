@@ -40,4 +40,6 @@ package Framework_Tests is
 
    procedure Test_Test_Suite_Inside_Suite;
 
+   procedure Test_Test_Suite_Test_Static_Count;
+
 end Framework_Tests;

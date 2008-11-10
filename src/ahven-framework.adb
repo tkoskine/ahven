@@ -364,30 +364,47 @@ package body Ahven.Framework is
    end Run;
 
    function Test_Count (T : Test_Suite) return Test_Count_Type is
-      use Test_List;
-
-      Iter    : Iterator        := First (T.Test_Cases);
       Counter : Test_Count_Type := 0;
    begin
-      loop
-         exit when not Is_Valid (Iter);
-         Counter := Counter + Test_Count (Data (Iter).all);
-         Iter := Next (Iter);
-      end loop;
+      declare
+         use Test_List;
+
+         Iter : Iterator := First (T.Test_Cases);
+      begin
+         loop
+            exit when not Is_Valid (Iter);
+            Counter := Counter + Test_Count (Data (Iter).all);
+            Iter := Next (Iter);
+         end loop;
+      end;
+
+      declare
+         use Indefinite_Test_List;
+
+         Iter : Iterator := First (T.Static_Test_Cases);
+      begin
+         loop
+            exit when not Is_Valid (Iter);
+            Counter := Counter + Test_Count (Data (Iter));
+            Iter := Next (Iter);
+         end loop;
+      end;
 
       return Counter;
    end Test_Count;
 
    function Test_Count (T : Test_Suite; Test_Name : String)
      return Test_Count_Type is
-      use Test_List;
-
-      Iter    : Iterator        := First (T.Test_Cases);
       Counter : Test_Count_Type := 0;
    begin
       if Test_Name = To_String (T.Suite_Name) then
          return Test_Count (T);
-      else
+      end if;
+
+      declare
+         use Test_List;
+         Iter : Iterator := First (T.Test_Cases);
+      begin
          loop
             exit when not Is_Valid (Iter);
             if To_String (Get_Name (Data (Iter).all)) = Test_Name then
@@ -395,7 +412,20 @@ package body Ahven.Framework is
             end if;
             Iter := Next (Iter);
          end loop;
-      end if;
+      end;
+
+      declare
+         use Indefinite_Test_List;
+         Iter : Iterator := First (T.Static_Test_Cases);
+      begin
+         loop
+            exit when not Is_Valid (Iter);
+            if To_String (Get_Name (Data (Iter))) = Test_Name then
+               Counter := Counter + Test_Count (Data (Iter));
+            end if;
+            Iter := Next (Iter);
+         end loop;
+      end;
 
       return Counter;
    end Test_Count;

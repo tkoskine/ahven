@@ -21,6 +21,10 @@ with Dummy_Tests;
 package body Framework_Tests is
    use Ahven;
 
+   procedure Assert_Eq_Count is
+     new Ahven.Assert_Equal (Data_Type => Framework.Test_Count_Type,
+                             Image     => Framework.Test_Count_Type'Image);
+
    procedure Free is new Ada.Unchecked_Deallocation
      (Object => Simple_Listener.Listener,
       Name   => Simple_Listener.Listener_Access);
@@ -41,6 +45,8 @@ package body Framework_Tests is
                                   "Test_Suite: Run");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Inside_Suite'Access,
                                   "Test_Suite: Suite inside another");
+      Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Static_Count'Access,
+                                  "Test_Suite: Test Count (Static)");
    end Initialize;
 
    procedure Set_Up (T : in out Test) is
@@ -160,4 +166,22 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Test_Suite_Inside_Suite;
+
+   procedure Test_Test_Suite_Test_Static_Count is
+      use Dummy_Tests;
+      use type Framework.Test_Count_Type;
+
+      Child       : Framework.Test_Suite;
+      Parent      : Framework.Test_Suite;
+      Dummy_Test  : Dummy_Tests.Test;
+   begin
+      Child := Framework.Create_Suite ("Child suite");
+      Framework.Add_Static_Test (Child, Dummy_Test);
+
+      Parent := Framework.Create_Suite ("Parent suite");
+      Framework.Add_Static_Test (Parent, Child);
+
+      Assert_Eq_Count
+        (Framework.Test_Count (Parent), Dummy_Test_Count, "Test Count");
+   end Test_Test_Suite_Test_Static_Count;
 end Framework_Tests;
