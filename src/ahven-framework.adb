@@ -647,6 +647,7 @@ package body Ahven.Framework is
       begin
          Ptr.Next := null;
          Free_Test (My_Ptr.Data);
+         My_Ptr.Data := null;
          Free (My_Ptr);
       end Remove;
 
@@ -730,7 +731,8 @@ package body Ahven.Framework is
          New_Node : Node_Access;
       begin
          while Current /= null loop
-            New_Node := new Node'(Data => Current.Data, Next => null);
+            New_Node := new Node'(Data => new Test'Class'(Current.Data.all),
+                                  Next => null);
 
             if Target_Last = null then
                Target_Last := New_Node;
