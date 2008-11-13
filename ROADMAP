@@ -13,11 +13,11 @@ specification of packages Ahven and Ahven.Framework unchanged.
 But for example, function Ahven.Framework.Name changed to
 Ahven.Framework.Get_Name in Ahven 1.1.
 
-Other packages most likely see changes.
+Other packages will most likely see changes.
 
-Planned features
-----------------
-Version 1.x:
+Long-term todo-list
+-------------------
 * Graphical (GTK+) UI for the test result reporter
 * Improve documentation
 * Replace adhoc XML writer with "a proper solution"
+
