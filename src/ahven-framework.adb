@@ -20,8 +20,15 @@ with Ada.Calendar;
 
 package body Ahven.Framework is
 
-   -- Few local wrapper functions, so we can use Add_Result procedure
-   -- for Passes, Failures, and Errors.
+   -- A few local procedures, so we do not need to duplicate code.
+
+   generic
+      with procedure Action is <>;
+   procedure Execute_Internal
+     (Test_Object     : in out Test'Class;
+      Listener_Object : in out Listeners.Result_Listener'Class);
+   -- Logic for Execute procedures. Action is specified by the caller.
+
    procedure Run_Internal
      (T            : in out Test_Case;
       Listener     : in out Listeners.Result_Listener'Class;
@@ -39,36 +46,54 @@ package body Ahven.Framework is
       null;
    end Tear_Down;
 
-   procedure Execute (T        : in out Test'Class;
-                      Listener : in out Listeners.Result_Listener'Class) is
+   procedure Execute_Internal
+     (Test_Object     : in out Test'Class;
+      Listener_Object : in out Listeners.Result_Listener'Class)
+   is
       Info : Result_Info := Empty_Result_Info;
    begin
-      Set_Test_Name (Info, Get_Name (T));
+      Set_Test_Name (Info, Get_Name (Test_Object));
 
       -- This Start_Test here is called for Test_Suites and Test_Cases.
       -- Info includes only the name of the test suite/case.
       --
       -- There is a separate Start_Test/End_Test pair for test routines
       -- in the Run (T : in out Test_Case; ...) procedure.
-      Listeners.Start_Test (Listener, Info);
+      Listeners.Start_Test (Listener_Object, Info);
 
-      Run (T, Listener);
+      Action;
 
       -- Like Start_Test, only for Test_Suites and Test_Cases.
-      Listeners.End_Test (Listener, Info);
+      Listeners.End_Test (Listener_Object, Info);
+   end Execute_Internal;
+
+   procedure Execute (T        : in out Test'Class;
+                      Listener : in out Listeners.Result_Listener'Class) is
+      procedure Run_Impl;
+
+      procedure Run_Impl is
+      begin
+         Run (T, Listener);
+      end Run_Impl;
+
+      procedure Execute_Impl is new Execute_Internal (Action => Run_Impl);
+   begin
+      Execute_Impl (Test_Object => T, Listener_Object => Listener);
    end Execute;
 
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Listener    : in out Listeners.Result_Listener'Class) is
-      Info : Result_Info := Empty_Result_Info;
-   begin
-      Set_Test_Name (Info, Get_Name (T));
+      procedure Run_Impl;
 
-      -- Like in the Ececute procedure above.
-      Listeners.Start_Test (Listener, Info);
-      Run (T, Test_Name, Listener);
-      Listeners.End_Test (Listener, Info);
+      procedure Run_Impl is
+      begin
+         Run (T, Test_Name, Listener);
+      end Run_Impl;
+
+      procedure Execute_Impl is new Execute_Internal (Action => Run_Impl);
+   begin
+      Execute_Impl (Test_Object => T, Listener_Object => Listener);
    end Execute;
 
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
