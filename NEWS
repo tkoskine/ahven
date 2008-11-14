@@ -42,8 +42,6 @@ Internal
 
 	* Listeners.Output_Capture was combined into Listeners.Basic.
 
-	* New tests: Runner_Tests.*.
-
 2008-08-13 Ahven 1.3
 ====================
 
