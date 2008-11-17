@@ -375,6 +375,9 @@ package body Ahven.Framework is
          end if;
       end Execute_Test;
 
+      procedure Execute_Static_Cases is
+        new Indefinite_Test_List.For_Each (Action => Execute_Test);
+
       Iter : Iterator := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
@@ -385,6 +388,7 @@ package body Ahven.Framework is
             Execute_Test (Test'Class (Data (Iter).all));
             Iter := Next (Iter);
          end loop;
+         Execute_Static_Cases (T.Static_Test_Cases);
       end if;
    end Run;
 
