@@ -46,4 +46,6 @@ package Framework_Tests is
 
    procedure Test_Test_Suite_Test_Static_Count;
 
+   procedure Test_Test_Suite_Test_Name_Count;
+
 end Framework_Tests;

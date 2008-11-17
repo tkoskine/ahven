@@ -55,6 +55,8 @@ package body Framework_Tests is
                                   "Test_Suite: Test Count");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Static_Count'Access,
                                   "Test_Suite: Test Count (Static)");
+      Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Name_Count'Access,
+                                  "Test_Suite: Test Count (Name)");
    end Initialize;
 
    procedure Set_Up (T : in out Test) is
@@ -216,4 +218,22 @@ package body Framework_Tests is
       Assert_Eq_Count
         (Framework.Test_Count (Parent), Dummy_Test_Count, "Test Count");
    end Test_Test_Suite_Test_Static_Count;
+
+   procedure Test_Test_Suite_Test_Name_Count is
+      use Dummy_Tests;
+      use type Framework.Test_Count_Type;
+
+      Child       : Framework.Test_Suite;
+      Parent      : Framework.Test_Suite;
+      Dummy_Test  : Dummy_Tests.Test;
+   begin
+      Child := Framework.Create_Suite ("Child suite");
+      Framework.Add_Static_Test (Child, Dummy_Test);
+
+      Parent := Framework.Create_Suite ("Parent suite");
+      Framework.Add_Static_Test (Parent, Child);
+
+      Assert_Eq_Count
+        (Framework.Test_Count (Parent, "Failure"), 1, "Test Count");
+   end Test_Test_Suite_Test_Name_Count;
 end Framework_Tests;
