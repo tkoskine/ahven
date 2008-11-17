@@ -38,6 +38,10 @@ package Framework_Tests is
 
    procedure Test_Test_Suite_Run;
 
+   procedure Test_Test_Suite_Static_Run;
+
+   procedure Test_Test_Suite_Name_Run;
+
    procedure Test_Call_End_Test;
 
    procedure Test_Test_Suite_Inside_Suite;

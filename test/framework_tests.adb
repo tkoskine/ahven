@@ -49,6 +49,10 @@ package body Framework_Tests is
                                   "Test_Case: Run (Call End_Test)");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Run'Access,
                                   "Test_Suite: Run");
+      Framework.Add_Test_Routine (T, Test_Test_Suite_Static_Run'Access,
+                                  "Test_Suite: Run (Static)");
+      Framework.Add_Test_Routine (T, Test_Test_Suite_Name_Run'Access,
+                                  "Test_Suite: Run (Name)");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Inside_Suite'Access,
                                   "Test_Suite: Suite inside another");
       Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Count'Access,
@@ -136,6 +140,44 @@ package body Framework_Tests is
       Free (My_Listener);
       Framework.Release_Suite (My_Suite);
    end Test_Test_Suite_Run;
+
+   procedure Test_Test_Suite_Static_Run is
+      use Dummy_Tests;
+
+      My_Listener : Simple_Listener.Listener;
+      My_Suite : Framework.Test_Suite := Framework.Create_Suite ("My suite");
+      Dummy_Test : Dummy_Tests.Test;
+   begin
+      Framework.Add_Static_Test (My_Suite, Dummy_Test);
+
+      Framework.Run (My_Suite, My_Listener);
+
+      Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "Pass count");
+      Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "Error count");
+      Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "Failure count");
+      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
+      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 1),
+              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
+   end Test_Test_Suite_Static_Run;
+
+   procedure Test_Test_Suite_Name_Run is
+      use Dummy_Tests;
+
+      My_Listener : Simple_Listener.Listener;
+      My_Suite : Framework.Test_Suite := Framework.Create_Suite ("My suite");
+      Dummy_Test : Dummy_Tests.Test;
+   begin
+      Framework.Add_Static_Test (My_Suite, Dummy_Test);
+
+      Framework.Run (My_Suite, "Failure", My_Listener);
+
+      Assert_Eq_Nat (My_Listener.Passes, 0, "Pass count");
+      Assert_Eq_Nat (My_Listener.Errors, 0, "Error count");
+      Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "Failure count");
+      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
+      Assert (My_Listener.Start_Calls = (Dummy_Failures + 1),
+              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
+   end Test_Test_Suite_Name_Run;
 
    procedure Test_Call_End_Test is
       use Dummy_Tests;
