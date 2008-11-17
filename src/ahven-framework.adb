@@ -438,6 +438,8 @@ package body Ahven.Framework is
             exit when not Is_Valid (Iter);
             if To_String (Get_Name (Data (Iter).all)) = Test_Name then
                Counter := Counter + Test_Count (Data (Iter).all);
+            else
+               Counter := Counter + Test_Count (Data (Iter).all, Test_Name);
             end if;
             Iter := Next (Iter);
          end loop;
@@ -451,6 +453,8 @@ package body Ahven.Framework is
             exit when not Is_Valid (Iter);
             if To_String (Get_Name (Data (Iter))) = Test_Name then
                Counter := Counter + Test_Count (Data (Iter));
+            else
+               Counter := Counter + Test_Count (Data (Iter), Test_Name);
             end if;
             Iter := Next (Iter);
          end loop;
