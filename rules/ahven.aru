@@ -33,6 +33,10 @@ check declarations (integer_type);
 check declarations (task);
 check declarations (multiple_names);
 
+-- Renamed function calls are forbidden since
+-- some Ada compiler do not support them.
+check declarations (function_call_renaming);
+
 check directly_accessed_globals;
 
 check style (positional_association, instantiation, 0, call, 3);
