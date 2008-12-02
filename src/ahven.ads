@@ -16,6 +16,8 @@
 --
 
 package Ahven is
+   type Test_Status is (TEST_SUCCESS, TEST_FAIL, TEST_ERROR);
+
    Assertion_Error : exception;
    -- Exception, raised when Assert fails.
 

@@ -17,6 +17,7 @@
 with Ahven;
 with Ahven.Listeners.Basic;
 with Ahven.Results;
+with Ahven.VStrings;
 
 use Ahven;
 use Ahven.Results;
@@ -36,39 +37,65 @@ package body Basic_Listener_Tests is
    end Initialize;
 
    procedure Test_Single_Pass is
-      Listener : Listeners.Basic.Basic_Listener;
-      Info     : Result_Info := Empty_Result_Info;
-   begin
-      Set_Test_Name (Info, "testname");
-      Set_Routine_Name (Info, "routine");
-      Set_Execution_Time (Info, 1.0);
+      use Ahven.Listeners;
+      use Ahven.VStrings;
 
-      Listeners.Basic.Start_Test (Listener, Info);
-      Listeners.Basic.Add_Pass (Listener, Info);
-      Listeners.Basic.End_Test (Listener, Info);
+      Listener : Basic.Basic_Listener;
+   begin
+      Listeners.Basic.Start_Test
+        (Listener, Context'(Phase     => TEST_BEGIN,
+                            Test_Name => +"testname",
+                            Test_Kind => ROUTINE));
+      Listeners.Basic.Add_Pass
+        (Listener, Context'(Phase        => TEST_RUN,
+                            Test_Name    => +"testname",
+                            Test_Kind    => ROUTINE,
+                            Routine_Name => +"routine",
+                            Message      => +"message",
+                            Long_Message => +"long_message"));
+      Listeners.Basic.End_Test
+        (Listener, Context'(Phase          => TEST_END,
+                            Test_Name      => +"testname",
+                            Test_Kind      => ROUTINE,
+                            Execution_Time => 1.0));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
    end Test_Single_Pass;
 
    procedure Test_Error_Inside_Suite is
-      Listener : Listeners.Basic.Basic_Listener;
-      Info     : Result_Info := Empty_Result_Info;
+      use Ahven.Listeners;
+      use Ahven.VStrings;
+
+      Listener : Basic.Basic_Listener;
    begin
-      Set_Test_Name (Info, "suite");
-      Listeners.Basic.Start_Test (Listener, Info);
+      Listeners.Basic.Start_Test
+        (Listener, Context'(Phase     => TEST_BEGIN,
+                            Test_Name => +"suite",
+                            Test_Kind => CONTAINER));
 
-      Set_Test_Name (Info, "testname");
-      Set_Routine_Name (Info, "routine");
-      Set_Execution_Time (Info, 1.0);
-      Set_Message (Info, "hello (message)");
-      Set_Long_Message (Info, "world (long message)");
-      Listeners.Basic.Start_Test (Listener, Info);
-      Listeners.Basic.Add_Error (Listener, Info);
-      Listeners.Basic.End_Test (Listener, Info);
+      Listeners.Basic.Start_Test
+        (Listener, Context'(Phase     => TEST_BEGIN,
+                            Test_Name => +"testname",
+                            Test_Kind => ROUTINE));
 
-      Info := Empty_Result_Info;
-      Set_Test_Name (Info, "suite");
-      Listeners.Basic.End_Test (Listener, Info);
+      Listeners.Basic.Add_Error
+        (Listener, Context'(Phase     => TEST_RUN,
+                            Test_Name => +"testname",
+                            Test_Kind => ROUTINE,
+                            Routine_Name => +"routine",
+                            Message      => +"message",
+                            Long_Message => +"long_message"));
+      Listeners.Basic.End_Test
+        (Listener, Context'(Phase     => TEST_END,
+                            Test_Name => +"testname",
+                            Test_Kind => ROUTINE,
+                            Execution_Time => 1.0));
+
+      Listeners.Basic.End_Test
+        (Listener, Context'(Phase     => TEST_END,
+                            Test_Name => +"suite",
+                            Test_Kind => CONTAINER,
+                            Execution_Time => 0.0));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
 

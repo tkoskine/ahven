@@ -15,8 +15,12 @@
 --
 
 with Ada.Text_IO;
+with Ada.Strings.Unbounded;
+with Ahven.VStrings;
 
 package body Ahven.Listeners.Basic is
+   use Ada.Strings.Unbounded;
+   use Ahven.VStrings;
 
    -- Because of Ada.Text_IO output capturing, the result
    -- recording is happening in the End_Test procedure.
@@ -26,41 +30,48 @@ package body Ahven.Listeners.Basic is
    -- records the latest result to the listener.
 
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
-                                 Info     : Result_Info;
+                                 Info     : Context;
                                  Result   : Result_Type) is
    begin
       Listener.Last_Test_Result := Result;
-      Listener.Last_Test_Message := To_Unbounded_String (Get_Message (Info));
-      Listener.Last_Test_Long_Message :=
-        To_Unbounded_String (Get_Long_Message (Info));
+      if Info.Phase = TEST_RUN then
+         Results.Set_Routine_Name (Listener.Last_Info,
+           To_Unbounded_String (To_String (Info.Routine_Name)));
+         Results.Set_Test_Name (Listener.Last_Info,
+           To_Unbounded_String (To_String (Info.Test_Name)));
+         Results.Set_Message (Listener.Last_Info,
+           To_Unbounded_String (To_String (Info.Message)));
+         Results.Set_Long_Message (Listener.Last_Info,
+           To_Unbounded_String (To_String (Info.Long_Message)));
+      end if;
    end Set_Last_Test_Info;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
-                       Info  : Result_Info) is
+                       Info  : Context) is
    begin
       Set_Last_Test_Info (Listener, Info, PASS_RESULT);
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
-                          Info  : Result_Info) is
+                          Info  : Context) is
    begin
       Set_Last_Test_Info (Listener, Info, FAILURE_RESULT);
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
-                        Info  : Result_Info) is
+                        Info  : Context) is
    begin
       Set_Last_Test_Info (Listener, Info, ERROR_RESULT);
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
-                         Info  : Result_Info) is
+                         Info  : Context) is
       R : Result_Collection_Access := null;
    begin
       -- Empty routine name means a test suite or test case
-      if Get_Routine_Name (Info) = Null_Unbounded_String then
+      if Info.Test_Kind = CONTAINER then
          R := new Result_Collection;
-         Set_Name (R.all, Get_Test_Name (Info));
+         Set_Name (R.all, To_Unbounded_String (To_String (Info.Test_Name)));
          Set_Parent (R.all, Listener.Current_Result);
 
          if Listener.Current_Result = null then
@@ -78,12 +89,15 @@ package body Ahven.Listeners.Basic is
    end Start_Test;
 
    procedure End_Test (Listener : in out Basic_Listener;
-                       Info  : Result_Info) is
+                       Info  : Context) is
       procedure Add_Result (Collection : in out Result_Collection);
 
       procedure Add_Result (Collection : in out Result_Collection) is
-         My_Info : Result_Info := Info;
+         My_Info : Result_Info := Listener.Last_Info;
       begin
+         if Info.Phase = TEST_RUN then
+            Set_Routine_Name (My_Info, To_String (Info.Routine_Name));
+         end if;
          -- It is possible that only Start_Test and End_Test
          -- are called (e.g. for Test_Suite), so the latest
          -- test result can be unset (set to NO_RESULT)
@@ -103,8 +117,10 @@ package body Ahven.Listeners.Basic is
                  (My_Info, Temporary_Output.Get_Name (Listener.Output_File));
             end if;
 
-            Set_Message (My_Info, Listener.Last_Test_Message);
-            Set_Long_Message (My_Info, Listener.Last_Test_Long_Message);
+            Set_Message (My_Info, Get_Message (Listener.Last_Info));
+            Set_Long_Message (My_Info, Get_Long_Message (Listener.Last_Info));
+            Results.Set_Execution_Time (My_Info, Info.Execution_Time);
+
             case Listener.Last_Test_Result is
                when PASS_RESULT =>
                   Add_Pass (Collection, My_Info);

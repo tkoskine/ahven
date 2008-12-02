@@ -15,32 +15,32 @@
 --
 
 with Ada.Text_IO;
-with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Characters.Latin_1;
 
 with Ahven.Tap_Parameters;
+with Ahven.VStrings;
 
 use Ada.Text_IO;
-use Ada.Strings.Unbounded;
 use Ada.Strings.Fixed;
 
 use Ahven;
 
 package body Ahven.Tap_Runner is
    use Ahven.Framework;
+   use Ahven.VStrings;
 
    -- Local procedures
    procedure Print_Data (Message : String; Prefix : String);
 
-   procedure Print_Info (Info : Result_Info);
+   procedure Print_Info (Info : Context);
 
-   procedure Print_Info_13 (Info : Result_Info; Severity : String);
+   procedure Print_Info_13 (Info : Context; Severity : String);
 
    procedure Print_Log_File (Filename : String; Prefix : String);
 
    procedure Report_Not_Ok (Listener : in out Tap_Listener;
-                            Info     :        Result_Info;
+                            Info     :        Context;
                             Severity :        String);
 
    procedure Print_Data (Message : String; Prefix : String) is
@@ -88,27 +88,29 @@ package body Ahven.Tap_Runner is
          Tap_Parameters.Usage;
    end Run;
 
-   procedure Print_Info (Info : Result_Info) is
+   procedure Print_Info (Info : Context) is
    begin
-      Print_Data (Message => Get_Message (Info), Prefix => "# ");
+      Print_Data (Message => To_String (Info.Message), Prefix => "# ");
       New_Line;
-      if Get_Long_Message (Info)'Length > 0 then
-         Print_Data (Message => Get_Long_Message (Info), Prefix => "# ");
+      if Length (Info.Long_Message) > 0 then
+         Print_Data (Message => To_String (Info.Long_Message), Prefix => "# ");
          New_Line;
       end if;
    end Print_Info;
 
-   procedure Print_Info_13 (Info : Result_Info; Severity : String) is
+   procedure Print_Info_13 (Info : Context; Severity : String) is
    begin
       Put_Line ("  ---");
-      Print_Data (Message => "message: " & '"' & Get_Message (Info) & '"',
-                  Prefix => "  ");
+      Print_Data (Message => "message: " &
+                             '"' & To_String (Info.Message) & '"',
+                  Prefix  => "  ");
       New_Line;
       Print_Data (Message => "severity: " & Severity, Prefix => "  ");
       New_Line;
-      if Get_Long_Message (Info)'Length > 0 then
-         Print_Data (Message => "long_message: " & Get_Long_Message (Info),
-                     Prefix => "  ");
+      if Length (Info.Long_Message) > 0 then
+         Print_Data (Message => "long_message: " &
+                                To_String (Info.Long_Message),
+                     Prefix  => "  ");
          New_Line;
       end if;
       Put_Line ("  ...");
@@ -150,7 +152,7 @@ package body Ahven.Tap_Runner is
    end Print_Log_File;
 
    procedure Add_Pass (Listener : in out Tap_Listener;
-                       Info     :        Result_Info) is
+                       Info     :        Context) is
       use Ada.Strings;
    begin
       if Listener.Capture_Output then
@@ -160,12 +162,12 @@ package body Ahven.Tap_Runner is
 
       Put ("ok ");
       Put (Trim (Test_Count_Type'Image (Listener.Current_Test), Both) & " ");
-      Put (To_String (Get_Test_Name (Info) & ": " & Get_Routine_Name (Info)));
+      Put (To_String (Info.Test_Name) & ": " & To_String (Info.Routine_Name));
       New_Line;
    end Add_Pass;
 
    procedure Report_Not_Ok (Listener : in out Tap_Listener;
-                            Info     :        Result_Info;
+                            Info     :        Context;
                             Severity :        String) is
       use Ada.Strings;
    begin
@@ -177,8 +179,7 @@ package body Ahven.Tap_Runner is
       Put ("not ok ");
       Put (Trim
         (Test_Count_Type'Image (Listener.Current_Test), Both) & " ");
-      Put (To_String
-        (Get_Test_Name (Info) & ": " & Get_Routine_Name (Info)));
+      Put (To_String (Info.Test_Name) & ": " & To_String (Info.Routine_Name));
       New_Line;
 
       if Listener.Verbose then
@@ -197,21 +198,21 @@ package body Ahven.Tap_Runner is
    end Report_Not_Ok;
 
    procedure Add_Failure (Listener : in out Tap_Listener;
-                          Info     :        Result_Info) is
+                          Info     :        Context) is
    begin
       Report_Not_Ok (Listener, Info, "fail");
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Tap_Listener;
-                        Info     :        Result_Info) is
+                        Info     :        Context) is
    begin
       Report_Not_Ok (Listener, Info, "error");
    end Add_Error;
 
    procedure Start_Test (Listener : in out Tap_Listener;
-                         Info     :        Result_Info) is
+                         Info     :        Context) is
    begin
-      if Length (Get_Routine_Name (Info)) > 0 then
+      if Info.Test_Kind = ROUTINE then
          Listener.Current_Test := Listener.Current_Test + 1;
          if Listener.Capture_Output then
             Temporary_Output.Create_Temp (Listener.Output_File);
@@ -221,7 +222,7 @@ package body Ahven.Tap_Runner is
    end Start_Test;
 
    procedure End_Test (Listener : in out Tap_Listener;
-                       Info     :        Result_Info) is
+                       Info     :        Context) is
       Handle : Ada.Text_IO.File_Type;
    begin
       if Listener.Capture_Output then

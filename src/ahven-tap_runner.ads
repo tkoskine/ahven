@@ -15,11 +15,10 @@
 --
 with Ahven.Framework;
 with Ahven.Listeners;
-with Ahven.Results;
 with Ahven.Temporary_Output;
 
 package Ahven.Tap_Runner is
-   use Ahven.Results;
+   use Ahven.Listeners;
 
    procedure Run (Suite : in out Framework.Test_Suite'Class);
    -- Run the suite and print the results.
@@ -36,17 +35,17 @@ private
    end record;
 
    procedure Add_Pass (Listener : in out Tap_Listener;
-                       Info     :        Result_Info);
+                       Info     :        Context);
 
    procedure Add_Failure (Listener : in out Tap_Listener;
-                          Info     :        Result_Info);
+                          Info     :        Context);
 
    procedure Add_Error (Listener : in out Tap_Listener;
-                        Info     :        Result_Info);
+                        Info     :        Context);
 
    procedure Start_Test (Listener : in out Tap_Listener;
-                         Info     :        Result_Info);
+                         Info     :        Context);
 
    procedure End_Test (Listener : in out Tap_Listener;
-                       Info     :        Result_Info);
+                       Info     :        Context);
 end Ahven.Tap_Runner;

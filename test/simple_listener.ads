@@ -15,7 +15,6 @@
 --
 
 with Ahven.Listeners;
-with Ahven.Results;
 
 package Simple_Listener is
    type Listener is new Ahven.Listeners.Result_Listener with record
@@ -30,19 +29,19 @@ package Simple_Listener is
    type Listener_Access is access all Listener;
 
    procedure Add_Pass (Object: in out Listener;
-                       Info : Ahven.Results.Result_Info);
+                       Info : Ahven.Listeners.Context);
 
    procedure Add_Failure (Object: in out Listener;
-                          Info : Ahven.Results.Result_Info);
+                          Info : Ahven.Listeners.Context);
 
    procedure Add_Error (Object: in out Listener;
-                        Info : Ahven.Results.Result_Info);
+                        Info : Ahven.Listeners.Context);
 
    procedure Start_Test (Object: in out Listener;
-                         Info : Ahven.Results.Result_Info);
+                         Info : Ahven.Listeners.Context);
 
    procedure End_Test (Object: in out Listener;
-                       Info : Ahven.Results.Result_Info);
+                       Info : Ahven.Listeners.Context);
 
 end Simple_Listener;
 

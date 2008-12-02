@@ -18,7 +18,10 @@ with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
 with Ada.Calendar;
 
+with Ahven.VStrings;
+
 package body Ahven.Framework is
+   use Ahven.VStrings;
 
    -- A few local procedures, so we do not need to duplicate code.
 
@@ -32,9 +35,9 @@ package body Ahven.Framework is
    procedure Run_Internal
      (T            : in out Test_Case;
       Listener     : in out Listeners.Result_Listener'Class;
-      Command      : Test_Command;
-      Test_Name    : Unbounded_String;
-      Routine_Name : Unbounded_String);
+      Command      :        Test_Command;
+      Test_Name    :        String;
+      Routine_Name :        String);
 
    procedure Set_Up (T : in out Test) is
    begin
@@ -50,21 +53,28 @@ package body Ahven.Framework is
      (Test_Object     : in out Test'Class;
       Listener_Object : in out Listeners.Result_Listener'Class)
    is
-      Info : Result_Info := Empty_Result_Info;
+      use Ahven.Listeners;
    begin
-      Set_Test_Name (Info, Get_Name (Test_Object));
-
       -- This Start_Test here is called for Test_Suites and Test_Cases.
       -- Info includes only the name of the test suite/case.
       --
       -- There is a separate Start_Test/End_Test pair for test routines
       -- in the Run (T : in out Test_Case; ...) procedure.
-      Listeners.Start_Test (Listener_Object, Info);
+      Listeners.Start_Test (Listener_Object,
+                            Context'(Phase => TEST_BEGIN,
+                                     Test_Name =>
+                                       +To_String (Get_Name (Test_Object)),
+                                     Test_Kind => CONTAINER));
 
       Action;
 
       -- Like Start_Test, only for Test_Suites and Test_Cases.
-      Listeners.End_Test (Listener_Object, Info);
+      Listeners.End_Test (Listener_Object,
+                            Context'(Phase          => TEST_END,
+                                     Test_Name      =>
+                                       +To_String (Get_Name (Test_Object)),
+                                     Test_Kind      => CONTAINER,
+                                     Execution_Time => 0.0));
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
@@ -124,30 +134,41 @@ package body Ahven.Framework is
    -- Run one test routine (well, Command at this point) and
    -- store the result to the Result object.
    procedure Run_Command (Command  :        Test_Command;
-                          Info     :        Result_Info;
+                          Info     :        Listeners.Context;
                           Listener : in out Listeners.Result_Listener'Class;
                           T        : in out Test_Case'Class) is
+      use Ahven.Listeners;
+
       Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
-      My_Info : Result_Info := Info;
    begin
       Run (Command, T);
       Passed := True;
-      Listeners.Add_Pass (Listener, My_Info);
+      Listeners.Add_Pass (Listener, Info);
    exception
       when E : Assertion_Error =>
-         Results.Set_Message (My_Info, Ada.Exceptions.Exception_Message (E));
-         Listeners.Add_Failure (Listener, My_Info);
-
+         Listeners.Add_Failure
+           (Listener,
+            Context'(Phase        => TEST_RUN,
+                     Test_Name    => Info.Test_Name,
+                     Test_Kind    => CONTAINER,
+                     Routine_Name => Info.Routine_Name,
+                     Message      => +Ada.Exceptions.Exception_Message (E),
+                     Long_Message => +""));
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
          -- from the library routines (Passed = True)?
          if Passed then
             raise;
          else
-            Set_Message (My_Info, Ada.Exceptions.Exception_Name (E));
-            Set_Long_Message
-              (My_Info, Ada.Exceptions.Exception_Message (E));
-            Listeners.Add_Error (Listener, My_Info);
+            Listeners.Add_Error
+              (Listener,
+               Context'(Phase        => Listeners.TEST_RUN,
+                        Test_Name    => Info.Test_Name,
+                        Test_Kind    => CONTAINER,
+                        Routine_Name => Info.Routine_Name,
+                        Message      => +Ada.Exceptions.Exception_Name (E),
+                        Long_Message =>
+                          +Ada.Exceptions.Exception_Message (E)));
          end if;
    end Run_Command;
 
@@ -160,29 +181,39 @@ package body Ahven.Framework is
      (T            : in out Test_Case;
       Listener     : in out Listeners.Result_Listener'Class;
       Command      :        Test_Command;
-      Test_Name    :        Unbounded_String;
-      Routine_Name :        Unbounded_String)
+      Test_Name    :        String;
+      Routine_Name :        String)
    is
       use type Ada.Calendar.Time;
+      use Ahven.Listeners;
 
-      Info       : Result_Info := Empty_Result_Info;
       Start_Time : Ada.Calendar.Time;
       End_Time   : Ada.Calendar.Time;
    begin
-      Set_Test_Name (Info, Test_Name);
-      Set_Routine_Name (Info, Routine_Name);
-
-      Listeners.Start_Test (Listener, Info);
+      Listeners.Start_Test
+        (Listener,
+         Context'(Phase     => Ahven.Listeners.TEST_BEGIN,
+                  Test_Name => +Test_Name,
+                  Test_Kind => ROUTINE));
       Start_Time := Ada.Calendar.Clock;
 
       Run_Command (Command  => Command,
-                   Info     => Info,
+                   Info     => Context'(Phase        => Listeners.TEST_RUN,
+                                        Test_Name    => +Test_Name,
+                                        Test_Kind    => ROUTINE,
+                                        Routine_Name => +Routine_Name,
+                                        Message      => +"",
+                                        Long_Message => +""),
                    Listener => Listener,
                    T        => T);
 
       End_Time := Ada.Calendar.Clock;
-      Set_Execution_Time (Info, End_Time - Start_Time);
-      Listeners.End_Test (Listener, Info);
+      Listeners.End_Test
+        (Listener,
+         Context'(Phase          => Ahven.Listeners.TEST_END,
+                  Test_Name      => +Test_Name,
+                  Test_Kind      => ROUTINE,
+                  Execution_Time => End_Time - Start_Time));
    end Run_Internal;
 
    -- Run procedure for Test_Case.
@@ -201,8 +232,8 @@ package body Ahven.Framework is
          Run_Internal (T            => T,
                        Listener     => Listener,
                        Command      => Data (Iter),
-                       Test_Name    => Get_Name (T),
-                       Routine_Name => Data (Iter).Name);
+                       Test_Name    => To_String (Get_Name (T)),
+                       Routine_Name => To_String (Data (Iter).Name));
          Iter := Next (Iter);
       end loop;
    end Run;
@@ -226,8 +257,8 @@ package body Ahven.Framework is
             Run_Internal (T            => T,
                           Listener     => Listener,
                           Command      => Data (Iter),
-                          Test_Name    => Get_Name (T),
-                          Routine_Name => Data (Iter).Name);
+                          Test_Name    => To_String (Get_Name (T)),
+                          Routine_Name => To_String (Data (Iter).Name));
          end if;
 
          Iter := Next (Iter);

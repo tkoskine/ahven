@@ -15,11 +15,29 @@
 --
 
 with Ada.Finalization;
-with Ahven.Results;
-
-use Ahven.Results;
+with Ahven.VStrings;
 
 package Ahven.Listeners is
+   type Test_Phase is (TEST_BEGIN, TEST_RUN, TEST_END);
+   -- What is test doing right now?
+
+   type Test_Type is (CONTAINER, ROUTINE);
+
+   type Context (Phase : Test_Phase) is record
+      Test_Name      : VStrings.VString;
+      Test_Kind      : Test_Type;
+      case Phase is
+         when TEST_BEGIN =>
+            null;
+         when TEST_RUN =>
+            Routine_Name : VStrings.VString;
+            Message      : VStrings.VString;
+            Long_Message : VStrings.VString;
+         when TEST_END =>
+            Execution_Time : Duration;
+      end case;
+   end record;
+
    type Result_Listener is
      abstract new Ada.Finalization.Limited_Controlled with null record;
    -- Result_Listener is a listener for test results.
@@ -29,23 +47,23 @@ package Ahven.Listeners is
    type Result_Listener_Class_Access is access all Result_Listener'Class;
 
    procedure Add_Pass (Listener : in out Result_Listener;
-                       Info     :        Result_Info) is abstract;
+                       Info     :        Context) is abstract;
    -- Called after test passes.
 
    procedure Add_Failure (Listener : in out Result_Listener;
-                          Info     :        Result_Info) is abstract;
+                          Info     :        Context) is abstract;
    -- Called after test fails.
 
    procedure Add_Error (Listener : in out Result_Listener;
-                        Info     :        Result_Info) is abstract;
+                        Info     :        Context) is abstract;
    -- Called after there is an error in the test.
 
    procedure Start_Test (Listener : in out Result_Listener;
-                         Info     :        Result_Info) is abstract;
+                         Info     :        Context) is abstract;
    -- Called before the test begins. This is called before Add_* procedures.
 
    procedure End_Test (Listener : in out Result_Listener;
-                       Info     :        Result_Info) is abstract;
+                       Info     :        Context) is abstract;
    -- Called after the test ends. Add_* procedures are called before this.
 
 end Ahven.Listeners;

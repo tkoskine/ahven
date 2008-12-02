@@ -17,11 +17,9 @@
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
 
-with Ahven.Results;
 with Ahven.Listeners;
 
 use Ada.Strings.Unbounded;
-use Ahven.Results;
 
 package Ahven.Framework is
 
@@ -302,7 +300,7 @@ private
    -- (test command objects) and the name of the test case.
 
    procedure Run_Command (Command  :        Test_Command;
-                          Info     :        Result_Info;
+                          Info     :        Listeners.Context;
                           Listener : in out Listeners.Result_Listener'Class;
                           T        : in out Test_Case'Class);
    -- Handle dispatching to the right Run (Command : Test_Command)

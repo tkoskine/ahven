@@ -14,10 +14,10 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
 with Ahven.Temporary_Output;
+with Ahven.Results;
 
-use Ada.Strings.Unbounded;
+use Ahven.Results;
 
 package Ahven.Listeners.Basic is
    type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
@@ -26,30 +26,29 @@ package Ahven.Listeners.Basic is
       Main_Result       : aliased Result_Collection;
       Current_Result    : Result_Collection_Access;
       Last_Test_Result  : Result_Type      := NO_RESULT;
-      Last_Test_Message : Unbounded_String := Null_Unbounded_String;
-      Last_Test_Long_Message : Unbounded_String := Null_Unbounded_String;
+      Last_Info         : Result_Info := Empty_Result_Info;
       Capture_Output    : Boolean := False;
       Output_File       : Temporary_Output.Temporary_File;
    end record;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
-                       Info     :        Result_Info);
+                       Info     :        Context);
    -- New implementation for Listeners.Add_Pass
 
    procedure Add_Failure (Listener : in out Basic_Listener;
-                          Info     :        Result_Info);
+                          Info     :        Context);
    -- New implementation for Listeners.Add_Failure
 
    procedure Add_Error (Listener : in out Basic_Listener;
-                        Info     :        Result_Info);
+                        Info     :        Context);
    -- New implementation for Listeners.Add_Error
 
    procedure Start_Test (Listener : in out Basic_Listener;
-                         Info     :        Result_Info);
+                         Info     :        Context);
    -- New implementation for Listeners.Start_Test
 
    procedure End_Test (Listener : in out Basic_Listener;
-                       Info     :        Result_Info);
+                       Info     :        Context);
    -- New implementation for Listeners.End_Test
 
    procedure Set_Output_Capture (Listener : in out Basic_Listener;
@@ -62,7 +61,7 @@ package Ahven.Listeners.Basic is
 
 private
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
-                                 Info     : Result_Info;
+                                 Info     : Context;
                                  Result   : Result_Type);
 
    procedure Remove_File (Name : String);

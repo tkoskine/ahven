@@ -31,6 +31,11 @@ Changes
 	* New procedure for inserting stack-allocated tests into test suites:
 	    Add_Static_Test (Suite, T).
 
+	* Internally, many Unbounded_Strings were converted into VStrings.
+	  This limits the maximum length of test names and failure
+	  messages to 160 characters. Overlong strings are silently
+	  truncated into 160 characters.
+
 Bugs fixed
 ----------
 	* Text-based test runner results are now aligned in a better way.
