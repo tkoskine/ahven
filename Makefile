@@ -31,6 +31,7 @@ SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-xml_runner.adb src/ahven-xml_runner.ads \
 	src/ahven-tap_runner.adb src/ahven-tap_runner.ads \
 	src/ahven-tap_parameters.adb src/ahven-tap_parameters.ads \
+	src/ahven-vstrings.adb src/ahven-vstrings.ads \
 	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads
 
 ALI_FILES=lib/ahven.ali \
@@ -45,6 +46,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-parameters.ali \
 	lib/ahven-temporary_output.ali \
 	lib/ahven-text_runner.ali \
+	lib/ahven-vstrings.ali \
 	lib/ahven-xml_runner.ali
 
 SO_LIBRARY=libahven.so.14.0
