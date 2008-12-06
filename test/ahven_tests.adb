@@ -20,6 +20,7 @@ with Results_Tests;
 with Basic_Listener_Tests;
 with Assertion_Tests;
 with Static_Test_Case_Tests;
+with SList_Tests;
 
 package body Ahven_Tests is
    use Ahven;
@@ -33,6 +34,7 @@ package body Ahven_Tests is
       Listener_Test  : Basic_Listener_Tests.Test;
       Results_Test   : Results_Tests.Test;
       Static_Test    : Static_Test_Case_Tests.Test;
+      SList_Test     : SList_Tests.Test;
    begin
       Framework.Add_Static_Test (S, Assertion_Test);
       Framework.Add_Static_Test (S, Derived_Test);
@@ -40,6 +42,7 @@ package body Ahven_Tests is
       Framework.Add_Static_Test (S, Listener_Test);
       Framework.Add_Static_Test (S, Results_Test);
       Framework.Add_Static_Test (S, Static_Test);
+      Framework.Add_Static_Test (S, SList_Test);
       return S;
    end Get_Test_Suite;
 end Ahven_Tests;

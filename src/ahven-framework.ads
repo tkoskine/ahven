@@ -18,6 +18,9 @@ with Ada.Finalization;
 with Ada.Strings.Unbounded;
 
 with Ahven.Listeners;
+with Ahven.SList;
+
+pragma Elaborate_All (Ahven.SList);
 
 use Ada.Strings.Unbounded;
 
@@ -241,56 +244,7 @@ private
    -- Calls Set_Up and Tear_Down if necessary.
 
    package Test_Command_List is
-      type List is new Ada.Finalization.Controlled with private;
-      type Iterator is private;
-      Invalid_Iterator : exception;
-
-      Empty_List : constant List;
-
-      procedure Append (Target : in out List; Node_Data : Test_Command);
-      -- Append an element at the end of the list.
-
-      procedure Remove_All (Target : in out List);
-      -- Remove all elements from the list.
-
-      function First (Target : List) return Iterator;
-      -- Return an iterator to the first element of the list.
-
-      function Next (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the next element on the list.
-
-      function Data (Iter : Iterator) return Test_Command;
-      -- Return element pointed by the iterator.
-
-      function Is_Valid (Iter : Iterator) return Boolean;
-      -- Tell if the iterator is still valid.
-
-   private
-      type Node;
-      type Node_Access is access Node;
-      type Iterator is new Node_Access;
-
-      procedure Remove (Ptr : Node_Access);
-      -- A procedure to release memory pointed by Ptr.
-
-      type Node is record
-         Next : Node_Access := null;
-         Data : Test_Command;
-      end record;
-
-      type List is new Ada.Finalization.Controlled with record
-         First : Node_Access := null;
-         Last  : Node_Access := null;
-      end record;
-
-      procedure Initialize (Target : in out List);
-      procedure Finalize   (Target : in out List);
-      procedure Adjust     (Target : in out List);
-
-      Empty_List : constant List :=
-        (Ada.Finalization.Controlled with First => null,
-                                          Last  => null);
-   end Test_Command_List;
+     new Ahven.SList (Element_Type => Test_Command);
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
@@ -306,57 +260,12 @@ private
    -- Handle dispatching to the right Run (Command : Test_Command)
    -- procedure and record test routine result to the Result object.
 
+   type Test_Class_Wrapper is record
+      Ptr : Test_Class_Access;
+   end record;
+
    package Test_List is
-      type List is new Ada.Finalization.Controlled with private;
-      type Iterator is private;
-      Invalid_Iterator : exception;
-
-      Empty_List : constant List;
-
-      procedure Append (Target : in out List; Node_Data : Test_Class_Access);
-      -- Append an element at the end of the list.
-
-      procedure Remove_All (Target : in out List);
-      -- Remove all elements from the list.
-
-      function First (Target : List) return Iterator;
-      -- Return an iterator to the first element of the list.
-
-      function Next (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the next element on the list.
-
-      function Data (Iter : Iterator) return Test_Class_Access;
-      -- Return element pointed by the iterator.
-
-      function Is_Valid (Iter : Iterator) return Boolean;
-      -- Tell if the iterator is still valid.
-
-   private
-      type Node;
-      type Node_Access is access Node;
-      type Iterator is new Node_Access;
-
-      procedure Remove (Ptr : Node_Access);
-      -- A procedure to release memory pointed by Ptr.
-
-      type Node is record
-         Next : Node_Access := null;
-         Data : Test_Class_Access;
-      end record;
-
-      type List is new Ada.Finalization.Controlled with record
-         First : Node_Access := null;
-         Last  : Node_Access := null;
-      end record;
-
-      procedure Initialize (Target : in out List);
-      procedure Finalize   (Target : in out List);
-      procedure Adjust     (Target : in out List);
-
-      Empty_List : constant List :=
-        (Ada.Finalization.Controlled with First => null,
-                                          Last  => null);
-   end Test_List;
+     new Ahven.SList (Element_Type => Test_Class_Wrapper);
 
    package Indefinite_Test_List is
       type List is new Ada.Finalization.Controlled with private;

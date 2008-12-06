@@ -65,5 +65,6 @@ package Ahven.Listeners is
    procedure End_Test (Listener : in out Result_Listener;
                        Info     :        Context) is abstract;
    -- Called after the test ends. Add_* procedures are called before this.
-
+private
+   procedure Dummy;
 end Ahven.Listeners;

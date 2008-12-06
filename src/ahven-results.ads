@@ -16,6 +16,10 @@
 
 with Ada.Strings.Unbounded;
 
+with Ahven.SList;
+
+pragma Elaborate_All (Ahven.SList);
+
 -- Like the name implies, the Results package is used for
 -- storing the test results.
 --
@@ -220,92 +224,15 @@ private
       Output_File    => Null_Unbounded_String);
 
    package Result_Info_List is
-      type List is limited private;
-      type Iterator is private;
-      Invalid_Iterator : exception;
+     new Ahven.SList (Element_Type => Result_Info);
 
-      procedure Append (Target : in out List; Node_Data : Result_Info);
-      -- Append an element at the end of the list.
-
-      procedure Remove_All (Target : in out List);
-      -- Remove all elements from the list.
-
-      function First (Target : List) return Iterator;
-      -- Return an iterator to the first element of the list.
-
-      function Next (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the next element on the list.
-
-      function Data (Iter : Iterator) return Result_Info;
-      -- Return element pointed by the iterator.
-
-      function Is_Valid (Iter : Iterator) return Boolean;
-
-      function Size (Target : List) return Natural;
-   private
-      type Node;
-      type Node_Access is access Node;
-      type Iterator is new Node_Access;
-
-      procedure Remove (Ptr : Node_Access);
-      -- A procedure to release memory pointed by Ptr.
-
-      type Node is record
-         Next : Node_Access := null;
-         Prev : Node_Access := null;
-         Data : Result_Info;
-      end record;
-
-      type List is limited record
-         First : Node_Access := null;
-         Last  : Node_Access := null;
-         Size  : Natural := 0;
-      end record;
-   end Result_Info_List;
+   type Result_Collection_Wrapper is record
+      Ptr : Result_Collection_Access;
+   end record;
+   -- Work around for Janus/Ada 3.1.2beta generic bug.
 
    package Result_List is
-      type List is limited private;
-      type Iterator is private;
-      Invalid_Iterator : exception;
-
-      procedure Append (Target : in out List;
-                        Node_Data : Result_Collection_Access);
-      -- Append an element at the end of the list.
-
-      procedure Remove_All (Target : in out List);
-      -- Remove all elements from the list.
-
-      function First (Target : List) return Iterator;
-      -- Return an iterator to the first element of the list.
-
-      function Next (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the next element on the list.
-
-      function Data (Iter : Iterator) return Result_Collection_Access;
-      -- Return element pointed by the iterator.
-
-      function Is_Valid (Iter : Iterator) return Boolean;
-
-   private
-      type Node;
-      type Node_Access is access Node;
-      type Iterator is new Node_Access;
-
-      procedure Remove (Ptr : Node_Access);
-      -- A procedure to release memory pointed by Ptr.
-
-      type Node is record
-         Next : Node_Access := null;
-         Prev : Node_Access := null;
-         Data : Result_Collection_Access;
-      end record;
-
-      type List is limited record
-         First : Node_Access := null;
-         Last  : Node_Access := null;
-         Size  : Natural := 0;
-      end record;
-   end Result_List;
+    new Ahven.SList (Element_Type => Result_Collection_Wrapper);
 
    type Result_Info_Iterator is new Result_Info_List.Iterator;
 

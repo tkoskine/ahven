@@ -329,7 +329,7 @@ package body Ahven.Framework is
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
    begin
-      Test_List.Append (Suite.Test_Cases, T);
+      Test_List.Append (Suite.Test_Cases, Test_Class_Wrapper'(Ptr => T));
    end Add_Test;
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access) is
@@ -372,7 +372,7 @@ package body Ahven.Framework is
       begin
          loop
             exit when not Is_Valid (Iter);
-            Execute_Test (Data (Iter).all);
+            Execute_Test (Data (Iter).Ptr.all);
             Iter := Next (Iter);
          end loop;
       end Execute_Cases;
@@ -416,7 +416,7 @@ package body Ahven.Framework is
       else
          loop
             exit when not Is_Valid (Iter);
-            Execute_Test (Test'Class (Data (Iter).all));
+            Execute_Test (Test'Class (Data (Iter).Ptr.all));
             Iter := Next (Iter);
          end loop;
          Execute_Static_Cases (T.Static_Test_Cases);
@@ -433,7 +433,8 @@ package body Ahven.Framework is
       begin
          loop
             exit when not Is_Valid (Iter);
-            Counter := Counter + Test_Count (Data (Iter).all);
+            Counter := Counter +
+              Test_Count (Test'Class (Data (Iter).Ptr.all));
             Iter := Next (Iter);
          end loop;
       end;
@@ -456,6 +457,17 @@ package body Ahven.Framework is
    function Test_Count (T : Test_Suite; Test_Name : String)
      return Test_Count_Type is
       Counter : Test_Count_Type := 0;
+
+      procedure Handle_Test (Test_Object : Test'Class);
+
+      procedure Handle_Test (Test_Object : Test'Class) is
+      begin
+         if To_String (Get_Name (Test_Object)) = Test_Name then
+            Counter := Counter + Test_Count (Test_Object);
+         else
+            Counter := Counter + Test_Count (Test_Object, Test_Name);
+         end if;
+      end Handle_Test;
    begin
       if Test_Name = To_String (T.Suite_Name) then
          return Test_Count (T);
@@ -467,11 +479,7 @@ package body Ahven.Framework is
       begin
          loop
             exit when not Is_Valid (Iter);
-            if To_String (Get_Name (Data (Iter).all)) = Test_Name then
-               Counter := Counter + Test_Count (Data (Iter).all);
-            else
-               Counter := Counter + Test_Count (Data (Iter).all, Test_Name);
-            end if;
+            Handle_Test (Test'Class (Data (Iter).Ptr.all));
             Iter := Next (Iter);
          end loop;
       end;
@@ -482,11 +490,7 @@ package body Ahven.Framework is
       begin
          loop
             exit when not Is_Valid (Iter);
-            if To_String (Get_Name (Data (Iter))) = Test_Name then
-               Counter := Counter + Test_Count (Data (Iter));
-            else
-               Counter := Counter + Test_Count (Data (Iter), Test_Name);
-            end if;
+            Handle_Test (Data (Iter));
             Iter := Next (Iter);
          end loop;
       end;
@@ -505,7 +509,7 @@ package body Ahven.Framework is
    begin
       loop
          exit when not Is_Valid (Iter);
-         Ptr := Data (Iter);
+         Ptr := Data (Iter).Ptr;
          Free (Ptr);
          Iter := Next (Iter);
       end loop;
@@ -532,202 +536,6 @@ package body Ahven.Framework is
             Tear_Down (T);
       end case;
    end Run;
-
-   package body Test_Command_List is
-      procedure Remove (Ptr : Node_Access) is
-         procedure Free is
-           new Ada.Unchecked_Deallocation (Object => Node,
-                                           Name   => Node_Access);
-         My_Ptr : Node_Access := Ptr;
-      begin
-         Ptr.Next := null;
-         Free (My_Ptr);
-      end Remove;
-
-      procedure Append (Target : in out List;
-                        Node_Data : Test_Command) is
-         New_Node : Node_Access  := null;
-      begin
-         New_Node := new Node'(Data => Node_Data, Next => null);
-
-         if Target.Last = null then
-            Target.Last := New_Node;
-            Target.First := New_Node;
-         else
-            Target.Last.Next := New_Node;
-            Target.Last := New_Node;
-         end if;
-      end Append;
-
-      procedure Remove_All (Target : in out List) is
-         Current_Node : Node_Access := Target.First;
-         Next_Node : Node_Access := null;
-      begin
-         while Current_Node /= null loop
-            Next_Node := Current_Node.Next;
-            Remove (Current_Node);
-            Current_Node := Next_Node;
-         end loop;
-
-         Target.First := null;
-         Target.Last := null;
-      end Remove_All;
-
-      function First (Target : List) return Iterator is
-      begin
-         return Iterator (Target.First);
-      end First;
-
-      function Next (Iter : Iterator) return Iterator is
-      begin
-         if Iter = null then
-            raise Invalid_Iterator;
-         end if;
-         return Iterator (Iter.Next);
-      end Next;
-
-      function Data (Iter : Iterator) return Test_Command is
-      begin
-         return Iter.Data;
-      end Data;
-
-      function Is_Valid (Iter : Iterator) return Boolean is
-      begin
-         return Iter /= null;
-      end Is_Valid;
-
-      procedure Initialize (Target : in out List) is
-      begin
-         Target.Last := null;
-         Target.First := null;
-      end Initialize;
-
-      procedure Finalize (Target : in out List) is
-      begin
-         Remove_All (Target);
-      end Finalize;
-
-      procedure Adjust (Target : in out List) is
-         Target_Last : Node_Access := null;
-         Target_First : Node_Access := null;
-         Current : Node_Access := Target.First;
-         New_Node : Node_Access;
-      begin
-         while Current /= null loop
-            New_Node := new Node'(Data => Current.Data, Next => null);
-
-            if Target_Last = null then
-               Target_Last := New_Node;
-               Target_First := New_Node;
-            else
-               Target_Last.Next := New_Node;
-               Target_Last := New_Node;
-            end if;
-
-            Current := Current.Next;
-         end loop;
-         Target.First := Target_First;
-         Target.Last := Target_Last;
-      end Adjust;
-   end Test_Command_List;
-
-   package body Test_List is
-      procedure Remove (Ptr : Node_Access) is
-         procedure Free is
-           new Ada.Unchecked_Deallocation (Object => Node,
-                                           Name   => Node_Access);
-         My_Ptr : Node_Access := Ptr;
-      begin
-         Ptr.Next := null;
-         Free (My_Ptr);
-      end Remove;
-
-      procedure Append (Target : in out List;
-                        Node_Data : Test_Class_Access) is
-         New_Node : Node_Access  := null;
-      begin
-         New_Node := new Node'(Data => Node_Data, Next => null);
-
-         if Target.Last = null then
-            Target.Last := New_Node;
-            Target.First := New_Node;
-         else
-            Target.Last.Next := New_Node;
-            Target.Last := New_Node;
-         end if;
-      end Append;
-
-      procedure Remove_All (Target : in out List) is
-         Current_Node : Node_Access := Target.First;
-         Next_Node : Node_Access := null;
-      begin
-         while Current_Node /= null loop
-            Next_Node := Current_Node.Next;
-            Remove (Current_Node);
-            Current_Node := Next_Node;
-         end loop;
-
-         Target.First := null;
-         Target.Last := null;
-      end Remove_All;
-
-      function First (Target : List) return Iterator is
-      begin
-         return Iterator (Target.First);
-      end First;
-
-      function Next (Iter : Iterator) return Iterator is
-      begin
-         if Iter = null then
-            raise Invalid_Iterator;
-         end if;
-         return Iterator (Iter.Next);
-      end Next;
-
-      function Data (Iter : Iterator) return Test_Class_Access is
-      begin
-         return Iter.Data;
-      end Data;
-
-      function Is_Valid (Iter : Iterator) return Boolean is
-      begin
-         return Iter /= null;
-      end Is_Valid;
-
-      procedure Initialize (Target : in out List) is
-      begin
-         Target.Last := null;
-         Target.First := null;
-      end Initialize;
-
-      procedure Finalize (Target : in out List) is
-      begin
-         Remove_All (Target);
-      end Finalize;
-
-      procedure Adjust (Target : in out List) is
-         Target_Last : Node_Access := null;
-         Target_First : Node_Access := null;
-         Current : Node_Access := Target.First;
-         New_Node : Node_Access;
-      begin
-         while Current /= null loop
-            New_Node := new Node'(Data => Current.Data, Next => null);
-
-            if Target_Last = null then
-               Target_Last := New_Node;
-               Target_First := New_Node;
-            else
-               Target_Last.Next := New_Node;
-               Target_Last := New_Node;
-            end if;
-
-            Current := Current.Next;
-         end loop;
-         Target.First := Target_First;
-         Target.Last := Target_Last;
-      end Adjust;
-   end Test_List;
 
    package body Indefinite_Test_List is
       procedure Remove (Ptr : Node_Access) is

@@ -117,7 +117,7 @@ package body Ahven.Results is
    procedure Add_Child (Collection : in out Result_Collection;
                         Child : Result_Collection_Access) is
    begin
-      Append (Collection.Children, Child);
+      Append (Collection.Children, Result_Collection_Wrapper'(Ptr => Child));
    end Add_Child;
 
    procedure Add_Error (Collection : in out Result_Collection;
@@ -151,7 +151,7 @@ package body Ahven.Results is
       loop
          exit when not Is_Valid (Iter);
 
-         Ptr := Data (Iter);
+         Ptr := Data (Iter).Ptr;
          Release (Ptr.all);
          Free (Ptr);
 
@@ -179,15 +179,15 @@ package body Ahven.Results is
    end Set_Parent;
 
    function Test_Count (Collection : Result_Collection) return Natural is
-      Count : Natural := Result_Info_List.Size (Collection.Errors) +
-                         Result_Info_List.Size (Collection.Failures) +
-                         Result_Info_List.Size (Collection.Passes);
+      Count : Natural := Result_Info_List.Length (Collection.Errors) +
+                         Result_Info_List.Length (Collection.Failures) +
+                         Result_Info_List.Length (Collection.Passes);
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when not Is_Valid (Iter);
 
-         Count := Count + Test_Count (Data (Iter).all);
+         Count := Count + Test_Count (Data (Iter).Ptr.all);
          Iter := Next (Iter);
       end loop;
       return Count;
@@ -197,45 +197,45 @@ package body Ahven.Results is
      return Natural
    is
    begin
-      return Size (Collection.Errors) +
-             Size (Collection.Failures) +
-             Size (Collection.Passes);
+      return Length (Collection.Errors) +
+             Length (Collection.Failures) +
+             Length (Collection.Passes);
    end Direct_Test_Count;
 
    function Pass_Count (Collection : Result_Collection) return Natural is
-      Count : Natural              := Size (Collection.Passes);
+      Count : Natural              := Length (Collection.Passes);
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when not Is_Valid (Iter);
 
-         Count := Count + Pass_Count (Data (Iter).all);
+         Count := Count + Pass_Count (Data (Iter).Ptr.all);
          Iter := Next (Iter);
       end loop;
       return Count;
    end Pass_Count;
 
    function Error_Count (Collection : Result_Collection) return Natural is
-      Count : Natural              := Size (Collection.Errors);
+      Count : Natural              := Length (Collection.Errors);
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when not Is_Valid (Iter);
 
-         Count := Count + Error_Count (Data (Iter).all);
+         Count := Count + Error_Count (Data (Iter).Ptr.all);
          Iter := Next (Iter);
       end loop;
       return Count;
    end Error_Count;
 
    function Failure_Count (Collection : Result_Collection) return Natural is
-      Count : Natural              := Size (Collection.Failures);
+      Count : Natural              := Length (Collection.Failures);
       Iter  : Result_List.Iterator := First (Collection.Children);
    begin
       loop
          exit when not Is_Valid (Iter);
 
-         Count := Count + Failure_Count (Data (Iter).all);
+         Count := Count + Failure_Count (Data (Iter).Ptr.all);
          Iter := Next (Iter);
       end loop;
       return Count;
@@ -288,7 +288,8 @@ package body Ahven.Results is
       loop
          exit Child_Loop when not Result_List.Is_Valid (Child_Iter);
          Total_Time := Total_Time +
-                       Get_Execution_Time (Result_List.Data (Child_Iter).all);
+                       Get_Execution_Time
+                         (Result_List.Data (Child_Iter).Ptr.all);
          Child_Iter := Result_List.Next (Child_Iter);
       end loop Child_Loop;
 
@@ -350,7 +351,7 @@ package body Ahven.Results is
    function Data (Iter : Result_Collection_Iterator)
      return Result_Collection_Access is
    begin
-      return Result_List.Data (Result_List.Iterator (Iter));
+      return Result_List.Data (Result_List.Iterator (Iter)).Ptr;
    end Data;
 
    function Child_Depth (Collection : in Result_Collection) return Natural
@@ -369,7 +370,7 @@ package body Ahven.Results is
       begin
          loop
             exit when not Is_Valid (Iter);
-            Current := Child_Depth_Impl (Data (Iter).all, Level + 1);
+            Current := Child_Depth_Impl (Data (Iter).Ptr.all, Level + 1);
             if Max < Current then
                Max := Current;
             end if;
@@ -380,155 +381,5 @@ package body Ahven.Results is
    begin
       return Child_Depth_Impl (Collection, 0);
    end Child_Depth;
-
-   package body Result_Info_List is
-      procedure Remove (Ptr : Node_Access) is
-         procedure Free is
-           new Ada.Unchecked_Deallocation (Object => Node,
-                                           Name   => Node_Access);
-         My_Ptr : Node_Access := Ptr;
-      begin
-         Ptr.Next := null;
-         Ptr.Prev := null;
-         Free (My_Ptr);
-      end Remove;
-
-      procedure Append (Target : in out List; Node_Data : Result_Info) is
-         New_Node : Node_Access  := null;
-      begin
-         New_Node := new Node'(Data => Node_Data,
-            Next => null, Prev => Target.Last);
-
-         if Target.Last = null then
-            Target.Last := New_Node;
-            Target.First := New_Node;
-         else
-            Target.Last.Next := New_Node;
-            Target.Last := New_Node;
-         end if;
-
-         Target.Size := Target.Size + 1;
-      end Append;
-
-      procedure Remove_All (Target : in out List) is
-         Current_Node : Node_Access := Target.First;
-         Next_Node : Node_Access := null;
-      begin
-         while Current_Node /= null loop
-            Next_Node := Current_Node.Next;
-            Remove (Current_Node);
-            Current_Node := Next_Node;
-         end loop;
-
-         Target.First := null;
-         Target.Last := null;
-         Target.Size := 0;
-      end Remove_All;
-
-      function First (Target : List) return Iterator is
-      begin
-         if Target.Size = 0 then
-            return null;
-         end if;
-
-         return Iterator (Target.First);
-      end First;
-
-      function Next (Iter : Iterator) return Iterator is
-      begin
-         if Iter = null then
-            raise Invalid_Iterator;
-         end if;
-         return Iterator (Iter.Next);
-      end Next;
-
-      function Data (Iter : Iterator) return Result_Info is
-      begin
-         return Iter.Data;
-      end Data;
-
-      function Is_Valid (Iter : Iterator) return Boolean is
-      begin
-         return Iter /= null;
-      end Is_Valid;
-
-      function Size (Target : List) return Natural is
-      begin
-         return Target.Size;
-      end Size;
-   end Result_Info_List;
-
-   package body Result_List is
-      procedure Remove (Ptr : Node_Access) is
-         procedure Free is
-           new Ada.Unchecked_Deallocation (Object => Node,
-                                           Name => Node_Access);
-         My_Ptr : Node_Access := Ptr;
-      begin
-         Ptr.Next := null;
-         Ptr.Prev := null;
-         Free (My_Ptr);
-      end Remove;
-
-      procedure Append (Target : in out List;
-                        Node_Data : Result_Collection_Access) is
-         New_Node : Node_Access  := null;
-      begin
-         New_Node := new Node'(Data => Node_Data,
-            Next => null, Prev => Target.Last);
-
-         if Target.Last = null then
-            Target.Last := New_Node;
-            Target.First := New_Node;
-         else
-            Target.Last.Next := New_Node;
-            Target.Last := New_Node;
-         end if;
-
-         Target.Size := Target.Size + 1;
-      end Append;
-
-      procedure Remove_All (Target : in out List) is
-         Current_Node : Node_Access := Target.First;
-         Next_Node : Node_Access := null;
-      begin
-         while Current_Node /= null loop
-            Next_Node := Current_Node.Next;
-            Remove (Current_Node);
-            Current_Node := Next_Node;
-         end loop;
-
-         Target.First := null;
-         Target.Last := null;
-         Target.Size := 0;
-      end Remove_All;
-
-      function First (Target : List) return Iterator is
-      begin
-         if Target.Size = 0 then
-            return null;
-         end if;
-
-         return Iterator (Target.First);
-      end First;
-
-      function Next (Iter : Iterator) return Iterator is
-      begin
-         if Iter = null then
-            raise Invalid_Iterator;
-         end if;
-         return Iterator (Iter.Next);
-      end Next;
-
-      function Data (Iter : Iterator) return Result_Collection_Access is
-      begin
-         return Iter.Data;
-      end Data;
-
-      function Is_Valid (Iter : Iterator) return Boolean is
-      begin
-         return Iter /= null;
-      end Is_Valid;
-   end Result_List;
 
 end Ahven.Results;
