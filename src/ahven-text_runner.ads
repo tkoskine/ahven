@@ -18,7 +18,7 @@ with Ahven.Results;
 with Ahven.Parameters;
 
 package Ahven.Text_Runner is
-   procedure Run (Suite : in out Framework.Test_Suite'Class);
+   procedure Run (Suite : in out Framework.Test'Class);
    -- Run the suite and print the results.
 
    procedure Run (Suite : Framework.Test_Suite_Access);

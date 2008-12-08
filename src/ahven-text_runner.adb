@@ -285,7 +285,7 @@ package body Ahven.Text_Runner is
       end if;
    end Do_Report;
 
-   procedure Run (Suite : in out Framework.Test_Suite'Class) is
+   procedure Run (Suite : in out Framework.Test'Class) is
    begin
       Runner.Run_Suite (Suite, Do_Report'Access);
    end Run;

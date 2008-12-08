@@ -20,7 +20,7 @@ with Ahven.Temporary_Output;
 package Ahven.Tap_Runner is
    use Ahven.Listeners;
 
-   procedure Run (Suite : in out Framework.Test_Suite'Class);
+   procedure Run (Suite : in out Framework.Test'Class);
    -- Run the suite and print the results.
 private
    type Tap_Result_Type is (OK_RESULT, NOT_OK_RESULT);

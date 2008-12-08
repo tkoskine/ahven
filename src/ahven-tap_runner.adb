@@ -59,7 +59,7 @@ package body Ahven.Tap_Runner is
       end loop;
    end Print_Data;
 
-   procedure Run (Suite : in out Framework.Test_Suite'Class) is
+   procedure Run (Suite : in out Framework.Test'Class) is
       Listener : Tap_Listener;
       Params   : Tap_Parameters.Parameter_Info;
    begin
