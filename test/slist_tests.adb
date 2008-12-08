@@ -64,7 +64,7 @@ package body SList_Tests is
       Iter := Next (Iter);
       Assert (Data (Iter) = 2, "Value of 2nd item does not match");
    end Test_Append_Elementary;
-   
+
    procedure Test_Append_Record is
       use Simple_List;
 
@@ -118,11 +118,13 @@ package body SList_Tests is
    procedure Test_Next is
       use Simple_List;
 
+      Max_Count : constant := 10;
+
       My_List : List;
       Counter : Count_Type := 0;
       Iter    : Iterator;
    begin
-      for A in Integer range 1 .. 10 loop
+      for A in Integer range 1 .. Max_Count loop
          Append (My_List, Simple_Type'(Value => A));
       end loop;
 
@@ -132,7 +134,7 @@ package body SList_Tests is
          Iter := Next (Iter);
          Counter := Counter + 1;
       end loop;
-      Assert (Counter = 10, "Invalid counter value: " &
+      Assert (Counter = Max_Count, "Invalid counter value: " &
               Count_Type'Image (Counter));
    end Test_Next;
 
@@ -167,6 +169,7 @@ package body SList_Tests is
 
    procedure Test_Copy is
       use Simple_List;
+      Object_Amount : constant := 4;
 
       My_List : List;
       Copy    : List;
@@ -198,6 +201,7 @@ package body SList_Tests is
 
       declare
          Another_Copy : constant List := My_List;
+         --## rule off IMPROPER_INITIALIZATION
          Yet_Another  : List := Copy;
       begin
          Assert (Length (Another_Copy) = Length (My_List),
@@ -216,7 +220,7 @@ package body SList_Tests is
                  "First items not equal! (Yet_Another)");
       end;
 
-      Assert (Length (My_List) = 4, "Invalid size: " &
+      Assert (Length (My_List) = Object_Amount, "Invalid size: " &
               Count_Type'Image (Length (My_List)));
    end Test_Copy;
 end SList_Tests;
