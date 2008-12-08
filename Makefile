@@ -54,9 +54,18 @@ GPR_FILE=ahven.gpr
 
 default: build_all
 
-build_all: build_lib build_tests
+objects:
+	mkdir -p objects
 
-build_lib:
+test_objects:
+	mkdir -p test_objects
+
+lib:
+	mkdir -p lib
+
+build_all: objects test_objects build_lib build_tests
+
+build_lib: lib
 	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_lib
 
 build_tests: build_lib
