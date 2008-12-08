@@ -39,11 +39,12 @@ Changes
 Bugs fixed
 ----------
 	* Text-based test runner results are now aligned in a better way.
-          Fix for bug #12220.
+	  Fix for bug #12220.
 
 Internal
 --------
-	* All lists were converted into singly linked lists.
+	* All lists were converted into singly linked lists. Lists were
+	  made generic wherever possible.
 
 	* Listeners.Output_Capture was combined into Listeners.Basic.
 
