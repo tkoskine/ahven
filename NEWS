@@ -40,7 +40,6 @@ Changes
 Bugs fixed
 ----------
 	* Text-based test runner results are now aligned in a better way.
-	  Fix for bug #12220.
 
 Internal
 --------
