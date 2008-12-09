@@ -14,9 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
-
 with Ahven.SList;
+with Ahven.VStrings;
 
 pragma Elaborate_All (Ahven.SList);
 
@@ -27,7 +26,7 @@ pragma Elaborate_All (Ahven.SList);
 -- Result_Collection holds multiple Result_Infos.
 --
 package Ahven.Results is
-   use Ada.Strings.Unbounded;
+   use Ahven.VStrings;
 
    type Result_Info is private;
 
@@ -36,49 +35,49 @@ package Ahven.Results is
    -- to initialize a new Result_Info object.
 
    procedure Set_Test_Name (Info : in out Result_Info;
-                            Name : Unbounded_String);
-   -- Set a test name for the result place.
+                            Name :        VString);
+   -- Set a test name for the result.
 
    procedure Set_Routine_Name (Info : in out Result_Info;
-                               Name : Unbounded_String);
-   -- Set a routine name for the result place.
+                               Name :        VString);
+   -- Set a routine name for the result.
 
    procedure Set_Message (Info : in out Result_Info;
-                          Message : Unbounded_String);
-   -- Set a message for the result place.
+                          Message : VString);
+   -- Set a message for the result.
 
    procedure Set_Test_Name (Info : in out Result_Info; Name : String);
-   -- A helper function, which calls Set_Test_Name (.. ; Unbounded_String)
+   -- A helper function, which calls Set_Test_Name (.. ; VString)
 
    procedure Set_Routine_Name (Info : in out Result_Info; Name : String);
-   -- A helper function, which calls Set_Routine_Name (.. ; Unbounded_String)
+   -- A helper function, which calls Set_Routine_Name (.. ; VString)
 
    procedure Set_Message (Info : in out Result_Info; Message : String);
-   -- A helper function, which calls Set_Message (.. ; Unbounded_String)
+   -- A helper function, which calls Set_Message (.. ; VString)
 
    procedure Set_Long_Message (Info : in out Result_Info;
-                               Message : Unbounded_String);
-   -- A helper function, which calls Set_Message (.. ; Unbounded_String)
+                               Message : VString);
+   -- Set a long message for the result
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String);
-   -- A helper function, which calls Set_Long_Message (.. ; Unbounded_String)
+   -- A helper function, which calls Set_Long_Message (.. ; VString)
 
    procedure Set_Execution_Time (Info : in out Result_Info;
                                  Elapsed_Time : Duration);
    -- Set the execution time of the result info (test).
 
    procedure Set_Output_File (Info : in out Result_Info;
-                              Filename : Unbounded_String);
+                              Filename : VString);
    -- Set the name of the test output file.
 
    procedure Set_Output_File (Info : in out Result_Info;
                               Filename : String);
    -- Set the name of the test output file.
 
-   function Get_Test_Name (Info : Result_Info) return Unbounded_String;
+   function Get_Test_Name (Info : Result_Info) return String;
    -- Return the test name of the result info.
 
-   function Get_Routine_Name (Info : Result_Info) return Unbounded_String;
+   function Get_Routine_Name (Info : Result_Info) return String;
    -- Return the routine name of the result info.
 
    function Get_Message (Info : Result_Info) return String;
@@ -90,7 +89,7 @@ package Ahven.Results is
    function Get_Execution_Time (Info : Result_Info) return Duration;
    -- Return the execution time of the result info.
 
-   function Get_Output_File (Info : Result_Info) return Unbounded_String;
+   function Get_Output_File (Info : Result_Info) return VString;
    -- Return the name of the output file.
    -- Empty string is returned in case there is no output file.
 
@@ -121,7 +120,7 @@ package Ahven.Results is
    -- Frees also all children added via Add_Child.
 
    procedure Set_Name (Collection : in out Result_Collection;
-                       Name : Unbounded_String);
+                       Name : VString);
    -- Set a test name for the collection.
 
    procedure Set_Parent (Collection: in out Result_Collection;
@@ -149,7 +148,7 @@ package Ahven.Results is
    -- Tests in child collections are included.
 
    function Get_Test_Name (Collection : Result_Collection)
-     return Unbounded_String;
+     return VString;
    -- Return the name of the collection's test.
 
    function Get_Parent (Collection : Result_Collection)
@@ -207,21 +206,21 @@ package Ahven.Results is
 
 private
    type Result_Info is record
-      Test_Name      : Unbounded_String := Null_Unbounded_String;
-      Output_File    : Unbounded_String := Null_Unbounded_String;
-      Routine_Name   : Unbounded_String := Null_Unbounded_String;
+      Test_Name      : VString;
+      Output_File    : VString;
+      Routine_Name   : VString;
       Execution_Time : Duration         := 0.0;
-      Message        : Unbounded_String := Null_Unbounded_String;
-      Long_Message   : Unbounded_String := Null_Unbounded_String;
+      Message        : VString;
+      Long_Message   : VString;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
-     (Test_Name      => Null_Unbounded_String,
-      Routine_Name   => Null_Unbounded_String,
-      Message        => Null_Unbounded_String,
-      Long_Message   => Null_Unbounded_String,
+     (Test_Name      => Empty_VString,
+      Routine_Name   => Empty_VString,
+      Message        => Empty_VString,
+      Long_Message   => Empty_VString,
       Execution_Time => 0.0,
-      Output_File    => Null_Unbounded_String);
+      Output_File    => Empty_VString);
 
    package Result_Info_List is
      new Ahven.SList (Element_Type => Result_Info);
@@ -239,7 +238,7 @@ private
    type Result_Collection_Iterator is new Result_List.Iterator;
 
    type Result_Collection is limited record
-      Test_Name : Unbounded_String         := Null_Unbounded_String;
+      Test_Name : VString := Empty_VString;
       Passes    : Result_Info_List.List;
       Failures  : Result_Info_List.List;
       Errors    : Result_Info_List.List;

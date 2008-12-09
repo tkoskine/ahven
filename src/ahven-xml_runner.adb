@@ -16,20 +16,20 @@
 
 with Ada.Text_IO;
 with Ada.Strings;
-with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 
 with Ahven.Runner;
 
 with Ahven.Compat;
+with Ahven.VStrings;
 
 use Ada.Text_IO;
-use Ada.Strings.Unbounded;
 use Ada.Strings.Fixed;
 
 package body Ahven.XML_Runner is
    use Ahven.Results;
    use Ahven.Framework;
+   use Ahven.VStrings;
 
    function Filter_String (Str : String) return String;
 
@@ -123,7 +123,7 @@ package body Ahven.XML_Runner is
       Start_Testcase_Tag
         (File           => File,
          Parent         => Parent_Test,
-         Name           => To_String (Get_Routine_Name (Info)),
+         Name           => Get_Routine_Name (Info),
          Execution_Time => Exec_Time);
 
       if Length (Get_Output_File (Info)) > 0 then
@@ -143,7 +143,7 @@ package body Ahven.XML_Runner is
       Start_Testcase_Tag
         (File           => File,
          Parent         => Parent_Test,
-         Name           => To_String (Get_Routine_Name (Info)),
+         Name           => Get_Routine_Name (Info),
          Execution_Time => Exec_Time);
 
       Put (File, "<failure ");
@@ -169,7 +169,7 @@ package body Ahven.XML_Runner is
       Start_Testcase_Tag
         (File           => File,
          Parent         => Parent_Test,
-         Name           => To_String (Get_Routine_Name (Info)),
+         Name           => Get_Routine_Name (Info),
          Execution_Time => Exec_Time);
 
       Put (File, "<error ");

@@ -13,12 +13,13 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
-with Ada.Strings.Unbounded;
+
 with Ahven;
 with Ahven.Results;
+with Ahven.VStrings;
 
-use Ada.Strings.Unbounded;
 use Ahven;
+use Ahven.VStrings;
 
 package body Results_Tests is
 
@@ -80,7 +81,7 @@ package body Results_Tests is
       Coll : Result_Collection;
       Info : Result_Info := Empty_Result_Info;
       Iter : Result_Info_Iterator;
-      Msg  : constant Unbounded_String := To_Unbounded_String ("hello");
+      Msg  : constant VString := +"hello";
       Count : Natural;
    begin
       Set_Message (Info, Msg);
@@ -92,7 +93,7 @@ package body Results_Tests is
       Count := 0;
       loop
          exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = Msg,
+         Assert (Get_Message (Data (Iter)) = To_String (Msg),
                  "Invalid message in the item");
          Iter := Next (Iter);
          Count := Count + 1;
@@ -103,7 +104,7 @@ package body Results_Tests is
       Count := 0;
       loop
          exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = Msg,
+         Assert (Get_Message (Data (Iter)) = To_String (Msg),
                  "Invalid message in the item");
          Iter := Next (Iter);
          Count := Count + 1;
@@ -114,7 +115,7 @@ package body Results_Tests is
       Count := 0;
       loop
          exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = Msg,
+         Assert (Get_Message (Data (Iter)) = To_String (Msg),
                  "Invalid message in the item");
          Iter := Next (Iter);
          Count := Count + 1;

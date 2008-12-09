@@ -15,20 +15,22 @@
 --
 
 with Ada.Text_IO;
-with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
 with Ahven.XML_Runner;
+with Ahven.VStrings;
 
 use Ada.Text_IO;
-use Ada.Strings.Unbounded;
 use Ada.Strings.Fixed;
+use Ada.Strings.Unbounded;
 
 package body Ahven.Text_Runner is
    use Ahven.Results;
    use Ahven.Framework;
+   use Ahven.VStrings;
 
    -- Local procedures
    procedure Pad (Level : Natural);
@@ -116,7 +118,7 @@ package body Ahven.Text_Runner is
 
       -- If we know the name of the routine, we print it,
       -- the result, and the execution time.
-      if Length (Get_Routine_Name (Info)) > 0 then
+      if Get_Routine_Name (Info)'Length > 0 then
          Move (Source => Result,
                Target => Result_Out,
                Drop => Right,

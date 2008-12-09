@@ -15,11 +15,9 @@
 --
 
 with Ada.Text_IO;
-with Ada.Strings.Unbounded;
 with Ahven.VStrings;
 
 package body Ahven.Listeners.Basic is
-   use Ada.Strings.Unbounded;
    use Ahven.VStrings;
 
    -- Because of Ada.Text_IO output capturing, the result
@@ -35,14 +33,10 @@ package body Ahven.Listeners.Basic is
    begin
       Listener.Last_Test_Result := Result;
       if Info.Phase = TEST_RUN then
-         Results.Set_Routine_Name (Listener.Last_Info,
-           To_Unbounded_String (To_String (Info.Routine_Name)));
-         Results.Set_Test_Name (Listener.Last_Info,
-           To_Unbounded_String (To_String (Info.Test_Name)));
-         Results.Set_Message (Listener.Last_Info,
-           To_Unbounded_String (To_String (Info.Message)));
-         Results.Set_Long_Message (Listener.Last_Info,
-           To_Unbounded_String (To_String (Info.Long_Message)));
+         Results.Set_Routine_Name (Listener.Last_Info, Info.Routine_Name);
+         Results.Set_Test_Name (Listener.Last_Info, Info.Test_Name);
+         Results.Set_Message (Listener.Last_Info, Info.Message);
+         Results.Set_Long_Message (Listener.Last_Info, Info.Long_Message);
       end if;
    end Set_Last_Test_Info;
 
@@ -71,7 +65,7 @@ package body Ahven.Listeners.Basic is
       -- Empty routine name means a test suite or test case
       if Info.Test_Kind = CONTAINER then
          R := new Result_Collection;
-         Set_Name (R.all, To_Unbounded_String (To_String (Info.Test_Name)));
+         Set_Name (R.all, Info.Test_Name);
          Set_Parent (R.all, Listener.Current_Result);
 
          if Listener.Current_Result = null then
@@ -167,9 +161,9 @@ package body Ahven.Listeners.Basic is
 
    procedure Remove_Files (Collection : in out Result_Collection) is
       procedure Remove_Loop (First_Item : Result_Info_Iterator);
-      procedure Remove (Name : Unbounded_String);
+      procedure Remove (Name : VString);
 
-      procedure Remove (Name : Unbounded_String) is
+      procedure Remove (Name : VString) is
       begin
          if Length (Name) > 0 then
             Remove_File (To_String (Name));

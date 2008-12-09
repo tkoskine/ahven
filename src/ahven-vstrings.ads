@@ -26,8 +26,13 @@ package Ahven.VStrings is
    function To_String (Source : VString) return String;
 
    function Length (Source : VString) return VString_Size;
+
+   Empty_VString : constant VString (Len => 0);
+
 private
    type VString (Len : VString_Size := VString_Size'Last) is record
-      Data : String (1 .. Len);
+      Data : String (1 .. Len) := (others => ' ');
    end record;
+
+   Empty_VString : constant VString := (Len => 0, Data => (others => ' '));
 end Ahven.VStrings;
