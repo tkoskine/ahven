@@ -24,6 +24,9 @@ package body Ahven.Framework is
    use Ahven.VStrings;
 
    -- A few local procedures, so we do not need to duplicate code.
+   procedure Free_Test is
+      new Ada.Unchecked_Deallocation (Object => Test'Class,
+                                      Name   => Test_Class_Access);
 
    generic
       with procedure Action is <>;
@@ -501,9 +504,6 @@ package body Ahven.Framework is
    end Test_Count;
 
    procedure Finalize  (T : in out Test_Suite) is
-      procedure Free is
-        new Ada.Unchecked_Deallocation (Object => Test'Class,
-                                        Name   => Test_Class_Access);
       use Test_List;
 
       Ptr  : Test_Class_Access := null;
@@ -512,7 +512,7 @@ package body Ahven.Framework is
       loop
          exit when not Is_Valid (Iter);
          Ptr := Data (Iter).Ptr;
-         Free (Ptr);
+         Free_Test (Ptr);
          Iter := Next (Iter);
       end loop;
       Remove_All (T.Test_Cases);
@@ -544,9 +544,6 @@ package body Ahven.Framework is
          procedure Free is
            new Ada.Unchecked_Deallocation (Object => Node,
                                            Name   => Node_Access);
-         procedure Free_Test is
-           new Ada.Unchecked_Deallocation (Object => Test'Class,
-                                           Name   => Test_Class_Access);
          My_Ptr : Node_Access := Ptr;
       begin
          Ptr.Next := null;
