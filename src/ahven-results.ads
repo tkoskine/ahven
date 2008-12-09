@@ -55,23 +55,23 @@ package Ahven.Results is
    procedure Set_Message (Info : in out Result_Info; Message : String);
    -- A helper function, which calls Set_Message (.. ; VString)
 
-   procedure Set_Long_Message (Info : in out Result_Info;
-                               Message : VString);
+   procedure Set_Long_Message (Info    : in out Result_Info;
+                               Message :        VString);
    -- Set a long message for the result
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String);
    -- A helper function, which calls Set_Long_Message (.. ; VString)
 
-   procedure Set_Execution_Time (Info : in out Result_Info;
-                                 Elapsed_Time : Duration);
+   procedure Set_Execution_Time (Info         : in out Result_Info;
+                                 Elapsed_Time :        Duration);
    -- Set the execution time of the result info (test).
 
-   procedure Set_Output_File (Info : in out Result_Info;
-                              Filename : VString);
+   procedure Set_Output_File (Info     : in out Result_Info;
+                              Filename :        VString);
    -- Set the name of the test output file.
 
-   procedure Set_Output_File (Info : in out Result_Info;
-                              Filename : String);
+   procedure Set_Output_File (Info     : in out Result_Info;
+                              Filename :        String);
    -- Set the name of the test output file.
 
    function Get_Test_Name (Info : Result_Info) return String;
@@ -100,19 +100,19 @@ package Ahven.Results is
    type Result_Collection_Access is access all Result_Collection;
 
    procedure Add_Child (Collection : in out Result_Collection;
-                        Child : Result_Collection_Access);
+                        Child      :        Result_Collection_Access);
    -- Add a child collection to the collection.
 
    procedure Add_Error (Collection : in out Result_Collection;
-                        Info : Result_Info);
+                        Info       :        Result_Info);
    -- Add a test error to the collection.
 
    procedure Add_Failure (Collection : in out Result_Collection;
-                          Info : Result_Info);
+                          Info       :        Result_Info);
    -- Add a test failure to the collection.
 
    procedure Add_Pass (Collection : in out Result_Collection;
-                       Info : Result_Info);
+                       Info       :        Result_Info);
    -- Add a passed test to the collection
 
    procedure Release (Collection : in out Result_Collection);
@@ -206,12 +206,12 @@ package Ahven.Results is
 
 private
    type Result_Info is record
-      Test_Name      : VString;
-      Output_File    : VString;
-      Routine_Name   : VString;
-      Execution_Time : Duration         := 0.0;
-      Message        : VString;
-      Long_Message   : VString;
+      Test_Name      : VString  := Empty_VString;
+      Output_File    : VString  := Empty_VString;
+      Routine_Name   : VString  := Empty_VString;
+      Execution_Time : Duration := 0.0;
+      Message        : VString  := Empty_VString;
+      Long_Message   : VString  := Empty_VString;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
@@ -228,7 +228,7 @@ private
    type Result_Collection_Wrapper is record
       Ptr : Result_Collection_Access;
    end record;
-   -- Work around for Janus/Ada 3.1.2beta generic bug.
+   -- Work around for Janus/Ada 3.1.1d/3.1.2beta generic bug.
 
    package Result_List is
     new Ahven.SList (Element_Type => Result_Collection_Wrapper);
