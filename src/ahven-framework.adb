@@ -152,7 +152,8 @@ package body Ahven.Framework is
                      Test_Name    => Info.Test_Name,
                      Test_Kind    => CONTAINER,
                      Routine_Name => Info.Routine_Name,
-                     Message      => +Ada.Exceptions.Exception_Message (E),
+                     Message      =>
+                       Truncate (Ada.Exceptions.Exception_Message (E)),
                      Long_Message => +""));
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
@@ -166,9 +167,10 @@ package body Ahven.Framework is
                         Test_Name    => Info.Test_Name,
                         Test_Kind    => CONTAINER,
                         Routine_Name => Info.Routine_Name,
-                        Message      => +Ada.Exceptions.Exception_Name (E),
+                        Message      =>
+                          Truncate (Ada.Exceptions.Exception_Name (E)),
                         Long_Message =>
-                          +Ada.Exceptions.Exception_Message (E)));
+                          Truncate (Ada.Exceptions.Exception_Message (E))));
          end if;
    end Run_Command;
 

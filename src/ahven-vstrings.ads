@@ -22,10 +22,18 @@ package Ahven.VStrings is
    type VString (Len : VString_Size := VString_Size'Last) is private;
 
    function "+"(Source : String) return VString;
+   -- Convert String into VString.
+   -- Raises Constraint_Error if the string is longer than VString_Max_Size.
+
+   function Truncate (Source : String) return VString;
+   -- Convert String into VString and truncate oversized strings
+   -- to VString_Max_Size.
 
    function To_String (Source : VString) return String;
+   -- Convert VString into String.
 
    function Length (Source : VString) return VString_Size;
+   -- Return the length of the VString.
 
    Empty_VString : constant VString (Len => 0);
 

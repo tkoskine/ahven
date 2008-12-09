@@ -20,14 +20,20 @@ package body Ahven.VStrings is
       if Source'Length in VString_Size'Range then
          return VString'(Len => Source'Length, Data => Source);
       else
-         -- Truncate too long strings.
-         -- XXX This silently hides errors,
-         --     but is probably ok for our purposes.
-         return VString'
-           (Len  => VString_Size'Last,
-            Data => Source (Source'First .. Source'First + VString_Size'Last));
+         raise Constraint_Error;
       end if;
    end "+";
+
+   function Truncate (Source : String) return VString is
+   begin
+      if Source'Length in VString_Size'Range then
+         return VString'(Len => Source'Length, Data => Source);
+      else
+         return VString'(Len  => VString_Size'Last,
+                         Data => Source (Source'First .. Source'First
+                                         + VString_Size'Last));
+      end if;
+   end Truncate;
 
    function To_String (Source : VString) return String is
    begin
