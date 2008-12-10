@@ -81,15 +81,18 @@ Project Info
 Homepage:
  http://home.gna.org/ahven/
 
-Wiki:
- http://www.bitbucket.org/tkoskine/ahven/wiki/
-
 License:
  ISC (modified BSD license).
  See file LICENSE for more information.
 
-Bug reports:
- http://www.bitbucket.org/tkoskine/ahven/issues/new/
+Bug reports (a gna.org account is required for new reports):
+ https://gna.org/bugs/?group=ahven
+
+Subversion repository:
+ http://svn.gna.org/svn/ahven/
+
+Experimental Mercurial mirror:
+ http://www.bitbucket.org/tkoskine/ahven/src/
 
 Author:
  Tero Koskinen <tero.koskinen@iki.fi>
