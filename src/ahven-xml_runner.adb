@@ -279,6 +279,7 @@ package body Ahven.XML_Runner is
       end loop;
    end Report_Results;
 
+   -- Print the log by placing the data inside CDATA block.
    procedure Print_Log_File (File : File_Type; Filename : String) is
       type CData_End_State is (NONE, FIRST_BRACKET, SECOND_BRACKET);
 
