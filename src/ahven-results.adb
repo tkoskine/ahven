@@ -23,19 +23,19 @@ package body Ahven.Results is
    -- Bunch of setters and getters.
    -- The implementation is straightforward.
    procedure Set_Test_Name (Info : in out Result_Info;
-                            Name : VString) is
+                            Name :        VString) is
    begin
       Info.Test_Name := Name;
    end Set_Test_Name;
 
    procedure Set_Routine_Name (Info : in out Result_Info;
-                               Name : VString) is
+                               Name :        VString) is
    begin
       Info.Routine_Name := Name;
    end Set_Routine_Name;
 
-   procedure Set_Message (Info : in out Result_Info;
-                          Message : VString) is
+   procedure Set_Message (Info    : in out Result_Info;
+                          Message :        VString) is
    begin
       Info.Message := Message;
    end Set_Message;
@@ -66,20 +66,20 @@ package body Ahven.Results is
       Set_Long_Message (Info, +Message);
    end Set_Long_Message;
 
-   procedure Set_Execution_Time (Info : in out Result_Info;
-                                 Elapsed_Time : Duration) is
+   procedure Set_Execution_Time (Info         : in out Result_Info;
+                                 Elapsed_Time :        Duration) is
    begin
       Info.Execution_Time := Elapsed_Time;
    end Set_Execution_Time;
 
-   procedure Set_Output_File (Info : in out Result_Info;
-                              Filename : VString) is
+   procedure Set_Output_File (Info     : in out Result_Info;
+                              Filename :        VString) is
    begin
       Info.Output_File := Filename;
    end Set_Output_File;
 
-   procedure Set_Output_File (Info : in out Result_Info;
-                              Filename : String) is
+   procedure Set_Output_File (Info     : in out Result_Info;
+                              Filename :        String) is
    begin
       Set_Output_File (Info, +Filename);
    end Set_Output_File;
@@ -173,7 +173,7 @@ package body Ahven.Results is
    end Set_Name;
 
    procedure Set_Parent (Collection : in out Result_Collection;
-                         Parent : Result_Collection_Access) is
+                         Parent     :        Result_Collection_Access) is
    begin
       Collection.Parent := Parent;
    end Set_Parent;
@@ -256,7 +256,7 @@ package body Ahven.Results is
    function Get_Execution_Time (Collection : Result_Collection)
      return Duration
    is
-      Iter : Result_Info_List.Iterator;
+      Iter       : Result_Info_List.Iterator;
       Total_Time : Duration := 0.0;
       Child_Iter : Result_List.Iterator;
    begin
@@ -354,19 +354,18 @@ package body Ahven.Results is
       return Result_List.Data (Result_List.Iterator (Iter)).Ptr;
    end Data;
 
-   function Child_Depth (Collection : in Result_Collection) return Natural
+   function Child_Depth (Collection : Result_Collection) return Natural
    is
-      function Child_Depth_Impl (Coll : in Result_Collection;
+      function Child_Depth_Impl (Coll  : Result_Collection;
                                  Level : Natural) return Natural;
 
-      function Child_Depth_Impl (Coll : in Result_Collection;
+      function Child_Depth_Impl (Coll  : Result_Collection;
                                  Level : Natural)
         return Natural
       is
          Max     : Natural := 0;
          Current : Natural := 0;
-         Iter    : Result_List.Iterator
-           := Result_List.First (Coll.Children);
+         Iter    : Result_List.Iterator := Result_List.First (Coll.Children);
       begin
          loop
             exit when not Is_Valid (Iter);

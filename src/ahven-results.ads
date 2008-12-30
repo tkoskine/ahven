@@ -120,11 +120,11 @@ package Ahven.Results is
    -- Frees also all children added via Add_Child.
 
    procedure Set_Name (Collection : in out Result_Collection;
-                       Name : VString);
+                       Name       :        VString);
    -- Set a test name for the collection.
 
-   procedure Set_Parent (Collection: in out Result_Collection;
-                         Parent : Result_Collection_Access);
+   procedure Set_Parent (Collection : in out Result_Collection;
+                         Parent     :        Result_Collection_Access);
    -- Set a parent collection to the collection.
 
    function Test_Count (Collection : Result_Collection) return Natural;
@@ -201,7 +201,7 @@ package Ahven.Results is
      return Result_Collection_Access;
    -- Get the data (Result_Collection_Access) behind the iterator.
 
-   function Child_Depth (Collection : in Result_Collection) return Natural;
+   function Child_Depth (Collection : Result_Collection) return Natural;
    -- Return the maximum depth of children. (a child of a child, etc.)
 
 private
