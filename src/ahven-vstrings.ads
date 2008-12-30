@@ -35,7 +35,7 @@ package Ahven.VStrings is
    function Length (Source : VString) return VString_Size;
    -- Return the length of the VString.
 
-   Empty_VString : constant VString (Len => 0);
+   Empty_VString : constant VString;
 
 private
    type VString (Len : VString_Size := VString_Size'Last) is record
