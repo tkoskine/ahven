@@ -19,59 +19,59 @@ with Ada.Finalization;
 generic
    type Element_Type is private;
 package Ahven.SList is
-      type List is new Ada.Finalization.Controlled with private;
-      type Iterator is private;
+   type List is new Ada.Finalization.Controlled with private;
+   type Iterator is private;
 
-      subtype Count_Type is Natural;
+   subtype Count_Type is Natural;
 
-      Invalid_Iterator : exception;
+   Invalid_Iterator : exception;
 
-      Empty_List : constant List;
+   Empty_List : constant List;
 
-      procedure Append (Target : in out List; Node_Data : Element_Type);
-      -- Append an element at the end of the list.
+   procedure Append (Target : in out List; Node_Data : Element_Type);
+   -- Append an element at the end of the list.
 
-      procedure Remove_All (Target : in out List);
-      -- Remove all elements from the list.
+   procedure Remove_All (Target : in out List);
+   -- Remove all elements from the list.
 
-      function First (Target : List) return Iterator;
-      -- Return an iterator to the first element of the list.
+   function First (Target : List) return Iterator;
+   -- Return an iterator to the first element of the list.
 
-      function Next (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the next element on the list.
+   function Next (Iter : Iterator) return Iterator;
+   -- Move the iterator to point to the next element on the list.
 
-      function Data (Iter : Iterator) return Element_Type;
-      -- Return element pointed by the iterator.
+   function Data (Iter : Iterator) return Element_Type;
+   -- Return element pointed by the iterator.
 
-      function Is_Valid (Iter : Iterator) return Boolean;
+   function Is_Valid (Iter : Iterator) return Boolean;
 
-      function Length (Target : List) return Count_Type;
+   function Length (Target : List) return Count_Type;
 
-   private
-      type Node;
-      type Node_Access is access Node;
-      type Iterator is new Node_Access;
+private
+   type Node;
+   type Node_Access is access Node;
+   type Iterator is new Node_Access;
 
-      procedure Remove (Ptr : Node_Access);
-      -- A procedure to release memory pointed by Ptr.
+   procedure Remove (Ptr : Node_Access);
+   -- A procedure to release memory pointed by Ptr.
 
-      type Node is record
-         Next : Node_Access := null;
-         Data : Element_Type;
-      end record;
+   type Node is record
+      Next : Node_Access := null;
+      Data : Element_Type;
+   end record;
 
-      type List is new Ada.Finalization.Controlled with record
-         First : Node_Access := null;
-         Last  : Node_Access := null;
-         Size  : Count_Type  := 0;
-      end record;
+   type List is new Ada.Finalization.Controlled with record
+      First : Node_Access := null;
+      Last  : Node_Access := null;
+      Size  : Count_Type  := 0;
+   end record;
 
-      procedure Initialize (Target : in out List);
-      procedure Finalize   (Target : in out List);
-      procedure Adjust     (Target : in out List);
+   procedure Initialize (Target : in out List);
+   procedure Finalize   (Target : in out List);
+   procedure Adjust     (Target : in out List);
 
-      Empty_List : constant List :=
-        (Ada.Finalization.Controlled with First => null,
-                                          Last  => null,
-                                          Size  => 0);
+   Empty_List : constant List :=
+     (Ada.Finalization.Controlled with First => null,
+                                       Last  => null,
+                                       Size  => 0);
 end Ahven.SList;
