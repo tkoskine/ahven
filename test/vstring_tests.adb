@@ -52,12 +52,12 @@ package body VString_Tests is
    procedure Test_VString_Create is
       use Ahven.VStrings;
 
-      Source : constant String (1 .. 4) := "test";
+      Source : constant String := "test";
    begin
       declare
          Target : constant VString := +Source;
       begin
-         Assert (Length (Target) = 4, "Length was invalid");
+         Assert (Length (Target) = Source'Last, "Length was invalid");
          Assert (To_String (Target) = Source, "Target /= Source");
       end;
    end Test_VString_Create;
