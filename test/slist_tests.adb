@@ -108,11 +108,13 @@ package body SList_Tests is
       Position    : Cursor;
    begin
       Position := First (My_List);
-      Assert (not Is_Valid (Position), "First (empty) returned valid iterator!");
+      Assert (not Is_Valid (Position),
+              "First (empty) returned valid cursor!");
 
       Append (My_List, Obj_1);
       Position := First (My_List);
-      Assert (Is_Valid (Position), "First (nto empty) returned invalid iterator!");
+      Assert (Is_Valid (Position),
+              "First (not empty) returned invalid cursor!");
    end Test_First;
 
    procedure Test_Next is
