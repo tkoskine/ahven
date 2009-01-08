@@ -58,27 +58,27 @@ package body Ahven.SList is
       Target.Size := 0;
    end Remove_All;
 
-   function First (Target : List) return Iterator is
+   function First (Target : List) return Cursor is
    begin
-      return Iterator (Target.First);
+      return Cursor (Target.First);
    end First;
 
-   function Next (Iter : Iterator) return Iterator is
+   function Next (Position : Cursor) return Cursor is
    begin
-      if Iter = null then
-         raise Invalid_Iterator;
+      if Position = null then
+         raise Invalid_Cursor;
       end if;
-      return Iterator (Iter.Next);
+      return Cursor (Position.Next);
    end Next;
 
-   function Data (Iter : Iterator) return Element_Type is
+   function Data (Position : Cursor) return Element_Type is
    begin
-      return Iter.Data;
+      return Position.Data;
    end Data;
 
-   function Is_Valid (Iter : Iterator) return Boolean is
+   function Is_Valid (Position : Cursor) return Boolean is
    begin
-      return Iter /= null;
+      return Position /= null;
    end Is_Valid;
 
    function Length (Target : List) return Count_Type is

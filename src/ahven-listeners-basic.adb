@@ -160,7 +160,7 @@ package body Ahven.Listeners.Basic is
    end Remove_File;
 
    procedure Remove_Files (Collection : in out Result_Collection) is
-      procedure Remove_Loop (First_Item : Result_Info_Iterator);
+      procedure Remove_Loop (First_Item : Result_Info_Cursor);
       procedure Remove (Name : VString);
 
       procedure Remove (Name : VString) is
@@ -170,8 +170,8 @@ package body Ahven.Listeners.Basic is
          end if;
       end Remove;
 
-      procedure Remove_Loop (First_Item : Result_Info_Iterator) is
-         Loop_Iter : Result_Info_Iterator := First_Item;
+      procedure Remove_Loop (First_Item : Result_Info_Cursor) is
+         Loop_Iter : Result_Info_Cursor := First_Item;
       begin
          loop
             exit when not Is_Valid (Loop_Iter);
@@ -180,7 +180,7 @@ package body Ahven.Listeners.Basic is
          end loop;
       end Remove_Loop;
 
-      Child_Iter : Result_Collection_Iterator;
+      Child_Iter : Result_Collection_Cursor;
    begin
       Remove_Loop (First_Pass (Collection));
       Remove_Loop (First_Failure (Collection));

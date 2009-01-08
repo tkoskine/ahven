@@ -51,18 +51,18 @@ package body SList_Tests is
    procedure Test_Append_Elementary is
       use Integer_List;
 
-      My_List : List;
-      Iter    : Iterator;
+      My_List  : List;
+      Position : Cursor;
    begin
       Append (My_List, 1);
       Assert (Length (My_List) = 1, "Length does not match (1st append)");
       Append (My_List, 2);
       Assert (Length (My_List) = 2, "Length does not match (2nd append)");
 
-      Iter := First (My_List);
-      Assert (Data (Iter) = 1, "Value of 1st item does not match");
-      Iter := Next (Iter);
-      Assert (Data (Iter) = 2, "Value of 2nd item does not match");
+      Position := First (My_List);
+      Assert (Data (Position) = 1, "Value of 1st item does not match");
+      Position := Next (Position);
+      Assert (Data (Position) = 2, "Value of 2nd item does not match");
    end Test_Append_Elementary;
 
    procedure Test_Append_Record is
@@ -71,18 +71,18 @@ package body SList_Tests is
       My_List : List;
       Obj_1   : constant Simple_Type := Simple_Type'(Value => 1);
       Obj_2   : constant Simple_Type := Simple_Type'(Value => 2);
-      Iter    : Iterator;
+      Position : Cursor;
    begin
       Append (My_List, Obj_1);
       Assert (Length (My_List) = 1, "Length does not match (1st append)");
       Append (My_List, Obj_2);
       Assert (Length (My_List) = 2, "Length does not match (2nd append)");
 
-      Iter := First (My_List);
-      Assert (Data (Iter).Value = Obj_1.Value,
+      Position := First (My_List);
+      Assert (Data (Position).Value = Obj_1.Value,
               "Value of 1st item does not match");
-      Iter := Next (Iter);
-      Assert (Data (Iter).Value = Obj_2.Value,
+      Position := Next (Position);
+      Assert (Data (Position).Value = Obj_2.Value,
               "Value of 2nd item does not match");
    end Test_Append_Record;
 
@@ -105,14 +105,14 @@ package body SList_Tests is
 
       My_List : List;
       Obj_1   : constant Simple_Type := Simple_Type'(Value => 1);
-      Iter    : Iterator;
+      Position    : Cursor;
    begin
-      Iter := First (My_List);
-      Assert (not Is_Valid (Iter), "First (empty) returned valid iterator!");
+      Position := First (My_List);
+      Assert (not Is_Valid (Position), "First (empty) returned valid iterator!");
 
       Append (My_List, Obj_1);
-      Iter := First (My_List);
-      Assert (Is_Valid (Iter), "First (nto empty) returned invalid iterator!");
+      Position := First (My_List);
+      Assert (Is_Valid (Position), "First (nto empty) returned invalid iterator!");
    end Test_First;
 
    procedure Test_Next is
@@ -122,16 +122,16 @@ package body SList_Tests is
 
       My_List : List;
       Counter : Count_Type := 0;
-      Iter    : Iterator;
+      Position    : Cursor;
    begin
       for A in Integer range 1 .. Max_Count loop
          Append (My_List, Simple_Type'(Value => A));
       end loop;
 
-      Iter := First (My_List);
+      Position := First (My_List);
       loop
-         exit when not Is_Valid (Iter);
-         Iter := Next (Iter);
+         exit when not Is_Valid (Position);
+         Position := Next (Position);
          Counter := Counter + 1;
       end loop;
       Assert (Counter = Max_Count, "Invalid counter value: " &
@@ -141,13 +141,13 @@ package body SList_Tests is
    procedure Test_Data is
       use Simple_List;
 
-      My_List : List;
-      Obj_1   : constant Simple_Type := Simple_Type'(Value => 1);
-      Iter    : Iterator;
+      My_List  : List;
+      Obj_1    : constant Simple_Type := Simple_Type'(Value => 1);
+      Position : Cursor;
    begin
       Append (My_List, Obj_1);
-      Iter := First (My_List);
-      Assert (Data (Iter) = Obj_1,
+      Position := First (My_List);
+      Assert (Data (Position) = Obj_1,
               "Item in the list does not match original item");
    end Test_Data;
 
@@ -177,8 +177,8 @@ package body SList_Tests is
       Obj_2   : constant Simple_Type := Simple_Type'(Value => 2);
       Obj_3   : constant Simple_Type := Simple_Type'(Value => 3);
 
-      Iter_1  : Iterator;
-      Iter_2  : Iterator;
+      Iter_1  : Cursor;
+      Iter_2  : Cursor;
    begin
       Append (My_List, Obj_1);
       Append (My_List, Obj_2);

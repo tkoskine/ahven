@@ -230,16 +230,16 @@ package body Ahven.Framework is
    is
       use Test_Command_List;
 
-      Iter : Iterator := First (T.Routines);
+      Position : Cursor := First (T.Routines);
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
          Run_Internal (T            => T,
                        Listener     => Listener,
-                       Command      => Data (Iter),
+                       Command      => Data (Position),
                        Test_Name    => To_String (Get_Name (T)),
-                       Routine_Name => To_String (Data (Iter).Name));
-         Iter := Next (Iter);
+                       Routine_Name => To_String (Data (Position).Name));
+         Position := Next (Position);
       end loop;
    end Run;
 
@@ -254,32 +254,32 @@ package body Ahven.Framework is
    is
       use Test_Command_List;
 
-      Iter : Iterator    := First (T.Routines);
+      Position : Cursor    := First (T.Routines);
    begin
       loop
-         exit when not Is_Valid (Iter);
-         if To_String (Data (Iter).Name) = Test_Name then
+         exit when not Is_Valid (Position);
+         if To_String (Data (Position).Name) = Test_Name then
             Run_Internal (T            => T,
                           Listener     => Listener,
-                          Command      => Data (Iter),
+                          Command      => Data (Position),
                           Test_Name    => To_String (Get_Name (T)),
-                          Routine_Name => To_String (Data (Iter).Name));
+                          Routine_Name => To_String (Data (Position).Name));
          end if;
 
-         Iter := Next (Iter);
+         Position := Next (Position);
       end loop;
    end Run;
 
    function Test_Count (T : Test_Case) return Test_Count_Type is
       use Test_Command_List;
 
-      Iter : Iterator := First (T.Routines);
-      Counter : Test_Count_Type := 0;
+      Position : Cursor := First (T.Routines);
+      Counter  : Test_Count_Type := 0;
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
          Counter := Counter + 1;
-         Iter := Next (Iter);
+         Position := Next (Position);
       end loop;
       return Counter;
    end Test_Count;
@@ -289,15 +289,15 @@ package body Ahven.Framework is
    is
       use Test_Command_List;
 
-      Iter : Iterator := First (T.Routines);
-      Counter : Test_Count_Type := 0;
+      Position : Cursor := First (T.Routines);
+      Counter  : Test_Count_Type := 0;
    begin
       loop
-         exit when not Is_Valid (Iter);
-         if To_String (Data (Iter).Name) = Test_Name then
+         exit when not Is_Valid (Position);
+         if To_String (Data (Position).Name) = Test_Name then
             Counter := Counter + 1;
          end if;
-         Iter := Next (Iter);
+         Position := Next (Position);
       end loop;
 
       return Counter;
@@ -373,12 +373,12 @@ package body Ahven.Framework is
       procedure Execute_Cases (Cases : Test_List.List) is
          use Test_List;
 
-         Iter : Iterator := First (Cases);
+         Position : Cursor := First (Cases);
       begin
          loop
-            exit when not Is_Valid (Iter);
-            Execute_Test (Data (Iter).Ptr.all);
-            Iter := Next (Iter);
+            exit when not Is_Valid (Position);
+            Execute_Test (Data (Position).Ptr.all);
+            Position := Next (Position);
          end loop;
       end Execute_Cases;
 
@@ -414,15 +414,15 @@ package body Ahven.Framework is
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
 
-      Iter : Iterator := First (T.Test_Cases);
+      Position : Cursor := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
          Run (T, Listener);
       else
          loop
-            exit when not Is_Valid (Iter);
-            Execute_Test (Test'Class (Data (Iter).Ptr.all));
-            Iter := Next (Iter);
+            exit when not Is_Valid (Position);
+            Execute_Test (Test'Class (Data (Position).Ptr.all));
+            Position := Next (Position);
          end loop;
          Execute_Static_Cases (T.Static_Test_Cases);
       end if;
@@ -434,25 +434,25 @@ package body Ahven.Framework is
       declare
          use Test_List;
 
-         Iter : Iterator := First (T.Test_Cases);
+         Position : Cursor := First (T.Test_Cases);
       begin
          loop
-            exit when not Is_Valid (Iter);
+            exit when not Is_Valid (Position);
             Counter := Counter +
-              Test_Count (Test'Class (Data (Iter).Ptr.all));
-            Iter := Next (Iter);
+              Test_Count (Test'Class (Data (Position).Ptr.all));
+            Position := Next (Position);
          end loop;
       end;
 
       declare
          use Indefinite_Test_List;
 
-         Iter : Iterator := First (T.Static_Test_Cases);
+         Position : Cursor := First (T.Static_Test_Cases);
       begin
          loop
-            exit when not Is_Valid (Iter);
-            Counter := Counter + Test_Count (Data (Iter));
-            Iter := Next (Iter);
+            exit when not Is_Valid (Position);
+            Counter := Counter + Test_Count (Data (Position));
+            Position := Next (Position);
          end loop;
       end;
 
@@ -480,23 +480,23 @@ package body Ahven.Framework is
 
       declare
          use Test_List;
-         Iter : Iterator := First (T.Test_Cases);
+         Position : Cursor := First (T.Test_Cases);
       begin
          loop
-            exit when not Is_Valid (Iter);
-            Handle_Test (Test'Class (Data (Iter).Ptr.all));
-            Iter := Next (Iter);
+            exit when not Is_Valid (Position);
+            Handle_Test (Test'Class (Data (Position).Ptr.all));
+            Position := Next (Position);
          end loop;
       end;
 
       declare
          use Indefinite_Test_List;
-         Iter : Iterator := First (T.Static_Test_Cases);
+         Position : Cursor := First (T.Static_Test_Cases);
       begin
          loop
-            exit when not Is_Valid (Iter);
-            Handle_Test (Data (Iter));
-            Iter := Next (Iter);
+            exit when not Is_Valid (Position);
+            Handle_Test (Data (Position));
+            Position := Next (Position);
          end loop;
       end;
 
@@ -506,14 +506,14 @@ package body Ahven.Framework is
    procedure Finalize  (T : in out Test_Suite) is
       use Test_List;
 
-      Ptr  : Test_Class_Access := null;
-      Iter : Iterator := First (T.Test_Cases);
+      Ptr      : Test_Class_Access := null;
+      Position : Cursor := First (T.Test_Cases);
    begin
       loop
-         exit when not Is_Valid (Iter);
-         Ptr := Data (Iter).Ptr;
+         exit when not Is_Valid (Position);
+         Ptr := Data (Position).Ptr;
          Free_Test (Ptr);
-         Iter := Next (Iter);
+         Position := Next (Position);
       end loop;
       Remove_All (T.Test_Cases);
    end Finalize;
@@ -582,27 +582,27 @@ package body Ahven.Framework is
          Target.Last := null;
       end Remove_All;
 
-      function First (Target : List) return Iterator is
+      function First (Target : List) return Cursor is
       begin
-         return Iterator (Target.First);
+         return Cursor (Target.First);
       end First;
 
-      function Next (Iter : Iterator) return Iterator is
+      function Next (Position : Cursor) return Cursor is
       begin
-         if Iter = null then
-            raise Invalid_Iterator;
+         if Position = null then
+            raise Invalid_Cursor;
          end if;
-         return Iterator (Iter.Next);
+         return Cursor (Position.Next);
       end Next;
 
-      function Data (Iter : Iterator) return Test'Class is
+      function Data (Position : Cursor) return Test'Class is
       begin
-         return Iter.Data.all;
+         return Position.Data.all;
       end Data;
 
-      function Is_Valid (Iter : Iterator) return Boolean is
+      function Is_Valid (Position : Cursor) return Boolean is
       begin
-         return Iter /= null;
+         return Position /= null;
       end Is_Valid;
 
       procedure For_Each (Target : List) is

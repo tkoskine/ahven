@@ -144,8 +144,8 @@ package body Ahven.Text_Runner is
 
    procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural) is
-      Iter       : Result_Info_Iterator;
-      Child_Iter : Result_Collection_Iterator;
+      Iter       : Result_Info_Cursor;
+      Child_Iter : Result_Collection_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
@@ -175,8 +175,8 @@ package body Ahven.Text_Runner is
 
    procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural) is
-      Iter       : Result_Info_Iterator;
-      Child_Iter : Result_Collection_Iterator;
+      Iter       : Result_Info_Cursor;
+      Child_Iter : Result_Collection_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
@@ -207,8 +207,8 @@ package body Ahven.Text_Runner is
 
    procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
-      Iter       : Result_Info_Iterator;
-      Child_Iter : Result_Collection_Iterator;
+      Iter       : Result_Info_Cursor;
+      Child_Iter : Result_Collection_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);

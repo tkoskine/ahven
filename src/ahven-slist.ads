@@ -20,11 +20,11 @@ generic
    type Element_Type is private;
 package Ahven.SList is
    type List is new Ada.Finalization.Controlled with private;
-   type Iterator is private;
+   type Cursor is private;
 
    subtype Count_Type is Natural;
 
-   Invalid_Iterator : exception;
+   Invalid_Cursor : exception;
 
    Empty_List : constant List;
 
@@ -34,23 +34,23 @@ package Ahven.SList is
    procedure Remove_All (Target : in out List);
    -- Remove all elements from the list.
 
-   function First (Target : List) return Iterator;
-   -- Return an iterator to the first element of the list.
+   function First (Target : List) return Cursor;
+   -- Return a cursor to the first element of the list.
 
-   function Next (Iter : Iterator) return Iterator;
-   -- Move the iterator to point to the next element on the list.
+   function Next (Position : Cursor) return Cursor;
+   -- Move the cursor to point to the next element on the list.
 
-   function Data (Iter : Iterator) return Element_Type;
-   -- Return element pointed by the iterator.
+   function Data (Position : Cursor) return Element_Type;
+   -- Return element pointed by the cursor.
 
-   function Is_Valid (Iter : Iterator) return Boolean;
+   function Is_Valid (Position : Cursor) return Boolean;
 
    function Length (Target : List) return Count_Type;
 
 private
    type Node;
    type Node_Access is access Node;
-   type Iterator is new Node_Access;
+   type Cursor is new Node_Access;
 
    procedure Remove (Ptr : Node_Access);
    -- A procedure to release memory pointed by Ptr.

@@ -269,8 +269,8 @@ private
 
    package Indefinite_Test_List is
       type List is new Ada.Finalization.Controlled with private;
-      type Iterator is private;
-      Invalid_Iterator : exception;
+      type Cursor is private;
+      Invalid_Cursor : exception;
 
       Empty_List : constant List;
 
@@ -280,17 +280,17 @@ private
       procedure Remove_All (Target : in out List);
       -- Remove all elements from the list.
 
-      function First (Target : List) return Iterator;
-      -- Return an iterator to the first element of the list.
+      function First (Target : List) return Cursor;
+      -- Return a cursor to the first element of the list.
 
-      function Next (Iter : Iterator) return Iterator;
-      -- Move the iterator to point to the next element on the list.
+      function Next (Position : Cursor) return Cursor;
+      -- Move the cursor to point to the next element on the list.
 
-      function Data (Iter : Iterator) return Test'Class;
-      -- Return element pointed by the iterator.
+      function Data (Position : Cursor) return Test'Class;
+      -- Return element pointed by the cursor.
 
-      function Is_Valid (Iter : Iterator) return Boolean;
-      -- Tell if the iterator is still valid.
+      function Is_Valid (Position : Cursor) return Boolean;
+      -- Tell if the cursor is still valid.
 
       generic
          with procedure Action (T : in out Test'Class) is <>;
@@ -301,7 +301,7 @@ private
    private
       type Node;
       type Node_Access is access Node;
-      type Iterator is new Node_Access;
+      type Cursor is new Node_Access;
 
       procedure Remove (Ptr : Node_Access);
       -- A procedure to release memory pointed by Ptr.

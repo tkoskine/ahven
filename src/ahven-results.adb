@@ -145,17 +145,17 @@ package body Ahven.Results is
         new Ada.Unchecked_Deallocation (Object => Result_Collection,
                                         Name   => Result_Collection_Access);
 
-      Iter : Result_List.Iterator := First (Collection.Children);
+      Position: Result_List.Cursor := First (Collection.Children);
       Ptr  : Result_Collection_Access := null;
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
 
-         Ptr := Data (Iter).Ptr;
+         Ptr := Data (Position).Ptr;
          Release (Ptr.all);
          Free (Ptr);
 
-         Iter := Next (Iter);
+         Position:= Next (Position);
       end loop;
       Remove_All (Collection.Children);
 
@@ -182,13 +182,13 @@ package body Ahven.Results is
       Count : Natural := Result_Info_List.Length (Collection.Errors) +
                          Result_Info_List.Length (Collection.Failures) +
                          Result_Info_List.Length (Collection.Passes);
-      Iter  : Result_List.Iterator := First (Collection.Children);
+      Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
 
-         Count := Count + Test_Count (Data (Iter).Ptr.all);
-         Iter := Next (Iter);
+         Count := Count + Test_Count (Data (Position).Ptr.all);
+         Position:= Next (Position);
       end loop;
       return Count;
    end Test_Count;
@@ -204,39 +204,39 @@ package body Ahven.Results is
 
    function Pass_Count (Collection : Result_Collection) return Natural is
       Count : Natural              := Length (Collection.Passes);
-      Iter  : Result_List.Iterator := First (Collection.Children);
+      Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
 
-         Count := Count + Pass_Count (Data (Iter).Ptr.all);
-         Iter := Next (Iter);
+         Count := Count + Pass_Count (Data (Position).Ptr.all);
+         Position:= Next (Position);
       end loop;
       return Count;
    end Pass_Count;
 
    function Error_Count (Collection : Result_Collection) return Natural is
       Count : Natural              := Length (Collection.Errors);
-      Iter  : Result_List.Iterator := First (Collection.Children);
+      Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
 
-         Count := Count + Error_Count (Data (Iter).Ptr.all);
-         Iter := Next (Iter);
+         Count := Count + Error_Count (Data (Position).Ptr.all);
+         Position:= Next (Position);
       end loop;
       return Count;
    end Error_Count;
 
    function Failure_Count (Collection : Result_Collection) return Natural is
       Count : Natural              := Length (Collection.Failures);
-      Iter  : Result_List.Iterator := First (Collection.Children);
+      Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
-         exit when not Is_Valid (Iter);
+         exit when not Is_Valid (Position);
 
-         Count := Count + Failure_Count (Data (Iter).Ptr.all);
-         Iter := Next (Iter);
+         Count := Count + Failure_Count (Data (Position).Ptr.all);
+         Position:= Next (Position);
       end loop;
       return Count;
    end Failure_Count;
@@ -256,102 +256,102 @@ package body Ahven.Results is
    function Get_Execution_Time (Collection : Result_Collection)
      return Duration
    is
-      Iter       : Result_Info_List.Iterator;
+      Position      : Result_Info_List.Cursor;
       Total_Time : Duration := 0.0;
-      Child_Iter : Result_List.Iterator;
+      Child_Position: Result_List.Cursor;
    begin
-      Iter := First (Collection.Passes);
+      Position:= First (Collection.Passes);
       Pass_Loop:
       loop
-         exit Pass_Loop when not Is_Valid (Iter);
-         Total_Time := Total_Time + Get_Execution_Time (Data (Iter));
-         Iter := Next (Iter);
+         exit Pass_Loop when not Is_Valid (Position);
+         Total_Time := Total_Time + Get_Execution_Time (Data (Position));
+         Position:= Next (Position);
       end loop Pass_Loop;
 
-      Iter := First (Collection.Failures);
+      Position:= First (Collection.Failures);
       Failure_Loop:
       loop
-         exit Failure_Loop when not Is_Valid (Iter);
-         Total_Time := Total_Time + Get_Execution_Time (Data (Iter));
-         Iter := Next (Iter);
+         exit Failure_Loop when not Is_Valid (Position);
+         Total_Time := Total_Time + Get_Execution_Time (Data (Position));
+         Position:= Next (Position);
       end loop Failure_Loop;
 
-      Iter := First (Collection.Errors);
+      Position:= First (Collection.Errors);
       Error_Loop:
       loop
-         exit Error_Loop when not Is_Valid (Iter);
-         Total_Time := Total_Time + Get_Execution_Time (Data (Iter));
-         Iter := Next (Iter);
+         exit Error_Loop when not Is_Valid (Position);
+         Total_Time := Total_Time + Get_Execution_Time (Data (Position));
+         Position:= Next (Position);
       end loop Error_Loop;
 
       Child_Loop:
       loop
-         exit Child_Loop when not Result_List.Is_Valid (Child_Iter);
+         exit Child_Loop when not Result_List.Is_Valid (Child_Position);
          Total_Time := Total_Time +
                        Get_Execution_Time
-                         (Result_List.Data (Child_Iter).Ptr.all);
-         Child_Iter := Result_List.Next (Child_Iter);
+                         (Result_List.Data (Child_Position).Ptr.all);
+         Child_Position:= Result_List.Next (Child_Position);
       end loop Child_Loop;
 
       return Total_Time;
    end Get_Execution_Time;
 
    function First_Pass (Collection : Result_Collection)
-     return Result_Info_Iterator is
+     return Result_Info_Cursor is
    begin
       return First (Collection.Passes);
    end First_Pass;
 
    function First_Failure (Collection : Result_Collection)
-     return Result_Info_Iterator is
+     return Result_Info_Cursor is
    begin
       return First (Collection.Failures);
    end First_Failure;
 
    function First_Error (Collection : Result_Collection)
-     return Result_Info_Iterator is
+     return Result_Info_Cursor is
    begin
       return First (Collection.Errors);
    end First_Error;
 
-   function Next (Iter : Result_Info_Iterator) return Result_Info_Iterator is
+   function Next (Position: Result_Info_Cursor) return Result_Info_Cursor is
    begin
-      return Result_Info_Iterator
-        (Result_Info_List.Next (Result_Info_List.Iterator (Iter)));
+      return Result_Info_Cursor
+        (Result_Info_List.Next (Result_Info_List.Cursor (Position)));
    end Next;
 
-   function Data (Iter : Result_Info_Iterator) return Result_Info is
+   function Data (Position: Result_Info_Cursor) return Result_Info is
    begin
-      return Result_Info_List.Data (Result_Info_List.Iterator (Iter));
+      return Result_Info_List.Data (Result_Info_List.Cursor (Position));
    end Data;
 
-   function Is_Valid (Iter : Result_Info_Iterator) return Boolean is
+   function Is_Valid (Position: Result_Info_Cursor) return Boolean is
    begin
-      return Result_Info_List.Is_Valid (Result_Info_List.Iterator (Iter));
+      return Result_Info_List.Is_Valid (Result_Info_List.Cursor (Position));
    end Is_Valid;
 
    function First_Child (Collection : in Result_Collection)
-     return Result_Collection_Iterator is
+     return Result_Collection_Cursor is
    begin
       return First (Collection.Children);
    end First_Child;
 
-   function Next (Iter : Result_Collection_Iterator)
-     return Result_Collection_Iterator is
+   function Next (Position: Result_Collection_Cursor)
+     return Result_Collection_Cursor is
    begin
-      return Result_Collection_Iterator
-        (Result_List.Next (Result_List.Iterator (Iter)));
+      return Result_Collection_Cursor
+        (Result_List.Next (Result_List.Cursor (Position)));
    end Next;
 
-   function Is_Valid (Iter : Result_Collection_Iterator) return Boolean is
+   function Is_Valid (Position: Result_Collection_Cursor) return Boolean is
    begin
-      return Result_List.Is_Valid (Result_List.Iterator (Iter));
+      return Result_List.Is_Valid (Result_List.Cursor (Position));
    end Is_Valid;
 
-   function Data (Iter : Result_Collection_Iterator)
+   function Data (Position: Result_Collection_Cursor)
      return Result_Collection_Access is
    begin
-      return Result_List.Data (Result_List.Iterator (Iter)).Ptr;
+      return Result_List.Data (Result_List.Cursor (Position)).Ptr;
    end Data;
 
    function Child_Depth (Collection : Result_Collection) return Natural
@@ -365,15 +365,15 @@ package body Ahven.Results is
       is
          Max     : Natural := 0;
          Current : Natural := 0;
-         Iter    : Result_List.Iterator := Result_List.First (Coll.Children);
+         Position   : Result_List.Cursor := Result_List.First (Coll.Children);
       begin
          loop
-            exit when not Is_Valid (Iter);
-            Current := Child_Depth_Impl (Data (Iter).Ptr.all, Level + 1);
+            exit when not Is_Valid (Position);
+            Current := Child_Depth_Impl (Data (Position).Ptr.all, Level + 1);
             if Max < Current then
                Max := Current;
             end if;
-            Iter := Result_List.Next (Iter);
+            Position:= Result_List.Next (Position);
          end loop;
          return Level + Max;
       end Child_Depth_Impl;

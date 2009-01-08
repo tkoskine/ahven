@@ -159,47 +159,47 @@ package Ahven.Results is
      return Duration;
    -- Return the execution time of the whole collection.
 
-   type Result_Info_Iterator is private;
-   -- An iterator type for Pass, Failure and Error results.
+   type Result_Info_Cursor is private;
+   -- A cursor type for Pass, Failure and Error results.
 
    function First_Pass (Collection : Result_Collection)
-     return Result_Info_Iterator;
+     return Result_Info_Cursor;
    -- Get the first pass from the collection.
 
    function First_Failure (Collection : Result_Collection)
-     return Result_Info_Iterator;
+     return Result_Info_Cursor;
    -- Get the first failure from the collection.
 
    function First_Error (Collection : Result_Collection)
-     return Result_Info_Iterator;
+     return Result_Info_Cursor;
    -- Get the first error from the collection.
 
-   function Next (Iter : Result_Info_Iterator) return Result_Info_Iterator;
+   function Next (Position: Result_Info_Cursor) return Result_Info_Cursor;
    -- Get the next pass/failure/error.
 
-   function Data (Iter : Result_Info_Iterator) return Result_Info;
-   -- Get the data behind the iterator.
+   function Data (Position: Result_Info_Cursor) return Result_Info;
+   -- Get the data behind the cursor.
 
-   function Is_Valid (Iter : Result_Info_Iterator) return Boolean;
-   -- Is the iterator still valid?
+   function Is_Valid (Position: Result_Info_Cursor) return Boolean;
+   -- Is the cursor still valid?
 
-   type Result_Collection_Iterator is private;
-   -- Iterator for iterating over a set of Result_Collection access objects.
+   type Result_Collection_Cursor is private;
+   -- Cursor for iterating over a set of Result_Collection access objects.
 
    function First_Child (Collection : in Result_Collection)
-     return Result_Collection_Iterator;
+     return Result_Collection_Cursor;
    -- Get the first child of the collection.
 
-   function Next (Iter : Result_Collection_Iterator)
-     return Result_Collection_Iterator;
+   function Next (Position: Result_Collection_Cursor)
+     return Result_Collection_Cursor;
    -- Get the next child.
 
-   function Is_Valid (Iter : Result_Collection_Iterator) return Boolean;
-   -- Is the iterator still valid?
+   function Is_Valid (Position: Result_Collection_Cursor) return Boolean;
+   -- Is the cursor still valid?
 
-   function Data (Iter : Result_Collection_Iterator)
+   function Data (Position: Result_Collection_Cursor)
      return Result_Collection_Access;
-   -- Get the data (Result_Collection_Access) behind the iterator.
+   -- Get the data (Result_Collection_Access) behind the cursor.
 
    function Child_Depth (Collection : Result_Collection) return Natural;
    -- Return the maximum depth of children. (a child of a child, etc.)
@@ -233,9 +233,9 @@ private
    package Result_List is
     new Ahven.SList (Element_Type => Result_Collection_Wrapper);
 
-   type Result_Info_Iterator is new Result_Info_List.Iterator;
+   type Result_Info_Cursor is new Result_Info_List.Cursor;
 
-   type Result_Collection_Iterator is new Result_List.Iterator;
+   type Result_Collection_Cursor is new Result_List.Cursor;
 
    type Result_Collection is limited record
       Test_Name : VString := Empty_VString;

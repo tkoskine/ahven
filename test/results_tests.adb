@@ -80,7 +80,7 @@ package body Results_Tests is
 
       Coll : Result_Collection;
       Info : Result_Info := Empty_Result_Info;
-      Iter : Result_Info_Iterator;
+      Iter : Result_Info_Cursor;
       Msg  : constant VString := +"hello";
       Count : Natural;
    begin
