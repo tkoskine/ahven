@@ -20,11 +20,11 @@ OS_VERSION?=unix
 
 SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-listeners-basic.adb src/ahven-listeners-basic.ads \
-	src/ahven-listeners.ads src/ahven-results.adb \
-	src/ahven-results.ads src/ahven-runner.adb \
-	src/ahven-runner.ads src/ahven-text_runner.adb \
-	src/ahven-text_runner.ads src/ahven.adb \
-	src/ahven.ads \
+	src/ahven-listeners.ads src/ahven-listeners.adb \
+	src/ahven-results.adb src/ahven-results.ads \
+	src/ahven-runner.adb src/ahven-runner.ads \
+	src/ahven-text_runner.adb src/ahven-text_runner.ads \
+	src/ahven.adb src/ahven.ads \
 	src/ahven-temporary_output.adb \
 	src/ahven-temporary_output.ads \
 	src/ahven-parameters.adb src/ahven-parameters.ads \
