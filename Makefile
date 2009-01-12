@@ -32,7 +32,8 @@ SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-tap_runner.adb src/ahven-tap_runner.ads \
 	src/ahven-tap_parameters.adb src/ahven-tap_parameters.ads \
 	src/ahven-vstrings.adb src/ahven-vstrings.ads \
-	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads
+	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads \
+	src/ahven-slist.adb src/ahven-slist.ads
 
 ALI_FILES=lib/ahven.ali \
 	lib/ahven-compat.ali \
@@ -41,6 +42,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-listeners.ali \
 	lib/ahven-results.ali \
 	lib/ahven-runner.ali \
+	lib/ahven-slist.ali \
 	lib/ahven-tap_parameters.ali \
 	lib/ahven-tap_runner.ali \
 	lib/ahven-parameters.ali \
