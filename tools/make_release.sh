@@ -40,7 +40,14 @@ VERSION=$2
 cd /tmp || failure "cd /tmp failed"
 svn export $SVNROOT/$PLACE ahven-$VERSION || failure "checkout failed"
 tar zcf ahven-$VERSION.tar.gz ahven-$VERSION || failure "tar zcf failed"
+zip -r ahven-$VERSION.zip ahven-$VERSION || failure "zip -r failed"
 
 echo "Release tarball ready at /tmp/ahven-$VERSION.tar.gz"
+echo "Release zip ready at /tmp/ahven-$VERSION.zip"
 echo "Please remove /tmp/ahven-$VERSION directory."
+
+echo
+echo "Sign the tarball and the zip with commands"
+echo "gpg --detach /tmp/ahven-$VERSION.tar.gz"
+echo "gpg --detach /tmp/ahven-$VERSION.zip"
 
