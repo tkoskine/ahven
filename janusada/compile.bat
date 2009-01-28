@@ -1,4 +1,6 @@
-cd src
+cd src\windows
+call ctst.bat
+cd ..
 call ctst.bat
 cd ..\test
 call ctst.bat

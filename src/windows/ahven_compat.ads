@@ -14,10 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
--- UNIX version of OS compatibility package
-package body Ahven.Compat is
-   function Directory_Separator return String is
-   begin
-      return "/";
-   end Directory_Separator;
-end Ahven.Compat;
+-- Operating system compatibility package
+package Ahven_Compat is
+   function Directory_Separator return String;
+   -- Return the used directory separator.
+end Ahven_Compat;

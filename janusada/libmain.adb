@@ -17,7 +17,6 @@
 with Ahven;
 with Ahven.Framework;
 with Ahven.Results;
-with Ahven.Compat;
 with Ahven.Text_Runner;
 with Ahven.Listeners;
 with Ahven.Listeners.Basic;

@@ -15,7 +15,7 @@
 --
 
 -- Operating system compatibility package
-package Ahven.Compat is
+package Ahven_Compat is
    function Directory_Separator return String;
    -- Return the used directory separator.
-end Ahven.Compat;
+end Ahven_Compat;

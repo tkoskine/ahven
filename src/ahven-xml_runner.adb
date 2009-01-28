@@ -20,7 +20,7 @@ with Ada.Strings.Fixed;
 
 with Ahven.Runner;
 
-with Ahven.Compat;
+with Ahven_Compat;
 with Ahven.VStrings;
 
 use Ada.Text_IO;
@@ -108,7 +108,7 @@ package body Ahven.XML_Runner is
       end Filename;
    begin
       if Dir'Length > 0 then
-         return Dir & Ahven.Compat.Directory_Separator & Filename (Name);
+         return Dir & Ahven_Compat.Directory_Separator & Filename (Name);
       else
          return Filename (Name);
       end if;
