@@ -1,25 +1,22 @@
 cd src
 set januspath=C:\Janus312\rts\console
-del /q ..\objects\*.*
-del /q ..\objects2\*.*
-mkdir ..\objects
-mkdir ..\objects2
+del /q ..\lib_obj\*.*
+del /q ..\com_obj\*.*
+mkdir ..\lib_obj
+mkdir ..\com_obj
 copy /y ..\janusada\libmain.adb ..\src
 cd windows
-jmanager Add_Project (..\..\Objects2\,AhvenCompat)
-jmanager Add_Link (..\..\Objects2\,AhvenCompat,%januspath%, JNT_RTS_CONSOLE)
+jmanager Add_Project (..\..\com_obj\,AhvenCompat)
+jmanager Add_Link (..\..\com_obj\,AhvenCompat,%januspath%, JNT_RTS_CONSOLE)
 cd ..
-jmanager Add_Project (..\Objects\,AhvenLib)
-jmanager Add_Link (..\Objects\,AhvenLib,%januspath%, JNT_RTS_CONSOLE)
-jmanager Add_Link (..\Objects\,AhvenLib,..\Objects2\, AhvenCompat)
+jmanager Add_Project (..\lib_obj\,AhvenLib)
+jmanager Add_Link (..\lib_obj\,AhvenLib,%januspath%, JNT_RTS_CONSOLE)
+jmanager Add_Link (..\lib_obj\,AhvenLib,..\com_obj\, AhvenCompat)
 
-rem corder libmain /pAhvenLib/l'ads'/n'adb'/t/w/k255/js'jbind'/jb'/t/l'/b'ctst.bat'/r..\objects
 cd ..\test
-del /q ..\test_objects\*.*
-mkdir ..\test_objects
-jmanager Add_Project (..\Test_Objects\,AhvenTst)
-jmanager Add_Link (..\Test_Objects\,AhvenTst,..\Objects, AhvenLib)
-
-rem corder tap_test /pAhvenTst/l'ads'/n'adb'/js'jbind'/jb'/t/l'/t/z/w/k255/b'ctst.bat'/r..\test_objects
+del /q ..\test_obj\*.*
+mkdir ..\test_obj
+jmanager Add_Project (..\test_obj\,AhvenTst)
+jmanager Add_Link (..\test_obj\,AhvenTst,..\lib_obj, AhvenLib)
 
 cd ..
