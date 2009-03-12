@@ -1,4 +1,3 @@
-ahven-compat.ads
 ahven-framework.ads
 ahven-listeners-basic.ads
 ahven-listeners.ads
@@ -13,3 +12,4 @@ ahven-text_runner.ads
 ahven-vstrings.ads
 ahven-xml_runner.ads
 ahven.ads
+ahven_compat.ads

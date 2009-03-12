@@ -32,11 +32,11 @@ SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-tap_runner.adb src/ahven-tap_runner.ads \
 	src/ahven-tap_parameters.adb src/ahven-tap_parameters.ads \
 	src/ahven-vstrings.adb src/ahven-vstrings.ads \
-	src/${OS_VERSION}/ahven-compat.adb src/ahven-compat.ads \
+	src/${OS_VERSION}/ahven_compat.adb src/${OS_VERSION}/ahven_compat.ads \
 	src/ahven-slist.adb src/ahven-slist.ads
 
 ALI_FILES=lib/ahven.ali \
-	lib/ahven-compat.ali \
+	lib/ahven_compat.ali \
 	lib/ahven-framework.ali \
 	lib/ahven-listeners-basic.ali \
 	lib/ahven-listeners.ali \
@@ -115,3 +115,5 @@ control:
 docs:
 	adabrowse -c adabrowse.conf -i -I src/ -f@ahven.specs -o doc/api/
 
+regen_specs:
+	find src/ -name "*.ads" -exec basename {} \; |sort|uniq > ahven.specs
