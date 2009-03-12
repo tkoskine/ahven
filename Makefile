@@ -109,7 +109,7 @@ check_tap: build_tests
 
 control:
 	rm -f objects/*.adt objects/*.ali
-	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs]
+	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs] ../src/unix/*.ad[bs]
 	rm -f objects/*.adt objects/*.ali
 
 docs: ahven.specs
