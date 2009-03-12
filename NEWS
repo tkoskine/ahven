@@ -1,10 +1,18 @@
-????-??-?? Ahven 1.5
+2009-02-28 Ahven 1.6
+====================
+
+Bugs fixed
+----------
+	* Installation scripts for GNAT were fixed.
+	  Bug report and patch from Reto Buerki.
+
+2009-02-23 Ahven 1.5
 ====================
 
 Changes
 -------
 	* Ahven is now hosted at sourceforge.net. New URLs are:
-	  Project page: http://sourceforge.net/projects/ahve
+	  Project page: http://sourceforge.net/projects/ahven
 	  Home page:    http://ahven.sourceforge.net/
 
 	* Janus/Ada build system was rewritten. See README for details.
