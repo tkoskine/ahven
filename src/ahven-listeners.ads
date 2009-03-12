@@ -66,5 +66,6 @@ package Ahven.Listeners is
                        Info     :        Context) is abstract;
    -- Called after the test ends. Add_* procedures are called before this.
 private
+   -- This package body is only for Janus/Ada 3.1.1d compatibility.
    procedure Dummy;
 end Ahven.Listeners;
