@@ -3,7 +3,7 @@
 
 Changes
 -------
-TBD
+	* Janus/Ada build system was rewritten. See README for details.
 
 2009-01-22 Ahven 1.4
 ====================
