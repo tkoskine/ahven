@@ -62,6 +62,7 @@ objects:
 test_objects:
 	mkdir -p test_objects
 
+
 lib:
 	mkdir -p lib
 
@@ -112,6 +113,7 @@ control:
 	rm -f objects/*.adt objects/*.ali
 
 docs: ahven.specs
+	mkdir -p doc/api
 	adabrowse -c adabrowse.conf -i -f@ahven.specs -o doc/api/
 
 ahven.specs: $(SOURCES)
