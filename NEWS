@@ -54,16 +54,19 @@ Changes
 
 	* New procedure for inserting stack-allocated tests into test suites:
 	    Add_Static_Test (Suite, T).
+	  Idea from Pawel Plazienski.
 
 	* Internally, almost all Unbounded_Strings were converted into
 	  VStrings. This limits the maximum length of test names and
 	  failure messages to 160 characters. Constraint_Error is
 	  raised for overlong test names and too long failure messages
 	  are silently truncated into 160 characters.
+	  This was done for better Janus/Ada 3.1.1d compatibility.
 
 Bugs fixed
-----------
+-----------
 	* Text-based test runner results are now aligned in a better way.
+	  Fix for bug #12220.
 
 Internal
 --------
