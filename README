@@ -10,6 +10,7 @@ under ISC license, so it can be used with older
 projects and does not infect GPL to the whole
 project.
 
+
 Building and Installing Ahven
 =============================
 For building Ahven source code you need Ada95
@@ -30,7 +31,7 @@ directory has platform specific subdirectories 'unix'
 and 'windows. You need to select the sources from one
 of them also.
 
-Install: GNAT
+Installation: GNAT
 ==================
 
 When using GNAT, simple 'make' will compile the library
@@ -47,52 +48,30 @@ or 'make PREFIX=/my/ada/code install'. Alternatively,
 you can simply copy the source code directory ('src')
 to your project.
 
-Install: Janus/Ada
-==================
+Installation: Janus/Ada
+=======================
 
-Build scripts for Janus/Ada are located at contrib\janusada.
-First, you need to create a project file for the src directory.
-This happens by copying libmain.adb to src and running pr_lib.bat
-and makelib.bat scripts:
-  copy janusada\libmain.adb src\
-  cd src\
-  ..\janusada\pr_lib.bat
-  ..\janusada\makelib.bat
+Build scripts for Janus/Ada are located in the 'janusada' directory.
+To compile the source code, you need to tweak file 'prepare.bat'
+and then run 'prepare.bat', 'update.bat', and 'compile.bat' from
+the top level directory. That is the same directory where this README
+file is located.
+
+  janusada\prepare.bat
+  janusada\update.bat
+  janusada\compilebat
   
-Note: When COrder asks for AHVEN#COMPAT package body, give
-it windows\ahven-compat.adb.
-
-Then you need to create a project file for test:
-  cd ..\test
-  ..\janusada\pr_test.bat
-  ..\janusada\maketest.bat
-
-Finally, you can compile the project by running ctst.bat from
-the test directory and linking the object file with lkc:
-  ctst
-  cd ..\test_objects
-  lkc tester
-
-When compilation is finished, you have tester.exe in
-the test_objects directory.
+When compilation is finished, you have tap_tes.exe in the 'test_obj'
+directory.
  
 Project Info
 ============
 Homepage:
- http://home.gna.org/ahven/
+ http://ahven.sourceforge.net/
 
 License:
  ISC (modified BSD license).
  See file LICENSE for more information.
-
-Bug reports (a gna.org account is required for new reports):
- https://gna.org/bugs/?group=ahven
-
-Subversion repository:
- http://svn.gna.org/svn/ahven/
-
-Experimental Mercurial mirror:
- http://www.bitbucket.org/tkoskine/ahven/src/
 
 Author:
  Tero Koskinen <tero.koskinen@iki.fi>
