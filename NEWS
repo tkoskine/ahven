@@ -3,7 +3,16 @@
 
 Changes
 -------
+	* Ahven is now hosted at sourceforge.net. New URLs are:
+	  Project page: http://sourceforge.net/projects/ahve
+	  Home page:    http://ahven.sourceforge.net/
+
 	* Janus/Ada build system was rewritten. See README for details.
+	  Also, some minor changes were done to GNAT build scripts.
+
+Bug fixed
+---------
+	* API documentation was not generated for the Ahven.SList package.
 
 2009-01-22 Ahven 1.4
 ====================
