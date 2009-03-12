@@ -83,7 +83,7 @@ clean_tests:
 	rm -rf results
 
 clean_docs:
-	rm -f doc/api/*.html
+	rm -f doc/api/*.html ahven.specs
 
 install: install_lib
 
@@ -112,8 +112,8 @@ control:
 	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs]
 	rm -f objects/*.adt objects/*.ali
 
-docs:
-	adabrowse -c adabrowse.conf -i -I src/ -f@ahven.specs -o doc/api/
+docs: ahven.specs
+	adabrowse -c adabrowse.conf -i -f@ahven.specs -o doc/api/
 
-regen_specs:
-	find src/ -name "*.ads" -exec basename {} \; |sort|uniq > ahven.specs
+ahven.specs: $(SOURCES)
+	find src/ -name "*.ads" -print |sort|uniq > ahven.specs
