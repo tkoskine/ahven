@@ -68,7 +68,7 @@ lib:
 
 build_all: objects test_objects build_lib build_tests
 
-build_lib: lib
+build_lib: objects lib
 	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_lib
 
 build_tests: test_objects build_lib
