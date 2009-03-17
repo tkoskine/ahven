@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<chapter id="install_ahven_chapter">
+	<title>Installing Ahven</title>
+	<para>
+		To build and install Ahven source code, you need an Ada 95
+		compiler.
+		At the moment, Ahven is tested with three different
+		compiler families: GNAT, ObjectAda, and Janus/Ada.
+	</para>
+	<sect1 id="gnat_gpl_install">
+		<title>Building Library</title>
+		<sect2 id="gnat_gpl_building_instructions">
+			<title>GNAT GPL series and FSF GCC</title>
+			<para>
+				When you have GNAT GPL or FSF GCC, the easieast way to
+				compile and install Ahven is to use
+				the <emphasis>make</emphasis> utility and Makefile.
+			</para>
+			<para>
+				When compiling using the <emphasis>make</emphasis> utility,
+				you need to tell your platform type. Currently,
+				only supported platform types are <emphasis>unix</emphasis>
+				and <emphasis>windows</emphasis>. The type can be told by
+				setting OS_VERSION variable to the selected platform.
+				<screen><![CDATA[$ make OS_VERSION=unix]]></screen>
+			</para>
+			<para>
+				If you are unable to use <emphasis>make</emphasis>, you
+				can use the GNAT project files directly.
+				Ahven distribution comes with three GNAT project files:
+				ahven.gpr, ahven_lib.gpr, and ahven_tests.gpr.
+				The <emphasis>ahven.gpr</emphasis> file is meant to be used
+				when compiling unit tests. The library itself is build
+				using the <emphasis>ahven_lib.gpr</emphasis> file.
+				To build the testsuite of the Ahven, one needs to
+				use the <emphasis>ahven_tests.gpr</emphasis> file.
+			</para>
+			<para>
+				Like with Makefile, you need to tell your platform type.
+				This time the selection happens by using an environment variable
+				called <emphasis>OS</emphasis>. The variable accepts same
+				values as Makefile.
+				<screen><![CDATA[$ OS=windows gnatmake -P ahven_lib
+$ OS=windows gnatmake -P ahven_tests]]></screen>
+			</para>
+		</sect2>
+		<sect2 id="gnat_gpl_install_instructions">
+			<title>Installing Library</title>
+			<para>
+				You can install the library by using command
+				<emphasis>make install</emphasis>. By default
+				the installation happens to the <emphasis>/usr/local</emphasis> directory.
+				Alternative directory can be set by overwriting the <emphasis>PREFIX</emphasis> variable.
+				<screen><![CDATA[$ make OS_VERSION=unix PREFIX=/opt/ada install]]></screen>
+			</para>
+		</sect2>
+	</sect1>
+	<sect1 id="gnat_315_install">
+		<title>GNAT 3.15p</title>
+		<para>
+			Version 3.15p of GNAT does not understand some features used in
+			the default GNAT project files. Therefore, you need to use
+			project files from the <emphasis>contrib/gnat315p</emphasis> directory.
+		</para>
+	</sect1>
+	<sect1 id="objectada_install">
+		<title>ObjectAda</title>
+		<para>
+			There is no project file included for ObjectAda.
+			To compile Ahven, you need to create
+			a new project and import the source code of Ahven
+			to the project.
+		</para>
+	</sect1>
+	<sect1 id="janusada_install">
+		<title>Janus/Ada</title>
+		<para>
+			Directory <emphasis>janusada</emphasis>
+			contains project file creation scripts for Janus/Ada.
+			By default, the scripts assume Janus/Ada to be
+			installed to directory <emphasis>C:\Janus312\</emphasis>.
+			If that is not the case, change the path from
+			files <emphasis>pr_lib.bat</emphasis> and
+			<emphasis>pr_test.bat</emphasis>.
+		</para>
+		<para>
+			Before doing anything else, you need to copy file
+			<emphasis>libmain.adb</emphasis> from
+			<emphasis>janusada</emphasis> to
+			<emphasis>src</emphasis>.
+			Then, you create the project file by running
+			<emphasis>pr_lib.bat</emphasis>
+			in the <emphasis>src</emphasis> directory.
+			<screen><![CDATA[C:\ahven-1.4\src>..\janusada\pr_lib.bat]]></screen>
+		</para>
+		<para>
+			After creating the project file, you need to
+			use <emphasis>COrder</emphasis> to create
+			the compilation script. This happens by
+			running
+			<emphasis>makelib.bat</emphasis>.
+			<screen><![CDATA[C:\ahven-1.4\src>..\janusada\makelib.bat]]></screen>
+			At one point, <emphasis>COrder</emphasis>
+			requires you to specify the location of
+			Ahven.Compat body. Give it a file
+			<emphasis>windows\ahven-compat.adb</emphasis>.
+		</para>
+		<para>
+			Now, you can compile the library using
+			script <emphasis>ctst.bat</emphasis>.
+		</para>
+		<para>
+			To compile the test suite for Ahven, you
+			need to run <emphasis>pr_test.bat</emphasis>
+			and <emphasis>maketest.bat</emphasis> scripts
+			in the <emphasis>test</emphasis> directory.
+			<screen><![CDATA[C:\ahven-1.4\test>..\janusada\pr_test.bat
+C:\ahven-1.4\test>..\janusada\maketest.bat]]></screen>
+		</para>
+		<para>
+			Again, <emphasis>COrder</emphasis> should
+			create you a script called <emphasis>ctst.bat</emphasis>.
+			Use it to compile the source code.
+			To link the object code into a single executable,
+			go to the <emphasis>test_objects</emphasis> directory
+			and type <emphasis>lkc tester</emphasis>. The command
+			should produce <emphasis>tester.exe</emphasis>, which
+			you can run.
+		</para>
+	</sect1>
+</chapter>
