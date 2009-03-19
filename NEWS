@@ -1,7 +1,11 @@
 ????-??-?? Ahven 1.7
 ====================
 
-TBD
+Changes
+-------
+	* The usage of Unbounded_String was completely removed
+	  from Ahven.Framework package. Now Get_Name function
+	  returns String.
 
 2009-02-28 Ahven 1.6
 ====================
