@@ -316,7 +316,7 @@ package body Ahven.Framework is
    begin
       return
         new Test_Suite'(Ada.Finalization.Controlled with
-                        Suite_Name        => To_Unbounded_String (Suite_Name),
+                        Suite_Name        => +Suite_Name,
                         Test_Cases        => Test_List.Empty_List,
                         Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
@@ -325,7 +325,7 @@ package body Ahven.Framework is
      return Test_Suite is
    begin
       return (Ada.Finalization.Controlled with
-              Suite_Name        => To_Unbounded_String (Suite_Name),
+              Suite_Name        => +Suite_Name,
               Test_Cases        => Test_List.Empty_List,
               Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;

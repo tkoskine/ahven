@@ -15,15 +15,12 @@
 --
 
 with Ada.Finalization;
-with Ada.Strings.Unbounded;
 
 with Ahven.Listeners;
 with Ahven.SList;
 with Ahven.VStrings;
 
 pragma Elaborate_All (Ahven.SList);
-
-use Ada.Strings.Unbounded;
 
 package Ahven.Framework is
 
@@ -332,7 +329,7 @@ private
    end Indefinite_Test_List;
 
    type Test_Suite is new Test with record
-      Suite_Name : Unbounded_String;
+      Suite_Name : VStrings.VString := VStrings.Empty_VString;
       Test_Cases : Test_List.List;
       Static_Test_Cases : Indefinite_Test_List.List;
    end record;
