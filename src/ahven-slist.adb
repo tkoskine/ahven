@@ -73,6 +73,10 @@ package body Ahven.SList is
 
    function Data (Position : Cursor) return Element_Type is
    begin
+      if Position = null then
+         raise Invalid_Cursor;
+      end if;
+
       return Position.Data;
    end Data;
 
