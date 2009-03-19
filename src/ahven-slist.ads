@@ -44,8 +44,12 @@ package Ahven.SList is
    -- Return element pointed by the cursor.
 
    function Is_Valid (Position : Cursor) return Boolean;
+   -- Tell the validity of the cursor. The cursor
+   -- will become invalid when you iterate it over
+   -- the last item.
 
    function Length (Target : List) return Count_Type;
+   -- Return the length of the list.
 
 private
    type Node;
