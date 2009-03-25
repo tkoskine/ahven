@@ -62,7 +62,6 @@ objects:
 test_objects:
 	mkdir -p test_objects
 
-
 lib:
 	mkdir -p lib
 
@@ -77,13 +76,16 @@ build_tests: test_objects build_lib
 clean: clean_lib clean_tests clean_docs
 
 clean_lib:
-	rm -rf lib objects
+	gnatclean -q -Pahven_lib
 
-clean_tests: test_objects
-	rm -rf results test_objects
+clean_tests:
+	gnatclean -q -Pahven_tests
 
 clean_docs:
 	rm -f doc/api/*.html ahven.specs
+
+distclean:
+	rm -rf lib objects results test_objects tester tap_tester
 
 install: install_lib
 
