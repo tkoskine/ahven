@@ -23,10 +23,10 @@ with Ahven.Runner;
 with Ahven_Compat;
 with Ahven.VStrings;
 
-use Ada.Text_IO;
-use Ada.Strings.Fixed;
-
 package body Ahven.XML_Runner is
+   use Ada.Text_IO;
+   use Ada.Strings.Fixed;
+
    use Ahven.Results;
    use Ahven.Framework;
    use Ahven.VStrings;
@@ -298,6 +298,8 @@ package body Ahven.XML_Runner is
         return CData_End_State
       is
          New_State : CData_End_State := NONE;
+         -- By default New_State will be NONE, so there is
+         -- no need to set it inside when blocks.
       begin
          case Old_State is
             when NONE =>
