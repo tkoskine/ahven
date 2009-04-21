@@ -1,0 +1,10 @@
+syntax: glob
+
+*.ali
+test_objects
+objects
+test_obj
+obj
+lib
+tap_tester
+tester
