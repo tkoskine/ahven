@@ -79,7 +79,7 @@ package body Ahven.Parameters is
          end if;
       end Handle_Parameter;
    begin
-      -- Default values: verbose mode, no xml, no capture
+      -- Default values
       Info := (Verbose_Output => True,
                Xml_Output     => False,
                Capture_Output => False,
