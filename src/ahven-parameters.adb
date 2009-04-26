@@ -74,7 +74,7 @@ package body Ahven.Parameters is
             if (not Files_Only) and (Arg (Arg'First) = '-') then
                Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last), Dir_Next);
             else
-               P.Test_Name := To_Unbounded_String (Arg);
+               P.Test_Name := +Arg;
             end if;
          end if;
       end Handle_Parameter;
@@ -83,8 +83,8 @@ package body Ahven.Parameters is
       Info := (Verbose_Output => True,
                Xml_Output     => False,
                Capture_Output => False,
-               Test_Name => Null_Unbounded_String,
-               Result_Dir => Null_Unbounded_String);
+               Test_Name      => Empty_VString,
+               Result_Dir     => Null_Unbounded_String);
       for A in Natural range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A));
       end loop;

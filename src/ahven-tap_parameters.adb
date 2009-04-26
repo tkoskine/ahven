@@ -64,16 +64,16 @@ package body Ahven.Tap_Parameters is
             if (not Files_Only) and (Arg (Arg'First) = '-') then
                Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last));
             else
-               P.Test_Name := To_Unbounded_String (Arg);
+               P.Test_Name := +Arg;
             end if;
          end if;
       end Handle_Parameter;
    begin
-      -- Default values: verbose mode, no xml, no capture
+      -- Default values
       Info := (Tap_13 => False,
                Verbose_Output => True,
                Capture_Output => False,
-               Test_Name => Null_Unbounded_String);
+               Test_Name => Empty_VString);
       for A in Natural range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A));
       end loop;
