@@ -13,7 +13,7 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
-with Ada.Strings.Unbounded;
+with Ahven.VStrings;
 with Ada.Text_IO;
 
 package Ahven.Temporary_Output is
@@ -43,7 +43,7 @@ package Ahven.Temporary_Output is
 
 private
    type Temporary_File is limited record
-      Name    : Ada.Strings.Unbounded.Unbounded_String;
+      Name    : Ahven.VStrings.VString;
       Handle  : Ada.Text_IO.File_Type;
    end record;
 

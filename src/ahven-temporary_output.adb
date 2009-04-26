@@ -13,16 +13,17 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
+with Ada.Strings.Fixed;
 
 package body Ahven.Temporary_Output is
-   use Ada.Strings.Unbounded;
+   use Ahven.VStrings;
+   use Ada.Strings.Fixed;
    Temp_Counter : Natural := 0;
 
    procedure Create_Temp (File : out Temporary_File) is
-      Filename : constant Unbounded_String :=
-        To_Unbounded_String ("ahven_temp_") &
-        Trim (To_Unbounded_String(Integer'Image (Temp_Counter)),
-              Ada.Strings.Both);
+      Filename : constant VString := +(("ahven_temp_") &
+        Trim ((Integer'Image (Temp_Counter)),
+              Ada.Strings.Both));
    begin
       if Temp_Counter < Natural'Last then
          Temp_Counter := Temp_Counter + 1;
