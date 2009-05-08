@@ -26,5 +26,6 @@ package VString_Tests is
 private
    procedure Test_Overlong_String;
    procedure Test_VString_Create;
-   procedure Test_Max_Size_String;
+   procedure Test_Max_Size_Create;
+   procedure Test_Max_Size_Truncate;
 end VString_Tests;

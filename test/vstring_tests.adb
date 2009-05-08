@@ -26,10 +26,12 @@ package body VString_Tests is
                                   "Test Overlong String");
       Framework.Add_Test_Routine (T, Test_VString_Create'Access,
                                   "Test VString Create");
+      Framework.Add_Test_Routine (T, Test_Max_Size_Create'Access,
+                                  "Test Maximum Size Create");
       Framework.Add_Test_Routine (T, Test_Overlong_Truncate'Access,
                                   "Test Overlong Truncate");
-      Framework.Add_Test_Routine (T, Test_Max_Size_String'Access,
-                                  "Test Maximum Size String");
+      Framework.Add_Test_Routine (T, Test_Max_Size_Truncate'Access,
+                                  "Test Maximum Size Truncate");
    end Initialize;
 
    procedure Test_Overlong_String is
@@ -86,7 +88,7 @@ package body VString_Tests is
       end;
    end Test_VString_Create;
 
-   procedure Test_Max_Size_String is
+   procedure Test_Max_Size_Create is
       use Ahven.VStrings;
 
       Source : constant String (1 .. VString_Max_Size) := (others => ' ');
@@ -94,5 +96,17 @@ package body VString_Tests is
    begin
       Assert (Length (Target) = Source'Last, "Length was invalid");
       Assert (To_String (Target) = Source, "Target /= Source");
-   end Test_Max_Size_String;
+   end Test_Max_Size_Create;
+
+   procedure Test_Max_Size_Truncate is
+      use Ahven.VStrings;
+
+      Max_String : constant String (1 .. VString_Max_Size) := (others => ' ');
+      Target     : VString;
+   begin
+      Target := Truncate (Source => Max_String);
+
+      Assert (Condition => Length (Target) = VString_Max_Size,
+              Message   => "Length was invalid");
+   end Test_Max_Size_Truncate;
 end VString_Tests;
