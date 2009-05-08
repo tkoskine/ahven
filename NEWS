@@ -7,6 +7,9 @@ Changes
 	  from Ahven.Framework package. Now Get_Name function
 	  returns String.
 
+	* Fix Contraint_Error when one tries to truncate
+	  overlong string. Bug report and patch from Reto Buerki.
+
 2009-02-28 Ahven 1.6
 ====================
 
