@@ -26,7 +26,8 @@ package body VString_Tests is
                                   "Test Overlong String");
       Framework.Add_Test_Routine (T, Test_VString_Create'Access,
                                   "Test VString Create");
-
+      Framework.Add_Test_Routine (T, Test_Overlong_Truncate'Access,
+                                  "Test Overlong Truncate");
    end Initialize;
 
    procedure Test_Overlong_String is
@@ -48,6 +49,19 @@ package body VString_Tests is
       when Constraint_Error =>
          null; -- ok, this was expected
    end Test_Overlong_String;
+
+   procedure Test_Overlong_Truncate is
+      use Ahven.VStrings;
+      Too_Big_Length : constant := 200;
+
+      Long_String : constant String (1 .. Too_Big_Length) := (others => ' ');
+      Target      : VString;
+   begin
+      Target := Truncate (Source => Long_String);
+
+      Assert (Condition => Length (Target) = VString_Max_Size,
+              Message   => "Length was invalid");
+   end Test_Overlong_Truncate;
 
    procedure Test_VString_Create is
       use Ahven.VStrings;
