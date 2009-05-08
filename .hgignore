@@ -17,3 +17,5 @@ ctst.bat
 *.JRL
 _JANUS.PRJ
 src\libmain.adb
+*.orig
+*.swp
