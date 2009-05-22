@@ -21,10 +21,8 @@ with Ada.Characters.Latin_1;
 with Ahven.Tap_Parameters;
 with Ahven.VStrings;
 
-use Ada.Text_IO;
-use Ada.Strings.Fixed;
-
 package body Ahven.Tap_Runner is
+   use Ada.Text_IO;
    use Ahven.Framework;
    use Ahven.VStrings;
 
@@ -152,6 +150,7 @@ package body Ahven.Tap_Runner is
    procedure Add_Pass (Listener : in out Tap_Listener;
                        Info     :        Context) is
       use Ada.Strings;
+      use Ada.Strings.Fixed;
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
@@ -168,6 +167,7 @@ package body Ahven.Tap_Runner is
                             Info     :        Context;
                             Severity :        String) is
       use Ada.Strings;
+      use Ada.Strings.Fixed;
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
