@@ -24,8 +24,6 @@ with Ahven.VStrings;
 use Ada.Text_IO;
 use Ada.Strings.Fixed;
 
-use Ahven;
-
 package body Ahven.Tap_Runner is
    use Ahven.Framework;
    use Ahven.VStrings;
@@ -48,7 +46,7 @@ package body Ahven.Tap_Runner is
    begin
       for I in Message'Range loop
          if Start_Of_Line then
-            Put(Prefix);
+            Put (Prefix);
             Start_Of_Line := False;
          end if;
          Put (Message (I));
@@ -80,7 +78,7 @@ package body Ahven.Tap_Runner is
            (Suite, Tap_Parameters.Test_Name (Params), Listener);
       else
          Put_Line ("1.." & Ada.Strings.Fixed.Trim
-           (Test_Count_Type'Image(Test_Count (Suite)), Ada.Strings.Both));
+           (Test_Count_Type'Image (Test_Count (Suite)), Ada.Strings.Both));
          Framework.Execute (Suite, Listener);
       end if;
    exception
@@ -131,7 +129,7 @@ package body Ahven.Tap_Runner is
             First := False;
          end if;
          if Start_Of_Line then
-            Put(Prefix);
+            Put (Prefix);
             Start_Of_Line := False;
          end if;
          Put (Char);
