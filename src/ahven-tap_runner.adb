@@ -138,7 +138,6 @@ package body Ahven.Tap_Runner is
       end loop;
       Close (Handle);
       if not First then
-         -- New_Line;
          Put_Line (Prefix & "====================");
       end if;
    exception
