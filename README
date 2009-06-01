@@ -13,8 +13,9 @@ project.
 
 Building and Installing Ahven
 =============================
-For building Ahven source code you need Ada95
+For building Ahven source code you need Ada 95
 compiler, for example GNAT, Janus/Ada, or ObjectAda.
+
 Optionally, you need AdaBrowse to build the documentation
 and AdaControl to run coding style checks.
 
@@ -61,7 +62,7 @@ file is located.
   janusada\update.bat
   janusada\compilebat
   
-When compilation is finished, you have tap_tes.exe in the 'test_obj'
+When compilation is finished, you have tap_test.exe in the 'test_obj'
 directory.
  
 Project Info
