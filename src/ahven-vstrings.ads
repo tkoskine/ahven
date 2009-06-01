@@ -20,6 +20,10 @@ package Ahven.VStrings is
    subtype VString_Size is Integer range 0 .. VString_Max_Size;
 
    type VString (Len : VString_Size := VString_Size'Last) is private;
+   -- A variable length string. The size of the string
+   -- must be something between 0 and VString_Size'Last.
+   --
+   -- By default the maximum size String filled with spaces is created.
 
    function "+"(Source : String) return VString;
    -- Convert String into VString.
@@ -36,6 +40,7 @@ package Ahven.VStrings is
    -- Return the length of the VString.
 
    Empty_VString : constant VString;
+   -- Empty String (len = 0).
 
 private
    type VString (Len : VString_Size := VString_Size'Last) is record
