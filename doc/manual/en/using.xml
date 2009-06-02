@@ -92,7 +92,7 @@ end My_Tests;
             with the given message string is raised.
         </para>
         <para>
-            Third assertion procedure is simple
+            The third assertion procedure is simple
             <function>Fail</function> which always raises
             the <classname>Assertion_Error</classname> exception.
             It is handy for situations where the execution should not
@@ -123,7 +123,15 @@ end My_Tests;
     </sect1>
     <sect1 id="composing_hierarchies">
         <title>Composing Test Hierarchies With Test Suites</title>
-        <para>TODO</para>
+        <para>
+		The <classname>Test_Suite</classname> type
+		is used to group related tests together.
+		You can also add other test suites to the suite
+		and create a hierarchy of tests.
+	</para>
+	<para>
+		TODO
+	</para>
     </sect1>
     <sect1 id="running_tests">
         <title>Running Tests</title>
