@@ -40,6 +40,8 @@ package body Ahven.SList is
          Target.Last := New_Node;
       end if;
 
+      -- XXX To be 100% correct, one should check that
+      --     Target.Size does not overflow.
       Target.Size := Target.Size + 1;
    end Append;
 
@@ -103,11 +105,12 @@ package body Ahven.SList is
    end Finalize;
 
    procedure Adjust (Target : in out List) is
-      Target_Last : Node_Access := null;
+      Target_Last  : Node_Access := null;
       Target_First : Node_Access := null;
-      Current : Node_Access := Target.First;
-      New_Node : Node_Access;
+      Current      : Node_Access := Target.First;
+      New_Node     : Node_Access;
    begin
+      -- Recreate the list using the same data
       while Current /= null loop
          New_Node := new Node'(Data => Current.Data, Next => null);
 
@@ -123,5 +126,7 @@ package body Ahven.SList is
       end loop;
       Target.First := Target_First;
       Target.Last := Target_Last;
+
+      -- No need to adjust size, it is same as before copying
    end Adjust;
 end Ahven.SList;
