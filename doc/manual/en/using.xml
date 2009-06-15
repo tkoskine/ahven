@@ -130,8 +130,46 @@ end My_Tests;
 		and create a hierarchy of tests.
 	</para>
 	<para>
-		TODO
+		The tests are added to the test suite
+		using either procedure
+		<function>Add_Static_Test</function> or
+		<function>Add_Test</function>.
+		The former procedure is meant for statically
+		created tests and it places a copy of the given
+		test to the test suite.
+		The <function>Add_Test</function> procedure is used
+		with dynamically created tests and test objects
+		of type Test_Class_Access.
 	</para>
+	<para>
+		At the moment, the dynamically added tests are
+		executed first in the order they have been added
+		(first in, first out - FIFO)
+		and after them the statically added tests, also in
+		FIFO order.
+	</para>
+	<para>
+		<xref linkend="suite_example"/> shows how to
+		put test cases in a test suite.
+	</para>
+<example id="suite_example">
+        <title>Test Suite</title>
+        <screen><![CDATA[
+package body My_Tests is
+   ...
+
+   function Get_Test_Suite return Ahven.Framework.Test_Suite is
+      S : Framework.Test_Suite := Framework.Create_Suite ("All");
+      Hello_World_Test : Hello_World.Test;
+      Listener_Test    : Basic_Listener_Tests.Test;
+   begin
+      Framework.Add_Static_Test (S, Hello_World_Test);
+      Framework.Add_Static_Test (S, Listener_Test);
+      return S;
+   end Get_Test_Suite;
+end My_Tests;
+]]>
+</screen></example>
     </sect1>
     <sect1 id="running_tests">
         <title>Running Tests</title>
