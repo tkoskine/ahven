@@ -141,6 +141,10 @@ package body Ahven.Text_Runner is
       New_Line;
    end Print_Test;
 
+   --
+   -- Print all failures from the result collection
+   -- and then recurse into child collections.
+   --
    procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural) is
       Iter       : Result_Info_Cursor;
@@ -172,6 +176,10 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Failures;
 
+   --
+   -- Print all errors from the result collection
+   -- and then recurse into child collections.
+   --
    procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural) is
       Iter       : Result_Info_Cursor;
@@ -204,6 +212,10 @@ package body Ahven.Text_Runner is
 
    end Print_Errors;
 
+   --
+   -- Print all passes from the result collection
+   -- and then recurse into child collections.
+   --
    procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
       Iter       : Result_Info_Cursor;
@@ -232,6 +244,8 @@ package body Ahven.Text_Runner is
       end loop;
    end Print_Passes;
 
+   --
+   -- Report passes, failures, and errors from the result collection.
    procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False) is
    begin
