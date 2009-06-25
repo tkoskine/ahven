@@ -3,6 +3,9 @@
 
 Changes
 -------
+	* The source code repository and the issue tracker are
+	  now hosted at Bitbucket, http://bitbucket.org/tkoskine/ahven
+
 	* The usage of Unbounded_String was completely removed
 	  from Ahven.Framework package. Now Get_Name function
 	  returns String.
