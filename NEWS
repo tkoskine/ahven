@@ -10,6 +10,8 @@ Changes
 	* Fix Contraint_Error when one tries to truncate
 	  overlong string. Bug report and patch from Reto Buerki.
 
+	* GNAT project files (.gpr) were moved to the 'gnat' directory.
+
 2009-02-28 Ahven 1.6
 ====================
 

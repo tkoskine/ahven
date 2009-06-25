@@ -18,9 +18,9 @@ with "ahven_lib";
 
 project Ahven_Tests is
    for Languages use ("Ada");
-   for Source_Dirs use ("./test");
-   for Object_Dir use "./test_objects";
-   for Exec_Dir use "./";
+   for Source_Dirs use ("../test");
+   for Object_Dir use "../test_objects";
+   for Exec_Dir use "../";
    for Main use ("tester.adb", "tap_tester.adb");
 
    package Builder is

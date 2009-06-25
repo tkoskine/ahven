@@ -68,18 +68,18 @@ lib:
 build_all: objects test_objects build_lib build_tests
 
 build_lib: objects lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_lib
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_lib
 
 build_tests: test_objects build_lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_tests
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_tests
 
 clean: clean_lib clean_tests clean_docs
 
 clean_lib:
-	gnatclean -q -Pahven_lib
+	gnatclean -q -Pgnat/ahven_lib
 
 clean_tests:
-	gnatclean -q -Pahven_tests
+	gnatclean -q -Pgnat/ahven_tests
 
 clean_docs:
 	rm -f doc/api/*.html ahven.specs
