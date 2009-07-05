@@ -100,10 +100,9 @@ package body Framework_Tests is
       Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "Pass count");
       Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "Error count");
       Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "Failure count");
-      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = Dummy_Test_Count,
-              "Start_Test calls: " &
-              Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
+      Assert_Eq_Nat (My_Listener.Start_Calls, Dummy_Test_Count,
+              "Start_Test calls");
 
       Free (My_Listener);
    end Test_Test_Case_Run;
@@ -133,9 +132,9 @@ package body Framework_Tests is
       Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "Pass count");
       Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "Error count");
       Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "Failure count");
-      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 1),
-              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
+      Assert_Eq_Nat (My_Listener.Start_Calls, (Dummy_Test_Count + 1),
+              "Start_Test calls");
 
       Free (My_Listener);
       Framework.Release_Suite (My_Suite);
@@ -155,9 +154,9 @@ package body Framework_Tests is
       Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "Pass count");
       Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "Error count");
       Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "Failure count");
-      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 1),
-              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
+      Assert_Eq_Nat (My_Listener.Start_Calls, (Dummy_Test_Count + 1),
+              "Start_Test calls");
    end Test_Test_Suite_Static_Run;
 
    procedure Test_Test_Suite_Name_Run is
@@ -174,9 +173,9 @@ package body Framework_Tests is
       Assert_Eq_Nat (My_Listener.Passes, 0, "Pass count");
       Assert_Eq_Nat (My_Listener.Errors, 0, "Error count");
       Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "Failure count");
-      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = (Dummy_Failures + 1),
-              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
+      Assert_Eq_Nat (My_Listener.Start_Calls, (Dummy_Failures + 1),
+              "Start_Test calls");
    end Test_Test_Suite_Name_Run;
 
    procedure Test_Call_End_Test is
@@ -188,9 +187,9 @@ package body Framework_Tests is
    begin
       Dummy_Tests.Run (My_Test, My_Listener.all);
 
-      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.End_Calls = Dummy_Test_Count,
-              "End_Test calls: " & Integer'Image (My_Listener.End_Calls));
+      Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
+      Assert_Eq_Nat (My_Listener.End_Calls, Dummy_Test_Count,
+              "End_Test calls");
 
       Free (My_Listener);
    end Test_Call_End_Test;
