@@ -28,7 +28,7 @@ package body Framework_Tests is
    procedure Assert_Eq_Nat is
      new Ahven.Assert_Equal (Data_Type => Natural,
                              Image     => Natural'Image);
-
+   
    procedure Free is new Ada.Unchecked_Deallocation
      (Object => Simple_Listener.Listener,
       Name   => Simple_Listener.Listener_Access);
@@ -211,16 +211,13 @@ package body Framework_Tests is
 
       Framework.Run (Parent, My_Listener.all);
 
-      Assert
-        (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
-      Assert
-        (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
-      Assert
-        (My_Listener.Failures = Dummy_Failures, "Invalid amount of failures.");
-      Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 2),
-              "Start_Test calls: " &
-              Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "Amount of passes.");
+      Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "Amount of errors.");
+      Assert_Eq_Nat
+        (My_Listener.Failures, Dummy_Failures, "Amount of failures.");
+      Assert_Eq_Nat (My_Listener.Level, 0, "Start_Test /= End_Test");
+      Assert_Eq_Nat (My_Listener.Start_Calls, (Dummy_Test_Count + 2),
+              "Start_Test calls");
 
       Free (My_Listener);
    end Test_Test_Suite_Inside_Suite;
