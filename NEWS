@@ -12,7 +12,7 @@ Changes
 
 	* Fix Contraint_Error when one tries to truncate
 	  overlong string. Bug report and patch from Reto Buerki.
-	  (Bug #1)
+	  (Bug bitbucket#1)
 
 	* GNAT project files (.gpr) were moved to the 'gnat' directory.
 
