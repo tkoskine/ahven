@@ -34,32 +34,33 @@ package body Framework_Tests is
       Name   => Simple_Listener.Listener_Access);
 
    procedure Initialize (T : in out Test) is
+      use Framework;
    begin
       Set_Name (T, "Ahven.Framework");
 
-      Framework.Add_Test_Routine (T, Test_Set_Up'Access, "Test_Case: Set_Up");
+      Add_Test_Routine (T, Test_Set_Up'Access, "Test_Case: Set_Up");
       T.Value := INITIALIZED;
-      Framework.Add_Test_Routine (T, Test_Tear_Down'Access,
+      Add_Test_Routine (T, Test_Tear_Down'Access,
                                   "Test_Case: Tear_Down");
-      Framework.Add_Test_Routine (T, Test_Test_Case_Run'Access,
+      Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
-      Framework.Add_Test_Routine (T, Test_Test_Case_Test_Count'Access,
+      Add_Test_Routine (T, Test_Test_Case_Test_Count'Access,
                                   "Test_Case: Test_Count");
-      Framework.Add_Test_Routine (T, Test_Call_End_Test'Access,
+      Add_Test_Routine (T, Test_Call_End_Test'Access,
                                   "Test_Case: Run (Call End_Test)");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Run'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Run'Access,
                                   "Test_Suite: Run");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Static_Run'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Static_Run'Access,
                                   "Test_Suite: Run (Static)");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Name_Run'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Name_Run'Access,
                                   "Test_Suite: Run (Name)");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Inside_Suite'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Inside_Suite'Access,
                                   "Test_Suite: Suite inside another");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Count'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Test_Count'Access,
                                   "Test_Suite: Test Count");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Static_Count'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Test_Static_Count'Access,
                                   "Test_Suite: Test Count (Static)");
-      Framework.Add_Test_Routine (T, Test_Test_Suite_Test_Name_Count'Access,
+      Add_Test_Routine (T, Test_Test_Suite_Test_Name_Count'Access,
                                   "Test_Suite: Test Count (Name)");
    end Initialize;
 
