@@ -173,6 +173,40 @@ end My_Tests;
     </sect1>
     <sect1 id="running_tests">
         <title>Running Tests</title>
-        <para>TODO</para>
+	<para>
+		The tests are run by test runners.
+		These runners are procedures which take
+		either test cases or test suites as their parameters.
+	</para>
+	<para>
+		Currently, there exists three test runners.
+		Ahven.Runner is the basic runner, which prints
+		the test results as a hierarchy. Ahven.XML_Runner
+		on the other hand writes the test results to
+		an XML file, which is understood by continuous
+		integration systems like CruiseControl and Hudson.
+		The third runner is Ahven.Tap_Runner. It produces
+		the results in Test-Anything-Protocol (TAP) format.
+	</para>
+        <para>
+		The recommended way to use these test runners is
+		to call them from the main program like shown
+		in <xref linkend="runner_example"/>.
+	</para>
+<example id="runner_example">
+        <title>Test Suite</title>
+        <screen><![CDATA[with Ahven.Text_Runner;
+with Ahven.Framework;
+with Simple_Tests;
+
+procedure Tester is
+   S : Ahven.Framework.Test_Suite := Ahven.Framework.Create_Suite ("All");
+begin
+   Ahven.Framework.Add_Test (S, new Simple_Tests.Test);
+   Ahven.Text_Runner.Run (S);
+end Tester;
+]]>
+</screen></example>
+
     </sect1>
 </chapter>
