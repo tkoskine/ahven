@@ -16,6 +16,9 @@ Changes
 
 	* GNAT project files (.gpr) were moved to the 'gnat' directory.
 
+	* The upper limit (Count_Type'Last) of Ahven.SList
+	  is now documented.
+
 2009-02-28 Ahven 1.6
 ====================
 
