@@ -30,6 +30,10 @@ package body Ahven.SList is
                      Node_Data : Element_Type) is
       New_Node : Node_Access  := null;
    begin
+      if Target.Size = Count_Type'Last then
+         raise List_Full;
+      end if;
+
       New_Node := new Node'(Data => Node_Data, Next => null);
 
       if Target.Last = null then
@@ -40,8 +44,6 @@ package body Ahven.SList is
          Target.Last := New_Node;
       end if;
 
-      -- XXX To be 100% correct, one should check that
-      --     Target.Size does not overflow.
       Target.Size := Target.Size + 1;
    end Append;
 
