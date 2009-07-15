@@ -80,52 +80,19 @@ $ OS=windows gnatmake -P ahven_tests]]></screen>
 			By default, the scripts assume Janus/Ada to be
 			installed to directory <emphasis>C:\Janus312\</emphasis>.
 			If that is not the case, change the path from
-			files <emphasis>pr_lib.bat</emphasis> and
-			<emphasis>pr_test.bat</emphasis>.
+			file <emphasis>prepare.bat</emphasis>.
 		</para>
 		<para>
-			Before doing anything else, you need to copy file
-			<emphasis>libmain.adb</emphasis> from
-			<emphasis>janusada</emphasis> to
-			<emphasis>src</emphasis>.
-			Then, you create the project file by running
-			<emphasis>pr_lib.bat</emphasis>
-			in the <emphasis>src</emphasis> directory.
-			<screen><![CDATA[C:\ahven-1.4\src>..\janusada\pr_lib.bat]]></screen>
-		</para>
-		<para>
-			After creating the project file, you need to
-			use <emphasis>COrder</emphasis> to create
-			the compilation script. This happens by
-			running
-			<emphasis>makelib.bat</emphasis>.
-			<screen><![CDATA[C:\ahven-1.4\src>..\janusada\makelib.bat]]></screen>
-			At one point, <emphasis>COrder</emphasis>
-			requires you to specify the location of
-			Ahven.Compat body. Give it a file
-			<emphasis>windows\ahven-compat.adb</emphasis>.
-		</para>
-		<para>
-			Now, you can compile the library using
-			script <emphasis>ctst.bat</emphasis>.
+			To compile the source code, you need to run
+			<emphasis>janusada\prepare.bat</emphasis>,
+			<emphasis>janusada\update.bat</emphasis>, and
+			<emphasis>janusada\compile.bat</emphasis> from
+			the top level directory.
 		</para>
 		<para>
 			To compile the test suite for Ahven, you
-			need to run <emphasis>pr_test.bat</emphasis>
-			and <emphasis>maketest.bat</emphasis> scripts
-			in the <emphasis>test</emphasis> directory.
-			<screen><![CDATA[C:\ahven-1.4\test>..\janusada\pr_test.bat
-C:\ahven-1.4\test>..\janusada\maketest.bat]]></screen>
-		</para>
-		<para>
-			Again, <emphasis>COrder</emphasis> should
-			create you a script called <emphasis>ctst.bat</emphasis>.
-			Use it to compile the source code.
-			To link the object code into a single executable,
-			go to the <emphasis>test_objects</emphasis> directory
-			and type <emphasis>lkc tester</emphasis>. The command
-			should produce <emphasis>tester.exe</emphasis>, which
-			you can run.
+			need to run <emphasis>tap_test.exe</emphasis>
+			from the <emphasis>test_obj</emphasis> directory.
 		</para>
 	</sect1>
 </chapter>
