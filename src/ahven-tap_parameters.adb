@@ -70,10 +70,10 @@ package body Ahven.Tap_Parameters is
       end Handle_Parameter;
    begin
       -- Default values
-      Info := (Tap_13 => False,
+      Info := (Tap_13         => False,
                Verbose_Output => True,
                Capture_Output => False,
-               Test_Name => Empty_VString);
+               Test_Name      => Empty_VString);
       for A in Natural range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A));
       end loop;
