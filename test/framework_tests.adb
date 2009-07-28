@@ -28,7 +28,7 @@ package body Framework_Tests is
    procedure Assert_Eq_Nat is
      new Ahven.Assert_Equal (Data_Type => Natural,
                              Image     => Natural'Image);
-   
+
    procedure Free is new Ada.Unchecked_Deallocation
      (Object => Simple_Listener.Listener,
       Name   => Simple_Listener.Listener_Access);
