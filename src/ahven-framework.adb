@@ -616,12 +616,11 @@ package body Ahven.Framework is
                                   Next => null);
 
             if Target_Last = null then
-               Target_Last := New_Node;
                Target_First := New_Node;
             else
                Target_Last.Next := New_Node;
-               Target_Last := New_Node;
             end if;
+            Target_Last := New_Node;
 
             Current := Current.Next;
          end loop;
