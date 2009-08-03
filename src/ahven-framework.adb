@@ -33,13 +33,6 @@ package body Ahven.Framework is
       Listener_Object : in out Listeners.Result_Listener'Class);
    -- Logic for Execute procedures. Action is specified by the caller.
 
-   procedure Run_Internal
-     (T            : in out Test_Case;
-      Listener     : in out Listeners.Result_Listener'Class;
-      Command      :        Test_Command;
-      Test_Name    :        String;
-      Routine_Name :        String);
-
    procedure Set_Up (T : in out Test) is
    begin
       null;
@@ -80,8 +73,6 @@ package body Ahven.Framework is
 
    procedure Execute (T        : in out Test'Class;
                       Listener : in out Listeners.Result_Listener'Class) is
-      procedure Run_Impl;
-
       procedure Run_Impl is
       begin
          Run (T, Listener);
@@ -95,8 +86,6 @@ package body Ahven.Framework is
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Listener    : in out Listeners.Result_Listener'Class) is
-      procedure Run_Impl;
-
       procedure Run_Impl is
       begin
          Run (T, Test_Name, Listener);
@@ -362,12 +351,13 @@ package body Ahven.Framework is
       -- Normal test list does not have For_Each procedure,
       -- so we need to loop manually.
 
-      procedure Execute_Cases (Cases : Test_List.List);
-      -- Run Execute procedure for all tests in the Cases list.
-
-      procedure Execute_Test (Current : in out Test'Class);
       -- A helper procedure which runs Execute for the given test.
+      procedure Execute_Test (Current : in out Test'Class) is
+      begin
+         Execute (Current, Listener);
+      end Execute_Test;
 
+      -- Run Execute procedure for all tests in the Cases list.
       procedure Execute_Cases (Cases : Test_List.List) is
          use Test_List;
 
@@ -380,10 +370,6 @@ package body Ahven.Framework is
          end loop;
       end Execute_Cases;
 
-      procedure Execute_Test (Current : in out Test'Class) is
-      begin
-         Execute (Current, Listener);
-      end Execute_Test;
 
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
@@ -397,8 +383,6 @@ package body Ahven.Framework is
                   Listener  : in out Listeners.Result_Listener'Class)
    is
       use Test_List;
-
-      procedure Execute_Test (Current : in out Test'Class);
 
       procedure Execute_Test (Current : in out Test'Class) is
       begin
@@ -460,8 +444,6 @@ package body Ahven.Framework is
    function Test_Count (T : Test_Suite; Test_Name : String)
      return Test_Count_Type is
       Counter : Test_Count_Type := 0;
-
-      procedure Handle_Test (Test_Object : Test'Class);
 
       procedure Handle_Test (Test_Object : Test'Class) is
       begin

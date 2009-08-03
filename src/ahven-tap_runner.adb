@@ -26,19 +26,6 @@ package body Ahven.Tap_Runner is
    use Ahven.Framework;
    use Ahven.VStrings;
 
-   -- Local procedures
-   procedure Print_Data (Message : String; Prefix : String);
-
-   procedure Print_Info (Info : Context);
-
-   procedure Print_Info_13 (Info : Context; Severity : String);
-
-   procedure Print_Log_File (Filename : String; Prefix : String);
-
-   procedure Report_Not_Ok (Listener : in out Tap_Listener;
-                            Info     :        Context;
-                            Severity :        String);
-
    procedure Print_Data (Message : String; Prefix : String) is
       Start_Of_Line : Boolean := True;
    begin
