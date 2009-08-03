@@ -44,6 +44,6 @@ project Ahven_Lib is
                                        "-gnatwl",
 				       "-gnatE",
                                        "-gnatwF", -- unreferenced formal off
-                                       "-gnaty3ibmhesux", "-gnat95");
+                                       "-gnatyd3ibmhex", "-gnat95");
   end Builder;
 end Ahven_Lib;
