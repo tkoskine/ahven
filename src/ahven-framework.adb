@@ -54,21 +54,21 @@ package body Ahven.Framework is
       --
       -- There is a separate Start_Test/End_Test pair for test routines
       -- in the Run (T : in out Test_Case; ...) procedure.
-      Listeners.Start_Test (Listener_Object,
-                            Context'(Phase => TEST_BEGIN,
-                                     Test_Name =>
-                                       +Get_Name (Test_Object),
-                                     Test_Kind => CONTAINER));
+      Listeners.Start_Test
+        (Listener_Object,
+         Context'(Phase     => TEST_BEGIN,
+                  Test_Name => +Get_Name (Test_Object),
+                  Test_Kind => CONTAINER));
 
       Action;
 
       -- Like Start_Test, only for Test_Suites and Test_Cases.
-      Listeners.End_Test (Listener_Object,
-                            Context'(Phase          => TEST_END,
-                                     Test_Name      =>
-                                       +Get_Name (Test_Object),
-                                     Test_Kind      => CONTAINER,
-                                     Execution_Time => 0.0));
+      Listeners.End_Test
+        (Listener_Object,
+         Context'(Phase          => TEST_END,
+                  Test_Name      => +Get_Name (Test_Object),
+                  Test_Kind      => CONTAINER,
+                  Execution_Time => 0.0));
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
