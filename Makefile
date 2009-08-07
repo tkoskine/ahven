@@ -120,3 +120,6 @@ docs: ahven.specs
 
 ahven.specs: $(SOURCES)
 	find src/ -name "*.ads" -print |sort|uniq > ahven.specs
+
+tags: $(SOURCES)
+	ectags src/*.adb
