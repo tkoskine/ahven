@@ -84,8 +84,6 @@ package body Ahven.Listeners.Basic is
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Info  : Context) is
-      procedure Add_Result (Collection : in out Result_Collection);
-
       procedure Add_Result (Collection : in out Result_Collection) is
          My_Info : Result_Info := Listener.Last_Info;
       begin
