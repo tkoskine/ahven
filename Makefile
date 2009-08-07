@@ -51,7 +51,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-vstrings.ali \
 	lib/ahven-xml_runner.ali
 
-SO_LIBRARY=libahven.so.16.0
+SO_LIBRARY=libahven.so.17.0
 GPR_FILE=ahven.gpr
 
 default: build_all
@@ -62,28 +62,30 @@ objects:
 test_objects:
 	mkdir -p test_objects
 
-
 lib:
 	mkdir -p lib
 
 build_all: objects test_objects build_lib build_tests
 
 build_lib: objects lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_lib
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_lib
 
 build_tests: test_objects build_lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pahven_tests
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_tests
 
 clean: clean_lib clean_tests clean_docs
 
 clean_lib:
-	rm -rf lib objects
+	gnatclean -q -Pgnat/ahven_lib
 
-clean_tests: test_objects
-	rm -rf results test_objects
+clean_tests:
+	gnatclean -q -Pgnat/ahven_tests
 
 clean_docs:
 	rm -f doc/api/*.html ahven.specs
+
+distclean:
+	rm -rf lib objects results test_objects tester tap_tester
 
 install: install_lib
 
@@ -109,7 +111,7 @@ check_tap: build_tests
 
 control:
 	rm -f objects/*.adt objects/*.ali
-	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs]
+	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs] ../src/unix/*.ad[bs]
 	rm -f objects/*.adt objects/*.ali
 
 docs: ahven.specs

@@ -1,3 +1,24 @@
+????-??-?? Ahven 1.7
+====================
+
+Changes
+-------
+	* The source code repository and the issue tracker are
+	  now hosted at Bitbucket, http://bitbucket.org/tkoskine/ahven
+
+	* The usage of Unbounded_String was completely removed
+	  from Ahven.Framework package. Now Get_Name function
+	  returns String.
+
+	* Fix Contraint_Error when one tries to truncate
+	  overlong string. Bug report and patch from Reto Buerki.
+	  (Bug bitbucket#1)
+
+	* GNAT project files (.gpr) were moved to the 'gnat' directory.
+
+	* The upper limit (Count_Type'Last) of Ahven.SList
+	  is now documented.
+
 2009-02-28 Ahven 1.6
 ====================
 

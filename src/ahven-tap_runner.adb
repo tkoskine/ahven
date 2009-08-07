@@ -21,34 +21,17 @@ with Ada.Characters.Latin_1;
 with Ahven.Tap_Parameters;
 with Ahven.VStrings;
 
-use Ada.Text_IO;
-use Ada.Strings.Fixed;
-
-use Ahven;
-
 package body Ahven.Tap_Runner is
+   use Ada.Text_IO;
    use Ahven.Framework;
    use Ahven.VStrings;
-
-   -- Local procedures
-   procedure Print_Data (Message : String; Prefix : String);
-
-   procedure Print_Info (Info : Context);
-
-   procedure Print_Info_13 (Info : Context; Severity : String);
-
-   procedure Print_Log_File (Filename : String; Prefix : String);
-
-   procedure Report_Not_Ok (Listener : in out Tap_Listener;
-                            Info     :        Context;
-                            Severity :        String);
 
    procedure Print_Data (Message : String; Prefix : String) is
       Start_Of_Line : Boolean := True;
    begin
       for I in Message'Range loop
          if Start_Of_Line then
-            Put(Prefix);
+            Put (Prefix);
             Start_Of_Line := False;
          end if;
          Put (Message (I));
@@ -80,7 +63,7 @@ package body Ahven.Tap_Runner is
            (Suite, Tap_Parameters.Test_Name (Params), Listener);
       else
          Put_Line ("1.." & Ada.Strings.Fixed.Trim
-           (Test_Count_Type'Image(Test_Count (Suite)), Ada.Strings.Both));
+           (Test_Count_Type'Image (Test_Count (Suite)), Ada.Strings.Both));
          Framework.Execute (Suite, Listener);
       end if;
    exception
@@ -131,7 +114,7 @@ package body Ahven.Tap_Runner is
             First := False;
          end if;
          if Start_Of_Line then
-            Put(Prefix);
+            Put (Prefix);
             Start_Of_Line := False;
          end if;
          Put (Char);
@@ -142,7 +125,6 @@ package body Ahven.Tap_Runner is
       end loop;
       Close (Handle);
       if not First then
-         -- New_Line;
          Put_Line (Prefix & "====================");
       end if;
    exception
@@ -154,6 +136,7 @@ package body Ahven.Tap_Runner is
    procedure Add_Pass (Listener : in out Tap_Listener;
                        Info     :        Context) is
       use Ada.Strings;
+      use Ada.Strings.Fixed;
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
@@ -170,6 +153,7 @@ package body Ahven.Tap_Runner is
                             Info     :        Context;
                             Severity :        String) is
       use Ada.Strings;
+      use Ada.Strings.Fixed;
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;

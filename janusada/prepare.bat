@@ -5,6 +5,7 @@ del /q ..\com_obj\*.*
 mkdir ..\lib_obj
 mkdir ..\com_obj
 copy /y ..\janusada\libmain.adb ..\src
+copy /y ..\janusada\compat.adb ..\src\windows
 cd windows
 jmanager Add_Project (..\..\com_obj\,AhvenCompat)
 jmanager Add_Link (..\..\com_obj\,AhvenCompat,%januspath%, JNT_RTS_CONSOLE)

@@ -15,7 +15,10 @@
 --
 
 with Ada.Strings.Unbounded;
+with Ahven.VStrings;
+
 use Ada.Strings.Unbounded;
+use Ahven.VStrings;
 
 package Ahven.Parameters is
    Invalid_Parameter : exception;
@@ -53,7 +56,7 @@ private
       Verbose_Output : Boolean          := True;
       Xml_Output     : Boolean          := False;
       Capture_Output : Boolean          := False;
-      Test_Name      : Unbounded_String := Null_Unbounded_String;
+      Test_Name      : VString          := Empty_VString;
       Result_Dir     : Unbounded_String := Null_Unbounded_String;
    end record;
 end Ahven.Parameters;

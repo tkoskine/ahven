@@ -14,8 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
-use Ada.Strings.Unbounded;
+with Ahven.VStrings;
+use Ahven.VStrings;
 
 package Ahven.Tap_Parameters is
    Invalid_Parameter : exception;
@@ -47,9 +47,9 @@ package Ahven.Tap_Parameters is
 
 private
    type Parameter_Info is record
-      Tap_13         : Boolean          := False;
-      Verbose_Output : Boolean          := True;
-      Capture_Output : Boolean          := False;
-      Test_Name      : Unbounded_String := Null_Unbounded_String;
+      Tap_13         : Boolean := False;
+      Verbose_Output : Boolean := True;
+      Capture_Output : Boolean := False;
+      Test_Name      : VString := Empty_VString;
    end record;
 end Ahven.Tap_Parameters;

@@ -20,7 +20,12 @@ package VString_Tests is
    type Test is new Ahven.Framework.Test_Case with null record;
 
    procedure Initialize (T : in out Test);
+
+   procedure Test_Overlong_Truncate;
+
 private
    procedure Test_Overlong_String;
    procedure Test_VString_Create;
+   procedure Test_Max_Size_Create;
+   procedure Test_Max_Size_Truncate;
 end VString_Tests;

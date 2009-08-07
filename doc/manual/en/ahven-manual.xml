@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+<!ENTITY intro SYSTEM "introduction.xml">
+<!ENTITY installing SYSTEM "installing.xml">
+<!ENTITY using SYSTEM "using.xml">
+]>
+<book lang="en">
+	<title>Ahven User's Guide</title>
+	<bookinfo>
+	<authorgroup>
+		<author><firstname>Tero</firstname><surname>Koskinen</surname></author>
+	</authorgroup>
+	</bookinfo>
+	&intro;
+	&installing;
+	&using;
+</book>

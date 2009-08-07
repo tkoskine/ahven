@@ -15,18 +15,21 @@
 --
 
 with Ada.Finalization;
-with Ada.Strings.Unbounded;
 
 with Ahven.Listeners;
 with Ahven.SList;
+with Ahven.VStrings;
 
 pragma Elaborate_All (Ahven.SList);
-
-use Ada.Strings.Unbounded;
 
 package Ahven.Framework is
 
    type Test_Count_Type is new Natural;
+   -- Type for the test count. This effectively
+   -- limits the amount tests to whatever Natural is.
+   --
+   -- Although, in practice when adding tests the limit
+   -- is not checked.
 
    type Test is abstract new Ada.Finalization.Controlled with null record;
    -- A type, which provides the base for Test_Case and
@@ -54,7 +57,7 @@ package Ahven.Framework is
    -- One should not call this explicitly by herself.
    -- The framework calls it when necessary.
 
-   function Get_Name (T : Test) return Unbounded_String is abstract;
+   function Get_Name (T : Test) return String is abstract;
    -- Return the name of the test.
    --
    -- Types derived from the Test type are required to overwrite
@@ -106,7 +109,7 @@ package Ahven.Framework is
    type Test_Case is abstract new Test with private;
    -- The base type for other test cases.
 
-   function Get_Name (T : Test_Case) return Unbounded_String;
+   function Get_Name (T : Test_Case) return String;
    -- Return the name of the test case.
 
    procedure Run (T        : in out Test_Case;
@@ -199,7 +202,7 @@ package Ahven.Framework is
    -- made to it after adding the test are not propagated to
    -- the added object.
 
-   function Get_Name (T : Test_Suite) return Unbounded_String;
+   function Get_Name (T : Test_Suite) return String;
    -- Return the name of Test_Suite.
 
    procedure Run (T      : in out Test_Suite;
@@ -229,7 +232,7 @@ private
    type Command_Object_Enum is (SIMPLE, OBJECT);
 
    type Test_Command (Command_Kind : Command_Object_Enum := SIMPLE) is record
-      Name : Unbounded_String;
+      Name : VStrings.VString;
       case Command_Kind is
          when SIMPLE =>
             Simple_Routine : Simple_Test_Routine_Access;
@@ -248,7 +251,7 @@ private
 
    type Test_Case is abstract new Test with record
       Routines : Test_Command_List.List := Test_Command_List.Empty_List;
-      Name : Unbounded_String := Null_Unbounded_String;
+      Name : VStrings.VString := VStrings.Empty_VString;
    end record;
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
@@ -326,7 +329,7 @@ private
    end Indefinite_Test_List;
 
    type Test_Suite is new Test with record
-      Suite_Name : Unbounded_String;
+      Suite_Name : VStrings.VString := VStrings.Empty_VString;
       Test_Cases : Test_List.List;
       Static_Test_Cases : Indefinite_Test_List.List;
    end record;

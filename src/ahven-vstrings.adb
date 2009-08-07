@@ -31,7 +31,7 @@ package body Ahven.VStrings is
       else
          return VString'(Len  => VString_Size'Last,
                          Data => Source (Source'First .. Source'First
-                                         + VString_Size'Last));
+                                         + (VString_Size'Last - 1)));
       end if;
    end Truncate;
 

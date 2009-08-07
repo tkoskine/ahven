@@ -15,13 +15,13 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 #
-# ./make_release <place> <version>
+# ./make_release <version>
 #
 # For example
 # ./make_release /tags/ahven_1_0 1.0
 #
 
-SVNROOT=http://svn.gna.org/svn/ahven
+HGROOT=http://bitbucket.org/tkoskine/ahven
 
 failure()
 {
@@ -29,16 +29,16 @@ failure()
     exit 1
 }
 
-if [ x"$2" = x"" ]; then
-    echo "usage: make_release <branch> <version>"
+if [ x"$1" = x"" ]; then
+    echo "usage: make_release <version>"
     exit 1
 fi
 
-PLACE=$1
-VERSION=$2
+VERSION=$1
 
 cd /tmp || failure "cd /tmp failed"
-svn export $SVNROOT/$PLACE ahven-$VERSION || failure "checkout failed"
+hg clone $HGROOT ahven-$VERSION || failure "checkout failed"
+cd ahven-$VERSION && rm -rf .hg .hgignore .hgtags && cd .. || failure "rm failed"
 tar zcf ahven-$VERSION.tar.gz ahven-$VERSION || failure "tar zcf failed"
 zip -r ahven-$VERSION.zip ahven-$VERSION || failure "zip -r failed"
 

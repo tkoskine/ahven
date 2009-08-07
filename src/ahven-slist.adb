@@ -30,6 +30,10 @@ package body Ahven.SList is
                      Node_Data : Element_Type) is
       New_Node : Node_Access  := null;
    begin
+      if Target.Size = Count_Type'Last then
+         raise List_Full;
+      end if;
+
       New_Node := new Node'(Data => Node_Data, Next => null);
 
       if Target.Last = null then
@@ -73,6 +77,10 @@ package body Ahven.SList is
 
    function Data (Position : Cursor) return Element_Type is
    begin
+      if Position = null then
+         raise Invalid_Cursor;
+      end if;
+
       return Position.Data;
    end Data;
 
@@ -99,11 +107,12 @@ package body Ahven.SList is
    end Finalize;
 
    procedure Adjust (Target : in out List) is
-      Target_Last : Node_Access := null;
+      Target_Last  : Node_Access := null;
       Target_First : Node_Access := null;
-      Current : Node_Access := Target.First;
-      New_Node : Node_Access;
+      Current      : Node_Access := Target.First;
+      New_Node     : Node_Access;
    begin
+      -- Recreate the list using the same data
       while Current /= null loop
          New_Node := new Node'(Data => Current.Data, Next => null);
 
@@ -119,5 +128,7 @@ package body Ahven.SList is
       end loop;
       Target.First := Target_First;
       Target.Last := Target_Last;
+
+      -- No need to adjust size, it is same as before copying
    end Adjust;
 end Ahven.SList;

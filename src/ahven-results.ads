@@ -97,7 +97,7 @@ package Ahven.Results is
    -- A collection of Result_Info objects.
    -- Contains also child collections.
 
-   type Result_Collection_Access is access all Result_Collection;
+   type Result_Collection_Access is access Result_Collection;
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child      :        Result_Collection_Access);

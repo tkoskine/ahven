@@ -26,10 +26,15 @@ package Ahven.SList is
 
    Invalid_Cursor : exception;
 
+   List_Full : exception;
+   -- Thrown when the size of the list exceeds Count_Type'Last.
+
    Empty_List : constant List;
 
    procedure Append (Target : in out List; Node_Data : Element_Type);
    -- Append an element at the end of the list.
+   --
+   -- Raises List_Full if the list has already Count_Type'Last items.
 
    procedure Remove_All (Target : in out List);
    -- Remove all elements from the list.
@@ -44,8 +49,12 @@ package Ahven.SList is
    -- Return element pointed by the cursor.
 
    function Is_Valid (Position : Cursor) return Boolean;
+   -- Tell the validity of the cursor. The cursor
+   -- will become invalid when you iterate it over
+   -- the last item.
 
    function Length (Target : List) return Count_Type;
+   -- Return the length of the list.
 
 private
    type Node;

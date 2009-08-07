@@ -18,8 +18,6 @@ with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
 with Ada.Calendar;
 
-with Ahven.VStrings;
-
 package body Ahven.Framework is
    use Ahven.VStrings;
 
@@ -34,13 +32,6 @@ package body Ahven.Framework is
      (Test_Object     : in out Test'Class;
       Listener_Object : in out Listeners.Result_Listener'Class);
    -- Logic for Execute procedures. Action is specified by the caller.
-
-   procedure Run_Internal
-     (T            : in out Test_Case;
-      Listener     : in out Listeners.Result_Listener'Class;
-      Command      :        Test_Command;
-      Test_Name    :        String;
-      Routine_Name :        String);
 
    procedure Set_Up (T : in out Test) is
    begin
@@ -63,27 +54,25 @@ package body Ahven.Framework is
       --
       -- There is a separate Start_Test/End_Test pair for test routines
       -- in the Run (T : in out Test_Case; ...) procedure.
-      Listeners.Start_Test (Listener_Object,
-                            Context'(Phase => TEST_BEGIN,
-                                     Test_Name =>
-                                       +To_String (Get_Name (Test_Object)),
-                                     Test_Kind => CONTAINER));
+      Listeners.Start_Test
+        (Listener_Object,
+         Context'(Phase     => TEST_BEGIN,
+                  Test_Name => +Get_Name (Test_Object),
+                  Test_Kind => CONTAINER));
 
       Action;
 
       -- Like Start_Test, only for Test_Suites and Test_Cases.
-      Listeners.End_Test (Listener_Object,
-                            Context'(Phase          => TEST_END,
-                                     Test_Name      =>
-                                       +To_String (Get_Name (Test_Object)),
-                                     Test_Kind      => CONTAINER,
-                                     Execution_Time => 0.0));
+      Listeners.End_Test
+        (Listener_Object,
+         Context'(Phase          => TEST_END,
+                  Test_Name      => +Get_Name (Test_Object),
+                  Test_Kind      => CONTAINER,
+                  Execution_Time => 0.0));
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
                       Listener : in out Listeners.Result_Listener'Class) is
-      procedure Run_Impl;
-
       procedure Run_Impl is
       begin
          Run (T, Listener);
@@ -97,8 +86,6 @@ package body Ahven.Framework is
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
                       Listener    : in out Listeners.Result_Listener'Class) is
-      procedure Run_Impl;
-
       procedure Run_Impl is
       begin
          Run (T, Test_Name, Listener);
@@ -115,7 +102,7 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         Test_Command'(Command_Kind   => OBJECT,
-                      Name           => To_Unbounded_String (Name),
+                      Name           => +Name,
                       Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -127,7 +114,7 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         Test_Command'(Command_Kind   => SIMPLE,
-                      Name           => To_Unbounded_String (Name),
+                      Name           => +Name,
                       Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -177,9 +164,9 @@ package body Ahven.Framework is
          end if;
    end Run_Command;
 
-   function Get_Name (T : Test_Case) return Unbounded_String is
+   function Get_Name (T : Test_Case) return String is
    begin
-      return T.Name;
+      return To_String (T.Name);
    end Get_Name;
 
    procedure Run_Internal
@@ -237,7 +224,7 @@ package body Ahven.Framework is
          Run_Internal (T            => T,
                        Listener     => Listener,
                        Command      => Data (Position),
-                       Test_Name    => To_String (Get_Name (T)),
+                       Test_Name    => Get_Name (T),
                        Routine_Name => To_String (Data (Position).Name));
          Position := Next (Position);
       end loop;
@@ -262,7 +249,7 @@ package body Ahven.Framework is
             Run_Internal (T            => T,
                           Listener     => Listener,
                           Command      => Data (Position),
-                          Test_Name    => To_String (Get_Name (T)),
+                          Test_Name    => Get_Name (T),
                           Routine_Name => To_String (Data (Position).Name));
          end if;
 
@@ -310,7 +297,7 @@ package body Ahven.Framework is
 
    procedure Set_Name (T : in out Test_Case; Name : String) is
    begin
-      T.Name := To_Unbounded_String (Name);
+      T.Name := +Name;
    end Set_Name;
 
    function Create_Suite (Suite_Name : String)
@@ -318,7 +305,7 @@ package body Ahven.Framework is
    begin
       return
         new Test_Suite'(Ada.Finalization.Controlled with
-                        Suite_Name        => To_Unbounded_String (Suite_Name),
+                        Suite_Name        => +Suite_Name,
                         Test_Cases        => Test_List.Empty_List,
                         Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
@@ -327,7 +314,7 @@ package body Ahven.Framework is
      return Test_Suite is
    begin
       return (Ada.Finalization.Controlled with
-              Suite_Name        => To_Unbounded_String (Suite_Name),
+              Suite_Name        => +Suite_Name,
               Test_Cases        => Test_List.Empty_List,
               Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
@@ -348,9 +335,9 @@ package body Ahven.Framework is
       Indefinite_Test_List.Append (Suite.Static_Test_Cases, T);
    end Add_Static_Test;
 
-   function Get_Name (T : Test_Suite) return Unbounded_String is
+   function Get_Name (T : Test_Suite) return String is
    begin
-      return T.Suite_Name;
+      return To_String (T.Suite_Name);
    end Get_Name;
 
    procedure Run (T        : in out Test_Suite;
@@ -364,12 +351,13 @@ package body Ahven.Framework is
       -- Normal test list does not have For_Each procedure,
       -- so we need to loop manually.
 
-      procedure Execute_Cases (Cases : Test_List.List);
-      -- Run Execute procedure for all tests in the Cases list.
-
-      procedure Execute_Test (Current : in out Test'Class);
       -- A helper procedure which runs Execute for the given test.
+      procedure Execute_Test (Current : in out Test'Class) is
+      begin
+         Execute (Current, Listener);
+      end Execute_Test;
 
+      -- Run Execute procedure for all tests in the Cases list.
       procedure Execute_Cases (Cases : Test_List.List) is
          use Test_List;
 
@@ -382,10 +370,6 @@ package body Ahven.Framework is
          end loop;
       end Execute_Cases;
 
-      procedure Execute_Test (Current : in out Test'Class) is
-      begin
-         Execute (Current, Listener);
-      end Execute_Test;
 
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
@@ -400,11 +384,9 @@ package body Ahven.Framework is
    is
       use Test_List;
 
-      procedure Execute_Test (Current : in out Test'Class);
-
       procedure Execute_Test (Current : in out Test'Class) is
       begin
-         if To_String (Get_Name (Current)) = Test_Name then
+         if Get_Name (Current) = Test_Name then
             Execute (Current, Listener);
          else
             Execute (Current, Test_Name, Listener);
@@ -463,11 +445,9 @@ package body Ahven.Framework is
      return Test_Count_Type is
       Counter : Test_Count_Type := 0;
 
-      procedure Handle_Test (Test_Object : Test'Class);
-
       procedure Handle_Test (Test_Object : Test'Class) is
       begin
-         if To_String (Get_Name (Test_Object)) = Test_Name then
+         if Get_Name (Test_Object) = Test_Name then
             Counter := Counter + Test_Count (Test_Object);
          else
             Counter := Counter + Test_Count (Test_Object, Test_Name);
@@ -636,12 +616,11 @@ package body Ahven.Framework is
                                   Next => null);
 
             if Target_Last = null then
-               Target_Last := New_Node;
                Target_First := New_Node;
             else
                Target_Last.Next := New_Node;
-               Target_Last := New_Node;
             end if;
+            Target_Last := New_Node;
 
             Current := Current.Next;
          end loop;

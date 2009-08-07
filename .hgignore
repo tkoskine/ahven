@@ -1,0 +1,21 @@
+syntax: glob
+
+*.ali
+test_objects
+objects
+test_obj
+com_obj
+obj
+lib
+tap_tester
+tester
+TRACE.TMP
+ctst.bat
+*.OBJ
+*.SYM
+*.SRL
+*.JRL
+_JANUS.PRJ
+src\libmain.adb
+*.orig
+*.swp

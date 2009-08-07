@@ -96,8 +96,7 @@ package body Ahven.Text_Runner is
       subtype Result_Size is Integer range 1 .. Max_Result_Width;
       subtype Time_Out_Size is Integer range 1 .. Max_Time_Out_Width;
 
-      Msg        : constant Unbounded_String :=
-        To_Unbounded_String (Get_Message (Info));
+      Msg        : constant String := Get_Message (Info);
       Output     : Unbounded_String := Null_Unbounded_String;
       Result_Out : String (Result_Size) := (others => ' ');
       Time_Out   : String (Time_Out_Size) := (others => ' ');
@@ -105,7 +104,7 @@ package body Ahven.Text_Runner is
    begin
       Pad (Output, Level + 1);
       Append (Output, Get_Routine_Name (Info));
-      if Length (Msg) > 0 then
+      if Msg'Length > 0 then
          Append (Output, " - ");
          Append (Output, Msg);
       end if;
@@ -142,10 +141,40 @@ package body Ahven.Text_Runner is
       New_Line;
    end Print_Test;
 
+   type Print_Child_Proc is access
+     procedure (Result : Result_Collection; Level : Natural);
+
+   type Child_Count_Proc is access
+     function (Result : Result_Collection) return Natural;
+
+   procedure Print_Children (Result : Result_Collection;
+                             Level  : Natural;
+                             Action : Print_Child_Proc;
+                             Count  : Child_Count_Proc);
+
+   procedure Print_Children (Result : Result_Collection;
+                             Level  : Natural;
+                             Action : Print_Child_Proc;
+                             Count  : Child_Count_Proc)
+   is
+      Child_Iter : Result_Collection_Cursor := First_Child (Result);
+   begin
+      loop
+         exit when not Is_Valid (Child_Iter);
+         if Count.all (Data (Child_Iter).all) > 0 then
+            Action.all (Data (Child_Iter).all, Level + 1);
+         end if;
+         Child_Iter := Next (Child_Iter);
+      end loop;
+   end Print_Children;
+
+   --
+   -- Print all failures from the result collection
+   -- and then recurse into child collections.
+   --
    procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural) is
       Iter       : Result_Info_Cursor;
-      Child_Iter : Result_Collection_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
@@ -163,20 +192,19 @@ package body Ahven.Text_Runner is
          Iter := Next (Iter);
       end loop Failure_Loop;
 
-      Child_Iter := First_Child (Result);
-      loop
-         exit when not Is_Valid (Child_Iter);
-         if Failure_Count (Data (Child_Iter).all) > 0 then
-            Print_Failures (Data (Child_Iter).all, Level + 1);
-         end if;
-         Child_Iter := Next (Child_Iter);
-      end loop;
+      Print_Children (Result => Result,
+                      Level  => Level,
+                      Action => Print_Failures'Access,
+                      Count  => Failure_Count'Access);
    end Print_Failures;
 
+   --
+   -- Print all errors from the result collection
+   -- and then recurse into child collections.
+   --
    procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural) is
       Iter       : Result_Info_Cursor;
-      Child_Iter : Result_Collection_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
@@ -194,21 +222,19 @@ package body Ahven.Text_Runner is
          Iter := Next (Iter);
       end loop Error_Loop;
 
-      Child_Iter := First_Child (Result);
-      loop
-         exit when not Is_Valid (Child_Iter);
-         if Error_Count (Data (Child_Iter).all) > 0 then
-            Print_Errors (Data (Child_Iter).all, Level + 1);
-         end if;
-         Child_Iter := Next (Child_Iter);
-      end loop;
-
+      Print_Children (Result => Result,
+                      Level  => Level,
+                      Action => Print_Errors'Access,
+                      Count  => Error_Count'Access);
    end Print_Errors;
 
+   --
+   -- Print all passes from the result collection
+   -- and then recurse into child collections.
+   --
    procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
       Iter       : Result_Info_Cursor;
-      Child_Iter : Result_Collection_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
@@ -223,16 +249,14 @@ package body Ahven.Text_Runner is
          Iter := Next (Iter);
       end loop Pass_Loop;
 
-      Child_Iter := First_Child (Result);
-      loop
-         exit when not Is_Valid (Child_Iter);
-         if Pass_Count (Data (Child_Iter).all) > 0 then
-            Print_Passes (Data (Child_Iter).all, Level + 1);
-         end if;
-         Child_Iter := Next (Child_Iter);
-      end loop;
+      Print_Children (Result => Result,
+                      Level  => Level,
+                      Action => Print_Passes'Access,
+                      Count  => Pass_Count'Access);
    end Print_Passes;
 
+   --
+   -- Report passes, failures, and errors from the result collection.
    procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False) is
    begin
