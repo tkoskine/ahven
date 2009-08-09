@@ -1,4 +1,4 @@
-????-??-?? Ahven 1.7
+2009-08-?? Ahven 1.7
 ====================
 
 Changes
@@ -10,14 +10,31 @@ Changes
 	  from Ahven.Framework package. Now Get_Name function
 	  returns String.
 
-	* Fix Contraint_Error when one tries to truncate
-	  overlong string. Bug report and patch from Reto Buerki.
-	  (Bug bitbucket#1)
-
 	* GNAT project files (.gpr) were moved to the 'gnat' directory.
 
 	* The upper limit (Count_Type'Last) of Ahven.SList
 	  is now documented.
+
+Bugs fixed
+----------
+	* Fix Contraint_Error when one tries to truncate
+	  overlong string. Bug report and patch from Reto Buerki.
+	  (Bug bitbucket#1)
+
+Internal
+--------
+	* Makefile now has 'tags' target for generating 'tags' file.
+	  It assumes that ctags utility has support for Ada.
+
+	* It is no longer necessary to have procedure or function
+	  declarations for all procedures and functions. The purpose
+	  is to allow somewhat shorter code.
+
+	* User's Guide has seen some progress, but it is still not
+	  completely ready. (=one should not rely on it.)
+
+	* In the test code, some Assert calls were converted to
+	  more compact Assert_Equal calls.
 
 2009-02-28 Ahven 1.6
 ====================
