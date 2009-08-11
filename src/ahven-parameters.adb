@@ -71,7 +71,7 @@ package body Ahven.Parameters is
       is
       begin
          if Dir_Next then
-            P.Result_Dir := To_Unbounded_String (Arg);
+            P.Result_Dir := Index;
             Dir_Next := False;
          elsif Arg = "--" then
             Files_Only := True;
@@ -89,7 +89,7 @@ package body Ahven.Parameters is
                Xml_Output     => False,
                Capture_Output => False,
                Test_Name      => 0,
-               Result_Dir     => Null_Unbounded_String);
+               Result_Dir     => 0);
       for A in Positive range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A), A);
       end loop;
@@ -140,6 +140,10 @@ package body Ahven.Parameters is
 
    function Result_Dir (Info : Parameter_Info) return String is
    begin
-      return To_String (Info.Result_Dir);
+      if Info.Result_Dir = 0 then
+         return "";
+      else
+         return Argument (Info.Result_Dir);
+      end if;
    end Result_Dir;
 end Ahven.Parameters;

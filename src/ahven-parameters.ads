@@ -58,6 +58,7 @@ private
       Capture_Output : Boolean          := False;
       Test_Name      : Natural          := 0;
       -- Position of test name in the argument array
-      Result_Dir     : Unbounded_String := Null_Unbounded_String;
+      Result_Dir     : Natural          := 0;
+      -- Position of results dir in the argument array
    end record;
 end Ahven.Parameters;
