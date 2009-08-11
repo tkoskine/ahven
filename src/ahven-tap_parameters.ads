@@ -50,6 +50,6 @@ private
       Tap_13         : Boolean := False;
       Verbose_Output : Boolean := True;
       Capture_Output : Boolean := False;
-      Test_Name      : VString := Empty_VString;
+      Test_Name      : Natural := 0;
    end record;
 end Ahven.Tap_Parameters;

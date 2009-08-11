@@ -56,7 +56,8 @@ private
       Verbose_Output : Boolean          := True;
       Xml_Output     : Boolean          := False;
       Capture_Output : Boolean          := False;
-      Test_Name      : VString          := Empty_VString;
+      Test_Name      : Natural          := 0;
+      -- Position of test name in the argument array
       Result_Dir     : Unbounded_String := Null_Unbounded_String;
    end record;
 end Ahven.Parameters;

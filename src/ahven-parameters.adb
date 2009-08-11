@@ -57,13 +57,18 @@ package body Ahven.Parameters is
    -- Option "--" can be used to separate options and test names.
    --
    procedure Parse_Parameters (Info : out Parameter_Info) is
-      procedure Handle_Parameter (P : in out Parameter_Info; Arg : String);
+      procedure Handle_Parameter (P     : in out Parameter_Info;
+                                  Arg   :        String;
+                                  Index :        Positive);
       -- Parse one parameter and update P if necessary.
 
       Files_Only : Boolean := False;
       Dir_Next   : Boolean := False;
 
-      procedure Handle_Parameter (P : in out Parameter_Info; Arg : String) is
+      procedure Handle_Parameter (P     : in out Parameter_Info;
+                                  Arg   :        String;
+                                  Index :        Positive)
+      is
       begin
          if Dir_Next then
             P.Result_Dir := To_Unbounded_String (Arg);
@@ -74,7 +79,7 @@ package body Ahven.Parameters is
             if (not Files_Only) and (Arg (Arg'First) = '-') then
                Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last), Dir_Next);
             else
-               P.Test_Name := +Arg;
+               P.Test_Name := Index;
             end if;
          end if;
       end Handle_Parameter;
@@ -83,10 +88,10 @@ package body Ahven.Parameters is
       Info := (Verbose_Output => True,
                Xml_Output     => False,
                Capture_Output => False,
-               Test_Name      => Empty_VString,
+               Test_Name      => 0,
                Result_Dir     => Null_Unbounded_String);
-      for A in Natural range 1 .. Argument_Count loop
-         Handle_Parameter (Info, Argument (A));
+      for A in Positive range 1 .. Argument_Count loop
+         Handle_Parameter (Info, Argument (A), A);
       end loop;
       if Dir_Next then
          raise Invalid_Parameter;
@@ -121,12 +126,16 @@ package body Ahven.Parameters is
 
    function Single_Test (Info : Parameter_Info) return Boolean is
    begin
-      return (Length (Info.Test_Name) /= 0);
+      return (Info.Test_Name /= 0);
    end Single_Test;
 
    function Test_Name (Info : Parameter_Info) return String is
    begin
-      return To_String (Info.Test_Name);
+      if Info.Test_Name = 0 then
+         return "";
+      else
+         return Argument (Info.Test_Name);
+      end if;
    end Test_Name;
 
    function Result_Dir (Info : Parameter_Info) return String is
