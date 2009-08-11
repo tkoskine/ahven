@@ -29,7 +29,7 @@ package body Ahven.Runner is
       Listener : Listeners.Basic.Basic_Listener;
       Params   : Parameters.Parameter_Info;
    begin
-      Parameters.Parse_Parameters (Params);
+      Parameters.Parse_Parameters (Parameters.NORMAL_PARAMETERS, Params);
       Set_Output_Capture (Listener, Parameters.Capture (Params));
 
       if Parameters.Single_Test (Params) then

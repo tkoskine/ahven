@@ -21,9 +21,6 @@ use Ada.Command_Line;
 use Ada.Text_IO;
 
 package body Ahven.Parameters is
-   procedure Parse_Options (Info : in out Parameter_Info; Option : String;
-                            Dir_Next : out Boolean);
-
    -- Possible options:
    --  -c : capture output
    --  -d : result directory
@@ -31,8 +28,10 @@ package body Ahven.Parameters is
    --  -v : verbose mode (default)
    --  -x : XML output
    --
-   procedure Parse_Options (Info : in out Parameter_Info; Option : String;
-                            Dir_Next : out Boolean) is
+   procedure Parse_Options (Info     : in out Parameter_Info;
+                            Mode     :        Parameter_Mode;
+                            Option   :        String;
+                            Dir_Next :    out Boolean) is
    begin
       Dir_Next := False;
       for A in Option'Range loop
@@ -40,13 +39,27 @@ package body Ahven.Parameters is
             when 'c' =>
                Info.Capture_Output := True;
             when 'd' =>
-               Dir_Next := True;
+               if Mode = NORMAL_PARAMETERS then
+                  Dir_Next := True;
+               else
+                  raise Invalid_Parameter;
+               end if;
+            when 'n' =>
+               if Mode = TAP_PARAMETERS then
+                  Info.Tap_13 := True;
+               else
+                  raise Invalid_Parameter;
+               end if;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
                Info.Verbose_Output := False;
             when 'x' =>
-               Info.Xml_Output := True;
+               if Mode = NORMAL_PARAMETERS then
+                  Info.Xml_Output := True;
+               else
+                  raise Invalid_Parameter;
+               end if;
             when others =>
                raise Invalid_Parameter;
          end case;
@@ -56,7 +69,8 @@ package body Ahven.Parameters is
    -- Recognize command line parameters.
    -- Option "--" can be used to separate options and test names.
    --
-   procedure Parse_Parameters (Info : out Parameter_Info) is
+   procedure Parse_Parameters (Mode :     Parameter_Mode;
+                               Info : out Parameter_Info) is
       procedure Handle_Parameter (P     : in out Parameter_Info;
                                   Arg   :        String;
                                   Index :        Positive);
@@ -77,7 +91,8 @@ package body Ahven.Parameters is
             Files_Only := True;
          elsif Arg'Size > 1 then
             if (not Files_Only) and (Arg (Arg'First) = '-') then
-               Parse_Options (P, Arg (Arg'First + 1 .. Arg'Last), Dir_Next);
+               Parse_Options
+                 (P, Mode, Arg (Arg'First + 1 .. Arg'Last), Dir_Next);
             else
                P.Test_Name := Index;
             end if;
@@ -88,6 +103,7 @@ package body Ahven.Parameters is
       Info := (Verbose_Output => True,
                Xml_Output     => False,
                Capture_Output => False,
+               Tap_13         => False,
                Test_Name      => 0,
                Result_Dir     => 0);
       for A in Positive range 1 .. Argument_Count loop
@@ -98,15 +114,26 @@ package body Ahven.Parameters is
       end if;
    end Parse_Parameters;
 
-   procedure Usage is
+   procedure Usage (Mode : Parameter_Mode := NORMAL_PARAMETERS) is
    begin
-      Put_Line ("Possible parameters: [-cqvx] [-d directory] [--] [testname]");
-      Put_Line ("   -c    : capture and report test outputs");
-      Put_Line ("   -d    : directory for test results");
-      Put_Line ("   -q    : quiet results");
-      Put_Line ("   -v    : verbose results (default)");
-      Put_Line ("   -x    : output in XML format");
-      Put_Line ("   --    : end of parameters (optional)");
+      case Mode is
+         when NORMAL_PARAMETERS =>
+            Put_Line
+              ("Possible parameters: [-cqvx] [-d directory] [--] [testname]");
+            Put_Line ("   -c    : capture and report test outputs");
+            Put_Line ("   -d    : directory for test results");
+            Put_Line ("   -q    : quiet results");
+            Put_Line ("   -v    : verbose results (default)");
+            Put_Line ("   -x    : output in XML format");
+            Put_Line ("   --    : end of parameters (optional)");
+         when TAP_PARAMETERS =>
+            Put_Line ("Possible parameters: [-cnqv] [--] [testname]");
+            Put_Line ("   -c    : capture and report test outputs");
+            Put_Line ("   -n    : use tap 1.3 instead of tap 1.2");
+            Put_Line ("   -q    : quiet results");
+            Put_Line ("   -v    : verbose results (default)");
+            Put_Line ("   --    : end of parameters (optional)");
+      end case;
    end Usage;
 
    function Capture (Info : Parameter_Info) return Boolean is
@@ -146,4 +173,9 @@ package body Ahven.Parameters is
          return Argument (Info.Result_Dir);
       end if;
    end Result_Dir;
+
+   function Use_Tap_13 (Info : Parameter_Info) return Boolean is
+   begin
+      return Info.Tap_13;
+   end Use_Tap_13;
 end Ahven.Parameters;

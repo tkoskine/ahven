@@ -14,23 +14,20 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Unbounded;
-with Ahven.VStrings;
-
-use Ada.Strings.Unbounded;
-use Ahven.VStrings;
-
 package Ahven.Parameters is
    Invalid_Parameter : exception;
 
    type Parameter_Info is private;
 
-   procedure Parse_Parameters (Info : out Parameter_Info);
+   type Parameter_Mode is (NORMAL_PARAMETERS, TAP_PARAMETERS);
+
+   procedure Parse_Parameters (Mode :     Parameter_Mode;
+                               Info : out Parameter_Info);
    -- Parse Ada.Command_Line parameters and put the results
    -- to the Info parameter. Raises Invalid_Parameter if
    -- some parameter is invalid.
 
-   procedure Usage;
+   procedure Usage (Mode : Parameter_Mode := NORMAL_PARAMETERS);
    -- Print usage.
 
    function Capture (Info : Parameter_Info) return Boolean;
@@ -51,14 +48,18 @@ package Ahven.Parameters is
    function Result_Dir (Info : Parameter_Info) return String;
    -- Return the directory for XML results.
 
+   function Use_Tap_13 (Info : Parameter_Info) return Boolean;
+   -- Use Test Anything Protocol 1.3?
+
 private
    type Parameter_Info is record
-      Verbose_Output : Boolean          := True;
-      Xml_Output     : Boolean          := False;
-      Capture_Output : Boolean          := False;
-      Test_Name      : Natural          := 0;
+      Tap_13         : Boolean := False;
+      Verbose_Output : Boolean := True;
+      Xml_Output     : Boolean := False;
+      Capture_Output : Boolean := False;
+      Test_Name      : Natural := 0;
       -- Position of test name in the argument array
-      Result_Dir     : Natural          := 0;
+      Result_Dir     : Natural := 0;
       -- Position of results dir in the argument array
    end record;
 end Ahven.Parameters;

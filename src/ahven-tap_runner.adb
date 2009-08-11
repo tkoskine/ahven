@@ -18,7 +18,7 @@ with Ada.Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Characters.Latin_1;
 
-with Ahven.Tap_Parameters;
+with Ahven.Parameters;
 with Ahven.VStrings;
 
 package body Ahven.Tap_Runner is
@@ -44,31 +44,31 @@ package body Ahven.Tap_Runner is
 
    procedure Run (Suite : in out Framework.Test'Class) is
       Listener : Tap_Listener;
-      Params   : Tap_Parameters.Parameter_Info;
+      Params   : Parameters.Parameter_Info;
    begin
-      Tap_Parameters.Parse_Parameters (Params);
+      Parameters.Parse_Parameters (Parameters.TAP_PARAMETERS, Params);
 
-      if Tap_Parameters.Use_Tap_13 (Params) then
+      if Parameters.Use_Tap_13 (Params) then
          Put_Line ("TAP version 13");
       end if;
-      Listener.Tap_13 := Tap_Parameters.Use_Tap_13 (Params);
-      Listener.Verbose := Tap_Parameters.Verbose (Params);
-      Listener.Capture_Output := Tap_Parameters.Capture (Params);
+      Listener.Tap_13 := Parameters.Use_Tap_13 (Params);
+      Listener.Verbose := Parameters.Verbose (Params);
+      Listener.Capture_Output := Parameters.Capture (Params);
 
-      if Tap_Parameters.Single_Test (Params) then
+      if Parameters.Single_Test (Params) then
          Put_Line ("1.." & Ada.Strings.Fixed.Trim
            (Test_Count_Type'Image (Test_Count
-             (Suite, Tap_Parameters.Test_Name (Params))), Ada.Strings.Both));
+             (Suite, Parameters.Test_Name (Params))), Ada.Strings.Both));
          Framework.Execute
-           (Suite, Tap_Parameters.Test_Name (Params), Listener);
+           (Suite, Parameters.Test_Name (Params), Listener);
       else
          Put_Line ("1.." & Ada.Strings.Fixed.Trim
            (Test_Count_Type'Image (Test_Count (Suite)), Ada.Strings.Both));
          Framework.Execute (Suite, Listener);
       end if;
    exception
-      when Tap_Parameters.Invalid_Parameter =>
-         Tap_Parameters.Usage;
+      when Parameters.Invalid_Parameter =>
+         Parameters.Usage (Parameters.TAP_PARAMETERS);
    end Run;
 
    procedure Print_Info (Info : Context) is
