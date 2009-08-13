@@ -16,7 +16,6 @@
 
 with Ada.Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;
 with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
@@ -25,7 +24,6 @@ with Ahven.VStrings;
 
 use Ada.Text_IO;
 use Ada.Strings.Fixed;
-use Ada.Strings.Unbounded;
 
 package body Ahven.Text_Runner is
    use Ahven.Results;
