@@ -59,6 +59,15 @@ package body Ahven.Text_Runner is
          Put (" ");
       end loop;
    end Pad;
+   
+   procedure Pad (Amount : in     Natural;
+                        Total  : in out Natural) is
+   begin
+      for A in Natural range 1 .. Amount loop
+         Put (" ");
+      end loop;
+      Total := Total + Amount;
+   end Pad;
 
    procedure Multiline_Pad (Input  : String;
                             Level  : Natural) is
@@ -84,29 +93,6 @@ package body Ahven.Text_Runner is
       subtype Result_Size is Integer range 1 .. Max_Result_Width;
       subtype Time_Out_Size is Integer range 1 .. Max_Time_Out_Width;
       
-      procedure Print_Pad (Amount  : in     Natural;
-                           Max_Pad :        Natural;
-                           Total   : in out Natural) is
-         To_Value : Natural := Amount;
-      begin
-         if To_Value > Max_Pad then
-            To_Value := Max_Pad;
-         end if;
-         for A in Natural range 1 .. To_Value loop
-            Put (" ");
-         end loop;
-         Total := Total + To_Value;
-      end Print_Pad;
-      
-      procedure Print_Pad (Amount : in     Natural;
-                           Total  : in out Natural) is
-      begin
-         for A in Natural range 1 .. Amount loop
-            Put (" ");
-         end loop;
-         Total := Total + Amount;
-      end Print_Pad;
-      
       procedure Print_Text (Str : String; Total : in out Natural) is
       begin
          Put (Str);
@@ -120,7 +106,7 @@ package body Ahven.Text_Runner is
       Total_Text : Natural := 0;
 
    begin
-      Print_Pad (Level + 1, Total_Text);
+      Pad (Level + 1, Total_Text);
       Print_Text (Get_Routine_Name (Info), Total_Text);
       if Msg'Length > 0 then
          Print_Text (" - ", Total_Text);
@@ -128,7 +114,7 @@ package body Ahven.Text_Runner is
       end if;
 
       if Total_Text < Max_Output_Width then
-         Print_Pad (Max_Output_Width - Total_Text, Total_Text);
+         Pad (Max_Output_Width - Total_Text, Total_Text);
       end if;
 
       -- If we know the name of the routine, we print it,
