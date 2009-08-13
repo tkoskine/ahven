@@ -61,7 +61,7 @@ package body Ahven.Text_Runner is
    end Pad;
    
    procedure Pad (Amount : in     Natural;
-                        Total  : in out Natural) is
+                  Total  : in out Natural) is
    begin
       for A in Natural range 1 .. Amount loop
          Put (" ");
