@@ -32,34 +32,36 @@ package body Ahven.Parameters is
                             Mode     :        Parameter_Mode;
                             Option   :        String;
                             Dir_Next :    out Boolean) is
+      procedure Check_Invalid (C : Character) is
+      begin
+         case Mode is
+            when NORMAL_PARAMETERS =>
+               if C = 'n' then
+                  raise Invalid_Parameter;
+               end if;
+            when TAP_PARAMETERS =>
+               if (C = 'd') or (C = 'x') then
+                  raise Invalid_Parameter;
+               end if;
+         end case;
+      end Check_Invalid;
    begin
       Dir_Next := False;
       for A in Option'Range loop
+         Check_Invalid (Option (A));
          case Option (A) is
             when 'c' =>
                Info.Capture_Output := True;
             when 'd' =>
-               if Mode = NORMAL_PARAMETERS then
-                  Dir_Next := True;
-               else
-                  raise Invalid_Parameter;
-               end if;
+               Dir_Next := True;
             when 'n' =>
-               if Mode = TAP_PARAMETERS then
-                  Info.Tap_13 := True;
-               else
-                  raise Invalid_Parameter;
-               end if;
+               Info.Tap_13 := True;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
                Info.Verbose_Output := False;
             when 'x' =>
-               if Mode = NORMAL_PARAMETERS then
-                  Info.Xml_Output := True;
-               else
-                  raise Invalid_Parameter;
-               end if;
+               Info.Xml_Output := True;
             when others =>
                raise Invalid_Parameter;
          end case;
@@ -92,7 +94,10 @@ package body Ahven.Parameters is
          elsif Arg'Size > 1 then
             if (not Files_Only) and (Arg (Arg'First) = '-') then
                Parse_Options
-                 (P, Mode, Arg (Arg'First + 1 .. Arg'Last), Dir_Next);
+                 (Info => P,
+                  Mode => Mode,
+                  Option => Arg (Arg'First + 1 .. Arg'Last),
+                  Dir_Next => Dir_Next);
             else
                P.Test_Name := Index;
             end if;
