@@ -29,6 +29,8 @@ search max_blank_lines (2);
 
 check Multiple_Assignments (repeated);
 
+check entities (Ada.Strings.Unbounded.Unbounded_String);
+
 check declarations (integer_type);
 check declarations (task);
 check declarations (multiple_names);
