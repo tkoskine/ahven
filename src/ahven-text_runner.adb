@@ -59,7 +59,7 @@ package body Ahven.Text_Runner is
          Put (" ");
       end loop;
    end Pad;
-   
+
    procedure Pad (Amount : in     Natural;
                   Total  : in out Natural) is
    begin
@@ -80,7 +80,7 @@ package body Ahven.Text_Runner is
          end if;
       end loop;
    end Multiline_Pad;
-   
+
    procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
                          Result : String) is
@@ -92,17 +92,16 @@ package body Ahven.Text_Runner is
 
       subtype Result_Size is Integer range 1 .. Max_Result_Width;
       subtype Time_Out_Size is Integer range 1 .. Max_Time_Out_Width;
-      
+
       procedure Print_Text (Str : String; Total : in out Natural) is
       begin
          Put (Str);
          Total := Total + Str'Length;
       end Print_Text;
-      
+
       Msg        : constant String := Get_Message (Info);
       Result_Out : String (Result_Size) := (others => ' ');
       Time_Out   : String (Time_Out_Size) := (others => ' ');
-      Pad_Amount : Natural := 0;
       Total_Text : Natural := 0;
 
    begin
