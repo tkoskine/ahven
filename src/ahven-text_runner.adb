@@ -34,10 +34,6 @@ package body Ahven.Text_Runner is
 
    -- Local procedures
    procedure Pad (Level : Natural);
-   procedure Pad (Output : in out Unbounded_String; Level : Natural);
-   procedure Multiline_Pad (Output : in out Unbounded_String;
-                            Input  :        String;
-                            Level  :        Natural);
 
    procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
@@ -64,26 +60,18 @@ package body Ahven.Text_Runner is
       end loop;
    end Pad;
 
-   procedure Pad (Output : in out Unbounded_String; Level : Natural) is
+   procedure Multiline_Pad (Input  : String;
+                            Level  : Natural) is
    begin
-      for A in Integer range 1 .. Level loop
-         Append (Output, " ");
-      end loop;
-   end Pad;
-
-   procedure Multiline_Pad (Output : in out Unbounded_String;
-                            Input  :        String;
-                            Level  :        Natural) is
-   begin
-      Pad (Output, Level);
+      Pad (Level);
       for A in Input'Range loop
-         Append (Output, Input (A));
+         Put (Input (A));
          if (Input (A) = Ada.Characters.Latin_1.LF) and (A /= Input'Last) then
-            Pad (Output, Level);
+            Pad (Level);
          end if;
       end loop;
    end Multiline_Pad;
-
+   
    procedure Print_Test (Info   : Result_Info;
                          Level  : Natural;
                          Result : String) is
@@ -95,25 +83,53 @@ package body Ahven.Text_Runner is
 
       subtype Result_Size is Integer range 1 .. Max_Result_Width;
       subtype Time_Out_Size is Integer range 1 .. Max_Time_Out_Width;
-
+      
+      procedure Print_Pad (Amount  : in     Natural;
+                           Max_Pad :        Natural;
+                           Total   : in out Natural) is
+         To_Value : Natural := Amount;
+      begin
+         if To_Value > Max_Pad then
+            To_Value := Max_Pad;
+         end if;
+         for A in Natural range 1 .. To_Value loop
+            Put (" ");
+         end loop;
+         Total := Total + To_Value;
+      end Print_Pad;
+      
+      procedure Print_Pad (Amount : in     Natural;
+                           Total  : in out Natural) is
+      begin
+         for A in Natural range 1 .. Amount loop
+            Put (" ");
+         end loop;
+         Total := Total + Amount;
+      end Print_Pad;
+      
+      procedure Print_Text (Str : String; Total : in out Natural) is
+      begin
+         Put (Str);
+         Total := Total + Str'Length;
+      end Print_Text;
+      
       Msg        : constant String := Get_Message (Info);
-      Output     : Unbounded_String := Null_Unbounded_String;
       Result_Out : String (Result_Size) := (others => ' ');
       Time_Out   : String (Time_Out_Size) := (others => ' ');
+      Pad_Amount : Natural := 0;
+      Total_Text : Natural := 0;
 
    begin
-      Pad (Output, Level + 1);
-      Append (Output, Get_Routine_Name (Info));
+      Print_Pad (Level + 1, Total_Text);
+      Print_Text (Get_Routine_Name (Info), Total_Text);
       if Msg'Length > 0 then
-         Append (Output, " - ");
-         Append (Output, Msg);
+         Print_Text (" - ", Total_Text);
+         Print_Text (Msg, Total_Text);
       end if;
 
-      if Length (Output) < Max_Output_Width then
-         Pad (Output, Max_Output_Width - Length (Output));
+      if Total_Text < Max_Output_Width then
+         Print_Pad (Max_Output_Width - Total_Text, Total_Text);
       end if;
-
-      Put (To_String (Output));
 
       -- If we know the name of the routine, we print it,
       -- the result, and the execution time.
@@ -133,9 +149,7 @@ package body Ahven.Text_Runner is
       end if;
       if Get_Long_Message (Info)'Length > 0 then
          New_Line;
-         Output := Null_Unbounded_String;
-         Multiline_Pad (Output, Get_Long_Message (Info), Level + 2);
-         Put (To_String (Output));
+         Multiline_Pad (Get_Long_Message (Info), Level + 2);
       end if;
 
       New_Line;
