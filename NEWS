@@ -7,7 +7,7 @@ Changes
 	  now hosted at Bitbucket, http://bitbucket.org/tkoskine/ahven
 
 	* The usage of Unbounded_String was completely removed
-	  from Ahven.Framework package. Now Get_Name function
+	  from all packages. Now Ahven.Framework.Get_Name function
 	  returns String.
 
 	* GNAT project files (.gpr) were moved to the 'gnat' directory.
