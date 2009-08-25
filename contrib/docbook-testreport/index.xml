@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+  <!ENTITY % envdata SYSTEM "data.ent" > %envdata;
+]>
+<book>
+<bookinfo>
+
+<title>&project; Testresults</title>
+
+<author>
+ <othername>&project; development team</othername>
+ <email>buerki@swiss-it.ch</email>
+</author>
+
+<pubdate>&date;</pubdate>
+
+<abstract>
+<para>This document provides a snapshot view of all tests run ...</para>
+</abstract>
+</bookinfo>
+
+<chapter>
+<title>Environment</title>
+This tests have been run in the following environment:
+ <informaltable>
+  <tgroup cols='2'>
+   <tbody>
+    <row>
+	 <entry>Date</entry><entry>&date;</entry>
+    </row>
+    <row>
+	 <entry>Operating System</entry><entry>&os;</entry>
+	</row>
+    <row>
+	 <entry>Kernel</entry><entry>&kernel_name; &kernel_release; (&kernel_version;)</entry>
+	</row>
+    <row>
+	 <entry>CPUs</entry><entry>&cpu_nr;</entry>
+	</row>
+   </tbody>
+  </tgroup>
+ </informaltable>
+</chapter>
+
+<xi:include href="result.xml" xmlns:xi="http://www.w3.org/2003/XInclude"/>
+
+</book>
