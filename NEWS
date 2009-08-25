@@ -15,11 +15,17 @@ Changes
 	* The upper limit (Count_Type'Last) of Ahven.SList
 	  is now documented.
 
+	* A PDF report generation example from XML result files
+	  was added to 'contrib/docbook-testreport'. From Reto Buerki.
+
 Bugs fixed
 ----------
 	* Fix Contraint_Error when one tries to truncate
 	  overlong string. Bug report and patch from Reto Buerki.
 	  (Bug bitbucket#1)
+
+	* XML_Runner now filters special characters like space or /
+	  from the filenames. Patch from Reto Buerki.
 
 Internal
 --------
