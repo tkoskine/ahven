@@ -48,12 +48,11 @@ TESTS := $(shell cd $(SRCDIR); ls TEST-*.xml)
 
 # testenv info
 
-DATE        := $(shell date -R)
-OS          := $(shell uname -o)
+DATE        := $(shell date "+%Y-%m-%d")
+OS          := $(shell uname)
 KERNEL_NAME := $(shell uname -s)
 KERNEL_REL  := $(shell uname -r)
 KERNEL_VER  := $(shell uname -v)
-CPU_NR      := $(shell getconf _NPROCESSORS_ONLN)
 
 DBLATEX := dblatex --style=db2latex
 XP      := xsltproc --nonet --novalid --xinclude
@@ -94,7 +93,6 @@ $(ENTITYFILE):
 	@echo '<!ENTITY kernel_name "$(KERNEL_NAME)">'   >> $@
 	@echo '<!ENTITY kernel_release "$(KERNEL_REL)">' >> $@
 	@echo '<!ENTITY kernel_version "$(KERNEL_VER)">' >> $@
-	@echo '<!ENTITY cpu_nr "$(CPU_NR)">'             >> $@
 
 clean:
 	@rm -f $(PROJECT).*
