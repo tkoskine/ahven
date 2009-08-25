@@ -122,8 +122,8 @@ package body Ahven.XML_Runner is
       function Filename (Test : String) return String is
          Map : Ada.Strings.Maps.Character_Mapping;
       begin
-         Map := To_Mapping (From => " '/",
-                            To   => "-__");
+         Map := To_Mapping (From => " '/\",
+                            To   => "-___");
 
          return "TEST-" & Filter_String (Test, Map) & ".xml";
       end Filename;
