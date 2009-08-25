@@ -116,10 +116,8 @@ package body Ahven.XML_Runner is
 
    function Create_Name (Dir : String; Name : String) return String
    is
-      function Filename (Test : String) return String;
-      -- Create a filename for the test.
-
       function Filename (Test : String) return String is
+      -- Create a filename for the test.
          Map : Ada.Strings.Maps.Character_Mapping;
       begin
          Map := To_Mapping (From => " '/\",
