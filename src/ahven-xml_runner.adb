@@ -17,6 +17,7 @@
 with Ada.Text_IO;
 with Ada.Strings;
 with Ada.Strings.Fixed;
+with Ada.Strings.Maps;
 
 with Ahven.Runner;
 
@@ -26,12 +27,18 @@ with Ahven.VStrings;
 package body Ahven.XML_Runner is
    use Ada.Text_IO;
    use Ada.Strings.Fixed;
+   use Ada.Strings.Maps;
 
    use Ahven.Results;
    use Ahven.Framework;
    use Ahven.VStrings;
 
    function Filter_String (Str : String) return String;
+
+   function Filter_String
+     (Str : String;
+      Map : Character_Mapping)
+      return String;
 
    procedure Print_Test_Pass (File : File_Type;
                               Parent_Test : String;
@@ -73,6 +80,16 @@ package body Ahven.XML_Runner is
       return Result;
    end Filter_String;
 
+   function Filter_String
+     (Str : String;
+      Map : Character_Mapping)
+      return String
+   is
+   begin
+      return Translate (Source  => Str,
+                        Mapping => Map);
+   end Filter_String;
+
    procedure Print_Attribute (File : File_Type; Attr : String;
                               Value : String) is
    begin
@@ -103,8 +120,12 @@ package body Ahven.XML_Runner is
       -- Create a filename for the test.
 
       function Filename (Test : String) return String is
+         Map : Ada.Strings.Maps.Character_Mapping;
       begin
-         return "TEST-" & Filter_String (Test) & ".xml";
+         Map := To_Mapping (From => " '/",
+                            To   => "-__");
+
+         return "TEST-" & Filter_String (Test, Map) & ".xml";
       end Filename;
    begin
       if Dir'Length > 0 then
