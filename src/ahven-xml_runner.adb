@@ -211,6 +211,11 @@ package body Ahven.XML_Runner is
                        Result : Result_Collection);
       -- Internal procedure to print the testcase into given file.
 
+      function Img (Value : Natural) return String is
+      begin
+         return Trim (Natural'Image (Value), Ada.Strings.Both);
+      end Img;
+
       procedure Print (Output : File_Type;
                        Result : Result_Collection) is
          Position : Result_Info_Cursor;
@@ -219,14 +224,11 @@ package body Ahven.XML_Runner is
                    " encoding=" & '"' & "iso-8859-1" & '"' &
                    "?>");
          Put (Output, "<testsuite ");
-         Print_Attribute (Output, "errors",
-           Trim (Integer'Image (Error_Count (Result)), Ada.Strings.Both));
+         Print_Attribute (Output, "errors", Img (Error_Count (Result)));
          Put (Output, " ");
-         Print_Attribute (Output, "failures",
-           Trim (Integer'Image (Failure_Count (Result)), Ada.Strings.Both));
+         Print_Attribute (Output, "failures", Img (Failure_Count (Result)));
          Put (Output, " ");
-         Print_Attribute (Output, "tests",
-           Trim (Integer'Image (Test_Count (Result)), Ada.Strings.Both));
+         Print_Attribute (Output, "tests", Img (Test_Count (Result)));
          Put (Output, " ");
          Print_Attribute (Output, "time",
            Trim (Duration'Image (Get_Execution_Time (Result)),
