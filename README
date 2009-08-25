@@ -60,7 +60,7 @@ file is located.
 
   janusada\prepare.bat
   janusada\update.bat
-  janusada\compilebat
+  janusada\compile.bat
   
 When compilation is finished, you have tap_test.exe in the 'test_obj'
 directory.
