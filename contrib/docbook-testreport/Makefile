@@ -14,7 +14,11 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
+# project settings
+
 PROJECT := example-project
+EMAIL   := developer@example.net
+
 FORMATS := html txt pdf
 TARGETS := $(foreach fmt,$(FORMATS),$(PROJECT).$(fmt))
 
@@ -27,7 +31,10 @@ RESULTFILE := result.xml
 HEADERFILE := result-header.xml
 ENTITYFILE := data.ent
 
-SOURCES := $(wildcard $(SRCDIR)/*.xml) $(ENTITYFILE) $(RESULTFILE) $(HEADERFILE)
+SOURCES := $(wildcard $(SRCDIR)/*.xml) \
+	$(ENTITYFILE) \
+	$(RESULTFILE) \
+	$(HEADERFILE)
 
 TRANSXSL := $(XSLDIR)/transform.xsl
 HTMLXSL  := $(XSLDIR)/html.xsl
@@ -81,6 +88,7 @@ to-docbook:
 
 $(ENTITYFILE):
 	@echo '<!ENTITY project "$(PROJECT)">'           >> $@
+	@echo '<!ENTITY email "$(EMAIL)">'               >> $@
 	@echo '<!ENTITY date "$(DATE)">'                 >> $@
 	@echo '<!ENTITY os "$(OS)">'                     >> $@
 	@echo '<!ENTITY kernel_name "$(KERNEL_NAME)">'   >> $@
