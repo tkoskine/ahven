@@ -13,7 +13,7 @@
  <email>&email;</email>
 </author>
 
-<pubdate>&date;</pubdate>
+<pubdate>&time;</pubdate>
 
 <abstract>
 <para>This document provides a snapshot view of all tests run ...</para>
@@ -27,7 +27,7 @@ This tests have been run in the following environment:
   <tgroup cols='2'>
    <tbody>
     <row>
-	 <entry>Date</entry><entry>&date;</entry>
+	 <entry>Date and Time</entry><entry>&time;</entry>
     </row>
     <row>
 	 <entry>Operating System</entry><entry>&os;</entry>

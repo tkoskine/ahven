@@ -48,7 +48,7 @@ TESTS := $(shell cd $(SRCDIR); ls TEST-*.xml)
 
 # testenv info
 
-DATE        := $(shell date "+%Y-%m-%d")
+TIME        := $(shell date)
 OS          := $(shell uname)
 KERNEL_NAME := $(shell uname -s)
 KERNEL_REL  := $(shell uname -r)
@@ -88,7 +88,7 @@ to-docbook:
 $(ENTITYFILE):
 	@echo '<!ENTITY project "$(PROJECT)">'           >> $@
 	@echo '<!ENTITY email "$(EMAIL)">'               >> $@
-	@echo '<!ENTITY date "$(DATE)">'                 >> $@
+	@echo '<!ENTITY time "$(TIME)">'                 >> $@
 	@echo '<!ENTITY os "$(OS)">'                     >> $@
 	@echo '<!ENTITY kernel_name "$(KERNEL_NAME)">'   >> $@
 	@echo '<!ENTITY kernel_release "$(KERNEL_REL)">' >> $@
