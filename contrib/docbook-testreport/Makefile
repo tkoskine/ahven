@@ -50,6 +50,7 @@ TESTS := $(shell cd $(SRCDIR); ls TEST-*.xml)
 
 TIME        := $(shell date)
 OS          := $(shell uname)
+HOSTNAME    := $(shell hostname)
 KERNEL_NAME := $(shell uname -s)
 KERNEL_REL  := $(shell uname -r)
 KERNEL_VER  := $(shell uname -v)
@@ -89,6 +90,7 @@ $(ENTITYFILE):
 	@echo '<!ENTITY project "$(PROJECT)">'           >> $@
 	@echo '<!ENTITY email "$(EMAIL)">'               >> $@
 	@echo '<!ENTITY time "$(TIME)">'                 >> $@
+	@echo '<!ENTITY hostname "$(HOSTNAME)">'         >> $@
 	@echo '<!ENTITY os "$(OS)">'                     >> $@
 	@echo '<!ENTITY kernel_name "$(KERNEL_NAME)">'   >> $@
 	@echo '<!ENTITY kernel_release "$(KERNEL_REL)">' >> $@

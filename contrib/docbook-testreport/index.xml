@@ -30,6 +30,9 @@ This tests have been run in the following environment:
 	 <entry>Date and Time</entry><entry>&time;</entry>
     </row>
     <row>
+	 <entry>Hostname</entry><entry>&hostname;</entry>
+    </row>
+    <row>
 	 <entry>Operating System</entry><entry>&os;</entry>
 	</row>
     <row>
