@@ -35,9 +35,6 @@ This tests have been run in the following environment:
     <row>
 	 <entry>Kernel</entry><entry>&kernel_name; &kernel_release; (&kernel_version;)</entry>
 	</row>
-    <row>
-	 <entry>CPUs</entry><entry>&cpu_nr;</entry>
-	</row>
    </tbody>
   </tgroup>
  </informaltable>
