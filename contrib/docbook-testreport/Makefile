@@ -26,16 +26,21 @@ SRCDIR  := ../../results
 DOCDIR  := docs
 XSLDIR  := xsl
 
+SRCINDEX := $(SRCDIR)/index.xml
+
 RESULTFILE := result.xml
 HEADERFILE := result-header.xml
+OVERFILE   := overview.xml
 ENTITYFILE := data.ent
 
 SOURCES := $(wildcard $(SRCDIR)/*.xml) \
 	$(ENTITYFILE) \
 	$(RESULTFILE) \
-	$(HEADERFILE)
+	$(HEADERFILE) \
+	$(OVERFILE)
 
 TRANSXSL := $(XSLDIR)/transform.xsl
+OVERXSL  := $(XSLDIR)/overview.xsl
 HTMLXSL  := $(XSLDIR)/html.xsl
 TXTXSL   := $(XSLDIR)/txt.xsl
 
@@ -68,6 +73,20 @@ $(PROJECT).txt: $(SOURCES)
 $(PROJECT).pdf: $(SOURCES)
 	@$(DBLATEX) index.xml -o $@
 
+$(OVERFILE): $(SRCINDEX)
+	@$(XP) $(OVERXSL) $(SRCINDEX) > $@
+
+$(SRCINDEX):
+	@echo "<!DOCTYPE includefile ["				> $@
+	@for SOURCE in $(TESTS); do \
+		echo "<!ENTITY $$SOURCE SYSTEM '$$SOURCE'>"	>> $@; \
+	done
+	@echo "]> <inc>"					>> $@
+	@for SOURCE in $(TESTS); do \
+		echo "&$$SOURCE;"				>> $@; \
+	done
+	@echo "</inc>"						>> $@
+
 $(RESULTFILE): to-docbook
 	@cp $(HEADERFILE) $(RESULTFILE)
 	@for DOC in `ls $(DOCDIR)/TEST-*.$(EXT)`; do \
@@ -95,7 +114,9 @@ $(ENTITYFILE):
 clean:
 	@rm -f $(PROJECT).*
 	@rm -f $(RESULTFILE)
+	@rm -f $(OVERFILE)
 	@rm -f $(ENTITYFILE)
 	@rm -rf $(DOCDIR)
+	@rm -rf $(SRCINDEX)
 
-.PHONY: all $(PROJECT).html clean
+.PHONY: all $(PROJECT).html clean $(ENTITYFILE) $(SRCINDEX)
