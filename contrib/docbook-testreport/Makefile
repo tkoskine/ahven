@@ -44,7 +44,7 @@ EXT := docbook
 
 # testresult input produced by ahven xml runner
 
-TESTS := $(shell cd $(SRCDIR); ls TEST-*.xml)
+TESTS := `cd $(SRCDIR); ls TEST-*.xml`
 
 # testenv info
 
