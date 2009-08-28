@@ -25,7 +25,6 @@ TARGETS := $(foreach fmt,$(FORMATS),$(PROJECT).$(fmt))
 SRCDIR  := ../../results
 DOCDIR  := docs
 XSLDIR  := xsl
-HTMLDIR := html
 
 RESULTFILE := result.xml
 HEADERFILE := result-header.xml
@@ -60,11 +59,8 @@ XP      := xsltproc --nonet --novalid --xinclude
 
 all: $(TARGETS)
 
-index.html: $(SOURCES)
-	@mkdir -p $(HTMLDIR)
-	@$(XP) -o $(HTMLDIR)/ $(HTMLXSL) index.xml
-
-$(PROJECT).html: index.html
+$(PROJECT).html: $(SOURCES)
+	@$(XP) $(HTMLXSL) index.xml > $@
 
 $(PROJECT).txt: $(SOURCES)
 	@$(XP) $(TXTXSL) index.xml | w3m -cols 65 -dump -T text/html > $@
@@ -101,6 +97,5 @@ clean:
 	@rm -f $(RESULTFILE)
 	@rm -f $(ENTITYFILE)
 	@rm -rf $(DOCDIR)
-	@rm -rf $(HTMLDIR)
 
 .PHONY: all $(PROJECT).html clean
