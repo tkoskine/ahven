@@ -65,13 +65,19 @@ XP      := xsltproc --nonet --novalid --xinclude
 all: $(TARGETS)
 
 $(PROJECT).html: $(SOURCES)
+	@echo -n "Generating $@ ... "
 	@$(XP) $(HTMLXSL) index.xml > $@
+	@echo "DONE"
 
 $(PROJECT).txt: $(SOURCES)
+	@echo -n "Generating $@ ... "
 	@$(XP) $(TXTXSL) index.xml | w3m -cols 65 -dump -T text/html > $@
+	@echo "DONE"
 
 $(PROJECT).pdf: $(SOURCES)
+	@echo "Generating $@ ... "
 	@$(DBLATEX) index.xml -o $@
+	@echo "DONE"
 
 $(OVERFILE): $(SRCINDEX)
 	@$(XP) $(OVERXSL) $(SRCINDEX) > $@
