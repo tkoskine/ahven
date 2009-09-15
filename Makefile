@@ -17,6 +17,7 @@
 PREFIX?=$(HOME)/libraries/ahven
 INSTALL=install
 OS_VERSION?=unix
+LIBTYPE=dynamic
 
 SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-listeners-basic.adb src/ahven-listeners-basic.ads \
@@ -66,7 +67,7 @@ lib:
 build_all: objects test_objects build_lib build_tests
 
 build_lib: objects lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_lib
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_lib -XLIBTYPE="$(LIBTYPE)"
 
 build_tests: test_objects build_lib
 	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_tests
