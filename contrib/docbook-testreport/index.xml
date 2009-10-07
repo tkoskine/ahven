@@ -19,7 +19,7 @@
 			<para>
 				This document is an auto-generated testreport for the &project;
 				project. The unit tests have been run on the testhost described
-			   	in <xref linkend="env"/>.
+				in <xref linkend="env"/>.
 			</para>
 			<para>
 				<xref linkend="overview"/> shows overall statistics of this

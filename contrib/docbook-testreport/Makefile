@@ -97,7 +97,7 @@ $(RESULTFILE): to-docbook
 	@cp $(HEADERFILE) $(RESULTFILE)
 	@for DOC in `ls $(DOCDIR)/TEST-*.$(EXT)`; do \
 		echo "<xi:include href='$$DOC' xmlns:xi='http://www.w3.org/2003/XInclude'/>" \
-	   		>> $(RESULTFILE); \
+			>> $(RESULTFILE); \
 	done
 	@echo "</chapter>" >> $(RESULTFILE)
 
