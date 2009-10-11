@@ -231,7 +231,7 @@ private
    -- Work around for Janus/Ada 3.1.1d/3.1.2beta generic bug.
 
    package Result_List is
-    new Ahven.SList (Element_Type => Result_Collection_Wrapper);
+     new Ahven.SList (Element_Type => Result_Collection_Wrapper);
 
    type Result_Info_Cursor is new Result_Info_List.Cursor;
 
