@@ -37,12 +37,11 @@ package body Ahven.SList is
       New_Node := new Node'(Data => Node_Data, Next => null);
 
       if Target.Last = null then
-         Target.Last := New_Node;
          Target.First := New_Node;
       else
          Target.Last.Next := New_Node;
-         Target.Last := New_Node;
       end if;
+      Target.Last := New_Node;
 
       Target.Size := Target.Size + 1;
    end Append;
@@ -117,12 +116,11 @@ package body Ahven.SList is
          New_Node := new Node'(Data => Current.Data, Next => null);
 
          if Target_Last = null then
-            Target_Last := New_Node;
             Target_First := New_Node;
          else
             Target_Last.Next := New_Node;
-            Target_Last := New_Node;
          end if;
+         Target_Last := New_Node;
 
          Current := Current.Next;
       end loop;
