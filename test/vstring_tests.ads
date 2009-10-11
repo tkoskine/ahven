@@ -21,10 +21,9 @@ package VString_Tests is
 
    procedure Initialize (T : in out Test);
 
-   procedure Test_Overlong_Truncate;
-
 private
    procedure Test_Overlong_String;
+   procedure Test_Overlong_Truncate;
    procedure Test_VString_Create;
    procedure Test_Max_Size_Create;
    procedure Test_Max_Size_Truncate;
