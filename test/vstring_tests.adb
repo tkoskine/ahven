@@ -26,6 +26,10 @@ package body VString_Tests is
                                   "Test Overlong String");
       Framework.Add_Test_Routine (T, Test_VString_Create'Access,
                                   "Test VString Create");
+      Framework.Add_Test_Routine (T, Test_Min_Size_Create'Access,
+                                  "Test Minimum Size Create");
+      Framework.Add_Test_Routine (T, Test_Empty_Create'Access,
+                                  "Test Empty Create");
       Framework.Add_Test_Routine (T, Test_Max_Size_Create'Access,
                                   "Test Maximum Size Create");
       Framework.Add_Test_Routine (T, Test_Overlong_Truncate'Access,
@@ -109,4 +113,24 @@ package body VString_Tests is
       Assert (Condition => Length (Target) = VString_Max_Size,
               Message   => "Length was invalid");
    end Test_Max_Size_Truncate;
+
+   procedure Test_Min_Size_Create is
+      use Ahven.VStrings;
+
+      Source : constant String (1 .. 1) := (others => ' ');
+      Target : constant VString := +Source;
+   begin
+      Assert (Length (Target) = Source'Last, "Length was invalid");
+      Assert (To_String (Target) = Source, "Target /= Source");
+   end Test_Min_Size_Create;
+
+   procedure Test_Empty_Create is
+      use Ahven.VStrings;
+
+      Source : constant String (1 .. 0) := (others => ' ');
+      Target : constant VString := +Source;
+   begin
+      Assert (Length (Target) = Source'Last, "Length was invalid");
+      Assert (To_String (Target) = Source, "Target /= Source");
+   end Test_Empty_Create;
 end VString_Tests;

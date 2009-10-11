@@ -27,4 +27,6 @@ private
    procedure Test_VString_Create;
    procedure Test_Max_Size_Create;
    procedure Test_Max_Size_Truncate;
+   procedure Test_Min_Size_Create;
+   procedure Test_Empty_Create;
 end VString_Tests;
