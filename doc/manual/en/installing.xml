@@ -83,15 +83,16 @@ $ OS=windows gnatmake -P ahven_tests]]></screen>
 			file <emphasis>prepare.bat</emphasis>.
 		</para>
 		<para>
-			To compile the source code, you need to run
+			To compile the source code and the test suite,
+			you need to run
 			<emphasis>janusada\prepare.bat</emphasis>,
 			<emphasis>janusada\update.bat</emphasis>, and
 			<emphasis>janusada\compile.bat</emphasis> from
 			the top level directory.
 		</para>
 		<para>
-			To compile the test suite for Ahven, you
-			need to run <emphasis>tap_test.exe</emphasis>
+			To run the test suite for Ahven, you
+			need to call <emphasis>tap_test.exe</emphasis>
 			from the <emphasis>test_obj</emphasis> directory.
 		</para>
 	</sect1>
