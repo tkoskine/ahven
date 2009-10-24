@@ -50,7 +50,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-vstrings.ali \
 	lib/ahven-xml_runner.ali
 
-SO_LIBRARY=libahven.so.17.0
+SO_LIBRARY=libahven.so.18.0
 GPR_FILE=gnat/ahven.gpr
 
 default: build_all
