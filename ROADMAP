@@ -17,7 +17,7 @@ Other packages will most likely see changes.
 
 Long-term todo-list
 -------------------
-* Graphical (GTK+) UI for the test result reporter
+* Graphical (GTK+/CLAW) UI for the test result reporter
 * Improve documentation
 * Replace adhoc XML writer with "a proper solution"
 
