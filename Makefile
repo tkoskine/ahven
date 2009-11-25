@@ -98,14 +98,14 @@ install_lib:
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
 
 check: build_tests
-	LD_LIBRARY_PATH=lib ./tester -c
+	./tester -c
 
 check_xml: build_tests
 	-mkdir -p results
-	LD_LIBRARY_PATH=lib ./tester -c -x -d results
+	./tester -c -x -d results
 
 check_tap: build_tests
-	LD_LIBRARY_PATH=lib ./tap_tester
+	./tap_tester
 
 control:
 	rm -f objects/*.adt objects/*.ali
