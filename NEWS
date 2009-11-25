@@ -3,7 +3,9 @@
 
 Changes
 -------
-	TODO
+	* The dynamic library support was removed since it did
+	  not work automatically on Debian and on Windows
+	  with GNAT.
 
 2009-09-14 Ahven 1.7
 ====================
