@@ -81,19 +81,34 @@ $ OS=windows gnatmake -P ahven_tests]]></screen>
 			installed to directory <emphasis>C:\Janus312\</emphasis>.
 			If that is not the case, change the path from
 			file <emphasis>prepare.bat</emphasis>.
+			<screen><![CDATA[C:\ahven-1.8>janusada\prepare.bat]]></screen>
 		</para>
 		<para>
-			To compile the source code and the test suite,
-			you need to run
-			<emphasis>janusada\prepare.bat</emphasis>,
-			<emphasis>janusada\update.bat</emphasis>, and
-			<emphasis>janusada\compile.bat</emphasis> from
-			the top level directory.
+			Before compiling the library, you need to run
+			the preparation script <emphasis>janusada\prepare.bat</emphasis>.
+			Then, scan the sources and create compilation script
+			by running <emphasis>janusada\update.bat</emphasis>.
+			<screen><![CDATA[C:\ahven-1.8>janusada\update.bat]]></screen>
 		</para>
 		<para>
-			To run the test suite for Ahven, you
-			need to call <emphasis>tap_test.exe</emphasis>
-			from the <emphasis>test_obj</emphasis> directory.
+			Now you are ready to compile the project.
+			This happens by running
+			<emphasis>compile.bat</emphasis> script.
+			<screen><![CDATA[C:\ahven-1.8>janusada\compile.bat]]></screen>
+		</para>
+		<para>
+			After a while, you should have compiled library files
+			in the <emphasis>lib_obj</emphasis> directory and
+			an executable called <emphasis>tap_test.exe</emphasis>
+			in the <emphasis>test_obj</emphasis> directory.
+			The executable is Ahven's test  suite and if it reports
+			no errors, everything is working as expected.
+		</para>
+		<para>
+			At the time of writing (Ahven 1.8), every test except one
+			should pass. The failing test is worked around in
+			the Ahven's source code, but the test exists so that one can
+			verify when the Janus/Ada bug causing the failure is fixed.
 		</para>
 	</sect1>
 </chapter>
