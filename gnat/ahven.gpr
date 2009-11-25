@@ -6,9 +6,8 @@ project Ahven is
 
    for Library_Dir use "../../lib/ahven";
    for Library_Name use "ahven";
-   for Library_Kind use "dynamic";
+   for Library_Kind use "static";
 
    for Externally_Built use "true";
 
 end Ahven;
-
