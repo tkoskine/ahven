@@ -258,17 +258,8 @@ package body Ahven.Framework is
    end Run;
 
    function Test_Count (T : Test_Case) return Test_Count_Type is
-      use Test_Command_List;
-
-      Position : Cursor := First (T.Routines);
-      Counter  : Test_Count_Type := 0;
    begin
-      loop
-         exit when not Is_Valid (Position);
-         Counter := Counter + 1;
-         Position := Next (Position);
-      end loop;
-      return Counter;
+      return Test_Count_Type (Test_Command_List.Length (T.Routines));
    end Test_Count;
 
    function Test_Count (T : Test_Case; Test_Name : String)
