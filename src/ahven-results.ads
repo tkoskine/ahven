@@ -203,6 +203,9 @@ package Ahven.Results is
 
    function Child_Depth (Collection : Result_Collection) return Natural;
    -- Return the maximum depth of children. (a child of a child, etc.)
+   --
+   -- Examples: Child_Depth is 0 for a collection without children.
+   -- Collection with a child containing another child has a depth of 2.
 
 private
    type Result_Info is record
