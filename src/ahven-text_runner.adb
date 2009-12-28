@@ -117,16 +117,16 @@ package body Ahven.Text_Runner is
       -- If we know the name of the routine, we print it,
       -- the result, and the execution time.
       if Get_Routine_Name (Info)'Length > 0 then
-         Move (Source => Result,
-               Target => Result_Out,
-               Drop => Right,
+         Move (Source  => Result,
+               Target  => Result_Out,
+               Drop    => Right,
                Justify => Left,
-               Pad => ' ');
-         Move (Source => Duration'Image (Get_Execution_Time (Info)),
-               Target => Time_Out,
-               Drop => Right,
+               Pad     => ' ');
+         Move (Source  => Duration'Image (Get_Execution_Time (Info)),
+               Target  => Time_Out,
+               Drop    => Right,
                Justify => Right,
-               Pad => ' ');
+               Pad     => ' ');
          Put (" " & Result_Out);
          Put (" " & Time_Out & "s");
       end if;
@@ -231,7 +231,7 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
-      Iter       : Result_Info_Cursor;
+      Iter : Result_Info_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
