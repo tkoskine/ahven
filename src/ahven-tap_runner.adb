@@ -26,6 +26,12 @@ package body Ahven.Tap_Runner is
    use Ahven.Framework;
    use Ahven.VStrings;
 
+   function Count_Image (Count : Test_Count_Type) return String is
+      use Ada.Strings;
+   begin
+      return Fixed.Trim (Test_Count_Type'Image (Count), Both);
+   end Count_Image;
+
    procedure Print_Data (Message : String; Prefix : String) is
       Start_Of_Line : Boolean := True;
    begin
@@ -56,14 +62,12 @@ package body Ahven.Tap_Runner is
       Listener.Capture_Output := Parameters.Capture (Params);
 
       if Parameters.Single_Test (Params) then
-         Put_Line ("1.." & Ada.Strings.Fixed.Trim
-           (Test_Count_Type'Image (Test_Count
-             (Suite, Parameters.Test_Name (Params))), Ada.Strings.Both));
+         Put_Line ("1.." & Count_Image (Test_Count
+           (Suite, Parameters.Test_Name (Params))));
          Framework.Execute
            (Suite, Parameters.Test_Name (Params), Listener);
       else
-         Put_Line ("1.." & Ada.Strings.Fixed.Trim
-           (Test_Count_Type'Image (Test_Count (Suite)), Ada.Strings.Both));
+         Put_Line ("1.." & Count_Image (Test_Count (Suite)));
          Framework.Execute (Suite, Listener);
       end if;
    exception
@@ -144,7 +148,7 @@ package body Ahven.Tap_Runner is
       end if;
 
       Put ("ok ");
-      Put (Trim (Test_Count_Type'Image (Listener.Current_Test), Both) & " ");
+      Put (Count_Image (Listener.Current_Test) & " ");
       Put (To_String (Info.Test_Name) & ": " & To_String (Info.Routine_Name));
       New_Line;
    end Add_Pass;
@@ -161,8 +165,7 @@ package body Ahven.Tap_Runner is
       end if;
 
       Put ("not ok ");
-      Put (Trim
-        (Test_Count_Type'Image (Listener.Current_Test), Both) & " ");
+      Put (Count_Image (Listener.Current_Test) & " ");
       Put (To_String (Info.Test_Name) & ": " & To_String (Info.Routine_Name));
       New_Line;
 
