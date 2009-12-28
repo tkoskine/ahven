@@ -14,7 +14,11 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Strings.Fixed;
+
 package body Ahven.VStrings is
+   use Ada.Strings.Fixed;
+
    function "+"(Source : String) return VString is
    begin
       if Source'Length in VString_Size'Range then
@@ -30,8 +34,8 @@ package body Ahven.VStrings is
          return VString'(Len => Source'Length, Data => Source);
       else
          return VString'(Len  => VString_Size'Last,
-                         Data => Source (Source'First .. Source'First
-                                         + (VString_Size'Last - 1)));
+                         Data => Head (Source => Source,
+                                       Count  => VString_Size'Last));
       end if;
    end Truncate;
 
