@@ -24,8 +24,8 @@ package Ahven.Runner is
      (Test_Results : Results.Result_Collection;
       Args         : Parameters.Parameter_Info);
 
-   procedure Run_Suite (Suite : in out Framework.Test'Class;
-                        Reporter : Report_Proc);
+   procedure Run_Suite (Suite    : in out Framework.Test'Class;
+                        Reporter :        Report_Proc);
    -- Run the given test (case/suite) and pass the results and
    -- the command line argument info to the reporter procedure.
 
