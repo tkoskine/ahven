@@ -330,8 +330,9 @@ private
 
    type Test_Suite is new Test with record
       Suite_Name : VStrings.VString := VStrings.Empty_VString;
-      Test_Cases : Test_List.List;
-      Static_Test_Cases : Indefinite_Test_List.List;
+      Test_Cases : Test_List.List := Test_List.Empty_List;
+      Static_Test_Cases : Indefinite_Test_List.List :=
+        Indefinite_Test_List.Empty_List;
    end record;
    -- A suite type which holds a list of test cases and the name
    -- of the suite.
