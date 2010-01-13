@@ -171,22 +171,22 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural) is
-      Iter       : Result_Info_Cursor;
+      Position : Result_Info_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
          Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
-      Iter := First_Failure (Result);
+      Position := First_Failure (Result);
       Failure_Loop:
       loop
-         exit Failure_Loop when not Is_Valid (Iter);
-         Print_Test (Data (Iter), Level, "FAIL");
-         if Length (Get_Output_File (Data (Iter))) > 0 then
-            Print_Log_File (To_String (Get_Output_File (Data (Iter))));
+         exit Failure_Loop when not Is_Valid (Position);
+         Print_Test (Data (Position), Level, "FAIL");
+         if Length (Get_Output_File (Data (Position))) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Data (Position))));
          end if;
-         Iter := Next (Iter);
+         Position := Next (Position);
       end loop Failure_Loop;
 
       Print_Children (Result => Result,
@@ -201,22 +201,22 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural) is
-      Iter       : Result_Info_Cursor;
+      Position : Result_Info_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
          Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
-      Iter := First_Error (Result);
+      Position := First_Error (Result);
       Error_Loop:
       loop
-         exit Error_Loop when not Is_Valid (Iter);
-         Print_Test (Data (Iter), Level, "ERROR");
-         if Length (Get_Output_File (Data (Iter))) > 0 then
-            Print_Log_File (To_String (Get_Output_File (Data (Iter))));
+         exit Error_Loop when not Is_Valid (Position);
+         Print_Test (Data (Position), Level, "ERROR");
+         if Length (Get_Output_File (Data (Position))) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Data (Position))));
          end if;
-         Iter := Next (Iter);
+         Position := Next (Position);
       end loop Error_Loop;
 
       Print_Children (Result => Result,
@@ -231,19 +231,19 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
-      Iter : Result_Info_Cursor;
+      Position : Result_Info_Cursor;
    begin
       if Length (Get_Test_Name (Result)) > 0 then
          Pad (Level);
          Put_Line (To_String (Get_Test_Name (Result)) & ":");
       end if;
 
-      Iter := First_Pass (Result);
+      Position := First_Pass (Result);
       Pass_Loop:
       loop
-         exit Pass_Loop when not Is_Valid (Iter);
-         Print_Test (Data (Iter), Level, "PASS");
-         Iter := Next (Iter);
+         exit Pass_Loop when not Is_Valid (Position);
+         Print_Test (Data (Position), Level, "PASS");
+         Position := Next (Position);
       end loop Pass_Loop;
 
       Print_Children (Result => Result,
