@@ -62,7 +62,6 @@ package body Ahven.Listeners.Basic is
                          Info  : Context) is
       R : Result_Collection_Access := null;
    begin
-      -- Empty routine name means a test suite or test case
       if Info.Test_Kind = CONTAINER then
          R := new Result_Collection;
          Set_Name (R.all, Info.Test_Name);
