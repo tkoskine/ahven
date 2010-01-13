@@ -99,6 +99,9 @@ package Ahven.Results is
 
    type Result_Collection_Access is access Result_Collection;
 
+   procedure Init_Collection (Collection : in out Result_Collection);
+   -- Initialize the collection, must be called before other actions.
+
    procedure Add_Child (Collection : in out Result_Collection;
                         Child      :        Result_Collection_Access);
    -- Add a child collection to the collection.
@@ -234,7 +237,64 @@ private
    -- Work around for Janus/Ada 3.1.1d/3.1.2beta generic bug.
 
    package Result_List is
-     new Ahven.SList (Element_Type => Result_Collection_Wrapper);
+      type List is limited private;
+      type Cursor is private;
+
+      subtype Count_Type is Natural;
+
+      Invalid_Cursor : exception;
+
+      List_Full : exception;
+      -- Thrown when the size of the list exceeds Count_Type'Last.
+
+      procedure Init_List (Target : in out List);
+      -- Initialize the list. Must be called before other actions.
+
+      procedure Append (Target    : in out List;
+                        Node_Data :        Result_Collection_Wrapper);
+      -- Append an element at the end of the list.
+      --
+      -- Raises List_Full if the list has already Count_Type'Last items.
+
+      procedure Clear (Target : in out List);
+      -- Remove all elements from the list.
+
+      function First (Target : List) return Cursor;
+      -- Return a cursor to the first element of the list.
+
+      function Next (Position : Cursor) return Cursor;
+      -- Move the cursor to point to the next element on the list.
+
+      function Data (Position : Cursor) return Result_Collection_Wrapper;
+      -- Return element pointed by the cursor.
+
+      function Is_Valid (Position : Cursor) return Boolean;
+      -- Tell the validity of the cursor. The cursor
+      -- will become invalid when you iterate it over
+      -- the last item.
+
+      function Length (Target : List) return Count_Type;
+      -- Return the length of the list.
+
+   private
+      type Node;
+      type Node_Access is access Node;
+      type Cursor is new Node_Access;
+
+      procedure Remove (Ptr : Node_Access);
+      -- A procedure to release memory pointed by Ptr.
+
+      type Node is record
+         Next : Node_Access := null;
+         Data : Result_Collection_Wrapper;
+      end record;
+
+      type List is limited record
+         First : Node_Access := null;
+         Last  : Node_Access := null;
+         Size  : Count_Type  := 0;
+      end record;
+   end Result_List;
 
    type Result_Info_Cursor is new Result_Info_List.Cursor;
 

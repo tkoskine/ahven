@@ -114,6 +114,17 @@ package body Ahven.Results is
       return Info.Output_File;
    end Get_Output_File;
 
+   procedure Init_Collection (Collection : in out Result_Collection)
+   is
+   begin
+      Init_List (Collection.Children);
+      Collection.Passes := Result_Info_List.Empty_List;
+      Collection.Failures := Result_Info_List.Empty_List;
+      Collection.Errors := Result_Info_List.Empty_List;
+      Collection.Parent := null;
+      Collection.Test_Name := Empty_VString;
+   end Init_Collection;
+
    procedure Add_Child (Collection : in out Result_Collection;
                         Child      :        Result_Collection_Access) is
    begin
@@ -380,5 +391,91 @@ package body Ahven.Results is
    begin
       return Child_Depth_Impl (Collection, 0);
    end Child_Depth;
+
+   package body Result_List is
+      procedure Init_List (Target : in out List) is
+      begin
+         Target.First := null;
+         Target.Last := null;
+         Target.Size := 0;
+      end Init_List;
+
+      procedure Remove (Ptr : Node_Access) is
+         procedure Free is
+           new Ada.Unchecked_Deallocation (Object => Node,
+                                           Name   => Node_Access);
+         My_Ptr : Node_Access := Ptr;
+      begin
+         Ptr.Next := null;
+         Free (My_Ptr);
+      end Remove;
+
+      procedure Append (Target    : in out List;
+                        Node_Data :        Result_Collection_Wrapper) is
+         New_Node : Node_Access  := null;
+      begin
+         if Target.Size = Count_Type'Last then
+            raise List_Full;
+         end if;
+
+         New_Node := new Node'(Data => Node_Data, Next => null);
+
+         if Target.Last = null then
+            Target.First := New_Node;
+         else
+            Target.Last.Next := New_Node;
+         end if;
+         Target.Last := New_Node;
+
+         Target.Size := Target.Size + 1;
+      end Append;
+
+      procedure Clear (Target : in out List) is
+         Current_Node : Node_Access := Target.First;
+         Next_Node : Node_Access := null;
+      begin
+         while Current_Node /= null loop
+            Next_Node := Current_Node.Next;
+            Remove (Current_Node);
+            Current_Node := Next_Node;
+         end loop;
+
+         Target.First := null;
+         Target.Last := null;
+         Target.Size := 0;
+      end Clear;
+
+      function First (Target : List) return Cursor is
+      begin
+         return Cursor (Target.First);
+      end First;
+
+      function Next (Position : Cursor) return Cursor is
+      begin
+         if Position = null then
+            raise Invalid_Cursor;
+         end if;
+         return Cursor (Position.Next);
+      end Next;
+
+      function Data (Position : Cursor) return Result_Collection_Wrapper is
+      begin
+         if Position = null then
+            raise Invalid_Cursor;
+         end if;
+
+         return Position.Data;
+      end Data;
+
+      function Is_Valid (Position : Cursor) return Boolean is
+      begin
+         return Position /= null;
+      end Is_Valid;
+
+      function Length (Target : List) return Count_Type is
+      begin
+         return Target.Size;
+      end Length;
+   end Result_List;
 
 end Ahven.Results;

@@ -64,6 +64,7 @@ package body Ahven.Listeners.Basic is
    begin
       if Info.Test_Kind = CONTAINER then
          R := new Result_Collection;
+         Init_Collection (R.all);
          Set_Name (R.all, Info.Test_Name);
          Set_Parent (R.all, Listener.Current_Result);
 
