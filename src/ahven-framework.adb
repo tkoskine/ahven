@@ -283,7 +283,7 @@ package body Ahven.Framework is
 
    procedure Finalize (T : in out Test_Case) is
    begin
-      Test_Command_List.Remove_All (T.Routines);
+      Test_Command_List.Clear (T.Routines);
    end Finalize;
 
    procedure Set_Name (T : in out Test_Case; Name : String) is
@@ -486,7 +486,7 @@ package body Ahven.Framework is
          Free_Test (Ptr);
          Position := Next (Position);
       end loop;
-      Remove_All (T.Test_Cases);
+      Clear (T.Test_Cases);
    end Finalize;
 
    procedure Release_Suite (T : Test_Suite_Access) is
@@ -539,7 +539,7 @@ package body Ahven.Framework is
          end if;
       end Append;
 
-      procedure Remove_All (Target : in out List) is
+      procedure Clear (Target : in out List) is
          Current_Node : Node_Access := Target.First;
          Next_Node : Node_Access := null;
       begin
@@ -551,7 +551,7 @@ package body Ahven.Framework is
 
          Target.First := null;
          Target.Last := null;
-      end Remove_All;
+      end Clear;
 
       function First (Target : List) return Cursor is
       begin
@@ -593,7 +593,7 @@ package body Ahven.Framework is
 
       procedure Finalize (Target : in out List) is
       begin
-         Remove_All (Target);
+         Clear (Target);
       end Finalize;
 
       procedure Adjust (Target : in out List) is

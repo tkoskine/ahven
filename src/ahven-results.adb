@@ -157,13 +157,13 @@ package body Ahven.Results is
 
          Position:= Next (Position);
       end loop;
-      Remove_All (Collection.Children);
+      Clear (Collection.Children);
 
       -- No need to call Free for these three since
       -- they are stored as plain objects instead of pointers.
-      Remove_All (Collection.Errors);
-      Remove_All (Collection.Failures);
-      Remove_All (Collection.Passes);
+      Clear (Collection.Errors);
+      Clear (Collection.Failures);
+      Clear (Collection.Passes);
    end Release;
 
    procedure Set_Name (Collection : in out Result_Collection;

@@ -36,7 +36,7 @@ package Ahven.SList is
    --
    -- Raises List_Full if the list has already Count_Type'Last items.
 
-   procedure Remove_All (Target : in out List);
+   procedure Clear (Target : in out List);
    -- Remove all elements from the list.
 
    function First (Target : List) return Cursor;

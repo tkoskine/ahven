@@ -36,8 +36,8 @@ package body SList_Tests is
                                   "Test_Append (Elementary)");
       Framework.Add_Test_Routine (T, Test_Append_Record'Access,
                                   "Test_Append (Record)");
-      Framework.Add_Test_Routine (T, Test_Remove_All'Access,
-                                  "Test_Remove_All");
+      Framework.Add_Test_Routine (T, Test_Clear'Access,
+                                  "Test_Clear");
       Framework.Add_Test_Routine (T, Test_First'Access,
                                   "Test_First");
       Framework.Add_Test_Routine (T, Test_Next'Access,
@@ -86,7 +86,7 @@ package body SList_Tests is
               "Value of 2nd item does not match");
    end Test_Append_Record;
 
-   procedure Test_Remove_All is
+   procedure Test_Clear is
       use Simple_List;
 
       My_List : List;
@@ -96,9 +96,9 @@ package body SList_Tests is
       Append (My_List, Obj_1);
       Append (My_List, Obj_1);
 
-      Remove_All (My_List);
-      Assert (Length (My_List) = 0, "List not empty after Remove_All!");
-   end Test_Remove_All;
+      Clear (My_List);
+      Assert (Length (My_List) = 0, "List not empty after Clear!");
+   end Test_Clear;
 
    procedure Test_First is
       use Simple_List;
@@ -164,8 +164,8 @@ package body SList_Tests is
       Append (My_List, Obj_1);
       Assert (Length (My_List) = 1, "Invalid length after 1st append: " &
               Count_Type'Image (Length (My_List)));
-      Remove_All (My_List);
-      Assert (Length (My_List) = 0, "Invalid length after Remove_All: " &
+      Clear (My_List);
+      Assert (Length (My_List) = 0, "Invalid length after Clear: " &
               Count_Type'Image (Length (My_List)));
    end Test_Length;
 

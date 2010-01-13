@@ -23,7 +23,7 @@ package SList_Tests is
 private
    procedure Test_Append_Elementary;
    procedure Test_Append_Record;
-   procedure Test_Remove_All;
+   procedure Test_Clear;
    procedure Test_First;
    procedure Test_Next;
    procedure Test_Data;

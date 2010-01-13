@@ -280,7 +280,7 @@ private
       procedure Append (Target : in out List; Node_Data : Test'Class);
       -- Append an element at the end of the list.
 
-      procedure Remove_All (Target : in out List);
+      procedure Clear (Target : in out List);
       -- Remove all elements from the list.
 
       function First (Target : List) return Cursor;

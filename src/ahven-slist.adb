@@ -46,7 +46,7 @@ package body Ahven.SList is
       Target.Size := Target.Size + 1;
    end Append;
 
-   procedure Remove_All (Target : in out List) is
+   procedure Clear (Target : in out List) is
       Current_Node : Node_Access := Target.First;
       Next_Node : Node_Access := null;
    begin
@@ -59,7 +59,7 @@ package body Ahven.SList is
       Target.First := null;
       Target.Last := null;
       Target.Size := 0;
-   end Remove_All;
+   end Clear;
 
    function First (Target : List) return Cursor is
    begin
@@ -102,7 +102,7 @@ package body Ahven.SList is
 
    procedure Finalize (Target : in out List) is
    begin
-      Remove_All (Target);
+      Clear (Target);
    end Finalize;
 
    procedure Adjust (Target : in out List) is
