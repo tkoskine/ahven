@@ -115,19 +115,19 @@ package body Ahven.Results is
    end Get_Output_File;
 
    procedure Add_Child (Collection : in out Result_Collection;
-                        Child : Result_Collection_Access) is
+                        Child      :        Result_Collection_Access) is
    begin
       Append (Collection.Children, Result_Collection_Wrapper'(Ptr => Child));
    end Add_Child;
 
    procedure Add_Error (Collection : in out Result_Collection;
-                        Info : Result_Info) is
+                        Info       :        Result_Info) is
    begin
       Append (Collection.Errors, Info);
    end Add_Error;
 
    procedure Add_Failure (Collection : in out Result_Collection;
-                          Info : Result_Info) is
+                          Info       :        Result_Info) is
    begin
       Append (Collection.Failures, Info);
    end Add_Failure;
@@ -203,7 +203,7 @@ package body Ahven.Results is
    end Direct_Test_Count;
 
    function Pass_Count (Collection : Result_Collection) return Natural is
-      Count : Natural              := Length (Collection.Passes);
+      Count    : Natural            := Length (Collection.Passes);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
@@ -216,7 +216,7 @@ package body Ahven.Results is
    end Pass_Count;
 
    function Error_Count (Collection : Result_Collection) return Natural is
-      Count : Natural              := Length (Collection.Errors);
+      Count    : Natural            := Length (Collection.Errors);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
@@ -229,7 +229,7 @@ package body Ahven.Results is
    end Error_Count;
 
    function Failure_Count (Collection : Result_Collection) return Natural is
-      Count : Natural              := Length (Collection.Failures);
+      Count    : Natural            := Length (Collection.Failures);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
