@@ -53,13 +53,13 @@ package body Ahven.Listeners.Basic is
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Basic_Listener;
-                        Info  : Context) is
+                        Info     :        Context) is
    begin
       Set_Last_Test_Info (Listener, Info, ERROR_RESULT);
    end Add_Error;
 
    procedure Start_Test (Listener : in out Basic_Listener;
-                         Info  : Context) is
+                         Info     :        Context) is
       R : Result_Collection_Access := null;
    begin
       if Info.Test_Kind = CONTAINER then
@@ -82,7 +82,7 @@ package body Ahven.Listeners.Basic is
    end Start_Test;
 
    procedure End_Test (Listener : in out Basic_Listener;
-                       Info  : Context) is
+                       Info     :        Context) is
       procedure Add_Result (Collection : in out Result_Collection) is
          My_Info : Result_Info := Listener.Last_Info;
       begin
@@ -135,7 +135,7 @@ package body Ahven.Listeners.Basic is
    end End_Test;
 
    procedure Set_Output_Capture (Listener : in out Basic_Listener;
-                                 Capture  : Boolean) is
+                                 Capture  :        Boolean) is
    begin
       Listener.Capture_Output := Capture;
    end Set_Output_Capture;
