@@ -128,7 +128,7 @@ package body Ahven.Results is
    procedure Add_Child (Collection : in out Result_Collection;
                         Child      :        Result_Collection_Access) is
    begin
-      Append (Collection.Children, Result_Collection_Wrapper'(Ptr => Child));
+      Append (Collection.Children, (Ptr => Child));
    end Add_Child;
 
    procedure Add_Error (Collection : in out Result_Collection;
