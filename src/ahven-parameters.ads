@@ -15,6 +15,7 @@
 --
 
 package Ahven.Parameters is
+
    Invalid_Parameter : exception;
 
    type Parameter_Info is private;

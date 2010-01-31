@@ -16,6 +16,8 @@
 
 with Ada.Exceptions;
 
+pragma Elaborate_All (Ada.Exceptions);
+
 package body Ahven is
 
    procedure Assert (Condition : Boolean; Message : String) is

@@ -16,6 +16,7 @@
 --
 
 package Ahven is
+
    Assertion_Error : exception;
    -- Exception, raised when Assert fails.
 

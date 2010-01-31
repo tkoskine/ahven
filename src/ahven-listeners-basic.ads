@@ -19,6 +19,9 @@ with Ahven.Results;
 
 use Ahven.Results;
 
+pragma Elaborate_All (Ahven.Results);
+pragma Elaborate_All (Ahven.Temporary_Output);
+
 package Ahven.Listeners.Basic is
    type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
 

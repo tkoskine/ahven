@@ -17,6 +17,10 @@ with Ahven.Framework;
 with Ahven.Results;
 with Ahven.Parameters;
 
+pragma Elaborate_All (Ahven.Framework);
+pragma Elaborate_All (Ahven.Results);
+pragma Elaborate_All (Ahven.Parameters);
+
 package Ahven.Text_Runner is
    procedure Run (Suite : in out Framework.Test'Class);
    -- Run the suite and print the results.
