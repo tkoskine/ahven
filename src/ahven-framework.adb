@@ -56,19 +56,19 @@ package body Ahven.Framework is
       -- in the Run (T : in out Test_Case; ...) procedure.
       Listeners.Start_Test
         (Listener_Object,
-         Context'(Phase     => TEST_BEGIN,
-                  Test_Name => +Get_Name (Test_Object),
-                  Test_Kind => CONTAINER));
+         (Phase     => TEST_BEGIN,
+          Test_Name => +Get_Name (Test_Object),
+          Test_Kind => CONTAINER));
 
       Action;
 
       -- Like Start_Test, only for Test_Suites and Test_Cases.
       Listeners.End_Test
         (Listener_Object,
-         Context'(Phase          => TEST_END,
-                  Test_Name      => +Get_Name (Test_Object),
-                  Test_Kind      => CONTAINER,
-                  Execution_Time => 0.0));
+         (Phase          => TEST_END,
+          Test_Name      => +Get_Name (Test_Object),
+          Test_Kind      => CONTAINER,
+          Execution_Time => 0.0));
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
@@ -101,9 +101,9 @@ package body Ahven.Framework is
                                Name    :        String)
    is
       Command : constant Test_Command :=
-        Test_Command'(Command_Kind   => OBJECT,
-                      Name           => +Name,
-                      Object_Routine => Routine);
+        (Command_Kind   => OBJECT,
+         Name           => +Name,
+         Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
@@ -113,9 +113,9 @@ package body Ahven.Framework is
                                Name    :        String)
    is
       Command : constant Test_Command :=
-        Test_Command'(Command_Kind   => SIMPLE,
-                      Name           => +Name,
-                      Simple_Routine => Routine);
+        (Command_Kind   => SIMPLE,
+         Name           => +Name,
+         Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
@@ -138,13 +138,13 @@ package body Ahven.Framework is
       when E : Assertion_Error =>
          Listeners.Add_Failure
            (Listener,
-            Context'(Phase        => TEST_RUN,
-                     Test_Name    => Info.Test_Name,
-                     Test_Kind    => CONTAINER,
-                     Routine_Name => Info.Routine_Name,
-                     Message      =>
-                       Truncate (Ada.Exceptions.Exception_Message (E)),
-                     Long_Message => +""));
+            (Phase        => TEST_RUN,
+             Test_Name    => Info.Test_Name,
+             Test_Kind    => CONTAINER,
+             Routine_Name => Info.Routine_Name,
+             Message      =>
+               Truncate (Ada.Exceptions.Exception_Message (E)),
+             Long_Message => +""));
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
          -- from the library routines (Passed = True)?
@@ -153,14 +153,14 @@ package body Ahven.Framework is
          else
             Listeners.Add_Error
               (Listener,
-               Context'(Phase        => Listeners.TEST_RUN,
-                        Test_Name    => Info.Test_Name,
-                        Test_Kind    => CONTAINER,
-                        Routine_Name => Info.Routine_Name,
-                        Message      =>
-                          Truncate (Ada.Exceptions.Exception_Name (E)),
-                        Long_Message =>
-                          Truncate (Ada.Exceptions.Exception_Message (E))));
+               (Phase        => Listeners.TEST_RUN,
+                Test_Name    => Info.Test_Name,
+                Test_Kind    => CONTAINER,
+                Routine_Name => Info.Routine_Name,
+                Message      =>
+                  Truncate (Ada.Exceptions.Exception_Name (E)),
+                Long_Message =>
+                  Truncate (Ada.Exceptions.Exception_Message (E))));
          end if;
    end Run_Command;
 
@@ -184,28 +184,28 @@ package body Ahven.Framework is
    begin
       Listeners.Start_Test
         (Listener,
-         Context'(Phase     => Ahven.Listeners.TEST_BEGIN,
-                  Test_Name => +Test_Name,
-                  Test_Kind => ROUTINE));
+         (Phase     => Ahven.Listeners.TEST_BEGIN,
+          Test_Name => +Test_Name,
+          Test_Kind => ROUTINE));
       Start_Time := Ada.Calendar.Clock;
 
       Run_Command (Command  => Command,
-                   Info     => Context'(Phase        => Listeners.TEST_RUN,
-                                        Test_Name    => +Test_Name,
-                                        Test_Kind    => ROUTINE,
-                                        Routine_Name => +Routine_Name,
-                                        Message      => +"",
-                                        Long_Message => +""),
+                   Info     => (Phase        => Listeners.TEST_RUN,
+                                Test_Name    => +Test_Name,
+                                Test_Kind    => ROUTINE,
+                                Routine_Name => +Routine_Name,
+                                Message      => +"",
+                                Long_Message => +""),
                    Listener => Listener,
                    T        => T);
 
       End_Time := Ada.Calendar.Clock;
       Listeners.End_Test
         (Listener,
-         Context'(Phase          => Ahven.Listeners.TEST_END,
-                  Test_Name      => +Test_Name,
-                  Test_Kind      => ROUTINE,
-                  Execution_Time => End_Time - Start_Time));
+         (Phase          => Ahven.Listeners.TEST_END,
+          Test_Name      => +Test_Name,
+          Test_Kind      => ROUTINE,
+          Execution_Time => End_Time - Start_Time));
    end Run_Internal;
 
    -- Run procedure for Test_Case.
@@ -312,7 +312,7 @@ package body Ahven.Framework is
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
    begin
-      Test_List.Append (Suite.Test_Cases, Test_Class_Wrapper'(Ptr => T));
+      Test_List.Append (Suite.Test_Cases, (Ptr => T));
    end Add_Test;
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access) is
