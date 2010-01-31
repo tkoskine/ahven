@@ -43,21 +43,21 @@ package body Basic_Listener_Tests is
       Listener : Basic.Basic_Listener;
    begin
       Listeners.Basic.Start_Test
-        (Listener, Context'(Phase     => TEST_BEGIN,
-                            Test_Name => +"testname",
-                            Test_Kind => ROUTINE));
+        (Listener, (Phase     => TEST_BEGIN,
+                    Test_Name => +"testname",
+                    Test_Kind => ROUTINE));
       Listeners.Basic.Add_Pass
-        (Listener, Context'(Phase        => TEST_RUN,
-                            Test_Name    => +"testname",
-                            Test_Kind    => ROUTINE,
-                            Routine_Name => +"routine",
-                            Message      => +"message",
-                            Long_Message => +"long_message"));
+        (Listener, (Phase        => TEST_RUN,
+                    Test_Name    => +"testname",
+                    Test_Kind    => ROUTINE,
+                    Routine_Name => +"routine",
+                    Message      => +"message",
+                    Long_Message => +"long_message"));
       Listeners.Basic.End_Test
-        (Listener, Context'(Phase          => TEST_END,
-                            Test_Name      => +"testname",
-                            Test_Kind      => ROUTINE,
-                            Execution_Time => 1.0));
+        (Listener, (Phase          => TEST_END,
+                    Test_Name      => +"testname",
+                    Test_Kind      => ROUTINE,
+                    Execution_Time => 1.0));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
    end Test_Single_Pass;
@@ -69,33 +69,33 @@ package body Basic_Listener_Tests is
       Listener : Basic.Basic_Listener;
    begin
       Listeners.Basic.Start_Test
-        (Listener, Context'(Phase     => TEST_BEGIN,
-                            Test_Name => +"suite",
-                            Test_Kind => CONTAINER));
+        (Listener, (Phase     => TEST_BEGIN,
+                    Test_Name => +"suite",
+                    Test_Kind => CONTAINER));
 
       Listeners.Basic.Start_Test
-        (Listener, Context'(Phase     => TEST_BEGIN,
-                            Test_Name => +"testname",
-                            Test_Kind => ROUTINE));
+        (Listener, (Phase     => TEST_BEGIN,
+                    Test_Name => +"testname",
+                    Test_Kind => ROUTINE));
 
       Listeners.Basic.Add_Error
-        (Listener, Context'(Phase     => TEST_RUN,
-                            Test_Name => +"testname",
-                            Test_Kind => ROUTINE,
-                            Routine_Name => +"routine",
-                            Message      => +"message",
-                            Long_Message => +"long_message"));
+        (Listener, (Phase     => TEST_RUN,
+                    Test_Name => +"testname",
+                    Test_Kind => ROUTINE,
+                    Routine_Name => +"routine",
+                    Message      => +"message",
+                    Long_Message => +"long_message"));
       Listeners.Basic.End_Test
-        (Listener, Context'(Phase     => TEST_END,
-                            Test_Name => +"testname",
-                            Test_Kind => ROUTINE,
-                            Execution_Time => 1.0));
+        (Listener, (Phase     => TEST_END,
+                    Test_Name => +"testname",
+                    Test_Kind => ROUTINE,
+                    Execution_Time => 1.0));
 
       Listeners.Basic.End_Test
-        (Listener, Context'(Phase     => TEST_END,
-                            Test_Name => +"suite",
-                            Test_Kind => CONTAINER,
-                            Execution_Time => 0.0));
+        (Listener, (Phase     => TEST_END,
+                    Test_Name => +"suite",
+                    Test_Kind => CONTAINER,
+                    Execution_Time => 0.0));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
 
