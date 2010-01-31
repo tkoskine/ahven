@@ -22,7 +22,7 @@ package body Ahven.VStrings is
    function "+"(Source : String) return VString is
    begin
       if Source'Length in VString_Size'Range then
-         return VString'(Len => Source'Length, Data => Source);
+         return (Len => Source'Length, Data => Source);
       else
          raise Constraint_Error;
       end if;
@@ -31,11 +31,11 @@ package body Ahven.VStrings is
    function Truncate (Source : String) return VString is
    begin
       if Source'Length in VString_Size'Range then
-         return VString'(Len => Source'Length, Data => Source);
+         return (Len => Source'Length, Data => Source);
       else
-         return VString'(Len  => VString_Size'Last,
-                         Data => Head (Source => Source,
-                                       Count  => VString_Size'Last));
+         return (Len  => VString_Size'Last,
+                 Data => Head (Source => Source,
+                               Count  => VString_Size'Last));
       end if;
    end Truncate;
 
