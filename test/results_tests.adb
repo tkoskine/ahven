@@ -44,14 +44,11 @@ package body Results_Tests is
       Info     : constant Result_Info := Empty_Result_Info;
    begin
       Coll_Dyn := new Result_Collection;
-      Init_Collection (Coll);
-      Init_Collection (Coll_Dyn.all);
       Add_Error (Coll, Info);
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
       Assert (2 = Test_Count (Coll), "Invalid test count");
-      Release (Coll);
    end Test_Count_Children;
 
    procedure Test_Direct_Count is
@@ -63,8 +60,6 @@ package body Results_Tests is
       Expected_Test_Count : constant := 3;
    begin
       Coll_Dyn := new Result_Collection;
-      Init_Collection (Coll);
-      Init_Collection (Coll_Dyn.all);
       Add_Error (Coll, Info);
       Add_Failure (Coll, Info);
       Add_Pass (Coll, Info);
@@ -78,7 +73,6 @@ package body Results_Tests is
               & Integer'Image (Direct_Test_Count (Coll)));
       Assert (1 = Direct_Test_Count (Coll_Dyn.all), "Invalid test count: "
               & Integer'Image (Direct_Test_Count (Coll_Dyn.all)));
-      Release (Coll);
    end Test_Direct_Count;
 
    procedure Test_Result_Iterator is
@@ -90,7 +84,6 @@ package body Results_Tests is
       Msg  : constant VString := +"hello";
       Count : Natural;
    begin
-      Init_Collection (Coll);
       Set_Message (Info, Msg);
       Add_Error (Coll, Info);
       Add_Failure (Coll, Info);
@@ -128,7 +121,6 @@ package body Results_Tests is
          Count := Count + 1;
       end loop;
       Assert (Count = 1, "Invalid amount of errors");
-      Release (Coll);
    end Test_Result_Iterator;
 
    procedure Test_Add_Pass is
@@ -137,10 +129,8 @@ package body Results_Tests is
       Coll : Result_Collection;
       Info : constant Result_Info := Empty_Result_Info;
    begin
-      Init_Collection (Coll);
       Add_Pass (Coll, Info);
       Assert (Pass_Count (Coll) = 1, "Pass was not added!");
-      Release (Coll);
    end Test_Add_Pass;
 
    procedure Test_Add_Failure is
@@ -149,10 +139,8 @@ package body Results_Tests is
       Coll : Result_Collection;
       Info : constant Result_Info := Empty_Result_Info;
    begin
-      Init_Collection (Coll);
       Add_Failure (Coll, Info);
       Assert (Failure_Count (Coll) = 1, "Failure was not added!");
-      Release (Coll);
    end Test_Add_Failure;
 
    procedure Test_Add_Error is
@@ -161,10 +149,8 @@ package body Results_Tests is
       Coll : Result_Collection;
       Info : constant Result_Info := Empty_Result_Info;
    begin
-      Init_Collection (Coll);
       Add_Error (Coll, Info);
       Assert (Error_Count (Coll) = 1, "Error was not added!");
-      Release (Coll);
    end Test_Add_Error;
 
 end Results_Tests;
