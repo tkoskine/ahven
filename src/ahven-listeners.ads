@@ -27,14 +27,12 @@ package Ahven.Listeners is
       Test_Name      : VStrings.VString;
       Test_Kind      : Test_Type;
       case Phase is
-         when TEST_BEGIN =>
+         when TEST_BEGIN | TEST_END =>
             null;
          when TEST_RUN =>
             Routine_Name : VStrings.VString;
             Message      : VStrings.VString;
             Long_Message : VStrings.VString;
-         when TEST_END =>
-            Execution_Time : Duration;
       end case;
    end record;
 

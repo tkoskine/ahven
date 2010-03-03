@@ -56,8 +56,7 @@ package body Basic_Listener_Tests is
       Listeners.Basic.End_Test
         (Listener, (Phase          => TEST_END,
                     Test_Name      => +"testname",
-                    Test_Kind      => ROUTINE,
-                    Execution_Time => 1.0));
+                    Test_Kind      => ROUTINE));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
    end Test_Single_Pass;
@@ -88,14 +87,12 @@ package body Basic_Listener_Tests is
       Listeners.Basic.End_Test
         (Listener, (Phase     => TEST_END,
                     Test_Name => +"testname",
-                    Test_Kind => ROUTINE,
-                    Execution_Time => 1.0));
+                    Test_Kind => ROUTINE));
 
       Listeners.Basic.End_Test
         (Listener, (Phase     => TEST_END,
                     Test_Name => +"suite",
-                    Test_Kind => CONTAINER,
-                    Execution_Time => 0.0));
+                    Test_Kind => CONTAINER));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
 

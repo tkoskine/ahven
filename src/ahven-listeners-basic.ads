@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Calendar;
 with Ahven.Temporary_Output;
 with Ahven.Results;
 
@@ -32,6 +33,7 @@ package Ahven.Listeners.Basic is
       Last_Info         : Result_Info := Empty_Result_Info;
       Capture_Output    : Boolean := False;
       Output_File       : Temporary_Output.Temporary_File;
+      Start_Time        : Ada.Calendar.Time;
    end record;
 
    procedure Add_Pass (Listener : in out Basic_Listener;

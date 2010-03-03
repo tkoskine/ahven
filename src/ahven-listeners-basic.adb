@@ -62,6 +62,7 @@ package body Ahven.Listeners.Basic is
                          Info     :        Context) is
       R : Result_Collection_Access := null;
    begin
+      Listener.Start_Time := Ada.Calendar.Clock;
       if Info.Test_Kind = CONTAINER then
          R := new Result_Collection;
          Set_Name (R.all, Info.Test_Name);
@@ -83,6 +84,11 @@ package body Ahven.Listeners.Basic is
 
    procedure End_Test (Listener : in out Basic_Listener;
                        Info     :        Context) is
+      use type Ada.Calendar.Time;
+
+      Execution_Time : constant Duration :=
+        Ada.Calendar.Clock - Listener.Start_Time;
+
       procedure Add_Result (Collection : in out Result_Collection) is
          My_Info : Result_Info := Listener.Last_Info;
       begin
@@ -110,7 +116,7 @@ package body Ahven.Listeners.Basic is
 
             Set_Message (My_Info, Get_Message (Listener.Last_Info));
             Set_Long_Message (My_Info, Get_Long_Message (Listener.Last_Info));
-            Results.Set_Execution_Time (My_Info, Info.Execution_Time);
+            Results.Set_Execution_Time (My_Info, Execution_Time);
 
             case Listener.Last_Test_Result is
                when PASS_RESULT =>

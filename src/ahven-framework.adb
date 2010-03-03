@@ -16,7 +16,6 @@
 
 with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
-with Ada.Calendar;
 
 package body Ahven.Framework is
    use Ahven.VStrings;
@@ -67,8 +66,7 @@ package body Ahven.Framework is
         (Listener_Object,
          (Phase          => TEST_END,
           Test_Name      => +Get_Name (Test_Object),
-          Test_Kind      => CONTAINER,
-          Execution_Time => 0.0));
+          Test_Kind      => CONTAINER));
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
@@ -176,19 +174,13 @@ package body Ahven.Framework is
       Test_Name    :        String;
       Routine_Name :        String)
    is
-      use type Ada.Calendar.Time;
       use Ahven.Listeners;
-
-      Start_Time : Ada.Calendar.Time;
-      End_Time   : Ada.Calendar.Time;
    begin
       Listeners.Start_Test
         (Listener,
          (Phase     => Ahven.Listeners.TEST_BEGIN,
           Test_Name => +Test_Name,
           Test_Kind => ROUTINE));
-      Start_Time := Ada.Calendar.Clock;
-
       Run_Command (Command  => Command,
                    Info     => (Phase        => Listeners.TEST_RUN,
                                 Test_Name    => +Test_Name,
@@ -198,14 +190,11 @@ package body Ahven.Framework is
                                 Long_Message => +""),
                    Listener => Listener,
                    T        => T);
-
-      End_Time := Ada.Calendar.Clock;
       Listeners.End_Test
         (Listener,
          (Phase          => Ahven.Listeners.TEST_END,
           Test_Name      => +Test_Name,
-          Test_Kind      => ROUTINE,
-          Execution_Time => End_Time - Start_Time));
+          Test_Kind      => ROUTINE));
    end Run_Internal;
 
    -- Run procedure for Test_Case.
