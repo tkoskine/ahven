@@ -155,7 +155,7 @@ package body Ahven.Results is
          Release (Ptr.all);
          Free (Ptr);
 
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop;
       Clear (Collection.Children);
 
@@ -188,7 +188,7 @@ package body Ahven.Results is
          exit when not Is_Valid (Position);
 
          Count := Count + Test_Count (Data (Position).Ptr.all);
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop;
       return Count;
    end Test_Count;
@@ -210,7 +210,7 @@ package body Ahven.Results is
          exit when not Is_Valid (Position);
 
          Count := Count + Pass_Count (Data (Position).Ptr.all);
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop;
       return Count;
    end Pass_Count;
@@ -223,7 +223,7 @@ package body Ahven.Results is
          exit when not Is_Valid (Position);
 
          Count := Count + Error_Count (Data (Position).Ptr.all);
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop;
       return Count;
    end Error_Count;
@@ -236,7 +236,7 @@ package body Ahven.Results is
          exit when not Is_Valid (Position);
 
          Count := Count + Failure_Count (Data (Position).Ptr.all);
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop;
       return Count;
    end Failure_Count;
@@ -256,32 +256,32 @@ package body Ahven.Results is
    function Get_Execution_Time (Collection : Result_Collection)
      return Duration
    is
-      Position      : Result_Info_List.Cursor;
-      Total_Time : Duration := 0.0;
-      Child_Position: Result_List.Cursor;
+      Position       : Result_Info_List.Cursor;
+      Total_Time     : Duration := 0.0;
+      Child_Position : Result_List.Cursor;
    begin
-      Position:= First (Collection.Passes);
+      Position := First (Collection.Passes);
       Pass_Loop:
       loop
          exit Pass_Loop when not Is_Valid (Position);
          Total_Time := Total_Time + Get_Execution_Time (Data (Position));
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop Pass_Loop;
 
-      Position:= First (Collection.Failures);
+      Position := First (Collection.Failures);
       Failure_Loop:
       loop
          exit Failure_Loop when not Is_Valid (Position);
          Total_Time := Total_Time + Get_Execution_Time (Data (Position));
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop Failure_Loop;
 
-      Position:= First (Collection.Errors);
+      Position := First (Collection.Errors);
       Error_Loop:
       loop
          exit Error_Loop when not Is_Valid (Position);
          Total_Time := Total_Time + Get_Execution_Time (Data (Position));
-         Position:= Next (Position);
+         Position := Next (Position);
       end loop Error_Loop;
 
       Child_Loop:
@@ -290,7 +290,7 @@ package body Ahven.Results is
          Total_Time := Total_Time +
                        Get_Execution_Time
                          (Result_List.Data (Child_Position).Ptr.all);
-         Child_Position:= Result_List.Next (Child_Position);
+         Child_Position := Result_List.Next (Child_Position);
       end loop Child_Loop;
 
       return Total_Time;
@@ -363,9 +363,9 @@ package body Ahven.Results is
                                  Level : Natural)
         return Natural
       is
-         Max     : Natural := 0;
-         Current : Natural := 0;
-         Position   : Result_List.Cursor := Result_List.First (Coll.Children);
+         Max      : Natural := 0;
+         Current  : Natural := 0;
+         Position : Result_List.Cursor := Result_List.First (Coll.Children);
       begin
          loop
             exit when not Is_Valid (Position);
@@ -373,7 +373,7 @@ package body Ahven.Results is
             if Max < Current then
                Max := Current;
             end if;
-            Position:= Result_List.Next (Position);
+            Position := Result_List.Next (Position);
          end loop;
          return Level + Max;
       end Child_Depth_Impl;
