@@ -29,9 +29,9 @@ package Ahven.Listeners.Basic is
    type Basic_Listener is new Result_Listener with record
       Main_Result       : aliased Result_Collection;
       Current_Result    : Result_Collection_Access;
-      Last_Test_Result  : Result_Type      := NO_RESULT;
+      Last_Test_Result  : Result_Type := NO_RESULT;
       Last_Info         : Result_Info := Empty_Result_Info;
-      Capture_Output    : Boolean := False;
+      Capture_Output    : Boolean     := False;
       Output_File       : Temporary_Output.Temporary_File;
       Start_Time        : Ada.Calendar.Time;
    end record;
@@ -57,7 +57,7 @@ package Ahven.Listeners.Basic is
    -- New implementation for Listeners.End_Test
 
    procedure Set_Output_Capture (Listener : in out Basic_Listener;
-                                 Capture  : Boolean);
+                                 Capture  :        Boolean);
    -- Enable or disable Ada.Text_IO output capturing
 
    function Get_Output_Capture (Listener : Basic_Listener)
@@ -66,8 +66,8 @@ package Ahven.Listeners.Basic is
 
 private
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
-                                 Info     : Context;
-                                 Result   : Result_Type);
+                                 Info     :        Context;
+                                 Result   :        Result_Type);
 
    procedure Remove_File (Name : String);
    procedure Remove_Files (Collection : in out Result_Collection);

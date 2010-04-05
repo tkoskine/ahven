@@ -28,8 +28,8 @@ package body Ahven.Listeners.Basic is
    -- records the latest result to the listener.
 
    procedure Set_Last_Test_Info (Listener : in out Basic_Listener;
-                                 Info     : Context;
-                                 Result   : Result_Type) is
+                                 Info     :        Context;
+                                 Result   :        Result_Type) is
    begin
       Listener.Last_Test_Result := Result;
       if Info.Phase = TEST_RUN then
@@ -41,13 +41,13 @@ package body Ahven.Listeners.Basic is
    end Set_Last_Test_Info;
 
    procedure Add_Pass (Listener : in out Basic_Listener;
-                       Info  : Context) is
+                       Info     :        Context) is
    begin
       Set_Last_Test_Info (Listener, Info, PASS_RESULT);
    end Add_Pass;
 
    procedure Add_Failure (Listener : in out Basic_Listener;
-                          Info  : Context) is
+                          Info     :        Context) is
    begin
       Set_Last_Test_Info (Listener, Info, FAILURE_RESULT);
    end Add_Failure;
@@ -163,9 +163,6 @@ package body Ahven.Listeners.Basic is
    end Remove_File;
 
    procedure Remove_Files (Collection : in out Result_Collection) is
-      procedure Remove_Loop (First_Item : Result_Info_Cursor);
-      procedure Remove (Name : VString);
-
       procedure Remove (Name : VString) is
       begin
          if Length (Name) > 0 then
