@@ -16,11 +16,14 @@
 
 with Ada.Finalization;
 
+with Ahven;
 with Ahven.Listeners;
 with Ahven.SList;
 with Ahven.VStrings;
 
+pragma Elaborate_All (Ahven);
 pragma Elaborate_All (Ahven.SList);
+pragma Elaborate_All (Ahven.VStrings);
 
 package Ahven.Framework is
 
