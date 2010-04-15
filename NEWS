@@ -7,6 +7,30 @@ Changes
 	  not work automatically on Debian and on Windows
 	  with GNAT.
 
+	* Ada.Calendar dependency was removed from Ahven.Framework.
+	  Equivalent functionality is now implemented in
+	  the test runners.
+	
+	* Janus/Ada 3.1.1d support was dropped. Ahven now requires
+	  Janus/Ada 3.1.2beta or newer.
+
+Bugs fixed
+----------
+	* Many Some_Type'(initial values) expressions were
+	  changed into more simpler (initial values) form.
+	  This was done to avoid Janus/Ada bug no 73.
+
+Internal
+--------
+	* Code cleanup: style fixes, removal of compiler warnings
+	  and comment clarifications.
+
+	* Remove_All procedure from Ahven.SList package was renamed
+	  to Clear. The new name is more constent with Ada.Containers
+	  naming style.
+
+	* Ahven.VStrings package now depends on Ada.Strings.Fixed.
+
 2009-09-14 Ahven 1.7
 ====================
 
