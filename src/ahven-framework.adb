@@ -365,20 +365,22 @@ package body Ahven.Framework is
             Execute (Current, Test_Name, Listener);
          end if;
       end Execute_Test;
+      
+      procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
+      begin
+         Execute_Test (Current.Ptr.all);
+      end Execute_Test_Ptr;
 
+      procedure Execute_Cases is
+        new Test_List.For_Each (Action => Execute_Test_Ptr);
+        
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
-
-      Position : Cursor := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
          Run (T, Listener);
       else
-         loop
-            exit when not Is_Valid (Position);
-            Execute_Test (Test'Class (Data (Position).Ptr.all));
-            Position := Next (Position);
-         end loop;
+         Execute_Cases (T.Test_Cases);
          Execute_Static_Cases (T.Static_Test_Cases);
       end if;
    end Run;
