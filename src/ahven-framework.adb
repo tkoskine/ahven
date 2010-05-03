@@ -256,16 +256,19 @@ package body Ahven.Framework is
    is
       use Test_Command_List;
 
-      Position : Cursor := First (T.Routines);
       Counter  : Test_Count_Type := 0;
-   begin
-      loop
-         exit when not Is_Valid (Position);
-         if To_String (Data (Position).Name) = Test_Name then
+      
+      procedure Increase (Cmd : in out Test_Command) is
+      begin
+         if To_String (Cmd.Name) = Test_Name then
             Counter := Counter + 1;
          end if;
-         Position := Next (Position);
-      end loop;
+      end Increase;
+      
+      procedure Count_Commands is new
+        Test_Command_List.For_Each (Action => Increase);
+   begin
+      Count_Commands (T.Routines);
 
       return Counter;
    end Test_Count;
