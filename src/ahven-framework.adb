@@ -336,23 +336,16 @@ package body Ahven.Framework is
       begin
          Execute (Current, Listener);
       end Execute_Test;
-
-      -- Run Execute procedure for all tests in the Cases list.
-      procedure Execute_Cases (Cases : Test_List.List) is
-         use Test_List;
-
-         Position : Cursor := First (Cases);
+      
+      procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
       begin
-         loop
-            exit when not Is_Valid (Position);
-            Execute_Test (Data (Position).Ptr.all);
-            Position := Next (Position);
-         end loop;
-      end Execute_Cases;
-
+         Execute (Current.Ptr.all, Listener);
+      end Execute_Test_Ptr;
 
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
+      procedure Execute_Cases is
+        new Test_List.For_Each (Action => Execute_Test_Ptr);
    begin
       Execute_Cases (T.Test_Cases);
       Execute_Static_Cases (T.Static_Test_Cases);

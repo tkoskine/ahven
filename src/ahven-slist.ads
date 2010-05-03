@@ -56,6 +56,12 @@ package Ahven.SList is
    function Length (Target : List) return Count_Type;
    -- Return the length of the list.
 
+   generic
+      with procedure Action (T : in out Element_Type) is <>;
+   procedure For_Each (Target : List);
+   -- A generic procedure for walk through every item
+   -- in the list and call Action procedure for them.
+
 private
    type Node;
    type Node_Access is access Node;
