@@ -14,6 +14,9 @@ Changes
 	* Janus/Ada 3.1.1d support was dropped. Ahven now requires
 	  Janus/Ada 3.1.2beta or newer.
 
+	* There is now ahven.spec file in contrib/fedora to
+	  make packaging and installing Ahven easier on Fedora.
+
 Bugs fixed
 ----------
 	* Many Some_Type'(initial values) expressions were
