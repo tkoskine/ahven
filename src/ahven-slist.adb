@@ -93,6 +93,15 @@ package body Ahven.SList is
       return Target.Size;
    end Length;
 
+   procedure For_Each (Target : List) is
+      Current_Node : Node_Access := Target.First;
+   begin
+      while Current_Node /= null loop
+         Action (Current_Node.Data);
+         Current_Node := Current_Node.Next;
+      end loop;
+   end For_Each;
+
    procedure Initialize (Target : in out List) is
    begin
       Target.Last := null;

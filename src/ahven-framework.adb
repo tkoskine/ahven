@@ -256,16 +256,19 @@ package body Ahven.Framework is
    is
       use Test_Command_List;
 
-      Position : Cursor := First (T.Routines);
       Counter  : Test_Count_Type := 0;
-   begin
-      loop
-         exit when not Is_Valid (Position);
-         if To_String (Data (Position).Name) = Test_Name then
+      
+      procedure Increase (Cmd : in out Test_Command) is
+      begin
+         if To_String (Cmd.Name) = Test_Name then
             Counter := Counter + 1;
          end if;
-         Position := Next (Position);
-      end loop;
+      end Increase;
+      
+      procedure Count_Commands is new
+        Test_Command_List.For_Each (Action => Increase);
+   begin
+      Count_Commands (T.Routines);
 
       return Counter;
    end Test_Count;
@@ -336,23 +339,16 @@ package body Ahven.Framework is
       begin
          Execute (Current, Listener);
       end Execute_Test;
-
-      -- Run Execute procedure for all tests in the Cases list.
-      procedure Execute_Cases (Cases : Test_List.List) is
-         use Test_List;
-
-         Position : Cursor := First (Cases);
+      
+      procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
       begin
-         loop
-            exit when not Is_Valid (Position);
-            Execute_Test (Data (Position).Ptr.all);
-            Position := Next (Position);
-         end loop;
-      end Execute_Cases;
-
+         Execute (Current.Ptr.all, Listener);
+      end Execute_Test_Ptr;
 
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
+      procedure Execute_Cases is
+        new Test_List.For_Each (Action => Execute_Test_Ptr);
    begin
       Execute_Cases (T.Test_Cases);
       Execute_Static_Cases (T.Static_Test_Cases);
@@ -372,20 +368,22 @@ package body Ahven.Framework is
             Execute (Current, Test_Name, Listener);
          end if;
       end Execute_Test;
+      
+      procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
+      begin
+         Execute_Test (Current.Ptr.all);
+      end Execute_Test_Ptr;
 
+      procedure Execute_Cases is
+        new Test_List.For_Each (Action => Execute_Test_Ptr);
+        
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
-
-      Position : Cursor := First (T.Test_Cases);
    begin
       if Test_Name = To_String (T.Suite_Name) then
          Run (T, Listener);
       else
-         loop
-            exit when not Is_Valid (Position);
-            Execute_Test (Test'Class (Data (Position).Ptr.all));
-            Position := Next (Position);
-         end loop;
+         Execute_Cases (T.Test_Cases);
          Execute_Static_Cases (T.Static_Test_Cases);
       end if;
    end Run;
