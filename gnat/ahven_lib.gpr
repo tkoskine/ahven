@@ -25,14 +25,12 @@ project Ahven_Lib is
   for Source_List_File use "ahven.lgpr";
   for Library_Name use "ahven";
   for Library_Dir use "../lib";
+  for Library_Kind use "static";
 
   case OS_Version is
     when "unix" =>
-      for Library_Kind use external ("LIBTYPE", "dynamic");
-      for Library_Version use "libahven.so." & Version & ".0";
       for Source_Dirs use ("../src", "../src/unix");
     when "windows" =>
-      for Library_Kind use "static";
       for Source_Dirs use ("../src", "../src/windows");
   end case;
 
