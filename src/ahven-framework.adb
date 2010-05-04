@@ -257,14 +257,14 @@ package body Ahven.Framework is
       use Test_Command_List;
 
       Counter  : Test_Count_Type := 0;
-      
+
       procedure Increase (Cmd : in out Test_Command) is
       begin
          if To_String (Cmd.Name) = Test_Name then
             Counter := Counter + 1;
          end if;
       end Increase;
-      
+
       procedure Count_Commands is new
         Test_Command_List.For_Each (Action => Increase);
    begin
@@ -339,7 +339,7 @@ package body Ahven.Framework is
       begin
          Execute (Current, Listener);
       end Execute_Test;
-      
+
       procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
       begin
          Execute (Current.Ptr.all, Listener);
@@ -368,7 +368,7 @@ package body Ahven.Framework is
             Execute (Current, Test_Name, Listener);
          end if;
       end Execute_Test;
-      
+
       procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
       begin
          Execute_Test (Current.Ptr.all);
@@ -376,7 +376,7 @@ package body Ahven.Framework is
 
       procedure Execute_Cases is
         new Test_List.For_Each (Action => Execute_Test_Ptr);
-        
+
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
    begin
