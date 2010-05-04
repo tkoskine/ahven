@@ -10,6 +10,9 @@ Changes
 	* Ada.Calendar dependency was removed from Ahven.Framework.
 	  Equivalent functionality is now implemented in
 	  the test runners.
+
+	* Support for TAP 1.3 was dropped. TAP 1.2 is supported
+	  normally.
 	
 	* Janus/Ada 3.1.1d support was dropped. Ahven now requires
 	  Janus/Ada 3.1.2beta or newer.

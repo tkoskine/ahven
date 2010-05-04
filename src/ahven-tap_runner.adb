@@ -54,10 +54,6 @@ package body Ahven.Tap_Runner is
    begin
       Parameters.Parse_Parameters (Parameters.TAP_PARAMETERS, Params);
 
-      if Parameters.Use_Tap_13 (Params) then
-         Put_Line ("TAP version 13");
-      end if;
-      Listener.Tap_13 := Parameters.Use_Tap_13 (Params);
       Listener.Verbose := Parameters.Verbose (Params);
       Listener.Capture_Output := Parameters.Capture (Params);
 
@@ -84,24 +80,6 @@ package body Ahven.Tap_Runner is
          New_Line;
       end if;
    end Print_Info;
-
-   procedure Print_Info_13 (Info : Context; Severity : String) is
-   begin
-      Put_Line ("  ---");
-      Print_Data (Message => "message: " &
-                             '"' & To_String (Info.Message) & '"',
-                  Prefix  => "  ");
-      New_Line;
-      Print_Data (Message => "severity: " & Severity, Prefix => "  ");
-      New_Line;
-      if Length (Info.Long_Message) > 0 then
-         Print_Data (Message => "long_message: " &
-                                To_String (Info.Long_Message),
-                     Prefix  => "  ");
-         New_Line;
-      end if;
-      Put_Line ("  ...");
-   end Print_Info_13;
 
    procedure Print_Log_File (Filename : String; Prefix : String) is
       Handle : File_Type;
@@ -170,16 +148,11 @@ package body Ahven.Tap_Runner is
       New_Line;
 
       if Listener.Verbose then
-         if Listener.Tap_13 then
-            Print_Info_13 (Info, Severity);
-            -- For version 1.3 we do not support log file yet.
-         else
-            Print_Info (Info);
-            if Listener.Capture_Output then
-               Print_Log_File
-                 (Filename => Temporary_Output.Get_Name (Listener.Output_File),
-                  Prefix   => "# ");
-            end if;
+         Print_Info (Info);
+         if Listener.Capture_Output then
+            Print_Log_File
+              (Filename => Temporary_Output.Get_Name (Listener.Output_File),
+               Prefix   => "# ");
          end if;
       end if;
    end Report_Not_Ok;

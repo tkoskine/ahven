@@ -54,8 +54,6 @@ package body Ahven.Parameters is
                Info.Capture_Output := True;
             when 'd' =>
                Dir_Next := True;
-            when 'n' =>
-               Info.Tap_13 := True;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
@@ -108,7 +106,6 @@ package body Ahven.Parameters is
       Info := (Verbose_Output => True,
                Xml_Output     => False,
                Capture_Output => False,
-               Tap_13         => False,
                Test_Name      => 0,
                Result_Dir     => 0);
       for A in Positive range 1 .. Argument_Count loop
@@ -134,7 +131,6 @@ package body Ahven.Parameters is
          when TAP_PARAMETERS =>
             Put_Line ("Possible parameters: [-cnqv] [--] [testname]");
             Put_Line ("   -c    : capture and report test outputs");
-            Put_Line ("   -n    : use tap 1.3 instead of tap 1.2");
             Put_Line ("   -q    : quiet results");
             Put_Line ("   -v    : verbose results (default)");
             Put_Line ("   --    : end of parameters (optional)");
@@ -178,9 +174,4 @@ package body Ahven.Parameters is
          return Argument (Info.Result_Dir);
       end if;
    end Result_Dir;
-
-   function Use_Tap_13 (Info : Parameter_Info) return Boolean is
-   begin
-      return Info.Tap_13;
-   end Use_Tap_13;
 end Ahven.Parameters;

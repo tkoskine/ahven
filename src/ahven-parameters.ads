@@ -49,12 +49,8 @@ package Ahven.Parameters is
    function Result_Dir (Info : Parameter_Info) return String;
    -- Return the directory for XML results.
 
-   function Use_Tap_13 (Info : Parameter_Info) return Boolean;
-   -- Use Test Anything Protocol 1.3?
-
 private
    type Parameter_Info is record
-      Tap_13         : Boolean := False;
       Verbose_Output : Boolean := True;
       Xml_Output     : Boolean := False;
       Capture_Output : Boolean := False;
