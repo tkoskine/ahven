@@ -4,8 +4,8 @@
 Changes
 -------
 	* The dynamic library support was removed since it did
-	  not work automatically on Debian and on Windows
-	  with GNAT.
+	  not work automatically in a trouble-free way on Debian,
+	  Fedora, and Windows with GNAT.
 
 	* Ada.Calendar dependency was removed from Ahven.Framework.
 	  Equivalent functionality is now implemented in
@@ -22,6 +22,12 @@ Changes
 
 Bugs fixed
 ----------
+	* If user placed dynamically allocated Test_Cases into
+	  statically allocated Test_Suites the finalization
+	  procedures tried to release same memory twice.
+	  This is now fixed by implementing Adjust for the
+	  Test_Suite type.
+
 	* Many Some_Type'(initial values) expressions were
 	  changed into more simpler (initial values) form.
 	  This was done to avoid Janus/Ada bug no 73.
