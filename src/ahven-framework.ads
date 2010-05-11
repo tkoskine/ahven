@@ -224,6 +224,10 @@ package Ahven.Framework is
      return Test_Count_Type;
    -- Implementation of Test_Count (T : Test, Test_Name : String).
 
+   procedure Adjust (T : in out Test_Suite);
+   -- Adjust procedure of Test_Suite.
+   -- Handles the copying of the structure properly
+
    procedure Finalize (T : in out Test_Suite);
    -- Finalize procedure of Test_Suite. Frees all added Tests.
 

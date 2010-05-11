@@ -445,6 +445,24 @@ package body Ahven.Framework is
       return Counter;
    end Test_Count;
 
+   procedure Adjust (T : in out Test_Suite) is
+      use Test_List;
+
+      Ptr      : Test_Class_Access := null;
+      Position : Cursor := First (T.Test_Cases);
+
+      New_List : List := Empty_List;
+   begin
+      loop
+         exit when not Is_Valid (Position);
+         Ptr := Data (Position).Ptr;
+         Append (New_List, (Ptr => new Test'Class'(Ptr.all)));
+         Position := Next (Position);
+      end loop;
+
+      T.Test_Cases := New_List;
+   end Adjust;
+
    procedure Finalize  (T : in out Test_Suite) is
       use Test_List;
 
