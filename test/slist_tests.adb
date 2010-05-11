@@ -46,6 +46,8 @@ package body SList_Tests is
                                   "Test_Length");
       Framework.Add_Test_Routine (T, Test_Copy'Access,
                                   "Test_Copy");
+      Framework.Add_Test_Routine (T, Test_For_Each'Access,
+                                  "Test_For_Each");
    end Initialize;
 
    procedure Test_Append_Elementary is
@@ -225,4 +227,25 @@ package body SList_Tests is
       Assert (Length (My_List) = Object_Amount, "Invalid size: " &
               Count_Type'Image (Length (My_List)));
    end Test_Copy;
+
+   procedure Test_For_Each is
+      use Simple_List;
+
+      Counter : Natural := 0;
+
+      procedure My_Action (Obj : in out Simple_Type) is
+      begin
+         Counter := Counter + 1;
+         Assert (Counter = Obj.Value, "Data mismatch");
+      end My_Action;
+
+      procedure Run_All is new Simple_List.For_Each (Action => My_Action);
+
+      My_List  : List;
+   begin
+      for A in Integer range 1 .. 5 loop
+         Append (My_List, (Value => A));
+      end loop;
+      Run_All (My_List);
+   end Test_For_Each;
 end SList_Tests;
