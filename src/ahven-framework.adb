@@ -416,7 +416,7 @@ package body Ahven.Framework is
      return Test_Count_Type is
       Counter : Test_Count_Type := 0;
 
-      procedure Handle_Test (Test_Object : Test'Class) is
+      procedure Handle_Test (Test_Object : in out Test'Class) is
       begin
          if Get_Name (Test_Object) = Test_Name then
             Counter := Counter + Test_Count (Test_Object);
@@ -424,32 +424,23 @@ package body Ahven.Framework is
             Counter := Counter + Test_Count (Test_Object, Test_Name);
          end if;
       end Handle_Test;
+
+      procedure Handle_Test_Ptr (Obj : in out Test_Class_Wrapper) is
+      begin
+         Handle_Test (Obj.Ptr.all);
+      end Handle_Test_Ptr;
+
+      procedure Count_Static is
+        new Indefinite_Test_List.For_Each (Action => Handle_Test);
+      procedure Count_Tests is
+        new Test_List.For_Each (Action => Handle_Test_Ptr);
    begin
       if Test_Name = To_String (T.Suite_Name) then
          return Test_Count (T);
       end if;
 
-      declare
-         use Test_List;
-         Position : Cursor := First (T.Test_Cases);
-      begin
-         loop
-            exit when not Is_Valid (Position);
-            Handle_Test (Test'Class (Data (Position).Ptr.all));
-            Position := Next (Position);
-         end loop;
-      end;
-
-      declare
-         use Indefinite_Test_List;
-         Position : Cursor := First (T.Static_Test_Cases);
-      begin
-         loop
-            exit when not Is_Valid (Position);
-            Handle_Test (Data (Position));
-            Position := Next (Position);
-         end loop;
-      end;
+      Count_Tests (T.Test_Cases);
+      Count_Static (T.Static_Test_Cases);
 
       return Counter;
    end Test_Count;

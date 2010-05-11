@@ -264,6 +264,7 @@ package body Framework_Tests is
 
       Child       : Framework.Test_Suite;
       Parent      : Framework.Test_Suite;
+      GParent     : Framework.Test_Suite;
       Dummy_Test  : Dummy_Tests.Test;
    begin
       Child := Framework.Create_Suite ("Child suite");
@@ -272,7 +273,14 @@ package body Framework_Tests is
       Parent := Framework.Create_Suite ("Parent suite");
       Framework.Add_Static_Test (Parent, Child);
 
+      GParent := Framework.Create_Suite ("GParent suite");
+      Framework.Add_Static_Test (GParent, Parent);
+
       Assert_Eq_Count
-        (Framework.Test_Count (Parent, "Failure"), 1, "Test Count");
+        (Framework.Test_Count (GParent, "Failure"), 1, "Test Count");
+      Assert_Eq_Count
+        (Actual => Framework.Test_Count (GParent, "GParent suite"),
+         Expected => Dummy_Test_Count,
+         Message => "GParent suite: Test Count");
    end Test_Test_Suite_Test_Name_Count;
 end Framework_Tests;
