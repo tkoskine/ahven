@@ -295,9 +295,6 @@ private
       function Data (Position : Cursor) return Test'Class;
       -- Return element pointed by the cursor.
 
-      function Is_Valid (Position : Cursor) return Boolean;
-      -- Tell if the cursor is still valid.
-
       generic
          with procedure Action (T : in out Test'Class) is <>;
       procedure For_Each (Target : List);

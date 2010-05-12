@@ -390,30 +390,29 @@ package body Ahven.Framework is
 
    function Test_Count (T : Test_Suite) return Test_Count_Type is
       Counter : Test_Count_Type := 0;
+
+      procedure Inc_Counter (Test_Obj : in out Test'Class) is
+      begin
+         Counter := Counter + Test_Count (Test_Obj);
+      end Inc_Counter;
+
+      procedure Inc_Counter_Ptr (Wrapper : in out Test_Class_Wrapper) is
+      begin
+         Inc_Counter (Test'Class (Wrapper.Ptr.all));
+      end Inc_Counter_Ptr;
    begin
       declare
          use Test_List;
-
-         Position : Cursor := First (T.Test_Cases);
+         procedure Count_All is new For_Each (Action => Inc_Counter_Ptr);
       begin
-         loop
-            exit when not Is_Valid (Position);
-            Counter := Counter +
-              Test_Count (Test'Class (Data (Position).Ptr.all));
-            Position := Next (Position);
-         end loop;
+         Count_All (T.Test_Cases);
       end;
 
       declare
          use Indefinite_Test_List;
-
-         Position : Cursor := First (T.Static_Test_Cases);
+         procedure Count_All is new For_Each (Action => Inc_Counter);
       begin
-         loop
-            exit when not Is_Valid (Position);
-            Counter := Counter + Test_Count (Data (Position));
-            Position := Next (Position);
-         end loop;
+         Count_All (T.Static_Test_Cases);
       end;
 
       return Counter;
@@ -557,11 +556,6 @@ package body Ahven.Framework is
       begin
          return Position.Data.all;
       end Data;
-
-      function Is_Valid (Position : Cursor) return Boolean is
-      begin
-         return Position /= null;
-      end Is_Valid;
 
       procedure For_Each (Target : List) is
          Current_Node : Node_Access := Target.First;
