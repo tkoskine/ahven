@@ -29,4 +29,5 @@ private
    procedure Test_Data;
    procedure Test_Length;
    procedure Test_Copy;
+   procedure Test_For_Each;
 end SList_Tests;

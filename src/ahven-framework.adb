@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007-2009 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2007-2010 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -199,51 +199,46 @@ package body Ahven.Framework is
 
    -- Run procedure for Test_Case.
    --
-   -- Loops over the test routine list, executes the routines,
-   -- and calculates the time spent in the routine.
+   -- Loops over the test routine list and executes the routines.
    procedure Run (T        : in out Test_Case;
                   Listener : in out Listeners.Result_Listener'Class)
    is
-      use Test_Command_List;
-
-      Position : Cursor := First (T.Routines);
-   begin
-      loop
-         exit when not Is_Valid (Position);
+      procedure Exec (Cmd : in out Test_Command) is
+      begin
          Run_Internal (T            => T,
                        Listener     => Listener,
-                       Command      => Data (Position),
+                       Command      => Cmd,
                        Test_Name    => Get_Name (T),
-                       Routine_Name => To_String (Data (Position).Name));
-         Position := Next (Position);
-      end loop;
+                       Routine_Name => To_String (Cmd.Name));
+      end Exec;
+
+      procedure Run_All is new Test_Command_List.For_Each
+        (Action => Exec);
+   begin
+      Run_All (T.Routines);
    end Run;
 
    -- Purpose of the procedure is to run all
    -- test routines with name Test_Name.
-   --
-   -- The procedure also tracks the execution time of the
-   -- test routines and records them to the Result_Info.
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
                   Listener  : in out Listeners.Result_Listener'Class)
    is
-      use Test_Command_List;
-
-      Position : Cursor    := First (T.Routines);
-   begin
-      loop
-         exit when not Is_Valid (Position);
-         if To_String (Data (Position).Name) = Test_Name then
+      procedure Exec (Cmd : in out Test_Command) is
+      begin
+         if To_String (Cmd.Name) = Test_Name then
             Run_Internal (T            => T,
                           Listener     => Listener,
-                          Command      => Data (Position),
+                          Command      => Cmd,
                           Test_Name    => Get_Name (T),
-                          Routine_Name => To_String (Data (Position).Name));
+                          Routine_Name => To_String (Cmd.Name));
          end if;
+      end Exec;
 
-         Position := Next (Position);
-      end loop;
+      procedure Run_All is new Test_Command_List.For_Each
+        (Action => Exec);
+   begin
+      Run_All (T.Routines);
    end Run;
 
    function Test_Count (T : Test_Case) return Test_Count_Type is
@@ -358,8 +353,6 @@ package body Ahven.Framework is
                   Test_Name :        String;
                   Listener  : in out Listeners.Result_Listener'Class)
    is
-      use Test_List;
-
       procedure Execute_Test (Current : in out Test'Class) is
       begin
          if Get_Name (Current) = Test_Name then
@@ -422,7 +415,7 @@ package body Ahven.Framework is
      return Test_Count_Type is
       Counter : Test_Count_Type := 0;
 
-      procedure Handle_Test (Test_Object : Test'Class) is
+      procedure Handle_Test (Test_Object : in out Test'Class) is
       begin
          if Get_Name (Test_Object) = Test_Name then
             Counter := Counter + Test_Count (Test_Object);
@@ -430,35 +423,44 @@ package body Ahven.Framework is
             Counter := Counter + Test_Count (Test_Object, Test_Name);
          end if;
       end Handle_Test;
+
+      procedure Handle_Test_Ptr (Obj : in out Test_Class_Wrapper) is
+      begin
+         Handle_Test (Obj.Ptr.all);
+      end Handle_Test_Ptr;
+
+      procedure Count_Static is
+        new Indefinite_Test_List.For_Each (Action => Handle_Test);
+      procedure Count_Tests is
+        new Test_List.For_Each (Action => Handle_Test_Ptr);
    begin
       if Test_Name = To_String (T.Suite_Name) then
          return Test_Count (T);
       end if;
 
-      declare
-         use Test_List;
-         Position : Cursor := First (T.Test_Cases);
-      begin
-         loop
-            exit when not Is_Valid (Position);
-            Handle_Test (Test'Class (Data (Position).Ptr.all));
-            Position := Next (Position);
-         end loop;
-      end;
-
-      declare
-         use Indefinite_Test_List;
-         Position : Cursor := First (T.Static_Test_Cases);
-      begin
-         loop
-            exit when not Is_Valid (Position);
-            Handle_Test (Data (Position));
-            Position := Next (Position);
-         end loop;
-      end;
+      Count_Tests (T.Test_Cases);
+      Count_Static (T.Static_Test_Cases);
 
       return Counter;
    end Test_Count;
+
+   procedure Adjust (T : in out Test_Suite) is
+      use Test_List;
+
+      Ptr      : Test_Class_Access := null;
+      Position : Cursor := First (T.Test_Cases);
+
+      New_List : List := Empty_List;
+   begin
+      loop
+         exit when not Is_Valid (Position);
+         Ptr := Data (Position).Ptr;
+         Append (New_List, (Ptr => new Test'Class'(Ptr.all)));
+         Position := Next (Position);
+      end loop;
+
+      T.Test_Cases := New_List;
+   end Adjust;
 
    procedure Finalize  (T : in out Test_Suite) is
       use Test_List;
