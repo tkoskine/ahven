@@ -30,6 +30,10 @@ package Dummy_Tests is
 
    procedure Initialize (T : in out Test);
 
+   procedure Adjust (T : in out Test);
+
+   procedure Finalize (T : in out Test);
+
    procedure Set_Up (T : in out Test);
 
    procedure Tear_Down (T : in out Test);
@@ -42,4 +46,8 @@ package Dummy_Tests is
 
    procedure This_Test_Uses_Object
      (T : in out Ahven.Framework.Test_Case'Class);
+
+   function Get_Instance_Count return Integer;
+
+   procedure Reset_Instance_Count;
 end Dummy_Tests;

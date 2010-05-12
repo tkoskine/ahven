@@ -53,4 +53,6 @@ private
 
    procedure Test_Test_Suite_Test_Name_Count;
 
+   procedure Test_Test_Suite_Cleanup;
+
 end Framework_Tests;

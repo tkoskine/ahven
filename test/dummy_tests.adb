@@ -17,6 +17,8 @@
 with Ahven;
 
 package body Dummy_Tests is
+   Instance_Count : Integer := 0;
+
    procedure Initialize (T : in out Test) is
       procedure Register (T : in out Ahven.Framework.Test_Case'Class;
                           Routine : Ahven.Framework.Simple_Test_Routine_Access;
@@ -29,7 +31,19 @@ package body Dummy_Tests is
       Ahven.Framework.Add_Test_Routine
         (T, This_Test_Uses_Object'Access, "Object usage");
       T.State := INITIALIZED;
+
+      Instance_Count := Instance_Count + 1;
    end Initialize;
+
+   procedure Adjust (T : in out Test) is
+   begin
+      Instance_Count := Instance_Count + 1;
+   end Adjust;
+
+   procedure Finalize (T : in out Test) is
+   begin
+      Instance_Count := Instance_Count - 1;
+   end Finalize;
 
    procedure Set_Up (T : in out Test) is
    begin
@@ -62,4 +76,13 @@ package body Dummy_Tests is
       Test (T).State := USED;
    end This_Test_Uses_Object;
 
+   function Get_Instance_Count return Integer is
+   begin
+      return Instance_Count;
+   end Get_Instance_Count;
+
+   procedure Reset_Instance_Count is
+   begin
+      Instance_Count := 0;
+   end Reset_Instance_Count;
 end Dummy_Tests;
