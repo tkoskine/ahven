@@ -314,8 +314,8 @@ private
       -- A procedure to release memory pointed by Ptr.
 
       type Node is record
-         Next : Node_Access := null;
-         Data : Test_Class_Access;
+         Next : Node_Access       := null;
+         Data : Test_Class_Access := null;
       end record;
 
       type List is new Ada.Finalization.Controlled with record
