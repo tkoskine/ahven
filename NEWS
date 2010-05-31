@@ -26,7 +26,7 @@ Bugs fixed
 	  statically allocated Test_Suites the finalization
 	  procedures tried to release same memory twice.
 	  This is now fixed by implementing Adjust for the
-	  Test_Suite type.
+	  Test_Suite type. (Bug bitbucket#2)
 
 	* Many Some_Type'(initial values) expressions were
 	  changed into more simpler (initial values) form.
