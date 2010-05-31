@@ -38,7 +38,7 @@ Internal
 	  and comment clarifications.
 
 	* Remove_All procedure from Ahven.SList package was renamed
-	  to Clear. The new name is more constent with Ada.Containers
+	  to Clear. The new name is more consistent with Ada.Containers
 	  naming style.
 
 	* Ahven.VStrings package now depends on Ada.Strings.Fixed.
