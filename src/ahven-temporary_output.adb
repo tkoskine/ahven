@@ -21,9 +21,8 @@ package body Ahven.Temporary_Output is
    Temp_Counter : Natural := 0;
 
    procedure Create_Temp (File : out Temporary_File) is
-      Filename : constant VString := +(("ahven_temp_") &
-        Trim ((Integer'Image (Temp_Counter)),
-              Ada.Strings.Both));
+      Filename : constant String := "ahven_temp_" &
+        Trim (Integer'Image (Temp_Counter), Ada.Strings.Both);
    begin
       if Temp_Counter < Natural'Last then
          Temp_Counter := Temp_Counter + 1;
@@ -31,10 +30,9 @@ package body Ahven.Temporary_Output is
          raise Temporary_File_Error;
       end if;
 
-      File.Name := Filename;
+      File.Name := +Filename;
 
-      Ada.Text_IO.Create (File.Handle, Ada.Text_IO.Out_File,
-                          To_String (File.Name));
+      Ada.Text_IO.Create (File.Handle, Ada.Text_IO.Out_File, Filename);
    end Create_Temp;
 
    function Get_Name (File : Temporary_File) return String is
