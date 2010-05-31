@@ -122,19 +122,15 @@ package body Ahven.Parameters is
          when NORMAL_PARAMETERS =>
             Put_Line
               ("Possible parameters: [-cqvx] [-d directory] [--] [testname]");
-            Put_Line ("   -c    : capture and report test outputs");
             Put_Line ("   -d    : directory for test results");
-            Put_Line ("   -q    : quiet results");
-            Put_Line ("   -v    : verbose results (default)");
             Put_Line ("   -x    : output in XML format");
-            Put_Line ("   --    : end of parameters (optional)");
          when TAP_PARAMETERS =>
-            Put_Line ("Possible parameters: [-cnqv] [--] [testname]");
-            Put_Line ("   -c    : capture and report test outputs");
-            Put_Line ("   -q    : quiet results");
-            Put_Line ("   -v    : verbose results (default)");
-            Put_Line ("   --    : end of parameters (optional)");
+            Put_Line ("Possible parameters: [-cqv] [--] [testname]");
       end case;
+      Put_Line ("   -c    : capture and report test outputs");
+      Put_Line ("   -q    : quiet results");
+      Put_Line ("   -v    : verbose results (default)");
+      Put_Line ("   --    : end of parameters (optional)");
    end Usage;
 
    function Capture (Info : Parameter_Info) return Boolean is
