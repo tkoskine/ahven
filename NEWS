@@ -1,11 +1,11 @@
-????-??-?? Ahven 1.8
+2010-06-02 Ahven 1.8
 ====================
 
 Changes
 -------
-	* The dynamic library support was removed since it did
-	  not work automatically in a trouble-free way on Debian,
-	  Fedora, and Windows with GNAT.
+	* The dynamic library support with GNAT was removed since
+	  it did not work automatically in a trouble-free way on
+	  Debian, Fedora, and Windows.
 
 	* Ada.Calendar dependency was removed from Ahven.Framework.
 	  Equivalent functionality is now implemented in
@@ -22,9 +22,9 @@ Changes
 
 Bugs fixed
 ----------
-	* If user placed dynamically allocated Test_Cases into
-	  statically allocated Test_Suites the finalization
-	  procedures tried to release same memory twice.
+	* If user placed a dynamically allocated Test_Case into
+	  a statically allocated Test_Suite the finalization
+	  procedure tried to release the same memory twice.
 	  This is now fixed by implementing Adjust for the
 	  Test_Suite type. (Bug bitbucket#2)
 
@@ -42,6 +42,10 @@ Internal
 	  naming style.
 
 	* Ahven.VStrings package now depends on Ada.Strings.Fixed.
+
+	* Ahven.Framework.Indefinite_Test_List has no longer
+	  procedures or functions for Cursors. Same functionality
+	  can be now achieved using generic For_Each procedure.
 
 2009-09-14 Ahven 1.7
 ====================
