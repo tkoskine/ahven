@@ -447,17 +447,16 @@ package body Ahven.Framework is
    procedure Adjust (T : in out Test_Suite) is
       use Test_List;
 
-      Ptr      : Test_Class_Access := null;
-      Position : Cursor := First (T.Test_Cases);
-
       New_List : List := Empty_List;
+
+      procedure Create_Copy (Item : in out Test_Class_Wrapper) is
+      begin
+         Append (New_List, (Ptr => new Test'Class'(Item.Ptr.all)));
+      end Create_Copy;
+
+      procedure Copy_All is new For_Each (Action => Create_Copy);
    begin
-      loop
-         exit when not Is_Valid (Position);
-         Ptr := Data (Position).Ptr;
-         Append (New_List, (Ptr => new Test'Class'(Ptr.all)));
-         Position := Next (Position);
-      end loop;
+      Copy_All (T.Test_Cases);
 
       T.Test_Cases := New_List;
    end Adjust;
@@ -465,15 +464,15 @@ package body Ahven.Framework is
    procedure Finalize  (T : in out Test_Suite) is
       use Test_List;
 
-      Ptr      : Test_Class_Access := null;
-      Position : Cursor := First (T.Test_Cases);
+      procedure Free_Item (Item : in out Test_Class_Wrapper) is
+      begin
+         Free_Test (Item.Ptr);
+      end Free_Item;
+
+      procedure Free_All is new For_Each (Action => Free_Item);
+
    begin
-      loop
-         exit when not Is_Valid (Position);
-         Ptr := Data (Position).Ptr;
-         Free_Test (Ptr);
-         Position := Next (Position);
-      end loop;
+      Free_All (T.Test_Cases);
       Clear (T.Test_Cases);
    end Finalize;
 
@@ -540,24 +539,6 @@ package body Ahven.Framework is
          Target.First := null;
          Target.Last := null;
       end Clear;
-
-      function First (Target : List) return Cursor is
-      begin
-         return Cursor (Target.First);
-      end First;
-
-      function Next (Position : Cursor) return Cursor is
-      begin
-         if Position = null then
-            raise Invalid_Cursor;
-         end if;
-         return Cursor (Position.Next);
-      end Next;
-
-      function Data (Position : Cursor) return Test'Class is
-      begin
-         return Position.Data.all;
-      end Data;
 
       procedure For_Each (Target : List) is
          Current_Node : Node_Access := Target.First;

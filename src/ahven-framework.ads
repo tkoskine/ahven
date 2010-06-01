@@ -279,8 +279,6 @@ private
 
    package Indefinite_Test_List is
       type List is new Ada.Finalization.Controlled with private;
-      type Cursor is private;
-      Invalid_Cursor : exception;
 
       Empty_List : constant List;
 
@@ -289,15 +287,6 @@ private
 
       procedure Clear (Target : in out List);
       -- Remove all elements from the list.
-
-      function First (Target : List) return Cursor;
-      -- Return a cursor to the first element of the list.
-
-      function Next (Position : Cursor) return Cursor;
-      -- Move the cursor to point to the next element on the list.
-
-      function Data (Position : Cursor) return Test'Class;
-      -- Return element pointed by the cursor.
 
       generic
          with procedure Action (T : in out Test'Class) is <>;
@@ -308,7 +297,6 @@ private
    private
       type Node;
       type Node_Access is access Node;
-      type Cursor is new Node_Access;
 
       procedure Remove (Ptr : Node_Access);
       -- A procedure to release memory pointed by Ptr.
