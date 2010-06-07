@@ -17,7 +17,7 @@
 with Ahven;
 with Ahven.Listeners.Basic;
 with Ahven.Results;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 use Ahven;
 use Ahven.Results;
@@ -38,24 +38,24 @@ package body Basic_Listener_Tests is
 
    procedure Test_Single_Pass is
       use Ahven.Listeners;
-      use Ahven.VStrings;
+      use Ahven.AStrings;
 
       Listener : Basic.Basic_Listener;
    begin
       Listeners.Basic.Start_Test
         (Listener, (Phase     => TEST_BEGIN,
-                    Test_Name => +"testname",
+                    Test_Name => To_Bounded_String ("testname"),
                     Test_Kind => ROUTINE));
       Listeners.Basic.Add_Pass
         (Listener, (Phase        => TEST_RUN,
-                    Test_Name    => +"testname",
+                    Test_Name    => To_Bounded_String ("testname"),
                     Test_Kind    => ROUTINE,
-                    Routine_Name => +"routine",
-                    Message      => +"message",
-                    Long_Message => +"long_message"));
+                    Routine_Name => To_Bounded_String ("routine"),
+                    Message      => To_Bounded_String ("message"),
+                    Long_Message => To_Bounded_String ("long_message")));
       Listeners.Basic.End_Test
         (Listener, (Phase          => TEST_END,
-                    Test_Name      => +"testname",
+                    Test_Name      => To_Bounded_String ("testname"),
                     Test_Kind      => ROUTINE));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
@@ -63,35 +63,35 @@ package body Basic_Listener_Tests is
 
    procedure Test_Error_Inside_Suite is
       use Ahven.Listeners;
-      use Ahven.VStrings;
+      use Ahven.AStrings;
 
       Listener : Basic.Basic_Listener;
    begin
       Listeners.Basic.Start_Test
         (Listener, (Phase     => TEST_BEGIN,
-                    Test_Name => +"suite",
+                    Test_Name => To_Bounded_String ("suite"),
                     Test_Kind => CONTAINER));
 
       Listeners.Basic.Start_Test
         (Listener, (Phase     => TEST_BEGIN,
-                    Test_Name => +"testname",
+                    Test_Name => To_Bounded_String ("testname"),
                     Test_Kind => ROUTINE));
 
       Listeners.Basic.Add_Error
         (Listener, (Phase     => TEST_RUN,
-                    Test_Name => +"testname",
+                    Test_Name => To_Bounded_String ("testname"),
                     Test_Kind => ROUTINE,
-                    Routine_Name => +"routine",
-                    Message      => +"message",
-                    Long_Message => +"long_message"));
+                    Routine_Name => To_Bounded_String ("routine"),
+                    Message      => To_Bounded_String ("message"),
+                    Long_Message => To_Bounded_String ("long_message")));
       Listeners.Basic.End_Test
         (Listener, (Phase     => TEST_END,
-                    Test_Name => +"testname",
+                    Test_Name => To_Bounded_String ("testname"),
                     Test_Kind => ROUTINE));
 
       Listeners.Basic.End_Test
         (Listener, (Phase     => TEST_END,
-                    Test_Name => +"suite",
+                    Test_Name => To_Bounded_String ("suite"),
                     Test_Kind => CONTAINER));
 
       Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");

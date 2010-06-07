@@ -19,11 +19,10 @@ with Ada.Finalization;
 with Ahven;
 with Ahven.Listeners;
 with Ahven.SList;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 pragma Elaborate_All (Ahven);
 pragma Elaborate_All (Ahven.SList);
-pragma Elaborate_All (Ahven.VStrings);
 
 package Ahven.Framework is
 
@@ -239,7 +238,7 @@ private
    type Command_Object_Enum is (SIMPLE, OBJECT);
 
    type Test_Command (Command_Kind : Command_Object_Enum := SIMPLE) is record
-      Name : VStrings.VString;
+      Name : AStrings.Bounded_String;
       case Command_Kind is
          when SIMPLE =>
             Simple_Routine : Simple_Test_Routine_Access;
@@ -257,8 +256,8 @@ private
      new Ahven.SList (Element_Type => Test_Command);
 
    type Test_Case is abstract new Test with record
-      Routines : Test_Command_List.List := Test_Command_List.Empty_List;
-      Name : VStrings.VString := VStrings.Empty_VString;
+      Routines : Test_Command_List.List  := Test_Command_List.Empty_List;
+      Name     : AStrings.Bounded_String := AStrings.Null_Bounded_String;
    end record;
    -- Our test case type. It holds a list of test routines
    -- (test command objects) and the name of the test case.
@@ -321,7 +320,7 @@ private
    end Indefinite_Test_List;
 
    type Test_Suite is new Test with record
-      Suite_Name : VStrings.VString := VStrings.Empty_VString;
+      Suite_Name : AStrings.Bounded_String := AStrings.Null_Bounded_String;
       Test_Cases : Test_List.List := Test_List.Empty_List;
       Static_Test_Cases : Indefinite_Test_List.List :=
         Indefinite_Test_List.Empty_List;

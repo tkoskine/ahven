@@ -15,10 +15,10 @@
 --
 
 with Ada.Text_IO;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 package body Ahven.Listeners.Basic is
-   use Ahven.VStrings;
+   use Ahven.AStrings;
 
    -- Because of Ada.Text_IO output capturing, the result
    -- recording is happening in the End_Test procedure.
@@ -163,7 +163,7 @@ package body Ahven.Listeners.Basic is
    end Remove_File;
 
    procedure Remove_Files (Collection : in out Result_Collection) is
-      procedure Remove (Name : VString) is
+      procedure Remove (Name : Bounded_String) is
       begin
          if Length (Name) > 0 then
             Remove_File (To_String (Name));

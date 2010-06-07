@@ -19,12 +19,12 @@ with Ada.Strings.Fixed;
 with Ada.Characters.Latin_1;
 
 with Ahven.Parameters;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 package body Ahven.Tap_Runner is
    use Ada.Text_IO;
    use Ahven.Framework;
-   use Ahven.VStrings;
+   use Ahven.AStrings;
 
    function Count_Image (Count : Test_Count_Type) return String is
       use Ada.Strings;

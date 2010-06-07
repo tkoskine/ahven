@@ -20,7 +20,7 @@ with Ada.Characters.Latin_1;
 
 with Ahven.Runner;
 with Ahven.XML_Runner;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 use Ada.Text_IO;
 use Ada.Strings.Fixed;
@@ -28,7 +28,7 @@ use Ada.Strings.Fixed;
 package body Ahven.Text_Runner is
    use Ahven.Results;
    use Ahven.Framework;
-   use Ahven.VStrings;
+   use Ahven.AStrings;
 
    -- Local procedures
    procedure Pad (Level : Natural);

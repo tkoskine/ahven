@@ -23,47 +23,47 @@ package body Ahven.Results is
    -- Bunch of setters and getters.
    -- The implementation is straightforward.
    procedure Set_Test_Name (Info : in out Result_Info;
-                            Name :        VString) is
+                            Name :        Bounded_String) is
    begin
       Info.Test_Name := Name;
    end Set_Test_Name;
 
    procedure Set_Routine_Name (Info : in out Result_Info;
-                               Name :        VString) is
+                               Name :        Bounded_String) is
    begin
       Info.Routine_Name := Name;
    end Set_Routine_Name;
 
    procedure Set_Message (Info    : in out Result_Info;
-                          Message :        VString) is
+                          Message :        Bounded_String) is
    begin
       Info.Message := Message;
    end Set_Message;
 
    procedure Set_Test_Name (Info : in out Result_Info; Name : String) is
    begin
-      Set_Test_Name (Info, +Name);
+      Set_Test_Name (Info, To_Bounded_String (Name));
    end Set_Test_Name;
 
    procedure Set_Routine_Name (Info : in out Result_Info; Name : String) is
    begin
-      Set_Routine_Name (Info, +Name);
+      Set_Routine_Name (Info, To_Bounded_String (Name));
    end Set_Routine_Name;
 
    procedure Set_Message (Info : in out Result_Info; Message : String) is
    begin
-      Set_Message (Info, +Message);
+      Set_Message (Info, To_Bounded_String (Message));
    end Set_Message;
 
    procedure Set_Long_Message (Info : in out Result_Info;
-                               Message : VString) is
+                               Message : Bounded_String) is
    begin
       Info.Long_Message := Message;
    end Set_Long_Message;
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String) is
    begin
-      Set_Long_Message (Info, +Message);
+      Set_Long_Message (Info, To_Bounded_String (Message));
    end Set_Long_Message;
 
    procedure Set_Execution_Time (Info         : in out Result_Info;
@@ -73,7 +73,7 @@ package body Ahven.Results is
    end Set_Execution_Time;
 
    procedure Set_Output_File (Info     : in out Result_Info;
-                              Filename :        VString) is
+                              Filename :        Bounded_String) is
    begin
       Info.Output_File := Filename;
    end Set_Output_File;
@@ -81,7 +81,7 @@ package body Ahven.Results is
    procedure Set_Output_File (Info     : in out Result_Info;
                               Filename :        String) is
    begin
-      Set_Output_File (Info, +Filename);
+      Set_Output_File (Info, To_Bounded_String (Filename));
    end Set_Output_File;
 
    function Get_Test_Name (Info : Result_Info) return String is
@@ -109,7 +109,7 @@ package body Ahven.Results is
       return Info.Execution_Time;
    end Get_Execution_Time;
 
-   function Get_Output_File (Info : Result_Info) return VString is
+   function Get_Output_File (Info : Result_Info) return Bounded_String is
    begin
       return Info.Output_File;
    end Get_Output_File;
@@ -167,7 +167,7 @@ package body Ahven.Results is
    end Release;
 
    procedure Set_Name (Collection : in out Result_Collection;
-                       Name : VString) is
+                       Name : Bounded_String) is
    begin
       Collection.Test_Name := Name;
    end Set_Name;
@@ -242,7 +242,7 @@ package body Ahven.Results is
    end Failure_Count;
 
    function Get_Test_Name (Collection : Result_Collection)
-     return VString is
+     return Bounded_String is
    begin
       return Collection.Test_Name;
    end Get_Test_Name;
