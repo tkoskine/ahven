@@ -15,7 +15,7 @@
 --
 
 with Ahven.SList;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 pragma Elaborate_All (Ahven.SList);
 
@@ -26,7 +26,7 @@ pragma Elaborate_All (Ahven.SList);
 -- Result_Collection holds multiple Result_Infos.
 --
 package Ahven.Results is
-   use Ahven.VStrings;
+   use Ahven.AStrings;
 
    type Result_Info is private;
 
@@ -35,39 +35,39 @@ package Ahven.Results is
    -- to initialize a new Result_Info object.
 
    procedure Set_Test_Name (Info : in out Result_Info;
-                            Name :        VString);
+                            Name :        Bounded_String);
    -- Set a test name for the result.
 
    procedure Set_Routine_Name (Info : in out Result_Info;
-                               Name :        VString);
+                               Name :        Bounded_String);
    -- Set a routine name for the result.
 
    procedure Set_Message (Info : in out Result_Info;
-                          Message : VString);
+                          Message : Bounded_String);
    -- Set a message for the result.
 
    procedure Set_Test_Name (Info : in out Result_Info; Name : String);
-   -- A helper function, which calls Set_Test_Name (.. ; VString)
+   -- A helper function, which calls Set_Test_Name (.. ; Bounded_String)
 
    procedure Set_Routine_Name (Info : in out Result_Info; Name : String);
-   -- A helper function, which calls Set_Routine_Name (.. ; VString)
+   -- A helper function, which calls Set_Routine_Name (.. ; Bounded_String)
 
    procedure Set_Message (Info : in out Result_Info; Message : String);
-   -- A helper function, which calls Set_Message (.. ; VString)
+   -- A helper function, which calls Set_Message (.. ; Bounded_String)
 
    procedure Set_Long_Message (Info    : in out Result_Info;
-                               Message :        VString);
+                               Message :        Bounded_String);
    -- Set a long message for the result
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String);
-   -- A helper function, which calls Set_Long_Message (.. ; VString)
+   -- A helper function, which calls Set_Long_Message (.. ; Bounded_String)
 
    procedure Set_Execution_Time (Info         : in out Result_Info;
                                  Elapsed_Time :        Duration);
    -- Set the execution time of the result info (test).
 
    procedure Set_Output_File (Info     : in out Result_Info;
-                              Filename :        VString);
+                              Filename :        Bounded_String);
    -- Set the name of the test output file.
 
    procedure Set_Output_File (Info     : in out Result_Info;
@@ -89,7 +89,7 @@ package Ahven.Results is
    function Get_Execution_Time (Info : Result_Info) return Duration;
    -- Return the execution time of the result info.
 
-   function Get_Output_File (Info : Result_Info) return VString;
+   function Get_Output_File (Info : Result_Info) return Bounded_String;
    -- Return the name of the output file.
    -- Empty string is returned in case there is no output file.
 
@@ -120,7 +120,7 @@ package Ahven.Results is
    -- Frees also all children added via Add_Child.
 
    procedure Set_Name (Collection : in out Result_Collection;
-                       Name       :        VString);
+                       Name       :        Bounded_String);
    -- Set a test name for the collection.
 
    procedure Set_Parent (Collection : in out Result_Collection;
@@ -148,7 +148,7 @@ package Ahven.Results is
    -- Tests in child collections are included.
 
    function Get_Test_Name (Collection : Result_Collection)
-     return VString;
+     return Bounded_String;
    -- Return the name of the collection's test.
 
    function Get_Parent (Collection : Result_Collection)
@@ -209,21 +209,21 @@ package Ahven.Results is
 
 private
    type Result_Info is record
-      Test_Name      : VString  := Empty_VString;
-      Output_File    : VString  := Empty_VString;
-      Routine_Name   : VString  := Empty_VString;
+      Test_Name      : Bounded_String  := Null_Bounded_String;
+      Output_File    : Bounded_String  := Null_Bounded_String;
+      Routine_Name   : Bounded_String  := Null_Bounded_String;
       Execution_Time : Duration := 0.0;
-      Message        : VString  := Empty_VString;
-      Long_Message   : VString  := Empty_VString;
+      Message        : Bounded_String  := Null_Bounded_String;
+      Long_Message   : Bounded_String  := Null_Bounded_String;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
-     (Test_Name      => Empty_VString,
-      Routine_Name   => Empty_VString,
-      Message        => Empty_VString,
-      Long_Message   => Empty_VString,
+     (Test_Name      => Null_Bounded_String,
+      Routine_Name   => Null_Bounded_String,
+      Message        => Null_Bounded_String,
+      Long_Message   => Null_Bounded_String,
       Execution_Time => 0.0,
-      Output_File    => Empty_VString);
+      Output_File    => Null_Bounded_String);
 
    package Result_Info_List is
      new Ahven.SList (Element_Type => Result_Info);
@@ -241,7 +241,7 @@ private
    type Result_Collection_Cursor is new Result_List.Cursor;
 
    type Result_Collection is limited record
-      Test_Name : VString := Empty_VString;
+      Test_Name : Bounded_String := Null_Bounded_String;
       Passes    : Result_Info_List.List;
       Failures  : Result_Info_List.List;
       Errors    : Result_Info_List.List;

@@ -15,7 +15,7 @@
 --
 
 with Ada.Finalization;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 package Ahven.Listeners is
    type Test_Phase is (TEST_BEGIN, TEST_RUN, TEST_END);
@@ -24,15 +24,15 @@ package Ahven.Listeners is
    type Test_Type is (CONTAINER, ROUTINE);
 
    type Context (Phase : Test_Phase) is record
-      Test_Name      : VStrings.VString;
-      Test_Kind      : Test_Type;
+      Test_Name : AStrings.Bounded_String;
+      Test_Kind : Test_Type;
       case Phase is
          when TEST_BEGIN | TEST_END =>
             null;
          when TEST_RUN =>
-            Routine_Name : VStrings.VString;
-            Message      : VStrings.VString;
-            Long_Message : VStrings.VString;
+            Routine_Name : AStrings.Bounded_String;
+            Message      : AStrings.Bounded_String;
+            Long_Message : AStrings.Bounded_String;
       end case;
    end record;
 

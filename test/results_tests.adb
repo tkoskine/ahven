@@ -16,10 +16,10 @@
 
 with Ahven;
 with Ahven.Results;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 use Ahven;
-use Ahven.VStrings;
+use Ahven.AStrings;
 
 package body Results_Tests is
 
@@ -81,7 +81,7 @@ package body Results_Tests is
       Coll : Result_Collection;
       Info : Result_Info := Empty_Result_Info;
       Iter : Result_Info_Cursor;
-      Msg  : constant VString := +"hello";
+      Msg  : constant Bounded_String := To_Bounded_String ("hello");
       Count : Natural;
    begin
       Set_Message (Info, Msg);

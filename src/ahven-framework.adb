@@ -18,7 +18,7 @@ with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
 
 package body Ahven.Framework is
-   use Ahven.VStrings;
+   use Ahven.AStrings;
 
    -- A few local procedures, so we do not need to duplicate code.
    procedure Free_Test is
@@ -56,7 +56,7 @@ package body Ahven.Framework is
       Listeners.Start_Test
         (Listener_Object,
          (Phase     => TEST_BEGIN,
-          Test_Name => +Get_Name (Test_Object),
+          Test_Name => To_Bounded_String (Get_Name (Test_Object)),
           Test_Kind => CONTAINER));
 
       Action;
@@ -65,7 +65,7 @@ package body Ahven.Framework is
       Listeners.End_Test
         (Listener_Object,
          (Phase          => TEST_END,
-          Test_Name      => +Get_Name (Test_Object),
+          Test_Name      => To_Bounded_String (Get_Name (Test_Object)),
           Test_Kind      => CONTAINER));
    end Execute_Internal;
 
@@ -100,7 +100,7 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         (Command_Kind   => OBJECT,
-         Name           => +Name,
+         Name           => To_Bounded_String (Name),
          Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -112,7 +112,7 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         (Command_Kind   => SIMPLE,
-         Name           => +Name,
+         Name           => To_Bounded_String (Name),
          Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -141,8 +141,9 @@ package body Ahven.Framework is
              Test_Kind    => CONTAINER,
              Routine_Name => Info.Routine_Name,
              Message      =>
-               Truncate (Ada.Exceptions.Exception_Message (E)),
-             Long_Message => +""));
+               -- XXX
+               To_Bounded_String (Ada.Exceptions.Exception_Message (E)),
+             Long_Message => Null_Bounded_String));
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
          -- from the library routines (Passed = True)?
@@ -156,9 +157,11 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      =>
-                  Truncate (Ada.Exceptions.Exception_Name (E)),
+                  -- XXX
+                  To_Bounded_String (Ada.Exceptions.Exception_Name (E)),
                 Long_Message =>
-                  Truncate (Ada.Exceptions.Exception_Message (E))));
+                  -- XXX
+                  To_Bounded_String (Ada.Exceptions.Exception_Message (E))));
          end if;
    end Run_Command;
 
@@ -179,21 +182,22 @@ package body Ahven.Framework is
       Listeners.Start_Test
         (Listener,
          (Phase     => Ahven.Listeners.TEST_BEGIN,
-          Test_Name => +Test_Name,
+          Test_Name => To_Bounded_String (Test_Name),
           Test_Kind => ROUTINE));
       Run_Command (Command  => Command,
                    Info     => (Phase        => Listeners.TEST_RUN,
-                                Test_Name    => +Test_Name,
+                                Test_Name    => To_Bounded_String (Test_Name),
                                 Test_Kind    => ROUTINE,
-                                Routine_Name => +Routine_Name,
-                                Message      => +"",
-                                Long_Message => +""),
+                                Routine_Name =>
+                                  To_Bounded_String (Routine_Name),
+                                Message      => Null_Bounded_String,
+                                Long_Message => Null_Bounded_String),
                    Listener => Listener,
                    T        => T);
       Listeners.End_Test
         (Listener,
          (Phase          => Ahven.Listeners.TEST_END,
-          Test_Name      => +Test_Name,
+          Test_Name      => To_Bounded_String (Test_Name),
           Test_Kind      => ROUTINE));
    end Run_Internal;
 
@@ -275,7 +279,7 @@ package body Ahven.Framework is
 
    procedure Set_Name (T : in out Test_Case; Name : String) is
    begin
-      T.Name := +Name;
+      T.Name := To_Bounded_String (Name);
    end Set_Name;
 
    function Create_Suite (Suite_Name : String)
@@ -283,7 +287,7 @@ package body Ahven.Framework is
    begin
       return
         new Test_Suite'(Ada.Finalization.Controlled with
-                        Suite_Name        => +Suite_Name,
+                        Suite_Name        => To_Bounded_String (Suite_Name),
                         Test_Cases        => Test_List.Empty_List,
                         Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
@@ -292,7 +296,7 @@ package body Ahven.Framework is
      return Test_Suite is
    begin
       return (Ada.Finalization.Controlled with
-              Suite_Name        => +Suite_Name,
+              Suite_Name        => To_Bounded_String (Suite_Name),
               Test_Cases        => Test_List.Empty_List,
               Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;

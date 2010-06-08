@@ -16,7 +16,7 @@
 with Ada.Strings.Fixed;
 
 package body Ahven.Temporary_Output is
-   use Ahven.VStrings;
+   use Ahven.AStrings;
    use Ada.Strings.Fixed;
    Temp_Counter : Natural := 0;
 
@@ -30,7 +30,7 @@ package body Ahven.Temporary_Output is
          raise Temporary_File_Error;
       end if;
 
-      File.Name := +Filename;
+      File.Name := To_Bounded_String (Filename);
 
       Ada.Text_IO.Create (File.Handle, Ada.Text_IO.Out_File, Filename);
    end Create_Temp;

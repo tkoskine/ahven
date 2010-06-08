@@ -1,3 +1,4 @@
+ahven-astrings.ads
 ahven-framework.adb
 ahven-framework.ads
 ahven-listeners-basic.adb
@@ -17,8 +18,6 @@ ahven-temporary_output.adb
 ahven-temporary_output.ads
 ahven-text_runner.adb
 ahven-text_runner.ads
-ahven-vstrings.adb
-ahven-vstrings.ads
 ahven-xml_runner.adb
 ahven-xml_runner.ads
 ahven.adb

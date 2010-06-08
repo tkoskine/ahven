@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007, 2008 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2007, 2008, 2010 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -13,7 +13,7 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
-with Ahven.VStrings;
+with Ahven.AStrings;
 with Ada.Text_IO;
 
 package Ahven.Temporary_Output is
@@ -43,8 +43,8 @@ package Ahven.Temporary_Output is
 
 private
    type Temporary_File is limited record
-      Name    : Ahven.VStrings.VString;
-      Handle  : Ada.Text_IO.File_Type;
+      Name   : AStrings.Bounded_String;
+      Handle : Ada.Text_IO.File_Type;
    end record;
 
 end Ahven.Temporary_Output;

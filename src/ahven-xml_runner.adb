@@ -22,7 +22,7 @@ with Ada.Strings.Maps;
 with Ahven.Runner;
 
 with Ahven_Compat;
-with Ahven.VStrings;
+with Ahven.AStrings;
 
 package body Ahven.XML_Runner is
    use Ada.Text_IO;
@@ -31,7 +31,7 @@ package body Ahven.XML_Runner is
 
    use Ahven.Results;
    use Ahven.Framework;
-   use Ahven.VStrings;
+   use Ahven.AStrings;
 
    function Filter_String (Str : String) return String;
 
