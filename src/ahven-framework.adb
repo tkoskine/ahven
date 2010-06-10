@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Strings;
 with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
 
@@ -141,8 +142,9 @@ package body Ahven.Framework is
              Test_Kind    => CONTAINER,
              Routine_Name => Info.Routine_Name,
              Message      =>
-               -- XXX
-               To_Bounded_String (Ada.Exceptions.Exception_Message (E)),
+               To_Bounded_String
+                 (Source => Ada.Exceptions.Exception_Message (E),
+                  Drop   => Ada.Strings.Right),
              Long_Message => Null_Bounded_String));
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
@@ -157,11 +159,13 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      =>
-                  -- XXX
-                  To_Bounded_String (Ada.Exceptions.Exception_Name (E)),
+                  To_Bounded_String
+                    (Source => Ada.Exceptions.Exception_Name (E),
+                     Drop   => Ada.Strings.Right),
                 Long_Message =>
-                  -- XXX
-                  To_Bounded_String (Ada.Exceptions.Exception_Message (E))));
+                  To_Bounded_String
+                    (Source => Ada.Exceptions.Exception_Message (E),
+                     Drop   => Ada.Strings.Right)));
          end if;
    end Run_Command;
 
