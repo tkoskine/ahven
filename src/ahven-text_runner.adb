@@ -164,6 +164,36 @@ package body Ahven.Text_Runner is
          Child_Iter := Next (Child_Iter);
       end loop;
    end Print_Children;
+   
+   procedure Print_Statuses (Result    : Result_Collection;
+                             Level     : Natural;
+                             Start     : Result_Info_Cursor;
+                             Action    : Print_Child_Proc;
+                             Status    : String;
+                             Count     : Child_Count_Proc;
+                             Print_Log : Boolean) is
+      Position : Result_Info_Cursor := Start;
+   begin
+      if Length (Get_Test_Name (Result)) > 0 then
+         Pad (Level);
+         Put_Line (To_String (Get_Test_Name (Result)) & ":");
+      end if;
+
+      Test_Loop:
+      loop
+         exit Test_Loop when not Is_Valid (Position);
+         Print_Test (Data (Position), Level, Status);
+         if Print_Log and Length (Get_Output_File (Data (Position))) > 0 then
+            Print_Log_File (To_String (Get_Output_File (Data (Position))));
+         end if;
+         Position := Next (Position);
+      end loop Test_Loop;
+
+      Print_Children (Result => Result,
+                      Level  => Level,
+                      Action => Action,
+                      Count  => Count);
+   end Print_Statuses;
 
    --
    -- Print all failures from the result collection
@@ -171,28 +201,15 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural) is
-      Position : Result_Info_Cursor;
    begin
-      if Length (Get_Test_Name (Result)) > 0 then
-         Pad (Level);
-         Put_Line (To_String (Get_Test_Name (Result)) & ":");
-      end if;
-
-      Position := First_Failure (Result);
-      Failure_Loop:
-      loop
-         exit Failure_Loop when not Is_Valid (Position);
-         Print_Test (Data (Position), Level, "FAIL");
-         if Length (Get_Output_File (Data (Position))) > 0 then
-            Print_Log_File (To_String (Get_Output_File (Data (Position))));
-         end if;
-         Position := Next (Position);
-      end loop Failure_Loop;
-
-      Print_Children (Result => Result,
-                      Level  => Level,
-                      Action => Print_Failures'Access,
-                      Count  => Failure_Count'Access);
+      Print_Statuses
+        (Result    => Result,
+         Level     => Level,
+         Start     => First_Failure (Result),
+         Action    => Print_Failures'Access,
+         Status    => "FAIL",
+         Count     => Failure_Count'Access,
+         Print_Log => True);
    end Print_Failures;
 
    --
@@ -201,28 +218,15 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural) is
-      Position : Result_Info_Cursor;
    begin
-      if Length (Get_Test_Name (Result)) > 0 then
-         Pad (Level);
-         Put_Line (To_String (Get_Test_Name (Result)) & ":");
-      end if;
-
-      Position := First_Error (Result);
-      Error_Loop:
-      loop
-         exit Error_Loop when not Is_Valid (Position);
-         Print_Test (Data (Position), Level, "ERROR");
-         if Length (Get_Output_File (Data (Position))) > 0 then
-            Print_Log_File (To_String (Get_Output_File (Data (Position))));
-         end if;
-         Position := Next (Position);
-      end loop Error_Loop;
-
-      Print_Children (Result => Result,
-                      Level  => Level,
-                      Action => Print_Errors'Access,
-                      Count  => Error_Count'Access);
+      Print_Statuses
+        (Result    => Result,
+         Level     => Level,
+         Start     => First_Error (Result),
+         Action    => Print_Errors'Access,
+         Status    => "ERROR",
+         Count     => Error_Count'Access,
+         Print_Log => True);
    end Print_Errors;
 
    --
@@ -231,25 +235,15 @@ package body Ahven.Text_Runner is
    --
    procedure Print_Passes (Result : Result_Collection;
                            Level  : Natural) is
-      Position : Result_Info_Cursor;
    begin
-      if Length (Get_Test_Name (Result)) > 0 then
-         Pad (Level);
-         Put_Line (To_String (Get_Test_Name (Result)) & ":");
-      end if;
-
-      Position := First_Pass (Result);
-      Pass_Loop:
-      loop
-         exit Pass_Loop when not Is_Valid (Position);
-         Print_Test (Data (Position), Level, "PASS");
-         Position := Next (Position);
-      end loop Pass_Loop;
-
-      Print_Children (Result => Result,
-                      Level  => Level,
-                      Action => Print_Passes'Access,
-                      Count  => Pass_Count'Access);
+      Print_Statuses
+        (Result    => Result,
+         Level     => Level,
+         Start     => First_Pass (Result),
+         Action    => Print_Passes'Access,
+         Status    => "PASS",
+         Count     => Pass_Count'Access,
+         Print_Log => False);
    end Print_Passes;
 
    --
