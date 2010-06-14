@@ -1,3 +1,16 @@
+????-??-?? Ahven 1.9
+====================
+
+Changes
+-------
+	* TODO
+
+Internal
+--------
+	* Package Ahven.VStrings was replaced with an instantiation of
+	  Ada.Strings.Bounded.Generic_Bounded_Length. This allowed us to
+	  remove over 100 lines of code.
+
 2010-06-02 Ahven 1.8
 ====================
 
