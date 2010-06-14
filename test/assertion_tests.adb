@@ -73,6 +73,8 @@ package body Assertion_Tests is
    procedure Test_Assert is
       Exception_Got : Boolean;
    begin
+      Assert (True, "Assert (True)");
+            
       begin
          Exception_Got := False;
          Assert (False, "assertion");
