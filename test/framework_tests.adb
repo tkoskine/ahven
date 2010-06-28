@@ -52,6 +52,8 @@ package body Framework_Tests is
                                   "Test_Case: Run");
       Add_Test_Routine (T, Test_Test_Case_Test_Count'Access,
                                   "Test_Case: Test_Count");
+      Add_Test_Routine (T, Test_Test_Case_Truncate_Name'Access,
+                        "Test_Case: Truncate Name");
       Add_Test_Routine (T, Test_Call_End_Test'Access,
                                   "Test_Case: Run (Call End_Test)");
       Add_Test_Routine (T, Test_Test_Suite_Run'Access,
@@ -125,6 +127,13 @@ package body Framework_Tests is
                        Dummy_Tests.Dummy_Test_Count,
                        "Test Count");
    end Test_Test_Case_Test_Count;
+
+   procedure Test_Test_Case_Truncate_Name is
+      Dummy_Test  : Dummy_Tests.Test;
+      Name        : constant String (1..180) := (others => 'a');
+   begin
+      Dummy_Tests.Set_Name (Dummy_Test, Name);
+   end Test_Test_Case_Truncate_Name;
 
    procedure Test_Test_Suite_Run is
       use Dummy_Tests;

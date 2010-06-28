@@ -135,6 +135,9 @@ package Ahven.Framework is
 
    procedure Set_Name (T : in out Test_Case; Name : String);
    -- Set Test_Case's name.
+   --
+   -- If longer than 160 characters, the name is truncated
+   -- to 160 characters.
 
    type Object_Test_Routine_Access is
      access procedure (T : in out Test_Case'Class);

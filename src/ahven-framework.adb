@@ -101,7 +101,9 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         (Command_Kind   => OBJECT,
-         Name           => To_Bounded_String (Name),
+         Name           => To_Bounded_String
+                             (Source => Name,
+                              Drop   => Ada.Strings.Right),
          Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -113,7 +115,9 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         (Command_Kind   => SIMPLE,
-         Name           => To_Bounded_String (Name),
+         Name           => To_Bounded_String
+                             (Source => Name,
+                              Drop   => Ada.Strings.Right),
          Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -283,24 +287,29 @@ package body Ahven.Framework is
 
    procedure Set_Name (T : in out Test_Case; Name : String) is
    begin
-      T.Name := To_Bounded_String (Name);
+      T.Name := To_Bounded_String (Source => Name, Drop => Ada.Strings.Right);
    end Set_Name;
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access is
    begin
       return
-        new Test_Suite'(Ada.Finalization.Controlled with
-                        Suite_Name        => To_Bounded_String (Suite_Name),
-                        Test_Cases        => Test_List.Empty_List,
-                        Static_Test_Cases => Indefinite_Test_List.Empty_List);
+        new Test_Suite'
+          (Ada.Finalization.Controlled with
+           Suite_Name        => To_Bounded_String
+                                  (Source => Suite_Name,
+                                   Drop   => Ada.Strings.Right),
+           Test_Cases        => Test_List.Empty_List,
+           Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
 
    function Create_Suite (Suite_Name : String)
      return Test_Suite is
    begin
       return (Ada.Finalization.Controlled with
-              Suite_Name        => To_Bounded_String (Suite_Name),
+              Suite_Name        => To_Bounded_String
+                                     (Source => Suite_Name,
+                                      Drop   => Ada.Strings.Right),
               Test_Cases        => Test_List.Empty_List,
               Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;

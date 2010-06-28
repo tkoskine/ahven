@@ -37,6 +37,8 @@ private
 
    procedure Test_Test_Case_Test_Count;
 
+   procedure Test_Test_Case_Truncate_Name;
+
    procedure Test_Test_Suite_Run;
 
    procedure Test_Test_Suite_Static_Run;
