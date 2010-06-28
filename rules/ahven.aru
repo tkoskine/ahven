@@ -57,7 +57,7 @@ check parameter_aliasing (certain);
 -- No long code blocks
 check Max_Size (if_branch, 30);
 check Max_Size (unnamed_loop, 20);
-check Max_Size (block, 25);
+Long_Blocks: check Max_Size (block, 25);
 
 check style (negative_condition);
 check style (casing_identifier, original);
@@ -65,7 +65,7 @@ check style (multiple_elements);
 check style (compound_statement);
 check style (casing_keyword, lowercase);
 check style (no_closing_name);
-check style (exposed_literal, integer, 0, 1, 2, number, constant, var_init);
+search style (exposed_literal, integer, 0, 1, 2, number, constant, var_init);
 
 check with_clauses (reduceable);
 

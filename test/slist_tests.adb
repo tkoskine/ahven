@@ -231,7 +231,8 @@ package body SList_Tests is
    procedure Test_For_Each is
       use Simple_List;
 
-      Counter : Natural := 0;
+      Counter : Natural  := 0;
+      Max     : constant := 5;
 
       procedure My_Action (Obj : in out Simple_Type) is
       begin
@@ -243,7 +244,7 @@ package body SList_Tests is
 
       My_List  : List;
    begin
-      for A in Integer range 1 .. 5 loop
+      for A in Integer range 1 .. Max loop
          Append (My_List, (Value => A));
       end loop;
       Run_All (My_List);

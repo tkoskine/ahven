@@ -302,6 +302,7 @@ package body Framework_Tests is
    begin
       Dummy_Tests.Reset_Instance_Count;
       Initial_Count := Dummy_Tests.Get_Instance_Count;
+      --## rule off Long_Blocks
       declare
          use Dummy_Tests;
 
@@ -309,21 +310,26 @@ package body Framework_Tests is
          Parent      : Framework.Test_Suite;
          GParent     : Framework.Test_Suite;
          Dummy_Test  : Dummy_Tests.Test;
+
+         Test_Instance_Count : Natural := 1;
       begin
          Child := Framework.Create_Suite ("Child suite");
          Framework.Add_Static_Test (Child, Dummy_Test);
-         Assert_Eq_Int (Expected => 2,
+         Test_Instance_Count := Test_Instance_Count + 1; -- 2
+         Assert_Eq_Int (Expected => Test_Instance_Count,
                         Actual   => Dummy_Tests.Get_Instance_Count,
                         Message  => "Dummy_Tests instance count");
 
          Framework.Add_Test (Child, new Dummy_Tests.Test);
-         Assert_Eq_Int (Expected => 3,
+         Test_Instance_Count := Test_Instance_Count + 1; -- 3
+         Assert_Eq_Int (Expected => Test_Instance_Count,
                         Actual   => Dummy_Tests.Get_Instance_Count,
                         Message  => "Dummy_Tests instance count");
 
          Parent := Framework.Create_Suite ("Parent suite");
          Framework.Add_Static_Test (Parent, Child);
-         Assert_Eq_Int (Expected => 5,
+         Test_Instance_Count := Test_Instance_Count + 2; -- 1 + 2 + 2 = 5
+         Assert_Eq_Int (Expected => Test_Instance_Count,
                         Actual   => Dummy_Tests.Get_Instance_Count,
                         Message  => "Dummy_Tests instance count");
 
@@ -339,6 +345,6 @@ package body Framework_Tests is
       Assert_Eq_Int (Expected => Initial_Count,
                      Actual   => Dummy_Tests.Get_Instance_Count,
                      Message  => "Not all tests freed");
-
+      --## rule on Long_Blocks
    end Test_Test_Suite_Cleanup;
 end Framework_Tests;

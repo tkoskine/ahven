@@ -16,6 +16,8 @@
 
 with Ahven;
 
+
+--## rule off DIRECTLY_ACCESSED_GLOBALS
 package body Dummy_Tests is
    Instance_Count : Integer := 0;
 
@@ -86,3 +88,4 @@ package body Dummy_Tests is
       Instance_Count := 0;
    end Reset_Instance_Count;
 end Dummy_Tests;
+--## rule on DIRECTLY_ACCESSED_GLOBALS

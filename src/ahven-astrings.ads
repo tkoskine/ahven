@@ -17,4 +17,4 @@
 with Ada.Strings.Bounded;
 
 package Ahven.AStrings is
-  new Ada.Strings.Bounded.Generic_Bounded_Length (Max => 160);
+  new Ada.Strings.Bounded.Generic_Bounded_Length (Max => Max_String_Len);
