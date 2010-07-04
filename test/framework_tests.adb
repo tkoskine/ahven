@@ -129,8 +129,9 @@ package body Framework_Tests is
    end Test_Test_Case_Test_Count;
 
    procedure Test_Test_Case_Truncate_Name is
+      Over_Max    : constant := 180;
       Dummy_Test  : Dummy_Tests.Test;
-      Name        : constant String (1..180) := (others => 'a');
+      Name        : constant String (1..Over_Max) := (others => 'a');
    begin
       Dummy_Tests.Set_Name (Dummy_Test, Name);
    end Test_Test_Case_Truncate_Name;

@@ -164,7 +164,7 @@ package body Ahven.Text_Runner is
          Child_Iter := Next (Child_Iter);
       end loop;
    end Print_Children;
-   
+
    procedure Print_Statuses (Result    : Result_Collection;
                              Level     : Natural;
                              Start     : Result_Info_Cursor;
