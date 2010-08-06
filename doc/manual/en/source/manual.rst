@@ -51,24 +51,20 @@ Ahven is distributed under permissive ISC license (shown below).
     -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     --
 
-You are allowed to embed Ahven
-into a proprietary commercial application. Only requirement is
-to keep the copyright notice and the permission notice
-in the source code files.
+You are allowed to embed Ahven into a proprietary commercial application.
+Only requirement is to keep the copyright notice and the permission notice
+in the source code files. You do not need to distribute Ahven's source code
+if you distribute Ahven or some parts of Ahven in the binary form.
 
-Installing Ahven
-################
+Building and Installing Ahven
+#############################
 
-To build and install Ahven source code, you need an Ada 95
-compiler.
-At the moment, Ahven is tested with three different
-compiler families: GNAT, ObjectAda, and Janus/Ada.
-
-Building Library
-================
+To build and install Ahven source code, you need an Ada 95 compiler.
+At the moment, Ahven is tested with four different
+compiler families: GNAT, ObjectAda, Irvine ICCAda, and Janus/Ada.
 
 GNAT GPL series and FSF GCC
----------------------------
+===========================
 
 When you have GNAT GPL or FSF GCC, the easieast way to
 compile and install Ahven is to use
@@ -107,9 +103,8 @@ values as Makefile.
 Installing Library
 ------------------
 
-You can install the library by using command
-*make install*. By default
-the installation happens to the */usr/local* directory.
+You can install the library by using command *make install*.
+By default the installation happens to the */usr/local* directory.
 Alternative directory can be set by overwriting the *PREFIX* variable.
 
 ::
@@ -130,6 +125,21 @@ There is no project file included for ObjectAda.
 To compile Ahven, you need to create
 a new project and import the source code of Ahven
 to the project.
+
+Irvine ICCAda
+=============
+
+Easiest way to build Ahven with ICCAda is to use *icm* utility::
+
+    C:\ahven-1.8>cd src
+    C:\ahven-1.8\src>icm new
+    C:\ahven-1.8\src>icm scan *.ad? windows\*.ad?
+    C:\ahven-1.8\src>icm make libmain
+    C:\ahven-1.8\src>cd ..\test
+    C:\ahven-1.8\test>icm new -search=..\src
+    C:\ahven-1.8\test>icm scan *.ad?
+    C:\ahven-1.8\test>icm make tester
+  
 
 Janus/Ada
 =========
@@ -244,7 +254,7 @@ Calling Assertion Procedures
 
 To test whether a condition is true or false,
 Ahven offers you three procedures. The first
-procedure is ``Ahven.Assert``.
+procedure is :ref:`Ahven.Assert <ahven-assert>`.
 It takes a boolean value and a message string as its parameters.
 If the boolean value is false the ``Assert``
 raises an ``Assertion_Error`` exception
@@ -253,14 +263,14 @@ and when the test results are shown the error is also shown
 with the given message.
 
 Another assertion procedure is a generic
-``Ahven.Assert_Equal`` procedure.
+:ref:`Ahven.Assert_Equal <ahven-assert_equal>` procedure.
 It is meant for comparing two objects of same type.
 If the objects are not equal
 the ``Assertion_Error`` exception
 with the given message string is raised.
 
 The third assertion procedure is simple
-``Fail`` which always raises
+:ref:`Ahven.Fail <ahven-fail>` which always raises
 the ``Assertion_Error`` exception.
 It is handy for situations where the execution should not
 reach a certain place (see :ref:`fail_example`).
@@ -292,30 +302,22 @@ Fail in action
 Composing Test Hierarchies With Test Suites
 ===========================================
 
-The ``Test_Suite`` type
-is used to group related tests together.
-You can also add other test suites to the suite
-and create a hierarchy of tests.
+The ``Test_Suite`` type is used to group related tests together.
+You can also add other test suites to the suite and create
+a hierarchy of tests.
 
-The tests are added to the test suite
-using either procedure
-``Add_Static_Test`` or
-``Add_Test``.
-The former procedure is meant for statically
-created tests and it places a copy of the given
-test to the test suite.
-The ``Add_Test`` procedure is used
-with dynamically created tests and test objects
-of type Test_Class_Access.
+The tests are added to the test suite using either procedure
+``Add_Static_Test`` or ``Add_Test``.
+The former procedure is meant for statically created tests and
+it places a copy of the given test to the test suite.
+The ``Add_Test`` procedure is used with dynamically created tests
+and test objects of type Test_Class_Access.
 
-At the moment, the dynamically added tests are
-executed first in the order they have been added
-(first in, first out - FIFO)
-and after them the statically added tests, also in
-FIFO order.
+At the moment, the dynamically added tests are executed first in
+the order they have been added (first in, first out - FIFO)
+and after them the statically added tests, also in FIFO order.
 
-:ref:`suite_example` shows how to
-put test cases in a test suite.
+:ref:`suite_example` shows how to put test cases in a test suite.
 
 .. _suite_example:
 
@@ -340,21 +342,18 @@ Suite Example
 Running Tests
 =============
 
-The tests are run by test runners.
-These runners are procedures which take
+The tests are run by test runners.  These runners are procedures which take
 either test cases or test suites as their parameters.
 
-Currently, there exists three test runners.
-Ahven.Runner is the basic runner, which prints
-the test results as a hierarchy. Ahven.XML_Runner
-on the other hand writes the test results to
-an XML file, which is understood by continuous
-integration systems like CruiseControl and Hudson.
-The third runner is Ahven.Tap_Runner. It produces
-the results in Test-Anything-Protocol (TAP) format.
+Currently, there exists three test runners. Ahven.Runner is the basic
+runner, which prints the test results as a hierarchy. Ahven.XML_Runner
+on the other hand writes the test results to an XML file, which is
+understood by continuous integration systems like CruiseControl and Hudson.
+The third runner is Ahven.Tap_Runner. It produces the results in
+Test-Anything-Protocol (TAP) format.
 
-The recommended way to use these test runners is
-to call them from the main program:
+The recommended way to use these test runners is to call them from
+the main program:
 
 ::
 

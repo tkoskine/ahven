@@ -4,6 +4,8 @@
 .. module:: Ahven.XML_Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
+.. versionadded:: 1.2
+
 
 ------------------------
 Procedures and Functions

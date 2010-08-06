@@ -3,6 +3,7 @@
 
 .. module:: Ahven.SList
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
+.. versionadded:: 1.4
 
 -----
 Types
@@ -37,7 +38,12 @@ Invalid_Cursor
 ''''''''''''''
 
 ::
+
    Invalid_Cursor : exception;
+
+Raised when the cursor given as a parameter is invalid.
+For example, calling Data (Pos) when Is_Valid (Pos) returns
+False causes the exception to be raised.
 
 List_Full
 '''''''''
@@ -46,7 +52,7 @@ List_Full
 
    List_Full : exception;
 
-Thrown when the size of the list exceeds Count_Type'Last.
+Raised when the size of the list exceeds Count_Type'Last.
 
 
 ------------------------
@@ -65,6 +71,9 @@ Append an element at the end of the list.
 
 Clear
 '''''
+
+.. versionchanged:: 1.8
+   Previously Clear was called Remove_All.
 
 ::
 
@@ -122,8 +131,12 @@ Return the length of the list.
 For_Each
 ''''''''
 
+.. versionadded:: 1.8
+
 ::
 
+   generic
+      with procedure Action (T : in out Element_Type) is <>;
    procedure For_Each (Target : List);
 
 A generic procedure for walk through every item

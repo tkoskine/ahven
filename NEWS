@@ -3,7 +3,13 @@
 
 Changes
 -------
-	* TODO
+	* Manual was added to 'doc/manual/en' directory. It includes
+          User's Guide section and API documentation. The documentation
+          is written using reStructuredText and Sphinx 1.0, so Python
+          and py-sphinx is required for building. API documentation
+          generation via Adabrowse is still supported, but it will be
+          deprecated and dropped later.
+         
 
 Internal
 --------

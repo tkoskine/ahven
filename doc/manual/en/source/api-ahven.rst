@@ -18,6 +18,8 @@ Exceptions
 Procedures and Functions
 ------------------------
 
+.. _ahven-assert:
+
 Assert
 ''''''
 
@@ -28,9 +30,13 @@ Assert
 If Condition is false, Assert raises Assertion_Error
 with given Message.
 
+.. _ahven-assert_equal:
 
 Assert_Equal
 ''''''''''''
+
+.. versionadded:: 1.4
+
 
 ::
 
@@ -39,9 +45,23 @@ Assert_Equal
        with function Image (Item : Data_Type) return String is <>;
     procedure Assert_Equal (Actual : Data_Type; Expected : Data_Type; Message : String);
 
-
 If Expected /= Actual, Assert raises Assertion_Error
 with given Message.
+
+Example::
+
+    declare
+       procedure Assert_Eq_Nat is
+         new Ahven.Assert_Equal (Data_Type => Natural,
+                                 Image     => Natural'Image);
+
+    begin
+       Assert_Eq_Nat (Actual   => Test_Count,
+                      Expected => 4,
+		      "test count");
+    end;
+
+.. _ahven-fail:
 
 Fail
 ''''
