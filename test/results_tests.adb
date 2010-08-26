@@ -22,6 +22,9 @@ use Ahven;
 use Ahven.AStrings;
 
 package body Results_Tests is
+   procedure Assert_Eq_Int is
+     new Ahven.Assert_Equal (Data_Type => Integer,
+                             Image     => Integer'Image);
 
    procedure Initialize (T : in out Test) is
       use Ahven.Framework;
@@ -48,7 +51,9 @@ package body Results_Tests is
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert (2 = Test_Count (Coll), "Invalid test count");
+      Assert_Eq_Int (Actual   => Test_Count (Coll),
+                     Expected => 2,
+                     Message  => "test count");
    end Test_Count_Children;
 
    procedure Test_Direct_Count is
@@ -68,11 +73,12 @@ package body Results_Tests is
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert (Direct_Test_Count (Coll) = Expected_Test_Count,
-              "Invalid test count: "
-              & Integer'Image (Direct_Test_Count (Coll)));
-      Assert (1 = Direct_Test_Count (Coll_Dyn.all), "Invalid test count: "
-              & Integer'Image (Direct_Test_Count (Coll_Dyn.all)));
+      Assert_Eq_Int (Actual => Direct_Test_Count (Coll),
+                     Expected => Expected_Test_Count,
+                     Message => "test count");
+      Assert_Eq_Int (Actual => Direct_Test_Count (Coll_Dyn.all),
+                     Expected => 1,
+                     Message => "test count (dyn)");
    end Test_Direct_Count;
 
    procedure Test_Result_Iterator is
@@ -98,7 +104,9 @@ package body Results_Tests is
          Iter := Next (Iter);
          Count := Count + 1;
       end loop;
-      Assert (Count = 1, "Invalid amount of passes");
+      Assert_Eq_Int (Actual   => Count,
+                     Expected => 1,
+                     Message  => "pass amount");
 
       Iter := First_Failure (Coll);
       Count := 0;
@@ -109,7 +117,9 @@ package body Results_Tests is
          Iter := Next (Iter);
          Count := Count + 1;
       end loop;
-      Assert (Count = 1, "Invalid amount of failures");
+      Assert_Eq_Int (Actual   => Count,
+                     Expected => 1,
+                     Message  => "failure amount");
 
       Iter := First_Error (Coll);
       Count := 0;
@@ -120,7 +130,9 @@ package body Results_Tests is
          Iter := Next (Iter);
          Count := Count + 1;
       end loop;
-      Assert (Count = 1, "Invalid amount of errors");
+      Assert_Eq_Int (Actual   => Count,
+                     Expected => 1,
+                     Message  => "error amount");
    end Test_Result_Iterator;
 
    procedure Test_Add_Pass is
