@@ -84,54 +84,51 @@ package body Results_Tests is
    procedure Test_Result_Iterator is
       use Ahven.Results;
 
+      Msg  : constant Bounded_String := To_Bounded_String ("hello");
+
+      function Count_Tests (Position : Result_Info_Cursor) return Integer is
+         Count : Natural            := 0;
+         Pos   : Result_Info_Cursor := Position;
+      begin
+         loop
+            exit when not Is_Valid (Pos);
+            Assert (Get_Message (Data (Pos)) = To_String (Msg),
+                    "Invalid message in the item");
+            Pos := Next (Pos);
+            Count := Count + 1;
+         end loop;
+
+         return Count;
+      end Count_Tests;
+
       Coll : Result_Collection;
       Info : Result_Info := Empty_Result_Info;
-      Iter : Result_Info_Cursor;
-      Msg  : constant Bounded_String := To_Bounded_String ("hello");
-      Count : Natural;
+
+      Error_Amount   : constant := 1;
+      Failure_Amount : constant := 2;
+      Pass_Amount    : constant := 3;
    begin
       Set_Message (Info, Msg);
-      Add_Error (Coll, Info);
-      Add_Failure (Coll, Info);
-      Add_Pass (Coll, Info);
-
-      Iter := First_Pass (Coll);
-      Count := 0;
-      loop
-         exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = To_String (Msg),
-                 "Invalid message in the item");
-         Iter := Next (Iter);
-         Count := Count + 1;
+      for I in 1 .. Error_Amount loop
+         Add_Error (Coll, Info);
       end loop;
-      Assert_Eq_Int (Actual   => Count,
-                     Expected => 1,
+      for I in 1 .. Failure_Amount loop
+         Add_Failure (Coll, Info);
+      end loop;
+      for I in 1 .. Pass_Amount loop
+         Add_Pass (Coll, Info);
+      end loop;
+
+      Assert_Eq_Int (Actual   => Count_Tests (First_Pass (Coll)),
+                     Expected => Pass_Amount,
                      Message  => "pass amount");
 
-      Iter := First_Failure (Coll);
-      Count := 0;
-      loop
-         exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = To_String (Msg),
-                 "Invalid message in the item");
-         Iter := Next (Iter);
-         Count := Count + 1;
-      end loop;
-      Assert_Eq_Int (Actual   => Count,
-                     Expected => 1,
+      Assert_Eq_Int (Actual   => Count_Tests (First_Failure (Coll)),
+                     Expected => Failure_Amount,
                      Message  => "failure amount");
 
-      Iter := First_Error (Coll);
-      Count := 0;
-      loop
-         exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = To_String (Msg),
-                 "Invalid message in the item");
-         Iter := Next (Iter);
-         Count := Count + 1;
-      end loop;
-      Assert_Eq_Int (Actual   => Count,
-                     Expected => 1,
+      Assert_Eq_Int (Actual   => Count_Tests (First_Error (Coll)),
+                     Expected => Error_Amount,
                      Message  => "error amount");
    end Test_Result_Iterator;
 
