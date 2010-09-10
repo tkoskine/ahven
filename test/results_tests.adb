@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008-2009 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2008-2010 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -22,6 +22,9 @@ use Ahven;
 use Ahven.AStrings;
 
 package body Results_Tests is
+   procedure Assert_Eq_Int is
+     new Ahven.Assert_Equal (Data_Type => Integer,
+                             Image     => Integer'Image);
 
    procedure Initialize (T : in out Test) is
       use Ahven.Framework;
@@ -48,7 +51,9 @@ package body Results_Tests is
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert (2 = Test_Count (Coll), "Invalid test count");
+      Assert_Eq_Int (Actual   => Test_Count (Coll),
+                     Expected => 2,
+                     Message  => "test count");
    end Test_Count_Children;
 
    procedure Test_Direct_Count is
@@ -68,59 +73,63 @@ package body Results_Tests is
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert (Direct_Test_Count (Coll) = Expected_Test_Count,
-              "Invalid test count: "
-              & Integer'Image (Direct_Test_Count (Coll)));
-      Assert (1 = Direct_Test_Count (Coll_Dyn.all), "Invalid test count: "
-              & Integer'Image (Direct_Test_Count (Coll_Dyn.all)));
+      Assert_Eq_Int (Actual => Direct_Test_Count (Coll),
+                     Expected => Expected_Test_Count,
+                     Message => "test count");
+      Assert_Eq_Int (Actual => Direct_Test_Count (Coll_Dyn.all),
+                     Expected => 1,
+                     Message => "test count (dyn)");
    end Test_Direct_Count;
 
    procedure Test_Result_Iterator is
       use Ahven.Results;
 
+      Msg  : constant Bounded_String := To_Bounded_String ("hello");
+
+      function Count_Tests (Position : Result_Info_Cursor) return Integer is
+         Count : Natural            := 0;
+         Pos   : Result_Info_Cursor := Position;
+      begin
+         loop
+            exit when not Is_Valid (Pos);
+            Assert (Get_Message (Data (Pos)) = To_String (Msg),
+                    "Invalid message in the item");
+            Pos := Next (Pos);
+            Count := Count + 1;
+         end loop;
+
+         return Count;
+      end Count_Tests;
+
       Coll : Result_Collection;
       Info : Result_Info := Empty_Result_Info;
-      Iter : Result_Info_Cursor;
-      Msg  : constant Bounded_String := To_Bounded_String ("hello");
-      Count : Natural;
+
+      Error_Amount   : constant := 1;
+      Failure_Amount : constant := 2;
+      Pass_Amount    : constant := 3;
    begin
       Set_Message (Info, Msg);
-      Add_Error (Coll, Info);
-      Add_Failure (Coll, Info);
-      Add_Pass (Coll, Info);
-
-      Iter := First_Pass (Coll);
-      Count := 0;
-      loop
-         exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = To_String (Msg),
-                 "Invalid message in the item");
-         Iter := Next (Iter);
-         Count := Count + 1;
+      for I in 1 .. Error_Amount loop
+         Add_Error (Coll, Info);
       end loop;
-      Assert (Count = 1, "Invalid amount of passes");
-
-      Iter := First_Failure (Coll);
-      Count := 0;
-      loop
-         exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = To_String (Msg),
-                 "Invalid message in the item");
-         Iter := Next (Iter);
-         Count := Count + 1;
+      for I in 1 .. Failure_Amount loop
+         Add_Failure (Coll, Info);
       end loop;
-      Assert (Count = 1, "Invalid amount of failures");
-
-      Iter := First_Error (Coll);
-      Count := 0;
-      loop
-         exit when not Is_Valid (Iter);
-         Assert (Get_Message (Data (Iter)) = To_String (Msg),
-                 "Invalid message in the item");
-         Iter := Next (Iter);
-         Count := Count + 1;
+      for I in 1 .. Pass_Amount loop
+         Add_Pass (Coll, Info);
       end loop;
-      Assert (Count = 1, "Invalid amount of errors");
+
+      Assert_Eq_Int (Actual   => Count_Tests (First_Pass (Coll)),
+                     Expected => Pass_Amount,
+                     Message  => "pass amount");
+
+      Assert_Eq_Int (Actual   => Count_Tests (First_Failure (Coll)),
+                     Expected => Failure_Amount,
+                     Message  => "failure amount");
+
+      Assert_Eq_Int (Actual   => Count_Tests (First_Error (Coll)),
+                     Expected => Error_Amount,
+                     Message  => "error amount");
    end Test_Result_Iterator;
 
    procedure Test_Add_Pass is
