@@ -408,7 +408,7 @@ package body Ahven.Framework is
 
       procedure Inc_Counter_Ptr (Wrapper : in out Test_Class_Wrapper) is
       begin
-         Inc_Counter (Test'Class (Wrapper.Ptr.all));
+         Inc_Counter (Wrapper.Ptr.all);
       end Inc_Counter_Ptr;
    begin
       declare
