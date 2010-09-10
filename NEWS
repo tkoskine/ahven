@@ -9,7 +9,12 @@ Changes
           and py-sphinx is required for building. API documentation
           generation via Adabrowse is still supported, but it will be
           deprecated and dropped later.
-         
+
+Bugs fixed
+----------
+	* Extra Test'Class (...) type conversion was removed from
+	  ahven-framework.adb. This allows compilation with GNAT GPL 2010.
+	  (Bug bitbucket#3)
 
 Internal
 --------
