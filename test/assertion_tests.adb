@@ -27,10 +27,10 @@ package body Assertion_Tests is
       Set_Name (T, "Ahven");
 
       Framework.Add_Test_Routine
-        (T, Test_Assert_Equal'Access, "Test Assert_Equal");
+        (T, Test_Assert_Equal'Access, "Assert_Equal");
 
-      Framework.Add_Test_Routine (T, Test_Assert'Access, "Test Assert");
-      Framework.Add_Test_Routine (T, Test_Fail'Access, "Test Fail");
+      Framework.Add_Test_Routine (T, Test_Assert'Access, "Assert");
+      Framework.Add_Test_Routine (T, Test_Fail'Access, "Fail");
    end Initialize;
 
    procedure Test_Assert_Equal is
