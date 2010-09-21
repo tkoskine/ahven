@@ -65,9 +65,9 @@ package body Ahven.Framework is
       -- Like Start_Test, only for Test_Suites and Test_Cases.
       Listeners.End_Test
         (Listener_Object,
-         (Phase          => TEST_END,
-          Test_Name      => To_Bounded_String (Get_Name (Test_Object)),
-          Test_Kind      => CONTAINER));
+         (Phase     => TEST_END,
+          Test_Name => To_Bounded_String (Get_Name (Test_Object)),
+          Test_Kind => CONTAINER));
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
