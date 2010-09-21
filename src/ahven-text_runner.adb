@@ -147,11 +147,6 @@ package body Ahven.Text_Runner is
    procedure Print_Children (Result : Result_Collection;
                              Level  : Natural;
                              Action : Print_Child_Proc;
-                             Count  : Child_Count_Proc);
-
-   procedure Print_Children (Result : Result_Collection;
-                             Level  : Natural;
-                             Action : Print_Child_Proc;
                              Count  : Child_Count_Proc)
    is
       Child_Iter : Result_Collection_Cursor := First_Child (Result);
