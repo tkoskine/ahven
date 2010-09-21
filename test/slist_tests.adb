@@ -29,25 +29,20 @@ package body SList_Tests is
    package Simple_List is new Ahven.SList (Element_Type => Simple_Type);
 
    procedure Initialize (T : in out Test) is
+      use Framework;
    begin
       Set_Name (T, "Ahven.SList");
 
-      Framework.Add_Test_Routine (T, Test_Append_Elementary'Access,
-                                  "Test_Append (Elementary)");
-      Framework.Add_Test_Routine (T, Test_Append_Record'Access,
-                                  "Test_Append (Record)");
-      Framework.Add_Test_Routine (T, Test_Clear'Access,
-                                  "Test_Clear");
-      Framework.Add_Test_Routine (T, Test_First'Access,
-                                  "Test_First");
-      Framework.Add_Test_Routine (T, Test_Next'Access,
-                                  "Test_Data");
-      Framework.Add_Test_Routine (T, Test_Length'Access,
-                                  "Test_Length");
-      Framework.Add_Test_Routine (T, Test_Copy'Access,
-                                  "Test_Copy");
-      Framework.Add_Test_Routine (T, Test_For_Each'Access,
-                                  "Test_For_Each");
+      Add_Test_Routine (T, Test_Append_Elementary'Access,
+        "Append (Elementary)");
+      Add_Test_Routine (T, Test_Append_Record'Access, "Append (Record)");
+      Add_Test_Routine (T, Test_Clear'Access, "Clear");
+      Add_Test_Routine (T, Test_Clear_Empty'Access, "Clear (Empty)");
+      Add_Test_Routine (T, Test_First'Access, "First");
+      Add_Test_Routine (T, Test_Next'Access, "Data");
+      Add_Test_Routine (T, Test_Length'Access, "Length");
+      Add_Test_Routine (T, Test_Copy'Access, "Copy");
+      Add_Test_Routine (T, Test_For_Each'Access, "For_Each");
    end Initialize;
 
    procedure Test_Append_Elementary is
@@ -101,6 +96,15 @@ package body SList_Tests is
       Clear (My_List);
       Assert (Length (My_List) = 0, "List not empty after Clear!");
    end Test_Clear;
+
+   procedure Test_Clear_Empty is
+      use Simple_List;
+
+      My_List : List := Empty_List;
+   begin
+      Clear (My_List);
+      Assert (Length (My_List) = 0, "List not empty after Clear!");
+   end Test_Clear_Empty;
 
    procedure Test_First is
       use Simple_List;

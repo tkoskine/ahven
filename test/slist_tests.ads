@@ -24,6 +24,7 @@ private
    procedure Test_Append_Elementary;
    procedure Test_Append_Record;
    procedure Test_Clear;
+   procedure Test_Clear_Empty;
    procedure Test_First;
    procedure Test_Next;
    procedure Test_Data;
