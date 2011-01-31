@@ -20,4 +20,5 @@ Long-term todo-list
 * Graphical (GTK+/CLAW) UI for the test result reporter
 * Improve documentation
 * Replace adhoc XML writer with "a proper solution"
+* Add a possibility to abort task which runs too long.
 
