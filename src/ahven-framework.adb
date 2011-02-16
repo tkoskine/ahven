@@ -200,7 +200,7 @@ package body Ahven.Framework is
          end Set_Long_Message;
       end Test_Results;
 
-      Results : Test_Results;
+      Result : Test_Results;
 
       task type Command_Task is
          entry Start_Command;
@@ -212,19 +212,19 @@ package body Ahven.Framework is
          accept Start_Command;
          begin
             Run (Command, T);
-            Results.Set_Status (Test_Pass);
+            Result.Set_Status (Test_Pass);
          exception
             when E : Assertion_Error =>
-               Results.Set_Status (Test_Fail);
-               Results.Set_Message (To_Bounded_String
+               Result.Set_Status (Test_Fail);
+               Result.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right));
             when E : others =>
-               Results.Set_Status (Test_Error);
-               Results.Set_Message (To_Bounded_String
+               Result.Set_Status (Test_Error);
+               Result.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Name (E),
                   Drop   => Ada.Strings.Right));
-               Results.Set_Long_Message (To_Bounded_String
+               Result.Set_Long_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right));
          end;
@@ -233,6 +233,8 @@ package body Ahven.Framework is
       end Command_Task;
 
       Command_Runner : Command_Task;
+      
+      Status : Test_Status;
 
    begin
       Command_Runner.Start_Command;
@@ -242,12 +244,14 @@ package body Ahven.Framework is
          or
             delay Duration (Timeout);
             abort Command_Runner;
-            Results.Set_Status (Test_Timeout);
+            Result.Set_Status (Test_Timeout);
          end select;
       else
          Command_Runner.End_Command;
       end if;
-      case Results.Get_Status is
+      Status := Result.Get_Status;
+      
+      case Status is
          when Test_Pass =>
             Listeners.Add_Pass (Listener, Info);
          when Test_Fail =>
@@ -257,7 +261,7 @@ package body Ahven.Framework is
                 Test_Name    => Info.Test_Name,
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
-                Message      => Results.Get_Message,
+                Message      => Result.Get_Message,
                 Long_Message => Null_Bounded_String));
          when Test_Error =>
             Listeners.Add_Error
@@ -266,8 +270,8 @@ package body Ahven.Framework is
                 Test_Name    => Info.Test_Name,
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
-                Message      => Results.Get_Message,
-                Long_Message => Results.Get_Long_Message));
+                Message      => Result.Get_Message,
+                Long_Message => Result.Get_Long_Message));
          when Test_Timeout =>
             Listeners.Add_Error
               (Listener,
