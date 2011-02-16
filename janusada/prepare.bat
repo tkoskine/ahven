@@ -1,5 +1,5 @@
 cd src
-set januspath=C:\Janus312\rts\console
+set januspath=C:\jnt312a\rts\console
 del /q ..\lib_obj\*.*
 del /q ..\com_obj\*.*
 mkdir ..\lib_obj
