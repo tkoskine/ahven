@@ -14,6 +14,8 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ahven.Framework;
+
 package Ahven.Parameters is
 
    Invalid_Parameter : exception;
@@ -49,6 +51,9 @@ package Ahven.Parameters is
    function Result_Dir (Info : Parameter_Info) return String;
    -- Return the directory for XML results.
 
+   function Timeout (Info : Parameter_Info) return Framework.Test_Duration;
+   -- Return the timeout value for a test.
+
 private
    type Parameter_Info is record
       Verbose_Output : Boolean := True;
@@ -58,5 +63,6 @@ private
       -- Position of test name in the argument array
       Result_Dir     : Natural := 0;
       -- Position of results dir in the argument array
+      Timeout        : Framework.Test_Duration := 0.0;
    end record;
 end Ahven.Parameters;

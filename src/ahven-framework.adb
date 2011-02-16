@@ -43,6 +43,22 @@ package body Ahven.Framework is
       null;
    end Tear_Down;
 
+   procedure Run (T         : in out Test;
+                  Listener  : in out Listeners.Result_Listener'Class) is
+   begin
+      Run (T => Test'Class (T), Listener => Listener, Timeout => 0.0);
+   end Run;
+
+   procedure Run (T         : in out Test;
+                  Test_Name :        String;
+                  Listener  : in out Listeners.Result_Listener'Class) is
+   begin
+      Run (T         => Test'Class (T),
+           Test_Name => Test_Name,
+           Listener  => Listener,
+           Timeout   => 0.0);
+   end Run;
+
    procedure Execute_Internal
      (Test_Object     : in out Test'Class;
       Listener_Object : in out Listeners.Result_Listener'Class)
@@ -71,10 +87,11 @@ package body Ahven.Framework is
    end Execute_Internal;
 
    procedure Execute (T        : in out Test'Class;
-                      Listener : in out Listeners.Result_Listener'Class) is
+                      Listener : in out Listeners.Result_Listener'Class;
+                      Timeout  :        Test_Duration) is
       procedure Run_Impl is
       begin
-         Run (T, Listener);
+         Run (T, Listener, Timeout);
       end Run_Impl;
 
       procedure Execute_Impl is new Execute_Internal (Action => Run_Impl);
@@ -84,10 +101,11 @@ package body Ahven.Framework is
 
    procedure Execute (T           : in out Test'Class;
                       Test_Name   :        String;
-                      Listener    : in out Listeners.Result_Listener'Class) is
+                      Listener    : in out Listeners.Result_Listener'Class;
+                      Timeout     :        Test_Duration) is
       procedure Run_Impl is
       begin
-         Run (T, Test_Name, Listener);
+         Run (T, Test_Name, Listener, Timeout);
       end Run_Impl;
 
       procedure Execute_Impl is new Execute_Internal (Action => Run_Impl);
@@ -128,49 +146,139 @@ package body Ahven.Framework is
    -- store the result to the Result object.
    procedure Run_Command (Command  :        Test_Command;
                           Info     :        Listeners.Context;
+                          Timeout  :        Test_Duration;
                           Listener : in out Listeners.Result_Listener'Class;
                           T        : in out Test_Case'Class) is
       use Ahven.Listeners;
 
-      Passed  : Boolean := False; --## rule line off IMPROPER_INITIALIZATION
-   begin
-      Run (Command, T);
-      Passed := True;
-      Listeners.Add_Pass (Listener, Info);
-   exception
-      when E : Assertion_Error =>
-         Listeners.Add_Failure
-           (Listener,
-            (Phase        => TEST_RUN,
-             Test_Name    => Info.Test_Name,
-             Test_Kind    => CONTAINER,
-             Routine_Name => Info.Routine_Name,
-             Message      =>
-               To_Bounded_String
+      type Test_Status is (Test_Pass, Test_Fail, Test_Error, Test_Timeout);
+
+      protected type Test_Results is
+         function Get_Status return Test_Status;
+         procedure Set_Status (Value : Test_Status);
+
+         function Get_Message return Bounded_String;
+         procedure Set_Message (Value : Bounded_String);
+
+         function Get_Long_Message return Bounded_String;
+         procedure Set_Long_Message (Value : Bounded_String);
+      private
+         Status : Test_Status := Test_Error;
+         Message : Bounded_String;
+         Long_Message : Bounded_String;
+      end Test_Results;
+
+      protected body Test_Results is
+         function Get_Status return Test_Status is
+         begin
+            return Status;
+         end Get_Status;
+
+         procedure Set_Status (Value : Test_Status) is
+         begin
+            Status := Value;
+         end Set_Status;
+
+         function Get_Message return Bounded_String is
+         begin
+            return Message;
+         end Get_Message;
+
+         procedure Set_Message (Value : Bounded_String) is
+         begin
+            Message := Value;
+         end Set_Message;
+
+         function Get_Long_Message return Bounded_String is
+         begin
+            return Long_Message;
+         end Get_Long_Message;
+
+         procedure Set_Long_Message (Value : Bounded_String) is
+         begin
+            Long_Message := Value;
+         end Set_Long_Message;
+      end Test_Results;
+
+      Results : Test_Results;
+
+      task type Command_Task is
+         entry Start_Command;
+         entry End_Command;
+      end Command_Task;
+
+      task body Command_Task is
+      begin
+         accept Start_Command;
+         begin
+            Run (Command, T);
+            Results.Set_Status (Test_Pass);
+         exception
+            when E : Assertion_Error =>
+               Results.Set_Status (Test_Fail);
+               Results.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Message (E),
-                  Drop   => Ada.Strings.Right),
-             Long_Message => Null_Bounded_String));
-      when E : others =>
-         -- Did the exception come from the test (Passed = False) or
-         -- from the library routines (Passed = True)?
-         if Passed then
-            raise;
-         else
+                  Drop   => Ada.Strings.Right));
+            when E : others =>
+               Results.Set_Status (Test_Error);
+               Results.Set_Message (To_Bounded_String
+                 (Source => Ada.Exceptions.Exception_Name (E),
+                  Drop   => Ada.Strings.Right));
+               Results.Set_Long_Message (To_Bounded_String
+                 (Source => Ada.Exceptions.Exception_Message (E),
+                  Drop   => Ada.Strings.Right));
+         end;
+
+         accept End_Command;
+      end Command_Task;
+
+      Command_Runner : Command_Task;
+
+   begin
+      Command_Runner.Start_Command;
+      if Timeout > 0.0 then
+         select
+            Command_Runner.End_Command;
+         or
+            delay Duration (Timeout);
+            abort Command_Runner;
+            Results.Set_Status (Test_Timeout);
+         end select;
+      else
+         Command_Runner.End_Command;
+      end if;
+      case Results.Get_Status is
+         when Test_Pass =>
+            Listeners.Add_Pass (Listener, Info);
+         when Test_Fail =>
+            Listeners.Add_Failure
+              (Listener,
+               (Phase        => TEST_RUN,
+                Test_Name    => Info.Test_Name,
+                Test_Kind    => CONTAINER,
+                Routine_Name => Info.Routine_Name,
+                Message      => Results.Get_Message,
+                Long_Message => Null_Bounded_String));
+         when Test_Error =>
             Listeners.Add_Error
               (Listener,
                (Phase        => Listeners.TEST_RUN,
                 Test_Name    => Info.Test_Name,
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
-                Message      =>
-                  To_Bounded_String
-                    (Source => Ada.Exceptions.Exception_Name (E),
-                     Drop   => Ada.Strings.Right),
-                Long_Message =>
-                  To_Bounded_String
-                    (Source => Ada.Exceptions.Exception_Message (E),
-                     Drop   => Ada.Strings.Right)));
-         end if;
+                Message      => Results.Get_Message,
+                Long_Message => Results.Get_Long_Message));
+         when Test_Timeout =>
+            Listeners.Add_Error
+              (Listener,
+               (Phase        => Listeners.TEST_RUN,
+                Test_Name    => Info.Test_Name,
+                Test_Kind    => CONTAINER,
+                Routine_Name => Info.Routine_Name,
+                Message      => To_Bounded_String ("TIMEOUT"),
+                Long_Message => Null_Bounded_String));
+
+      end case;
    end Run_Command;
 
    function Get_Name (T : Test_Case) return String is
@@ -183,7 +291,8 @@ package body Ahven.Framework is
       Listener     : in out Listeners.Result_Listener'Class;
       Command      :        Test_Command;
       Test_Name    :        String;
-      Routine_Name :        String)
+      Routine_Name :        String;
+      Timeout      :        Test_Duration)
    is
       use Ahven.Listeners;
    begin
@@ -200,6 +309,7 @@ package body Ahven.Framework is
                                   To_Bounded_String (Routine_Name),
                                 Message      => Null_Bounded_String,
                                 Long_Message => Null_Bounded_String),
+                   Timeout  => Timeout,
                    Listener => Listener,
                    T        => T);
       Listeners.End_Test
@@ -213,13 +323,15 @@ package body Ahven.Framework is
    --
    -- Loops over the test routine list and executes the routines.
    procedure Run (T        : in out Test_Case;
-                  Listener : in out Listeners.Result_Listener'Class)
+                  Listener : in out Listeners.Result_Listener'Class;
+                  Timeout  :        Test_Duration)
    is
       procedure Exec (Cmd : in out Test_Command) is
       begin
          Run_Internal (T            => T,
                        Listener     => Listener,
                        Command      => Cmd,
+                       Timeout      => Timeout,
                        Test_Name    => Get_Name (T),
                        Routine_Name => To_String (Cmd.Name));
       end Exec;
@@ -234,7 +346,8 @@ package body Ahven.Framework is
    -- test routines with name Test_Name.
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class)
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration)
    is
       procedure Exec (Cmd : in out Test_Command) is
       begin
@@ -242,6 +355,7 @@ package body Ahven.Framework is
             Run_Internal (T            => T,
                           Listener     => Listener,
                           Command      => Cmd,
+                          Timeout      => Timeout,
                           Test_Name    => Get_Name (T),
                           Routine_Name => To_String (Cmd.Name));
          end if;
@@ -336,7 +450,8 @@ package body Ahven.Framework is
    end Get_Name;
 
    procedure Run (T        : in out Test_Suite;
-                  Listener : in out Listeners.Result_Listener'Class)
+                  Listener : in out Listeners.Result_Listener'Class;
+                  Timeout  :        Test_Duration)
    is
       -- Some nested procedure exercises here.
       --
@@ -349,12 +464,12 @@ package body Ahven.Framework is
       -- A helper procedure which runs Execute for the given test.
       procedure Execute_Test (Current : in out Test'Class) is
       begin
-         Execute (Current, Listener);
+         Execute (Current, Listener, Timeout);
       end Execute_Test;
 
       procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
       begin
-         Execute (Current.Ptr.all, Listener);
+         Execute (Current.Ptr.all, Listener, Timeout);
       end Execute_Test_Ptr;
 
       procedure Execute_Static_Cases is
@@ -368,14 +483,15 @@ package body Ahven.Framework is
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class)
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration)
    is
       procedure Execute_Test (Current : in out Test'Class) is
       begin
          if Get_Name (Current) = Test_Name then
-            Execute (Current, Listener);
+            Execute (Current, Listener, Timeout);
          else
-            Execute (Current, Test_Name, Listener);
+            Execute (Current, Test_Name, Listener, Timeout);
          end if;
       end Execute_Test;
 
@@ -391,7 +507,7 @@ package body Ahven.Framework is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
    begin
       if Test_Name = To_String (T.Suite_Name) then
-         Run (T, Listener);
+         Run (T, Listener, Timeout);
       else
          Execute_Cases (T.Test_Cases);
          Execute_Static_Cases (T.Static_Test_Cases);

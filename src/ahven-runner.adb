@@ -34,9 +34,10 @@ package body Ahven.Runner is
 
       if Parameters.Single_Test (Params) then
          Framework.Execute
-           (Suite, Parameters.Test_Name (Params), Listener);
+           (Suite, Parameters.Test_Name (Params),
+            Listener, Parameters.Timeout (Params));
       else
-         Framework.Execute (Suite, Listener);
+         Framework.Execute (Suite, Listener, Parameters.Timeout (Params));
       end if;
 
       Reporter (Listener.Main_Result, Params);

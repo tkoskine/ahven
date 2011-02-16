@@ -61,10 +61,13 @@ package body Ahven.Tap_Runner is
          Put_Line ("1.." & Count_Image (Test_Count
            (Suite, Parameters.Test_Name (Params))));
          Framework.Execute
-           (Suite, Parameters.Test_Name (Params), Listener);
+           (Suite,
+            Parameters.Test_Name (Params),
+            Listener,
+            Parameters.Timeout (Params));
       else
          Put_Line ("1.." & Count_Image (Test_Count (Suite)));
-         Framework.Execute (Suite, Listener);
+         Framework.Execute (Suite, Listener, Parameters.Timeout (Params));
       end if;
    exception
       when Parameters.Invalid_Parameter =>
@@ -73,8 +76,10 @@ package body Ahven.Tap_Runner is
 
    procedure Print_Info (Info : Context) is
    begin
-      Print_Data (Message => To_String (Info.Message), Prefix => "# ");
-      New_Line;
+      if Length (Info.Message) > 0 then
+         Print_Data (Message => To_String (Info.Message), Prefix => "# ");
+         New_Line;
+      end if;
       if Length (Info.Long_Message) > 0 then
          Print_Data (Message => To_String (Info.Long_Message), Prefix => "# ");
          New_Line;
