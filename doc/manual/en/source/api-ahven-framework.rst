@@ -10,7 +10,10 @@
 Types
 -----
 
-.. ada:type:: type Test_Count_Type is new Natural;
+Test_Count_Type
+'''''''''''''''
+
+.. .. xada:type:: type Test_Count_Type is new Natural;
 
 ::
 
@@ -23,13 +26,16 @@ Although, in practice when adding tests the limit
 is not checked.
 
 
-.. ada:type:: type Test is abstract new Ada.Finalization.Controlled with null record;
+Test
+''''
 
 ::
 
     type Test is abstract new Ada.Finalization.Controlled with null record;
 
-A type, which provides the base for Test_Case and Test_Suite types.
+.. .. xada:type:: type Test is abstract new Ada.Finalization.Controlled with null record;
+
+   A type, which provides the base for Test_Case and Test_Suite types.
 
 Test_Class_Access
 '''''''''''''''''
@@ -108,7 +114,7 @@ Set_Up
 
    procedure Set_Up (T : in out Test);
 
-.. ada:procedure:: procedure Set_Up (T : in out Test);
+.. .. xada:procedure:: procedure Set_Up (T : in out Test);
 
    Set_Up is called before executing the test procedure.
 
@@ -130,7 +136,7 @@ Get_Name
 
    function Get_Name (T : Test) return String is abstract;
    
-.. ada:function:: function Get_Name (T : Test) return String is abstract;
+.. .. xada:function:: function Get_Name (T : Test) return String is abstract;
 
    Return the name of the test.
 
@@ -145,7 +151,7 @@ Run
                   Listener  : in out Listeners.Result_Listener'Class)
      is abstract;
    
-.. ada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class) is abstract;
+.. .. xada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class) is abstract;
 
    Run the test and place the test result to Result.
 
@@ -291,8 +297,8 @@ Add_Test_Routine
 
 Register a test routine to the Test_Case object.
 
-   
-.. ada:procedure:: procedure Add_Test_Routine (T : in out Test_Case'Class; Routine : Simple_Test_Routine_Access; Name : String);
+Add_Test_Routine
+''''''''''''''''
 
 ::
 
@@ -302,29 +308,30 @@ Register a test routine to the Test_Case object.
 
 Register a simple test routine to the Test_Case.
 
-Test_Suite
-''''''''''
-   
-.. ada:function:: function Create_Suite (Suite_Name : String) return Test_Suite_Access;
+Create_Suite
+''''''''''''
 
 ::
 
-   function Create_Suite (Suite_Name : String) return Test_Suite_Access;
+   function Create_Suite (Suite_Name : String)
+     return Test_Suite_Access;
 
 Create a new Test_Suite.
 Caller must free the returned Test_Suite using Release_Suite.
 
-.. ada:function:: function Create_Suite (Suite_Name : String) return Test_Suite;
+Create_Suite
+''''''''''''
 
 ::
 
-   function Create_Suite (Suite_Name : String) return Test_Suite;
+   function Create_Suite (Suite_Name : String)
+     return Test_Suite;
 
 Create a new Test_Suite. The suite and its children are
 released automatically.
 
-
-.. ada:procedure:: procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access);
+Add_Test
+''''''''
 
 ::
 
@@ -333,8 +340,18 @@ released automatically.
 Add a Test to the suite. The suite frees the Test automatically
 when it is no longer needed.
 
-   
-.. ada:procedure:: procedure Add_Static_Test (Suite : in out Test_Suite; T : Test'Class);
+Add_Test
+''''''''
+
+::
+
+   procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access);
+
+Add a Test suite to the suite. The suite frees the Test automatically
+when it is no longer needed.
+
+Add_Static_Test
+'''''''''''''''
 
 ::
 
@@ -344,7 +361,8 @@ when it is no longer needed.
 Add a Test to the suite. This procedure is meant for statically
 allocated Test_Case objects.
 
-.. ada:function:: function Get_Name (T : Test_Suite) return String;
+Get_Name
+''''''''
 
 ::
 
@@ -352,8 +370,8 @@ allocated Test_Case objects.
 
 Return the name of Test_Suite.
 
-
-.. ada:procedure:: procedure Run (T : in out Test_Suite; Listener : in out Listeners.Result_Listener'Class);
+Run
+'''
 
 ::
 
@@ -362,7 +380,8 @@ Return the name of Test_Suite.
 
 Run Test_Suite's Test_Cases.
 
-.. ada:procedure:: procedure Run (T : in out Test_Suite; Test_Name : String; Listener : in out Listeners.Result_Listener'Class);
+Run
+'''
 
 ::
 
@@ -372,7 +391,8 @@ Run Test_Suite's Test_Cases.
 
 Run test suite's child which matches to the given name.
 
-.. ada:function:: function Test_Count (T : Test_Suite) return Test_Count_Type;
+Test_Count
+''''''''''
 
 ::
 
@@ -380,8 +400,8 @@ Run test suite's child which matches to the given name.
 
 Implementation of Test_Count (T : Test).
 
-
-.. ada:function:: function Test_Count (T : Test_Suite; Test_Name : String) return Test_Count_Type;
+Test_Count
+''''''''''
 
 ::
 
@@ -390,8 +410,8 @@ Implementation of Test_Count (T : Test).
 
 Implementation of Test_Count (T : Test, Test_Name : String).
 
-   
-.. ada:procedure:: procedure Adjust (T : in out Test_Suite);
+Adjust
+''''''
 
 ::
 
@@ -400,8 +420,8 @@ Implementation of Test_Count (T : Test, Test_Name : String).
 Adjust procedure of Test_Suite.
 Handles the copying of the structure properly
 
-
-.. ada:procedure:: procedure Finalize (T : in out Test_Suite);
+Finalize
+''''''''
 
 ::
 
@@ -409,12 +429,12 @@ Handles the copying of the structure properly
 
 Finalize procedure of Test_Suite. Frees all added Tests.
 
-
-.. ada:procedure:: procedure Release_Suite (T : Test_Suite_Access);
+Release_Suite
+'''''''''''''
 
 ::
 
-    procedure Release_Suite (T : Test_Suite_Access);
+   procedure Release_Suite (T : Test_Suite_Access);
 
 Release the memory of Test_Suite.
 All added tests are released automatically.
