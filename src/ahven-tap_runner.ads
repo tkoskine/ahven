@@ -42,6 +42,9 @@ private
    procedure Add_Error (Listener : in out Tap_Listener;
                         Info     :        Context);
 
+   procedure Add_Skipped (Listener : in out Tap_Listener;
+                          Info     :        Context);
+
    procedure Start_Test (Listener : in out Tap_Listener;
                          Info     :        Context);
 

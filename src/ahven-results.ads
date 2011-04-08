@@ -107,6 +107,10 @@ package Ahven.Results is
                         Info       :        Result_Info);
    -- Add a test error to the collection.
 
+   procedure Add_Skipped (Collection : in out Result_Collection;
+                          Info       :        Result_Info);
+   -- Add a skipped test to the collection.
+
    procedure Add_Failure (Collection : in out Result_Collection;
                           Info       :        Result_Info);
    -- Add a test failure to the collection.
@@ -169,6 +173,10 @@ package Ahven.Results is
    function First_Failure (Collection : Result_Collection)
      return Result_Info_Cursor;
    -- Get the first failure from the collection.
+
+   function First_Skipped (Collection : Result_Collection)
+     return Result_Info_Cursor;
+   -- Get the first skipped test from the collection.
 
    function First_Error (Collection : Result_Collection)
      return Result_Info_Cursor;
@@ -245,6 +253,7 @@ private
       Passes    : Result_Info_List.List;
       Failures  : Result_Info_List.List;
       Errors    : Result_Info_List.List;
+      Skips     : Result_Info_List.List;
       Children  : Result_List.List;
       Parent    : Result_Collection_Access := null;
    end record;

@@ -27,6 +27,12 @@ package body Simple_Listener is
       Object.Failures := Object.Failures + 1;
    end Add_Failure;
 
+   procedure Add_Skipped (Object: in out Listener;
+                          Info : Ahven.Listeners.Context) is
+   begin
+      Object.Skips := Object.Skips + 1;
+   end Add_Skipped;
+
    procedure Add_Error (Object : in out Listener;
                         Info : Ahven.Listeners.Context) is
    begin

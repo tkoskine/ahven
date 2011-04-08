@@ -126,6 +126,12 @@ package body Ahven.Results is
       Append (Collection.Errors, Info);
    end Add_Error;
 
+   procedure Add_Skipped (Collection : in out Result_Collection;
+                          Info       :        Result_Info) is
+   begin
+      Append (Collection.Skips, Info);
+   end Add_Skipped;
+
    procedure Add_Failure (Collection : in out Result_Collection;
                           Info       :        Result_Info) is
    begin
@@ -307,6 +313,12 @@ package body Ahven.Results is
    begin
       return First (Collection.Failures);
    end First_Failure;
+
+   function First_Skipped (Collection : Result_Collection)
+     return Result_Info_Cursor is
+   begin
+      return First (Collection.Skips);
+   end First_Skipped;
 
    function First_Error (Collection : Result_Collection)
      return Result_Info_Cursor is

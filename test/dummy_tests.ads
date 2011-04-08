@@ -20,7 +20,9 @@ package Dummy_Tests is
    Dummy_Passes     : constant := 2;
    Dummy_Failures   : constant := 1;
    Dummy_Errors     : constant := 1;
-   Dummy_Test_Count : constant := Dummy_Passes + Dummy_Failures + Dummy_Errors;
+   Dummy_Skips      : constant := 1;
+   Dummy_Test_Count : constant := Dummy_Passes + Dummy_Failures + Dummy_Errors
+     + Dummy_Skips;
 
    type Test_State is (INITIALIZED, UP, DOWN, USED);
 
@@ -43,6 +45,8 @@ package Dummy_Tests is
    procedure This_Test_Passes;
 
    procedure This_Test_Raises_Error;
+
+   procedure This_Test_Is_Skipped;
 
    procedure This_Test_Uses_Object
      (T : in out Ahven.Framework.Test_Case'Class);

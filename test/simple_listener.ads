@@ -21,6 +21,7 @@ package Simple_Listener is
       Passes      : Natural := 0;
       Errors      : Natural := 0;
       Failures    : Natural := 0;
+      Skips       : Natural := 0;
       Level       : Integer := 0;
       Start_Calls : Natural := 0;
       End_Calls   : Natural := 0;
@@ -32,6 +33,9 @@ package Simple_Listener is
                        Info : Ahven.Listeners.Context);
 
    procedure Add_Failure (Object: in out Listener;
+                          Info : Ahven.Listeners.Context);
+
+   procedure Add_Skipped (Object: in out Listener;
                           Info : Ahven.Listeners.Context);
 
    procedure Add_Error (Object: in out Listener;

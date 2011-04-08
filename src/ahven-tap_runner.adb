@@ -169,6 +169,23 @@ package body Ahven.Tap_Runner is
       Report_Not_Ok (Listener, Info, "error");
    end Add_Error;
 
+   procedure Add_Skipped (Listener : in out Tap_Listener;
+                          Info     :        Context) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+   begin
+      if Listener.Capture_Output then
+         Temporary_Output.Restore_Output;
+         Temporary_Output.Close_Temp (Listener.Output_File);
+      end if;
+
+      Put ("ok ");
+      Put (Count_Image (Listener.Current_Test) & " ");
+      Put (To_String (Info.Test_Name) & ": " & To_String (Info.Routine_Name));
+      Put (" # SKIP " & To_String (Info.Message));
+      New_Line;
+   end Add_Skipped;
+
    procedure Start_Test (Listener : in out Tap_Listener;
                          Info     :        Context) is
    begin

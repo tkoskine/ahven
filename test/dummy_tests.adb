@@ -30,6 +30,7 @@ package body Dummy_Tests is
       Register (T, This_Test_Fails'Access, "Failure");
       Register (T, This_Test_Passes'Access, "Pass");
       Register (T, This_Test_Raises_Error'Access, "Error");
+      Register (T, This_Test_Is_Skipped'Access, "Skipped");
       Ahven.Framework.Add_Test_Routine
         (T, This_Test_Uses_Object'Access, "Object usage");
       T.State := INITIALIZED;
@@ -71,6 +72,11 @@ package body Dummy_Tests is
    begin
       raise Constraint_Error;
    end This_Test_Raises_Error;
+
+   procedure This_Test_Is_Skipped is
+   begin
+      Ahven.Skip ("skipped");
+   end This_Test_Is_Skipped;
 
    procedure This_Test_Uses_Object
      (T : in out Ahven.Framework.Test_Case'Class) is

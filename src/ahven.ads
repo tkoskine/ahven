@@ -21,6 +21,9 @@ package Ahven is
    Assertion_Error : exception;
    -- Exception, raised when Assert fails.
 
+   Test_Skipped_Error : exception;
+   -- Exception, raised when test is skipped
+
    procedure Assert (Condition : Boolean; Message : String);
    -- If Condition is false, Assert raises Assertion_Error
    -- with given Message.
@@ -36,4 +39,7 @@ package Ahven is
 
    procedure Fail (Message : String);
    -- Fail always raises Assertion_Error with given Message.
+
+   procedure Skip (Message : String);
+   -- Skip always raises Test_Skipped_Error with given Message.
 end Ahven;

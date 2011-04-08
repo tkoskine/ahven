@@ -24,7 +24,8 @@ pragma Elaborate_All (Ahven.Results);
 pragma Elaborate_All (Ahven.Temporary_Output);
 
 package Ahven.Listeners.Basic is
-   type Result_Type is (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT);
+   type Result_Type is
+     (NO_RESULT, PASS_RESULT, FAILURE_RESULT, ERROR_RESULT, SKIPPED_RESULT);
 
    type Basic_Listener is new Result_Listener with record
       Main_Result       : aliased Result_Collection;
@@ -43,6 +44,10 @@ package Ahven.Listeners.Basic is
    procedure Add_Failure (Listener : in out Basic_Listener;
                           Info     :        Context);
    -- New implementation for Listeners.Add_Failure
+
+   procedure Add_Skipped (Listener : in out Basic_Listener;
+                          Info     :        Context);
+   -- New implementation for Listeners.Add_Skipped
 
    procedure Add_Error (Listener : in out Basic_Listener;
                         Info     :        Context);

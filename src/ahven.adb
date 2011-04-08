@@ -40,4 +40,10 @@ package body Ahven is
       Ada.Exceptions.Raise_Exception (Assertion_Error'Identity, Message);
    end Fail;
 
+   procedure Skip (Message : String) is
+   begin
+      Ada.Exceptions.Raise_Exception (Test_Skipped_Error'Identity, Message);
+   end Skip;
+
+
 end Ahven;

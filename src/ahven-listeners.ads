@@ -52,6 +52,10 @@ package Ahven.Listeners is
                           Info     :        Context) is abstract;
    -- Called after test fails.
 
+   procedure Add_Skipped (Listener : in out Result_Listener;
+                          Info     :        Context);
+   -- Called when user wants to skip the test.
+
    procedure Add_Error (Listener : in out Result_Listener;
                         Info     :        Context) is abstract;
    -- Called after there is an error in the test.

@@ -28,6 +28,9 @@ package body Static_Test_Case_Tests is
    My_Test : Dummy_Tests.Test;
    Child   : Test_Suite := Create_Suite ("Child suite");
 
+   procedure Assert_Eq_Nat is
+     new Ahven.Assert_Equal (Data_Type => Natural, Image => Natural'Image);
+
    procedure Initialize (T : in out Test) is
    begin
       Set_Name (T, "Ahven.Framework.Static");
@@ -48,12 +51,10 @@ package body Static_Test_Case_Tests is
 
       Run (My_Suite, My_Listener);
 
-      Assert
-        (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
-      Assert
-        (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
-      Assert
-        (My_Listener.Failures = Dummy_Failures, "Invalid amount of failures.");
+      Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "passes");
+
+      Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "errors");
+      Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "failures");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
       Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 1),
               "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));

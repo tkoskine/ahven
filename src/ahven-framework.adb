@@ -150,6 +150,18 @@ package body Ahven.Framework is
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right),
              Long_Message => Null_Bounded_String));
+      when E : Test_Skipped_Error =>
+         Listeners.Add_Skipped
+           (Listener,
+            (Phase        => TEST_RUN,
+             Test_Name    => Info.Test_Name,
+             Test_Kind    => CONTAINER,
+             Routine_Name => Info.Routine_Name,
+             Message      =>
+               To_Bounded_String
+                 (Source => Ada.Exceptions.Exception_Message (E),
+                  Drop   => Ada.Strings.Right),
+             Long_Message => Null_Bounded_String));
       when E : others =>
          -- Did the exception come from the test (Passed = False) or
          -- from the library routines (Passed = True)?

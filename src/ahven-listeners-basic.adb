@@ -52,6 +52,12 @@ package body Ahven.Listeners.Basic is
       Set_Last_Test_Info (Listener, Info, FAILURE_RESULT);
    end Add_Failure;
 
+   procedure Add_Skipped (Listener : in out Basic_Listener;
+                         Info     :        Context) is
+   begin
+      Set_Last_Test_Info (Listener, Info, SKIPPED_RESULT);
+   end Add_Skipped;
+
    procedure Add_Error (Listener : in out Basic_Listener;
                         Info     :        Context) is
    begin
@@ -125,6 +131,8 @@ package body Ahven.Listeners.Basic is
                   Add_Failure (Collection, My_Info);
                when ERROR_RESULT | NO_RESULT =>
                   Add_Error (Collection, My_Info);
+               when SKIPPED_RESULT =>
+                  Add_Skipped (Collection, My_Info);
             end case;
             Listener.Last_Test_Result := NO_RESULT;
          else
@@ -185,6 +193,7 @@ package body Ahven.Listeners.Basic is
       Remove_Loop (First_Pass (Collection));
       Remove_Loop (First_Failure (Collection));
       Remove_Loop (First_Error (Collection));
+      Remove_Loop (First_Skipped (Collection));
 
       Child_Iter := First_Child (Collection);
       Child_Loop:
