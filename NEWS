@@ -6,7 +6,7 @@ Changes
 	* Manual was added to 'doc/manual/en' directory. It includes
           User's Guide section and API documentation. The documentation
           is written using reStructuredText and Sphinx 1.0, so Python
-          and py-sphinx is required for building. API documentation
+          and py-sphinx are required for building. API documentation
           generation via Adabrowse is still supported, but it will be
           deprecated and dropped later.
 
@@ -21,6 +21,12 @@ Internal
 	* Package Ahven.VStrings was replaced with an instantiation of
 	  Ada.Strings.Bounded.Generic_Bounded_Length. This allowed us to
 	  remove over 100 lines of code.
+
+Known issues
+------------
+	* Ahven (or actually file ahven-parameters.adb) cannot be compiled
+	  on Fedora 14 with gcc 4.5.1. See bug
+          https://bugzilla.redhat.com/show_bug.cgi?id=690610 for details.
 
 2010-06-02 Ahven 1.8
 ====================
