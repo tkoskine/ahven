@@ -17,6 +17,7 @@
 PREFIX?=$(HOME)/libraries/ahven
 INSTALL=install
 OS_VERSION?=unix
+LIBDIR?=$(PREFIX)/lib
 
 SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-listeners-basic.adb src/ahven-listeners-basic.ads \
@@ -85,16 +86,20 @@ clean_docs:
 distclean:
 	rm -rf lib objects results test_objects tester tap_tester
 
-install: install_lib
+install: install_lib install_docs
 
 install_lib:
 	mkdir -p $(PREFIX)/include/ahven
-	mkdir -p $(PREFIX)/lib/ahven
+	mkdir -p $(LIBDIR)/ahven
 	mkdir -p $(PREFIX)/lib/gnat
 	$(INSTALL) -m 644 $(SOURCES) $(PREFIX)/include/ahven
-	$(INSTALL) -m 444 $(ALI_FILES) $(PREFIX)/lib/ahven
-	$(INSTALL) -m 644 lib/$(STATIC_LIBRARY) $(PREFIX)/lib/ahven
+	$(INSTALL) -m 444 $(ALI_FILES) $(LIBDIR)/ahven
+	$(INSTALL) -m 644 lib/$(STATIC_LIBRARY) $(LIBDIR)/ahven
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
+
+install_docs:
+	mkdir -p $(PREFIX)/share/doc/ahven
+	cp -r doc/manual/en/build/html $(PREFIX)/share/doc/ahven
 
 check: build_tests
 	./tester -c
@@ -114,6 +119,9 @@ control:
 docs: ahven.specs
 	mkdir -p doc/api
 	adabrowse -c adabrowse.conf -i -f@ahven.specs -o doc/api/
+
+userguide:
+	$(MAKE) -C doc/manual/en html
 
 ahven.specs: $(SOURCES)
 	find src/ -name "*.ads" -print |sort|uniq > ahven.specs

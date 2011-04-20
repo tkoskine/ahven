@@ -18,10 +18,10 @@
 # ./make_release <version>
 #
 # For example
-# ./make_release /tags/ahven_1_0 1.0
+# ./make_release 1.0
 #
 
-HGROOT=http://bitbucket.org/tkoskine/ahven
+HGROOT=https://bitbucket.org/tkoskine/ahven
 
 failure()
 {
@@ -39,6 +39,7 @@ VERSION=$1
 cd /tmp || failure "cd /tmp failed"
 hg clone $HGROOT ahven-$VERSION || failure "checkout failed"
 cd ahven-$VERSION && rm -rf .hg .hgignore .hgtags && cd .. || failure "rm failed"
+cd ahven-$VERSION && cd doc/manual/en && make html && cd /tmp || failure "docs failed"
 tar zcf ahven-$VERSION.tar.gz ahven-$VERSION || failure "tar zcf failed"
 zip -r ahven-$VERSION.zip ahven-$VERSION || failure "zip -r failed"
 
