@@ -25,13 +25,15 @@ package body Ahven.Parameters is
    --  -c : capture output
    --  -d : result directory
    --  -q : quiet mode
+   --  -t : timeout
    --  -v : verbose mode (default)
    --  -x : XML output
    --
    procedure Parse_Options (Info     : in out Parameter_Info;
                             Mode     :        Parameter_Mode;
                             Option   :        String;
-                            Dir_Next :    out Boolean) is
+                            Dir_Next :    out Boolean;
+                            Timeout_Next : out Boolean) is
       procedure Check_Invalid (C : Character) is
       begin
          case Mode is
@@ -47,6 +49,7 @@ package body Ahven.Parameters is
       end Check_Invalid;
    begin
       Dir_Next := False;
+      Timeout_Next := False;
       for A in Option'Range loop
          Check_Invalid (Option (A));
          case Option (A) is
@@ -54,6 +57,8 @@ package body Ahven.Parameters is
                Info.Capture_Output := True;
             when 'd' =>
                Dir_Next := True;
+            when 't' =>
+               Timeout_Next := True;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
@@ -78,6 +83,7 @@ package body Ahven.Parameters is
 
       Files_Only : Boolean := False;
       Dir_Next   : Boolean := False;
+      Timeout_Next : Boolean := False;
 
       procedure Handle_Parameter (P     : in out Parameter_Info;
                                   Arg   :        String;
@@ -87,6 +93,9 @@ package body Ahven.Parameters is
          if Dir_Next then
             P.Result_Dir := Index;
             Dir_Next := False;
+         elsif Timeout_Next then
+            P.Timeout := Framework.Test_Duration'Value (Arg);
+            Timeout_Next := False;
          elsif Arg = "--" then
             Files_Only := True;
          elsif Arg'Size > 1 then
@@ -95,7 +104,8 @@ package body Ahven.Parameters is
                  (Info => P,
                   Mode => Mode,
                   Option => Arg (Arg'First + 1 .. Arg'Last),
-                  Dir_Next => Dir_Next);
+                  Dir_Next => Dir_Next,
+                  Timeout_Next => Timeout_Next);
             else
                P.Test_Name := Index;
             end if;
@@ -107,7 +117,8 @@ package body Ahven.Parameters is
                Xml_Output     => False,
                Capture_Output => False,
                Test_Name      => 0,
-               Result_Dir     => 0);
+               Result_Dir     => 0,
+               Timeout        => 0.0);
       for A in Positive range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A), A);
       end loop;
@@ -129,6 +140,7 @@ package body Ahven.Parameters is
       end case;
       Put_Line ("   -c    : capture and report test outputs");
       Put_Line ("   -q    : quiet results");
+      Put_Line ("   -t    : test timeout, infinite default");
       Put_Line ("   -v    : verbose results (default)");
       Put_Line ("   --    : end of parameters (optional)");
    end Usage;
@@ -170,4 +182,9 @@ package body Ahven.Parameters is
          return Argument (Info.Result_Dir);
       end if;
    end Result_Dir;
+
+   function Timeout (Info : Parameter_Info) return Framework.Test_Duration is
+   begin
+      return Info.Timeout;
+   end Timeout;
 end Ahven.Parameters;

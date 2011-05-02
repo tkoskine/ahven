@@ -26,6 +26,10 @@ pragma Elaborate_All (Ahven.SList);
 
 package Ahven.Framework is
 
+   Three_Hours : constant := 10800.0;
+
+   subtype Test_Duration is Duration range 0.0 .. Three_Hours;
+
    type Test_Count_Type is new Natural;
    -- Type for the test count. This effectively
    -- limits the amount tests to whatever Natural is.
@@ -66,18 +70,35 @@ package Ahven.Framework is
    -- this procedure.
 
    procedure Run (T         : in out Test;
-                  Listener  : in out Listeners.Result_Listener'Class)
+                  Listener  : in out Listeners.Result_Listener'Class);
+   -- Run the test and place the test result to Result.
+   --
+   -- Calls Run (T, Listener, Timeout) with Timeout value 0.0.
+
+   procedure Run (T         : in out Test;
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration)
      is abstract;
    -- Run the test and place the test result to Result.
+   -- Timeout specifies the maximum runtime for a single test.
    --
    -- Types derived from the Test type are required to overwrite
    -- this procedure.
 
    procedure Run (T         : in out Test;
                   Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class)
+                  Listener  : in out Listeners.Result_Listener'Class);
+   -- Run the test and place the test result to Result.
+   --
+   -- Calls Run (T, Test_Name, Listener, Timeout) with Timeout value 0.0.
+
+   procedure Run (T         : in out Test;
+                  Test_Name :        String;
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration)
      is abstract;
    -- Run the test with given name and place the test result to Result.
+   -- Timeout specifies the maximum runtime for a single test.
    -- Notice: If multiple tests have same name this might call all of
    -- them.
    --
@@ -94,7 +115,8 @@ package Ahven.Framework is
    -- the Run (T, Test_Name) procedure is called.
 
    procedure Execute (T        : in out Test'Class;
-                      Listener : in out Listeners.Result_Listener'Class);
+                      Listener : in out Listeners.Result_Listener'Class;
+                      Timeout  :        Test_Duration);
    -- Call Test class' Run method and place the test outcome to Result.
    -- The procedure calls Start_Test of every listener before calling
    -- the Run procedure and End_Test after calling the Run procedure.
@@ -104,7 +126,8 @@ package Ahven.Framework is
 
    procedure Execute (T         : in out Test'Class;
                       Test_Name :        String;
-                      Listener  : in out Listeners.Result_Listener'Class);
+                      Listener  : in out Listeners.Result_Listener'Class;
+                      Timeout   :        Test_Duration);
    -- Same as Execute above, but call the Run procedure which
    -- takes Test_Name parameter.
 
@@ -115,12 +138,14 @@ package Ahven.Framework is
    -- Return the name of the test case.
 
    procedure Run (T        : in out Test_Case;
-                  Listener : in out Listeners.Result_Listener'Class);
+                  Listener : in out Listeners.Result_Listener'Class;
+                  Timeout  :        Test_Duration);
    -- Run Test_Case's test routines.
 
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class);
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration);
    -- Run Test_Case's test routine which matches to the Name.
 
    function Test_Count (T : Test_Case) return Test_Count_Type;
@@ -211,12 +236,14 @@ package Ahven.Framework is
    -- Return the name of Test_Suite.
 
    procedure Run (T      : in out Test_Suite;
-                  Listener  : in out Listeners.Result_Listener'Class);
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration);
    -- Run Test_Suite's Test_Cases.
 
    procedure Run (T         : in out Test_Suite;
                   Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class);
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration);
    -- Run test suite's child which matches to the given name.
 
    function Test_Count (T : Test_Suite) return Test_Count_Type;
@@ -267,10 +294,14 @@ private
 
    procedure Run_Command (Command  :        Test_Command;
                           Info     :        Listeners.Context;
+                          Timeout  :        Test_Duration;
                           Listener : in out Listeners.Result_Listener'Class;
                           T        : in out Test_Case'Class);
    -- Handle dispatching to the right Run (Command : Test_Command)
    -- procedure and record test routine result to the Result object.
+   --
+   -- Timeout parameter defines the longest time the test is allowed
+   -- to run. Value 0.0 means infinite time.
 
    type Test_Class_Wrapper is record
       Ptr : Test_Class_Access;
