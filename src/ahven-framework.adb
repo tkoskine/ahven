@@ -238,7 +238,7 @@ package body Ahven.Framework is
       end Command_Task;
 
       Command_Runner : Command_Task;
-      
+
       Status : Test_Status;
 
    begin
@@ -255,7 +255,7 @@ package body Ahven.Framework is
          Command_Runner.End_Command;
       end if;
       Status := Result.Get_Status;
-      
+
       case Status is
          when Test_Pass =>
             Listeners.Add_Pass (Listener, Info);
