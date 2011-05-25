@@ -1,3 +1,25 @@
+2011-??-?? Ahven 2.0
+====================
+
+Changes
+-------
+	* Tests can be now given a timeout value. If a test is not
+	  executed in the given time, it is stopped and a timeout
+          failure is reported. See '-t' option of the test runners.
+
+	* A test can be now skipped programmatically by calling
+	  procedure Skip("Message"). A skipped test are considered
+	  to be equal to passed tests, but depending on the test
+	  runner, they can have extra "SKIP" information attached.
+
+Bugs fixed
+----------
+	* TODO
+
+Internal
+--------
+	* TODO
+
 2011-04-19 Ahven 1.9
 ====================
 
