@@ -72,3 +72,15 @@ Fail
 
 Fail always raises Assertion_Error with given Message.
 
+.. _ahven-skip:
+
+Skip
+''''
+
+.. versionadded:: 2.0
+
+::
+
+    procedure Skip (Message : String);
+
+Skip always raises Test_Skipped_Error with given Message.
