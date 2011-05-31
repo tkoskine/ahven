@@ -25,6 +25,16 @@ limits the amount tests to whatever Natural is.
 Although, in practice when adding tests the limit
 is not checked.
 
+Test_Duration
+'''''''''''''
+
+::
+
+     subtype Test_Duration is Duration range 0.0 .. Three_Hours;
+
+Subtype for the test timeouts. Limited to 3 hours, which
+should be enough for unit tests. Timeout value 0.0 means infinite time.
+
 
 Test
 ''''
@@ -147,18 +157,34 @@ Run
 
 ::
 
-   procedure Run (T : in out Test;
-                  Listener  : in out Listeners.Result_Listener'Class)
+   procedure Run (T         : in out Test;
+                  Listener  : in out Listeners.Result_Listener'Class);
+   
+.. .. xada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class);
+
+   Run the test and place the test result to Result. Infinite timeout.
+
+   :param T: The test object to run.
+   :param Listener: The listener which will be called during the test execution.
+
+Run
+'''
+
+::
+
+   procedure Run (T         : in out Test;
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration)
      is abstract;
    
-.. .. xada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class) is abstract;
+.. .. xada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class);
 
    Run the test and place the test result to Result.
 
    :param T: The test object to run.
    :param Listener: The listener which will be called during the test execution.
+   :param Timeout: Time limit for the test.
 
-   
 
 Run
 '''
@@ -167,12 +193,34 @@ Run
 
    procedure Run (T         : in out Test;
                   Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class)
-     is abstract;
+                  Listener  : in out Listeners.Result_Listener'Class);
 
 Run the test with given name and place the test result to Result.
 Notice: If multiple tests have same name this might call all of
 them.
+
+
+Run
+'''
+
+::
+
+   procedure Run (T         : in out Test;
+                  Test_Name :        String;
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration)
+     is abstract;
+
+Run the test with given name and place the test result to Result.
+Notice: If multiple tests have same name this might call all of
+them. Timeout specifies maximum execution time for the tests.
+
+
+   :param T: The test object to run.
+   :param Test_Name: The name of the test which will be run.
+   :param Listener: The listener which will be called during the test execution.
+   :param Timeout: Time limit for the test.
+
 
 Test_Count
 ''''''''''
@@ -212,12 +260,42 @@ Execute
 
 ::
 
+   procedure Execute (T        : in out Test'Class;
+                      Listener : in out Listeners.Result_Listener'Class;
+                      Timeout  :        Test_Duration);
+
+Call Test class' Run method and place the test outcome to Result.
+The procedure calls Start_Test of every listener before calling
+the Run procedure and End_Test after calling the Run procedure.
+Timeout specifies the maximum execution time for a test.
+
+
+Execute
+'''''''
+
+::
+
    procedure Execute (T         : in out Test'Class;
                       Test_Name :        String;
                       Listener  : in out Listeners.Result_Listener'Class);
 
 Same as Execute above, but call the Run procedure which
 takes Test_Name parameter.
+
+Execute
+'''''''
+
+::
+
+   procedure Execute (T         : in out Test'Class;
+                      Test_Name :        String;
+                      Listener  : in out Listeners.Result_Listener'Class;
+                      Timeout  :        Test_Duration);
+
+Same as Execute above, but call the Run procedure which
+takes Test_Name parameter. Timeout specifies the maximum execution
+time for a test.
+
 
 Get_Name
 ''''''''
@@ -243,11 +321,36 @@ Run
 
 ::
 
+   procedure Run (T        : in out Test_Case;
+                  Listener : in out Listeners.Result_Listener'Class;
+                  Timeout  :        Test_Duration);
+
+Run Test_Case's test routines with timeout value.
+
+
+Run
+'''
+
+::
+
    procedure Run (T         : in out Test_Case;
                   Test_Name :        String;
                   Listener  : in out Listeners.Result_Listener'Class);
 
 Run Test_Case's test routine which matches to the Name.
+
+Run
+'''
+
+::
+
+   procedure Run (T         : in out Test_Case;
+                  Test_Name :        String;
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout   :        Test_Duration);
+
+Run Test_Case's test routine which matches to the Name, with timeout value.
+
 
 Test_Count
 ''''''''''
@@ -375,10 +478,22 @@ Run
 
 ::
 
-   procedure Run (T      : in out Test_Suite;
-                  Listener  : in out Listeners.Result_Listener'Class);
+   procedure Run (T        : in out Test_Suite;
+                  Listener : in out Listeners.Result_Listener'Class);
 
 Run Test_Suite's Test_Cases.
+
+Run
+'''
+
+::
+
+   procedure Run (T        : in out Test_Suite;
+                  Listener : in out Listeners.Result_Listener'Class;
+                  Timeout  :        Test_Duration);
+
+Run Test_Suite's Test_Cases with timeout value.
+
 
 Run
 '''
@@ -390,6 +505,19 @@ Run
                   Listener  : in out Listeners.Result_Listener'Class);
 
 Run test suite's child which matches to the given name.
+
+Run
+'''
+
+::
+
+   procedure Run (T         : in out Test_Suite;
+                  Test_Name :        String;
+                  Listener  : in out Listeners.Result_Listener'Class;
+                  Timeout  :        Test_Duration);
+
+Run test suite's child which matches to the given name, with timeout value.
+
 
 Test_Count
 ''''''''''
