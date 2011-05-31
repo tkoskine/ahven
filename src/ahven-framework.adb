@@ -105,7 +105,10 @@ package body Ahven.Framework is
                       Timeout     :        Test_Duration) is
       procedure Run_Impl is
       begin
-         Run (T, Test_Name, Listener, Timeout);
+         Run (T         => T,
+              Test_Name => Test_Name,
+              Listener  => Listener,
+              Timeout   => Timeout);
       end Run_Impl;
 
       procedure Execute_Impl is new Execute_Internal (Action => Run_Impl);
@@ -151,7 +154,7 @@ package body Ahven.Framework is
                           T        : in out Test_Case'Class) is
       use Ahven.Listeners;
       type Test_Status is
-        (Test_Pass, Test_Fail, Test_Error, Test_Timeout, Test_Skip);
+        (TEST_PASS, TEST_FAIL, TEST_ERROR, TEST_TIMEOUT, TEST_SKIP);
 
       protected type Test_Results is
          function Get_Status return Test_Status;
@@ -212,20 +215,20 @@ package body Ahven.Framework is
          accept Start_Command;
          begin
             Run (Command, T);
-            Result.Set_Status (Test_Pass);
+            Result.Set_Status (TEST_PASS);
          exception
             when E : Assertion_Error =>
-               Result.Set_Status (Test_Fail);
+               Result.Set_Status (TEST_FAIL);
                Result.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right));
             when E : Test_Skipped_Error =>
-               Result.Set_Status (Test_Skip);
+               Result.Set_Status (TEST_SKIP);
                Result.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right));
             when E : others =>
-               Result.Set_Status (Test_Error);
+               Result.Set_Status (TEST_ERROR);
                Result.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Name (E),
                   Drop   => Ada.Strings.Right));
@@ -257,9 +260,9 @@ package body Ahven.Framework is
       Status := Result.Get_Status;
 
       case Status is
-         when Test_Pass =>
+         when TEST_PASS =>
             Listeners.Add_Pass (Listener, Info);
-         when Test_Fail =>
+         when TEST_FAIL =>
             Listeners.Add_Failure
               (Listener,
                (Phase        => TEST_RUN,
@@ -268,7 +271,7 @@ package body Ahven.Framework is
                 Routine_Name => Info.Routine_Name,
                 Message      => Result.Get_Message,
                 Long_Message => Null_Bounded_String));
-         when Test_Error =>
+         when TEST_ERROR =>
             Listeners.Add_Error
               (Listener,
                (Phase        => Listeners.TEST_RUN,
@@ -277,7 +280,7 @@ package body Ahven.Framework is
                 Routine_Name => Info.Routine_Name,
                 Message      => Result.Get_Message,
                 Long_Message => Result.Get_Long_Message));
-         when Test_Timeout =>
+         when TEST_TIMEOUT =>
             Listeners.Add_Error
               (Listener,
                (Phase        => Listeners.TEST_RUN,
@@ -286,7 +289,7 @@ package body Ahven.Framework is
                 Routine_Name => Info.Routine_Name,
                 Message      => To_Bounded_String ("TIMEOUT"),
                 Long_Message => Null_Bounded_String));
-         when Test_Skip =>
+         when TEST_SKIP =>
             Listeners.Add_Skipped
               (Listener,
                (Phase        => TEST_RUN,
@@ -506,9 +509,12 @@ package body Ahven.Framework is
       procedure Execute_Test (Current : in out Test'Class) is
       begin
          if Get_Name (Current) = Test_Name then
-            Execute (Current, Listener, Timeout);
+            Execute (T => Current, Listener => Listener, Timeout => Timeout);
          else
-            Execute (Current, Test_Name, Listener, Timeout);
+            Execute (T         => Current,
+                     Test_Name => Test_Name,
+                     Listener  => Listener,
+                     Timeout   => Timeout);
          end if;
       end Execute_Test;
 

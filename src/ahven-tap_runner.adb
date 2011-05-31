@@ -61,10 +61,10 @@ package body Ahven.Tap_Runner is
          Put_Line ("1.." & Count_Image (Test_Count
            (Suite, Parameters.Test_Name (Params))));
          Framework.Execute
-           (Suite,
-            Parameters.Test_Name (Params),
-            Listener,
-            Parameters.Timeout (Params));
+           (T         => Suite,
+            Test_Name => Parameters.Test_Name (Params),
+            Listener  => Listener,
+            Timeout   => Parameters.Timeout (Params));
       else
          Put_Line ("1.." & Count_Image (Test_Count (Suite)));
          Framework.Execute (Suite, Listener, Parameters.Timeout (Params));

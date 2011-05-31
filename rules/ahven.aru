@@ -32,7 +32,6 @@ check Multiple_Assignments (repeated);
 check entities (Ada.Strings.Unbounded.Unbounded_String);
 
 check declarations (integer_type);
-check declarations (task);
 check declarations (multiple_names);
 
 -- Renamed function calls are forbidden since
