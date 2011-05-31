@@ -22,4 +22,5 @@ src\libmain.adb
 *.swp
 *.bak
 *.exe
-
+doc/manual/en/build
+*.metrix
