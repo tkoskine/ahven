@@ -126,5 +126,8 @@ userguide:
 ahven.specs: $(SOURCES)
 	find src/ -name "*.ads" -print |sort|uniq > ahven.specs
 
+README.html: README.rst
+	rst2html --stylesheet-path=css/html4css1.css,css/my-docutils.css README.rst > README.html
+
 tags: $(SOURCES)
 	ectags src/*.adb
