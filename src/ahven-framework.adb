@@ -210,9 +210,8 @@ package body Ahven.Framework is
          entry End_Command;
       end Command_Task;
 
-      task body Command_Task is
+      procedure Run_A_Command is
       begin
-         accept Start_Command;
          begin
             Run (Command, T);
             Result.Set_Status (TEST_PASS);
@@ -236,26 +235,35 @@ package body Ahven.Framework is
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right));
          end;
+      end Run_A_Command;
 
+      task body Command_Task is
+      begin
+         accept Start_Command;
+         Run_A_Command;
          accept End_Command;
       end Command_Task;
 
-      Command_Runner : Command_Task;
+      
 
       Status : Test_Status;
 
    begin
-      Command_Runner.Start_Command;
       if Timeout > 0.0 then
-         select
-            Command_Runner.End_Command;
-         or
-            delay Duration (Timeout);
-            abort Command_Runner;
-            Result.Set_Status (Test_Timeout);
-         end select;
+         declare
+            Command_Runner : Command_Task;
+         begin
+            Command_Runner.Start_Command;
+            select
+               Command_Runner.End_Command;
+            or
+               delay Duration (Timeout);
+               abort Command_Runner;
+               Result.Set_Status (Test_Timeout);
+            end select;
+         end;
       else
-         Command_Runner.End_Command;
+         Run_A_Command;
       end if;
       Status := Result.Get_Status;
 
