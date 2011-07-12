@@ -244,8 +244,6 @@ package body Ahven.Framework is
          accept End_Command;
       end Command_Task;
 
-      
-
       Status : Test_Status;
 
    begin
