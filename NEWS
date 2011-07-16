@@ -12,6 +12,9 @@ Changes
 	  to be equal to passed tests, but depending on the test
 	  runner, they can have extra "SKIP" information attached.
 
+	* README is now provided in reStructured text format,
+	  just like the manual.
+
 Bugs fixed
 ----------
 	* TODO
