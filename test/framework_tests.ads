@@ -35,6 +35,10 @@ private
 
    procedure Test_Test_Case_Run;
 
+   procedure Test_Test_Case_Run_1s_Timeout;
+
+   procedure Test_Test_Case_Run_Break_Infinite_Loop;
+
    procedure Test_Test_Case_Test_Count;
 
    procedure Test_Test_Case_Truncate_Name;
