@@ -51,7 +51,12 @@ package Dummy_Tests is
    procedure This_Test_Uses_Object
      (T : in out Ahven.Framework.Test_Case'Class);
 
+   procedure This_Test_Takes_12_Seconds;
+
+   procedure This_Test_Has_Infinite_Loop;
+
    function Get_Instance_Count return Integer;
 
    procedure Reset_Instance_Count;
+
 end Dummy_Tests;

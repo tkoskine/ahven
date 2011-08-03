@@ -84,6 +84,19 @@ package body Dummy_Tests is
       Test (T).State := USED;
    end This_Test_Uses_Object;
 
+   procedure This_Test_Takes_12_Seconds is
+   begin
+      delay 12.0;
+   end This_Test_Takes_12_Seconds;
+
+   procedure This_Test_Has_Infinite_Loop is
+      A : Integer := 0;
+   begin
+      loop
+         A := 1;
+      end loop;
+   end This_Test_Has_Infinite_Loop;
+
    function Get_Instance_Count return Integer is
    begin
       return Instance_Count;

@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Calendar;
 with Ada.Unchecked_Deallocation;
 with Simple_Listener;
 with Dummy_Tests;
@@ -50,6 +51,10 @@ package body Framework_Tests is
                                   "Test_Case: Tear_Down");
       Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
+      Add_Test_Routine (T, Test_Test_Case_Run_1s_Timeout'Access,
+                                  "Test_Case: 1s Timeout");
+      Add_Test_Routine (T, Test_Test_Case_Run_Break_Infinite_Loop'Access,
+                                  "Test_Case: Break infinite loop");
       Add_Test_Routine (T, Test_Test_Case_Test_Count'Access,
                                   "Test_Case: Test_Count");
       Add_Test_Routine (T, Test_Test_Case_Truncate_Name'Access,
@@ -117,6 +122,53 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Test_Case_Run;
+
+   procedure Test_Test_Case_Run_1s_Timeout is
+      use Dummy_Tests;
+      use Ahven.Framework;
+      use type Ada.Calendar.Time;
+
+      My_Test : Dummy_Tests.Test;
+      My_Listener : Simple_Listener.Listener;
+      Before : Ada.Calendar.Time;
+      After : Ada.Calendar.Time;
+   begin
+      Add_Test_Routine
+         (My_Test, Dummy_Tests.This_Test_Takes_12_Seconds'Access,
+           "Takes 12 seconds");
+      Before := Ada.Calendar.Clock;
+      Ahven.Framework.Run (Ahven.Framework.Test_Case (My_Test),
+        My_Listener, 1.0);
+      After := Ada.Calendar.Clock;
+
+      -- Timing might not be 100% accurate, so measuring
+      -- less than 2.0 seconds should give us accetable result
+      Assert (After - Before < 2.0, "Test took too long");
+   end Test_Test_Case_Run_1s_Timeout;
+
+   procedure Test_Test_Case_Run_Break_Infinite_Loop is
+      use Dummy_Tests;
+      use Ahven.Framework;
+      use type Ada.Calendar.Time;
+
+      My_Test : Dummy_Tests.Test;
+      My_Listener : Simple_Listener.Listener;
+      Before : Ada.Calendar.Time;
+      After : Ada.Calendar.Time;
+   begin
+      Skip ("Does not work with GNAT on Linux");
+      Add_Test_Routine
+         (My_Test, Dummy_Tests.This_Test_Has_Infinite_Loop'Access,
+           "Has infinite loop");
+      Before := Ada.Calendar.Clock;
+      Ahven.Framework.Run (Ahven.Framework.Test_Case (My_Test),
+        My_Listener, 0.2);
+      After := Ada.Calendar.Clock;
+
+      -- Timing might not be 100% accurate, so measuring
+      -- less than 1.0 seconds should give us accetable result
+      Assert (After - Before < 1.0, "Test took too long");
+   end Test_Test_Case_Run_Break_Infinite_Loop;
 
    procedure Test_Test_Case_Test_Count is
       use type Framework.Test_Count_Type;
