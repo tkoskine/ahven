@@ -24,7 +24,6 @@ package body Static_Test_Case_Tests is
    use Ahven.Framework;
 
    --## rule off DIRECTLY_ACCESSED_GLOBALS
-   --## rule off Removable
    My_Test : Dummy_Tests.Test;
    Child   : Test_Suite := Create_Suite ("Child suite");
 
@@ -56,8 +55,8 @@ package body Static_Test_Case_Tests is
       Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "errors");
       Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "failures");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 1),
-              "Start_Test calls: " & Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Start_Calls, (Dummy_Test_Count + 1),
+              "Start_Test calls");
    end Test_Test_Suite_Run;
 
    procedure Test_Test_Suite_Inside_Suite is
@@ -72,15 +71,11 @@ package body Static_Test_Case_Tests is
 
       Framework.Run (Parent, My_Listener);
 
-      Assert
-        (My_Listener.Passes = Dummy_Passes, "Invalid amount of passes.");
-      Assert
-        (My_Listener.Errors = Dummy_Errors, "Invalid amount of errors.");
-      Assert
-        (My_Listener.Failures = Dummy_Failures, "Invalid amount of failures.");
+      Assert_Eq_Nat (My_Listener.Passes, Dummy_Passes, "passes");
+      Assert_Eq_Nat (My_Listener.Errors, Dummy_Errors, "errors");
+      Assert_Eq_Nat (My_Listener.Failures, Dummy_Failures, "failures");
       Assert (My_Listener.Level = 0, "Start_Test /= End_Test");
-      Assert (My_Listener.Start_Calls = (Dummy_Test_Count + 2),
-              "Start_Test calls: " &
-              Integer'Image (My_Listener.Start_Calls));
+      Assert_Eq_Nat (My_Listener.Start_Calls, (Dummy_Test_Count + 2),
+              "Start_Test calls");
    end Test_Test_Suite_Inside_Suite;
 end Static_Test_Case_Tests;
