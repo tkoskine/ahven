@@ -9,6 +9,7 @@ Contents:
 
    manual.rst
    api.rst
+   design.rst
 
 Indices and tables
 ==================
