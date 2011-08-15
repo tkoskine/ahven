@@ -131,14 +131,14 @@ Irvine ICCAda
 
 Easiest way to build Ahven with ICCAda is to use *icm* utility::
 
-    C:\ahven-1.8>cd src
-    C:\ahven-1.8\src>icm new
-    C:\ahven-1.8\src>icm scan *.ad? windows\*.ad?
-    C:\ahven-1.8\src>icm make libmain
-    C:\ahven-1.8\src>cd ..\test
-    C:\ahven-1.8\test>icm new -search=..\src
-    C:\ahven-1.8\test>icm scan *.ad?
-    C:\ahven-1.8\test>icm make tester
+    C:\ahven-2.0>cd src
+    C:\ahven-2.0\src>icm new
+    C:\ahven-2.0\src>icm scan *.ad? windows\*.ad?
+    C:\ahven-2.0\src>icm make libmain
+    C:\ahven-2.0\src>cd ..\test
+    C:\ahven-2.0\test>icm new -search=..\src
+    C:\ahven-2.0\test>icm scan *.ad?
+    C:\ahven-2.0\test>icm make tester
   
 
 Janus/Ada
@@ -151,7 +151,7 @@ file *prepare.bat*.
 
 ::
 
-    C:\ahven-1.8>janusada\prepare.bat
+    C:\ahven-2.0>janusada\prepare.bat
 
 Before compiling the library, you need to run
 the preparation script *janusada\\prepare.bat*.
@@ -160,7 +160,7 @@ by running *janusada\\update.bat*.
 
 ::
 
-    C:\ahven-1.8>janusada\update.bat
+    C:\ahven-2.0>janusada\update.bat
 
 Now you are ready to compile the project.
 This happens by running
@@ -168,7 +168,7 @@ This happens by running
 
 ::
 
-    C:\ahven-1.8>janusada\compile.bat
+    C:\ahven-2.0>janusada\compile.bat
 
 After a while, you should have compiled library files
 in the *lib_obj* directory and
@@ -177,15 +177,14 @@ in the *test_obj* directory.
 The executable is Ahven's test  suite and if it reports
 no errors, everything is working as expected.
 
-At the time of writing (Ahven 1.8), every test except one
-should pass. The failing test is worked around in
-the Ahven's source code, but the test exists so that one can
-verify when the Janus/Ada bug causing the failure is fixed.
+At the time of writing (Ahven 2.0), every test
+should pass with the latest version of Janus/Ada.
 
-.. COMMENT: Using Ahven
-            - Writing a test case
-            - Composing test hierarchies with test suites
-            - Running tests
+However, with earlier versions of Janus/Ada some tests will fail.
+The failing tests are worked around in Ahven's source code, but
+the test exists so that one can verify when the Janus/Ada bug
+causing the failure is fixed.
+
 
 Using Ahven
 ###########
@@ -386,6 +385,10 @@ Ahven.Text_Runner recognizes following parameters:
 .. cmdoption:: -c
 
     capture and report test outputs
+
+.. cmdoption:: -t
+
+    specify timeout value for tests
 
 .. cmdoption:: -q 
 
