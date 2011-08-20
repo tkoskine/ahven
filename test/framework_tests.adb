@@ -156,7 +156,7 @@ package body Framework_Tests is
       Before : Ada.Calendar.Time;
       After : Ada.Calendar.Time;
    begin
-      Skip ("Does not work with GNAT on Linux");
+      Skip ("Does not work with most Ada compilers.");
       Add_Test_Routine
          (My_Test, Dummy_Tests.This_Test_Has_Infinite_Loop'Access,
            "Has infinite loop");
