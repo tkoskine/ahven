@@ -14,7 +14,7 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 1.9 has 2.1K SLOC; 526 statements; 1103 declarations)
+* Small size (Ahven 2.0 has 2.1K SLOC; 578 statements; 1216 declarations)
 * JUnit-compatible test results in XML format;
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
@@ -33,20 +33,18 @@ See also
 Platforms
 ---------
 
-Ahven 1.9 compiles and passes its test suite on following platforms
+Ahven 2.0 compiles and passes its test suite on following platforms
 
 +-----------------------+-------+------------------------+
 | OS                    |  Arch | Compiler               |
 +=======================+=======+========================+
 | OpenBSD4.9            | amd64 | FSF GCC 4.3.5          |
 +-----------------------+-------+------------------------+
-| OpenBSD4.9            | amd64 | GNAT AUX 4.6.0         |
-+-----------------------+-------+------------------------+
 | Debian GNU/Linux 6.0  | i386  | FSF GCC 4.4.5          |
 +-----------------------+-------+------------------------+
-| Fedora Linux 13       | i386  | FSF GCC 4.4.5          |
+| Fedora Linux 15       | i386  | FSF GCC 4.6.0          |
 +-----------------------+-------+------------------------+
-| Fedora Linux 13       | i386  | GNAT GPL 2010          |
+| Fedora Linux 15       | i386  | GNAT GPL 2010          |
 +-----------------------+-------+------------------------+
 | Windows XP            | i386  | Janus/Ada 3.1.2beta    |
 +-----------------------+-------+------------------------+
@@ -57,6 +55,15 @@ Ahven 1.9 compiles and passes its test suite on following platforms
 
 News
 ----
+
+Ahven 2.0 (2011-09-23)
+''''''''''''''''''''''
+
+This is a feature release.
+
+The release adds possibility to stop tests after certain amount of time
+and programmatically skip tests. In addition, the README document is
+now in reStructured text format, like the manual.
 
 Ahven 1.9 (2011-04-19)
 ''''''''''''''''''''''
