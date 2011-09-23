@@ -242,8 +242,8 @@ directory.
 Documentation
 -------------
 
-* The API documentation (for Ahven 1.9):
-  http://ahven.stronglytyped.org/api-1.9/index.html
+* The API documentation (for Ahven 2.1):
+  http://ahven.stronglytyped.org/api-2.1/index.html
 * The API documentation (for Ahven 1.8):
   http://ahven.stronglytyped.org/api/index.html
 * Tutorial:
