@@ -1,4 +1,4 @@
-2011-??-?? Ahven 2.0
+2011-09-23 Ahven 2.0
 ====================
 
 Changes
@@ -6,6 +6,10 @@ Changes
 	* Tests can be now given a timeout value. If a test is not
 	  executed in the given time, it is stopped and a timeout
           failure is reported. See '-t' option of the test runners.
+	  The timeout feature depends on the possibility to abort
+	  a task after a certain amount of time. If the task abortion
+	  is not possible, the current test will continue running
+	  even after the given timeout.
 
 	* A test can be now skipped programmatically by calling
 	  procedure Skip("Message"). A skipped test are considered
@@ -17,11 +21,9 @@ Changes
 
 Bugs fixed
 ----------
-	* TODO
-
-Internal
---------
-	* TODO
+	* Ahven can be compiled on Fedora systems by installing
+	  package "libgnat-static". Note: This was not a bug in
+	  Ahven but a configuration issue on Fedora.
 
 2011-04-19 Ahven 1.9
 ====================
