@@ -3,7 +3,7 @@
 use TAP::Parser;
 use TAP::Parser::Aggregator;
 
-my $parser = TAP::Parser->new( { exec => [ './tester' ]  } );
+my $parser = TAP::Parser->new( { exec => [ './tap_tester' ]  } );
 $parser->run;
 # while ( my $result = $parser->next ) {
 #     print $result->as_string . "\n";
