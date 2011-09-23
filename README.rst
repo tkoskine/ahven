@@ -44,7 +44,7 @@ Ahven 2.1 compiles and passes its test suite on following platforms
 +-----------------------+-------+------------------------+
 | Fedora Linux 15       | i386  | FSF GCC 4.6.0          |
 +-----------------------+-------+------------------------+
-| Fedora Linux 15       | i386  | GNAT GPL 2010          |
+| Fedora Linux 15       | i386  | GNAT GPL 2011          |
 +-----------------------+-------+------------------------+
 | Windows XP            | i386  | Janus/Ada 3.1.2beta    |
 +-----------------------+-------+------------------------+
