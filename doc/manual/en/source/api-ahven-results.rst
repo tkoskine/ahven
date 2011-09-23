@@ -372,7 +372,7 @@ Skipped_Count
 
    function Skipped_Count (Collection : Result_Collection) return Natural;
 
-Return the amount of skipped tests in the colleciton.
+Return the amount of skipped tests in the collection.
 Tests in child collections are included.
 
 Get_Test_Name
