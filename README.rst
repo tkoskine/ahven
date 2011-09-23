@@ -14,7 +14,7 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 2.0 has 2.1K SLOC; 578 statements; 1216 declarations)
+* Small size (Ahven 2.1 has 2.1K SLOC; 588 statements; 1228 declarations)
 * JUnit-compatible test results in XML format;
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
@@ -33,7 +33,7 @@ See also
 Platforms
 ---------
 
-Ahven 2.0 compiles and passes its test suite on following platforms
+Ahven 2.1 compiles and passes its test suite on following platforms
 
 +-----------------------+-------+------------------------+
 | OS                    |  Arch | Compiler               |
@@ -55,6 +55,13 @@ Ahven 2.0 compiles and passes its test suite on following platforms
 
 News
 ----
+
+Ahven 2.1 (2011-09-24)
+''''''''''''''''''''''
+
+This is a bug fix release.
+
+The release fixes the skipped test reporting in Ahven.Text_Runner.
 
 Ahven 2.0 (2011-09-23)
 ''''''''''''''''''''''

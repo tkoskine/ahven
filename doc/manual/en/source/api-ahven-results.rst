@@ -255,6 +255,16 @@ Add_Error
 
 Add a test error to the collection.
 
+Add_Skipped
+'''''''''''
+
+::
+
+   procedure Add_Skipped (Collection : in out Result_Collection;
+                          Info       :        Result_Info);
+
+Add a skipped test to the collection.
+
 Add_Failure
 '''''''''''
 
@@ -353,6 +363,16 @@ Failure_Count
    function Failure_Count (Collection : Result_Collection) return Natural;
 
 Return the amount of test errors in the collection.
+Tests in child collections are included.
+
+Skipped_Count
+'''''''''''''
+
+::
+
+   function Skipped_Count (Collection : Result_Collection) return Natural;
+
+Return the amount of skipped tests in the colleciton.
 Tests in child collections are included.
 
 Get_Test_Name

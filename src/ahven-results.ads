@@ -151,6 +151,10 @@ package Ahven.Results is
    -- Return the amount of test errors in the collection.
    -- Tests in child collections are included.
 
+   function Skipped_Count (Collection : Result_Collection) return Natural;
+   -- Return the amount of skipped tests in the colleciton.
+   -- Tests in child collections are included.
+
    function Get_Test_Name (Collection : Result_Collection)
      return Bounded_String;
    -- Return the name of the collection's test.

@@ -187,6 +187,7 @@ package body Ahven.Results is
    function Test_Count (Collection : Result_Collection) return Natural is
       Count : Natural := Result_Info_List.Length (Collection.Errors) +
                          Result_Info_List.Length (Collection.Failures) +
+                         Result_Info_List.Length (Collection.Skips) +
                          Result_Info_List.Length (Collection.Passes);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
@@ -246,6 +247,20 @@ package body Ahven.Results is
       end loop;
       return Count;
    end Failure_Count;
+
+   function Skipped_Count (Collection : Result_Collection) return Natural is
+      Count    : Natural            := Length (Collection.Skips);
+      Position : Result_List.Cursor := First (Collection.Children);
+   begin
+      loop
+         exit when not Is_Valid (Position);
+
+         Count := Count + Skipped_Count (Data (Position).Ptr.all);
+         Position := Next (Position);
+      end loop;
+      return Count;
+   end Skipped_Count;
+
 
    function Get_Test_Name (Collection : Result_Collection)
      return Bounded_String is

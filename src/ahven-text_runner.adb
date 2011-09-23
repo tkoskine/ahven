@@ -40,6 +40,9 @@ package body Ahven.Text_Runner is
    procedure Print_Failures (Result : Result_Collection;
                              Level  : Natural);
 
+   procedure Print_Skips (Result : Result_Collection;
+                          Level  : Natural);
+
    procedure Print_Errors (Result : Result_Collection;
                            Level  : Natural);
 
@@ -209,6 +212,23 @@ package body Ahven.Text_Runner is
    end Print_Failures;
 
    --
+   -- Print all skips from the result collection
+   -- and then recurse into child collections.
+   --
+   procedure Print_Skips (Result : Result_Collection;
+                          Level  : Natural) is
+   begin
+      Print_Statuses
+        (Result    => Result,
+         Level     => Level,
+         Start     => First_Skipped (Result),
+         Action    => Print_Skips'Access,
+         Status    => "SKIPPED",
+         Count     => Skipped_Count'Access,
+         Print_Log => True);
+   end Print_Skips;
+
+   --
    -- Print all errors from the result collection
    -- and then recurse into child collections.
    --
@@ -243,7 +263,7 @@ package body Ahven.Text_Runner is
    end Print_Passes;
 
    --
-   -- Report passes, failures, and errors from the result collection.
+   -- Report passes, skips, failures, and errors from the result collection.
    procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False) is
    begin
@@ -252,6 +272,11 @@ package body Ahven.Text_Runner is
          Print_Passes (Result, 0);
       end if;
       New_Line;
+      if Skipped_Count (Result) > 0 then
+         Put_Line ("Skipped : " & Integer'Image (Skipped_Count (Result)));
+         Print_Skips (Result, 0);
+         New_Line;
+      end if;
       if Failure_Count (Result) > 0 then
          Put_Line ("Failed : " & Integer'Image (Failure_Count (Result)));
          Print_Failures (Result, 0);
