@@ -90,11 +90,13 @@ package body Dummy_Tests is
    end This_Test_Takes_12_Seconds;
 
    procedure This_Test_Has_Infinite_Loop is
+      --## rule off Removable
       A : Integer := 0;
    begin
       loop
          A := 1;
       end loop;
+      --## rule on Removable
    end This_Test_Has_Infinite_Loop;
 
    function Get_Instance_Count return Integer is
