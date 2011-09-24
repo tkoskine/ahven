@@ -78,14 +78,14 @@ Ahven 1.9 (2011-04-19)
 
 This is a bug fix release.
 
-The release includes new HTML documentation generated from reStructured text using Python-Sphinx and fixes compilation problems with GNAT GPL 2010. (Release notes)
+The release includes new HTML documentation generated from reStructured text using Python-Sphinx and fixes compilation problems with GNAT GPL 2010.
 
 Ahven 1.8 (2010-06-02)
 ''''''''''''''''''''''
 
 This is a bug fix release.
 
-Changes include a fix for double free when mixing dynamic test cases with static test suites, removal of some unfinished features like TAP 1.3 and Janus/Ada 3.1.1d support, and code cleanups. (Release notes)
+Changes include a fix for double free when mixing dynamic test cases with static test suites, removal of some unfinished features like TAP 1.3 and Janus/Ada 3.1.1d support, and code cleanups.
 
 Ahven website location changed again (2009-11-30)
 '''''''''''''''''''''''''''''''''''''''''''''''''
@@ -102,7 +102,7 @@ This is a bug fix release.
 Changes include a fix for Constraint_Error with long test names and
 special character filtering from the test names when generating XML results.
 In addition, PDF report generation example was added to the contrib directory
-and some internal code cleanups were done. (Release notes)
+and some internal code cleanups were done.
 
 Mercurial repository, part 2 (2009-06-25)
 '''''''''''''''''''''''''''''''''''''''''
@@ -121,12 +121,12 @@ Sourceforge.net added support for Mercurial and now Ahven's source code reposito
 Ahven 1.6 (2009-02-28)
 ''''''''''''''''''''''
 
-This release fixes GNAT installation issues. (Release notes)
+This release fixes GNAT installation issues.
 
 Ahven 1.5 (2009-02-23)
 ''''''''''''''''''''''
 
-This is first release at SourceForge. The release includes only some build system changes. (Release notes)
+This is first release at SourceForge. The release includes only some build system changes.
 
 SourceForge.net (2009-02-18)
 ''''''''''''''''''''''''''''
@@ -136,12 +136,12 @@ Ahven project is now hosted by SourceForge.
 Ahven 1.4 (2009-01-22)
 ''''''''''''''''''''''
 
-This release introduces Test Anything Protocol (TAP) reporter, a new API for stack-based test cases, and improved Janus/Ada support. Also, some API changes were done, but they should affect you only if you have extented the framework. (Release notes)
+This release introduces Test Anything Protocol (TAP) reporter, a new API for stack-based test cases, and improved Janus/Ada support. Also, some API changes were done, but they should affect you only if you have extented the framework.
 
 Ahven 1.3 (2008-08-13)
 ''''''''''''''''''''''
 
-A bug fix release. The major change is support for Janus/Ada. (Release notes)
+A bug fix release. The major change is support for Janus/Ada.
 Web site layout changes (2008-06-30)
 
 The web site layout was changed to be "less boring". The new blueish theme should work better on different types of monitors. (Some low quality monitors and graphics cards didn't show light brown colors properly.)
@@ -149,12 +149,12 @@ The web site layout was changed to be "less boring". The new blueish theme shoul
 Ahven 1.2 (2008-05-12)
 ''''''''''''''''''''''
 
-A major new feature in this release is support for JUnit-compatible XML-based test result format. The release also includes bug fixes and code cleanups. (Release notes)
+A major new feature in this release is support for JUnit-compatible XML-based test result format. The release also includes bug fixes and code cleanups.
 
 Ahven 1.1 (2008-01-30)
 ''''''''''''''''''''''
 
-Incremental release including bug fixes and new features. (Release notes)
+Incremental release including bug fixes and new features.
 
 Ahven 1.0 (2007-10-24)
 ''''''''''''''''''''''
