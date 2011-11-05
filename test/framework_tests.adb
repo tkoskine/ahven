@@ -51,6 +51,8 @@ package body Framework_Tests is
                                   "Test_Case: Tear_Down");
       Add_Test_Routine (T, Test_Test_Case_Run'Access,
                                   "Test_Case: Run");
+      Add_Test_Routine (T, Test_Test_Case_Run_Empty'Access,
+                                  "Test_Case: Run (Empty)");
       Add_Test_Routine (T, Test_Test_Case_Run_1s_Timeout'Access,
                                   "Test_Case: 1s Timeout");
       Add_Test_Routine (T, Test_Test_Case_Run_Break_Infinite_Loop'Access,
@@ -122,6 +124,27 @@ package body Framework_Tests is
 
       Free (My_Listener);
    end Test_Test_Case_Run;
+
+   type Empty_Test_Case is new Ahven.Framework.Test_Case with null record;
+
+   procedure Test_Test_Case_Run_Empty is
+      use Dummy_Tests;
+
+      My_Listener : Simple_Listener.Listener_Access :=
+        new Simple_Listener.Listener;
+      My_Test : Empty_Test_Case;
+   begin
+      Run (My_Test, My_Listener.all);
+
+      Assert_Eq_Nat (My_Listener.Passes, 0, "Pass count");
+      Assert_Eq_Nat (My_Listener.Errors, 0, "Error count");
+      Assert_Eq_Nat (My_Listener.Failures, 0, "Failure count");
+      Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
+      Assert_Eq_Nat (My_Listener.Start_Calls, 0,
+              "Start_Test calls");
+
+      Free (My_Listener);
+   end Test_Test_Case_Run_Empty;
 
    procedure Test_Test_Case_Run_1s_Timeout is
       use Dummy_Tests;
