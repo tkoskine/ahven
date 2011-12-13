@@ -130,11 +130,10 @@ package body Framework_Tests is
    procedure Test_Test_Case_Run_Empty is
       use Dummy_Tests;
 
-      My_Listener : Simple_Listener.Listener_Access :=
-        new Simple_Listener.Listener;
+      My_Listener : Simple_Listener.Listener;
       My_Test : Empty_Test_Case;
    begin
-      Run (My_Test, My_Listener.all);
+      Run (My_Test, My_Listener);
 
       Assert_Eq_Nat (My_Listener.Passes, 0, "Pass count");
       Assert_Eq_Nat (My_Listener.Errors, 0, "Error count");
@@ -142,8 +141,6 @@ package body Framework_Tests is
       Assert_Eq_Nat (My_Listener.Level, 0, "Listener.Level");
       Assert_Eq_Nat (My_Listener.Start_Calls, 0,
               "Start_Test calls");
-
-      Free (My_Listener);
    end Test_Test_Case_Run_Empty;
 
    procedure Test_Test_Case_Run_1s_Timeout is
