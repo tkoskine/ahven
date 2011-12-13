@@ -1,6 +1,6 @@
-=====
-Ahven
-=====
+=========================================================
+Ahven - Unit Testing Library for Ada Programming Language
+=========================================================
 
 .. contents::
    :depth: 1
