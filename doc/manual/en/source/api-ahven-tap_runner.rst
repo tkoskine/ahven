@@ -1,7 +1,7 @@
 :mod:`Ahven.Tap_Runner` -- Package
 ==================================
 
-.. module:: Ahven.Tap_Runner
+.. ada:module:: Ahven.Tap_Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 

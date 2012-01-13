@@ -1,7 +1,7 @@
 :mod:`Ahven.Parameters` -- Package
 ==================================
 
-.. module:: Ahven.Parameters
+.. ada:module:: Ahven.Parameters
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----
@@ -27,13 +27,6 @@ Parameter_Mode
 ------------------------
 Procedures and Functions
 ------------------------
-
-   procedure Parse_Parameters (Mode :     Parameter_Mode;
-                               Info : out Parameter_Info);
-
-Parse Ada.Command_Line parameters and put the results
-to the Info parameter. Raises Invalid_Parameter if
-some parameter is invalid.
 
 Parse_Parameters
 ''''''''''''''''
@@ -63,7 +56,7 @@ Capture
 
    function Capture (Info : Parameter_Info) return Boolean;
 
-Capture Ada.Text_IO output?
+Should we capture Ada.Text_IO output?
 
 Verbose
 '''''''
@@ -72,7 +65,7 @@ Verbose
 
    function Verbose (Info : Parameter_Info) return Boolean;
 
-Use verbose mode?
+Should we use verbose mode?
 
 XML_Results
 '''''''''''
@@ -81,7 +74,7 @@ XML_Results
 
    function XML_Results (Info : Parameter_Info) return Boolean;
 
-Output XML?
+Should we output XML?
 
 Single_Test
 '''''''''''
@@ -90,7 +83,7 @@ Single_Test
 
    function Single_Test (Info : Parameter_Info) return Boolean;
 
-Run a single test (case/suite/routine) only?
+Should we run a single test (case/suite/routine) only?
 
 Test_Name
 '''''''''

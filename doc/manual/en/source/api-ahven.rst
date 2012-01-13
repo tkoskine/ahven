@@ -1,7 +1,7 @@
 :mod:`Ahven` -- Package
 =======================
 
-.. module:: Ahven
+.. ada:module:: Ahven
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 ----------

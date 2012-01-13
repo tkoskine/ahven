@@ -1,7 +1,7 @@
 :mod:`Ahven.Listeners` -- Package
 =================================
 
-.. module:: Ahven.Listeners
+.. ada:module:: Ahven.Listeners
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 

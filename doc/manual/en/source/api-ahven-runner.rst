@@ -1,7 +1,7 @@
 :mod:`Ahven.Runner` -- Package
 ==============================
 
-.. module:: Ahven.Runner
+.. ada:module:: Ahven.Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----
@@ -18,9 +18,9 @@ Report_Proc
       Args         : Parameters.Parameter_Info);
 
 
--------------------------
-Procedures and Funcstions
--------------------------
+------------------------
+Procedures and Functions
+------------------------
 
 Run_Suite
 '''''''''

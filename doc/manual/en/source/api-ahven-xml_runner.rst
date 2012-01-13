@@ -1,7 +1,7 @@
 :mod:`Ahven.XML_Runner` -- Package
 ==================================
 
-.. module:: Ahven.XML_Runner
+.. ada:module:: Ahven.XML_Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 .. versionadded:: 1.2

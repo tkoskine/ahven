@@ -1,7 +1,7 @@
 :mod:`Ahven.Temporary_Output` -- Package
 ========================================
 
-.. module:: Ahven.Temporary_Output
+.. ada:module:: Ahven.Temporary_Output
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----

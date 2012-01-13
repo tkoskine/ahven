@@ -1,7 +1,7 @@
 :mod:`Ahven.Text_Runner` -- Package
 ===================================
 
-.. module:: Ahven.Text_Runner
+.. ada:module:: Ahven.Text_Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 
