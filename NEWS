@@ -1,9 +1,18 @@
-????-??-?? Ahven 2.2
+2012-??-?? Ahven 2.2
 ====================
 
 Changes
 -------
 	* GNAT 3.15p project files from contrib/gnat315p removed.
+	* Small test suite improvements.
+	* The code snippets in the documentation are now highlighted
+	  as Ada code.
+
+Bugs fixed
+----------
+	* Ahven.XML_Runner did not report skipped tests correctly.
+	  This is now fixed. (The bug was similar to Ahven.Text_Runner
+	  bug in Ahven 2.1.)
 
 2011-09-24 Ahven 2.1
 ====================
