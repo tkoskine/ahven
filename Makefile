@@ -116,7 +116,9 @@ control:
 	cd objects && adactl -f ../rules/ahven.aru ../src/*.ad[bs] ../test/*.ad[bs] ../src/unix/*.ad[bs]
 	rm -f objects/*.adt objects/*.ali
 
-docs: ahven.specs
+docs: userguide
+
+old_docs: ahven.specs
 	mkdir -p doc/api
 	adabrowse -c adabrowse.conf -i -f@ahven.specs -o doc/api/
 

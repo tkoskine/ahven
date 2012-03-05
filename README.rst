@@ -60,7 +60,8 @@ Ahven 2.2 (2012-03-05)
 This is a bug fix release.
 
 The release fixes the reporting of skipped tests in Ahven.XML_Runner.
-Also, support for GNAT 3.15p was removed.
+Also, support for GNAT 3.15p was removed. Documentation generation
+tool was changed from Adabrowse to `Sphinx`_.
 
 
 Ahven 2.1 (2011-09-24)
@@ -266,3 +267,4 @@ Tero Koskinen <tero.koskinen@iki.fi>
 .. _`Jenkins`: http://www.jenkins-ci.org/
 .. _`JUnit`: http://www.junit.org/
 .. _`News`: http://ahven.stronglytyped.org/NEWS
+.. _`Sphinx`: http://sphinx.pocoo.org/

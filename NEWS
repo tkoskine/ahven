@@ -6,6 +6,8 @@ Changes
 	* GNAT 3.15p project files from contrib/gnat315p removed.
 	* The code snippets in the documentation are now highlighted
 	  as Ada code.
+	* API documentat generation using Adabrowse is now deprecated.
+	  The new way is to use Sphinx for document generation.
 
 Bugs fixed
 ----------
