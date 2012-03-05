@@ -14,47 +14,54 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 2.1 has 2.1K SLOC; 588 statements; 1228 declarations)
+* Small size (Ahven 2.2 has 2.4K SLOC; 588 statements; 1228 declarations)
 * JUnit-compatible test results in XML format;
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
 * Plain Ada 95 code, no Ada 2005 features used,
   but can be compiled as Ada 2005 code if needed
 * Portable across different compilers and operating systems
-* Permissive Open Source license
+* Permissive Open Source license (ISC)
 
 See also
 ''''''''
 
 * The project page at http://sourceforge.net/projects/ahven/
 * The latest commits at http://cia.vc/stats/project/ahven
-* Author's blog at http://tero.stronglytyped.org/Tags/ahven
+* Author's blog at http://tero.stronglytyped.org/tag/ahven.html
 
 Platforms
 ---------
 
-Ahven 2.1 compiles and passes its test suite on following platforms
+Ahven 2.2 compiles and passes its test suite on following platforms
 
 +-----------------------+-------+------------------------+
 | OS                    |  Arch | Compiler               |
-+=======================+=======+========================+
-| OpenBSD4.9            | amd64 | FSF GCC 4.3.5          |
++=======================+========+========================+
+| OpenBSD5.0            | amd64  | FSF GCC 4.3.5          |
++-----------------------+--------+------------------------+
+| Fedora Linux 16       | x86_64 | FSF GCC 4.6.2          |
 +-----------------------+-------+------------------------+
-| Debian GNU/Linux 6.0  | i386  | FSF GCC 4.4.5          |
-+-----------------------+-------+------------------------+
-| Fedora Linux 15       | i386  | FSF GCC 4.6.0          |
-+-----------------------+-------+------------------------+
-| Fedora Linux 15       | i386  | GNAT GPL 2011          |
-+-----------------------+-------+------------------------+
-| Windows XP            | i386  | Janus/Ada 3.1.2beta    |
-+-----------------------+-------+------------------------+
-| Windows XP            | i386  | GNAT GPL 2009          |
-+-----------------------+-------+------------------------+
-| Windows XP            | i386  | Irvine ICC Ada 9.0beta |
-+-----------------------+-------+------------------------+
+| Fedora Linux 16       | x86_64 | GNAT GPL 2011          |
++-----------------------+--------+------------------------+
+| Windows XP            | i386   | Janus/Ada 3.1.2beta    |
++-----------------------+--------+------------------------+
+| Windows XP            | i386   | GNAT GPL 2009          |
++-----------------------+--------+------------------------+
+| Windows XP            | i386   | Irvine ICC Ada 9.0beta |
++-----------------------+--------+------------------------+
 
 News
 ----
+
+Ahven 2.2 (2012-03-05)
+''''''''''''''''''''''
+
+This is a bug fix release.
+
+The release fixes the reporting of skipped tests in Ahven.XML_Runner.
+Also, support for GNAT 3.15p was removed.
+
 
 Ahven 2.1 (2011-09-24)
 ''''''''''''''''''''''
