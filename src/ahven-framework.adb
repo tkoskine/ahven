@@ -166,7 +166,7 @@ package body Ahven.Framework is
          function Get_Long_Message return Bounded_String;
          procedure Set_Long_Message (Value : Bounded_String);
       private
-         Status : Test_Status := Test_Error;
+         Status : Test_Status := TEST_ERROR;
          Message : Bounded_String;
          Long_Message : Bounded_String;
       end Test_Results;
@@ -257,7 +257,7 @@ package body Ahven.Framework is
             or
                delay Duration (Timeout);
                abort Command_Runner;
-               Result.Set_Status (Test_Timeout);
+               Result.Set_Status (TEST_TIMEOUT);
             end select;
          end;
       else

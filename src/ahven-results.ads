@@ -186,13 +186,13 @@ package Ahven.Results is
      return Result_Info_Cursor;
    -- Get the first error from the collection.
 
-   function Next (Position: Result_Info_Cursor) return Result_Info_Cursor;
+   function Next (Position : Result_Info_Cursor) return Result_Info_Cursor;
    -- Get the next pass/failure/error.
 
-   function Data (Position: Result_Info_Cursor) return Result_Info;
+   function Data (Position : Result_Info_Cursor) return Result_Info;
    -- Get the data behind the cursor.
 
-   function Is_Valid (Position: Result_Info_Cursor) return Boolean;
+   function Is_Valid (Position : Result_Info_Cursor) return Boolean;
    -- Is the cursor still valid?
 
    type Result_Collection_Cursor is private;
@@ -202,14 +202,14 @@ package Ahven.Results is
      return Result_Collection_Cursor;
    -- Get the first child of the collection.
 
-   function Next (Position: Result_Collection_Cursor)
+   function Next (Position : Result_Collection_Cursor)
      return Result_Collection_Cursor;
    -- Get the next child.
 
-   function Is_Valid (Position: Result_Collection_Cursor) return Boolean;
+   function Is_Valid (Position : Result_Collection_Cursor) return Boolean;
    -- Is the cursor still valid?
 
-   function Data (Position: Result_Collection_Cursor)
+   function Data (Position : Result_Collection_Cursor)
      return Result_Collection_Access;
    -- Get the data (Result_Collection_Access) behind the cursor.
 
