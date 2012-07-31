@@ -116,6 +116,10 @@ package body Ahven.Framework is
       Execute_Impl (Test_Object => T, Listener_Object => Listener);
    end Execute;
 
+
+   ----------- Test_Case ------------------------------
+
+
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine :        Object_Test_Routine_Access;
                                Name    :        String)
@@ -430,6 +434,10 @@ package body Ahven.Framework is
       T.Name := To_Bounded_String (Source => Name, Drop => Ada.Strings.Right);
    end Set_Name;
 
+
+   ----------- Test_Suite -----------------------------
+
+
    function Create_Suite (Suite_Name : String)
      return Test_Suite_Access is
    begin
@@ -658,6 +666,10 @@ package body Ahven.Framework is
             Tear_Down (T);
       end case;
    end Run;
+
+
+   ----------- Indefinite_Test_List -------------------
+
 
    package body Indefinite_Test_List is
       procedure Remove (Ptr : Node_Access) is
