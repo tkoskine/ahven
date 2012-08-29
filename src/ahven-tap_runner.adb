@@ -40,10 +40,11 @@ package body Ahven.Tap_Runner is
             Put (Prefix);
             Start_Of_Line := False;
          end if;
-         Put (Message (I));
          if Message (I) = Ada.Characters.Latin_1.LF then
             New_Line;
             Start_Of_Line := True;
+         else
+            Put (Message (I));
          end if;
       end loop;
    end Print_Data;
