@@ -225,6 +225,9 @@ package body Ahven.Framework is
                Result.Set_Message (To_Bounded_String
                  (Source => Ada.Exceptions.Exception_Message (E),
                   Drop   => Ada.Strings.Right));
+               Result.Set_Long_Message (To_Bounded_String
+                 (Source => Ada.Exceptions.Exception_Information (E),
+                  Drop   => Ada.Strings.Right));
             when E : Test_Skipped_Error =>
                Result.Set_Status (TEST_SKIP);
                Result.Set_Message (To_Bounded_String
@@ -236,7 +239,7 @@ package body Ahven.Framework is
                  (Source => Ada.Exceptions.Exception_Name (E),
                   Drop   => Ada.Strings.Right));
                Result.Set_Long_Message (To_Bounded_String
-                 (Source => Ada.Exceptions.Exception_Message (E),
+                 (Source => Ada.Exceptions.Exception_Information (E),
                   Drop   => Ada.Strings.Right));
          end;
       end Run_A_Command;
