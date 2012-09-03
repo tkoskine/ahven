@@ -55,15 +55,22 @@ package body Ahven.Results is
       Set_Message (Info, To_Bounded_String (Message));
    end Set_Message;
 
-   procedure Set_Long_Message (Info : in out Result_Info;
-                               Message : Bounded_String) is
+   procedure Set_Long_Message (Info    : in out Result_Info;
+                               Message :        Bounded_String) is
+   begin
+      Set_Long_Message (Info, To_String (Message));
+   end Set_Long_Message;
+
+   procedure Set_Long_Message
+     (Info    : in out Result_Info;
+      Message :        Long_AStrings.Bounded_String) is
    begin
       Info.Long_Message := Message;
    end Set_Long_Message;
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String) is
    begin
-      Set_Long_Message (Info, To_Bounded_String (Message));
+      Set_Long_Message (Info, Long_AStrings.To_Bounded_String (Message));
    end Set_Long_Message;
 
    procedure Set_Execution_Time (Info         : in out Result_Info;
@@ -101,7 +108,7 @@ package body Ahven.Results is
 
    function Get_Long_Message (Info : Result_Info) return String is
    begin
-      return To_String (Info.Long_Message);
+      return Long_AStrings.To_String (Info.Long_Message);
    end Get_Long_Message;
 
    function Get_Execution_Time (Info : Result_Info) return Duration is

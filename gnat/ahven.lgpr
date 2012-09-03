@@ -5,6 +5,7 @@ ahven-listeners-basic.adb
 ahven-listeners-basic.ads
 ahven-listeners.adb
 ahven-listeners.ads
+ahven-long_astrings.ads
 ahven-parameters.adb
 ahven-parameters.ads
 ahven-results.adb

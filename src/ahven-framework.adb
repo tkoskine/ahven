@@ -17,6 +17,7 @@
 with Ada.Strings;
 with Ada.Unchecked_Deallocation;
 with Ada.Exceptions;
+with Ahven.Long_AStrings;
 
 package body Ahven.Framework is
    use Ahven.AStrings;
@@ -157,6 +158,8 @@ package body Ahven.Framework is
                           Listener : in out Listeners.Result_Listener'Class;
                           T        : in out Test_Case'Class) is
       use Ahven.Listeners;
+      use Ahven.Long_AStrings;
+
       type Test_Status is
         (TEST_PASS, TEST_FAIL, TEST_ERROR, TEST_TIMEOUT, TEST_SKIP);
 
@@ -164,15 +167,15 @@ package body Ahven.Framework is
          function Get_Status return Test_Status;
          procedure Set_Status (Value : Test_Status);
 
-         function Get_Message return Bounded_String;
-         procedure Set_Message (Value : Bounded_String);
+         function Get_Message return AStrings.Bounded_String;
+         procedure Set_Message (Value : AStrings.Bounded_String);
 
-         function Get_Long_Message return Bounded_String;
-         procedure Set_Long_Message (Value : Bounded_String);
+         function Get_Long_Message return Long_AStrings.Bounded_String;
+         procedure Set_Long_Message (Value : Long_AStrings.Bounded_String);
       private
          Status : Test_Status := TEST_ERROR;
-         Message : Bounded_String;
-         Long_Message : Bounded_String;
+         Message : AStrings.Bounded_String;
+         Long_Message : Long_AStrings.Bounded_String;
       end Test_Results;
 
       protected body Test_Results is
@@ -186,22 +189,22 @@ package body Ahven.Framework is
             Status := Value;
          end Set_Status;
 
-         function Get_Message return Bounded_String is
+         function Get_Message return AStrings.Bounded_String is
          begin
             return Message;
          end Get_Message;
 
-         procedure Set_Message (Value : Bounded_String) is
+         procedure Set_Message (Value : AStrings.Bounded_String) is
          begin
             Message := Value;
          end Set_Message;
 
-         function Get_Long_Message return Bounded_String is
+         function Get_Long_Message return Long_AStrings.Bounded_String is
          begin
             return Long_Message;
          end Get_Long_Message;
 
-         procedure Set_Long_Message (Value : Bounded_String) is
+         procedure Set_Long_Message (Value : Long_AStrings.Bounded_String) is
          begin
             Long_Message := Value;
          end Set_Long_Message;
@@ -283,7 +286,7 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      => Result.Get_Message,
-                Long_Message => Null_Bounded_String));
+                Long_Message => Long_AStrings.Null_Bounded_String));
          when TEST_ERROR =>
             Listeners.Add_Error
               (Listener,
@@ -301,7 +304,7 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      => To_Bounded_String ("TIMEOUT"),
-                Long_Message => Null_Bounded_String));
+                Long_Message => Long_AStrings.Null_Bounded_String));
          when TEST_SKIP =>
             Listeners.Add_Skipped
               (Listener,
@@ -310,7 +313,7 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      => Result.Get_Message,
-                Long_Message => Null_Bounded_String));
+                Long_Message => Long_AStrings.Null_Bounded_String));
       end case;
    end Run_Command;
 
@@ -335,13 +338,14 @@ package body Ahven.Framework is
           Test_Name => To_Bounded_String (Test_Name),
           Test_Kind => ROUTINE));
       Run_Command (Command  => Command,
-                   Info     => (Phase        => Listeners.TEST_RUN,
-                                Test_Name    => To_Bounded_String (Test_Name),
-                                Test_Kind    => ROUTINE,
-                                Routine_Name =>
-                                  To_Bounded_String (Routine_Name),
-                                Message      => Null_Bounded_String,
-                                Long_Message => Null_Bounded_String),
+                   Info     =>
+                     (Phase        => Listeners.TEST_RUN,
+                      Test_Name    => To_Bounded_String (Test_Name),
+                      Test_Kind    => ROUTINE,
+                      Routine_Name =>
+                        To_Bounded_String (Routine_Name),
+                      Message      => AStrings.Null_Bounded_String,
+                      Long_Message => Long_AStrings.Null_Bounded_String),
                    Timeout  => Timeout,
                    Listener => Listener,
                    T        => T);

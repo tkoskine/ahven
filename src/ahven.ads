@@ -17,6 +17,7 @@
 
 package Ahven is
    Max_String_Len : constant := 160;
+   Max_Long_String_Len : constant := 1024;
 
    Assertion_Error : exception;
    -- Exception, raised when Assert fails.
