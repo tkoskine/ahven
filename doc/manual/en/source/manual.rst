@@ -85,7 +85,7 @@ can use the GNAT project files directly.
 Ahven distribution comes with three GNAT project files:
 ahven.gpr, ahven_lib.gpr, and ahven_tests.gpr.
 The *ahven.gpr* file is meant to be used
-when compiling unit tests. The library itself is build
+when compiling unit tests. The library itself is built
 using the *ahven_lib.gpr* file.
 To build the testsuite of the Ahven, one needs to
 use the *ahven_tests.gpr* file.
