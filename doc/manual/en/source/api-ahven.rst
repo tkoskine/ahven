@@ -46,7 +46,8 @@ Assert_Equal
     procedure Assert_Equal (Actual : Data_Type; Expected : Data_Type; Message : String);
 
 If Expected /= Actual, Assert raises Assertion_Error
-with given Message.
+with given Message. Function Image is used to convert
+Actual and Expected parameters into String.
 
 Example::
 
@@ -84,3 +85,5 @@ Skip
     procedure Skip (Message : String);
 
 Skip always raises Test_Skipped_Error with given Message.
+In practice, this means that the execution of tests stops
+there and the test is marked as 'skipped'.
