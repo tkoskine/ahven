@@ -16,6 +16,8 @@ Result_Info
 
    type Result_Info is private;
 
+A type which holds a test result for one test.
+
 
 Result_Collection
 '''''''''''''''''
@@ -33,6 +35,8 @@ Result_Collection_Access
 ::
 
    type Result_Collection_Access is access Result_Collection;
+
+Access type for Result_Collection.
 
 
 
@@ -111,7 +115,7 @@ Set_Test_Name
 
    procedure Set_Test_Name (Info : in out Result_Info; Name : String);
 
-A helper function, which calls Set_Test_Name (.. ; Bounded_String)
+A helper function, which calls Set_Test_Name (.. ; Bounded_String).
 
 Set_Routine_Name
 ''''''''''''''''
@@ -120,7 +124,7 @@ Set_Routine_Name
 
    procedure Set_Routine_Name (Info : in out Result_Info; Name : String);
 
-A helper function, which calls Set_Routine_Name (.. ; Bounded_String)
+A helper function, which calls Set_Routine_Name (.. ; Bounded_String).
 
 Set_Message
 '''''''''''
@@ -129,7 +133,7 @@ Set_Message
 
    procedure Set_Message (Info : in out Result_Info; Message : String);
 
-A helper function, which calls Set_Message (.. ; Bounded_String)
+A helper function, which calls Set_Message (.. ; Bounded_String).
 
 Set_Long_Message
 ''''''''''''''''
@@ -139,7 +143,7 @@ Set_Long_Message
    procedure Set_Long_Message (Info    : in out Result_Info;
                                Message :        Bounded_String);
 
-Set a long message for the result
+Set a long message for the result.
 
 Set_Long_Message
 ''''''''''''''''
@@ -148,7 +152,7 @@ Set_Long_Message
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String);
 
-A helper function, which calls Set_Long_Message (.. ; Bounded_String)
+A helper function, which calls Set_Long_Message (.. ; Bounded_String).
 
 Set_Execution_Time
 ''''''''''''''''''
@@ -205,7 +209,8 @@ Get_Message
 
    function Get_Message (Info : Result_Info) return String;
 
-Return the message of the result info.
+Return the message of the result info. The message will
+be something what has been given to the Assert call.
 
 Get_Long_Message
 ''''''''''''''''
@@ -215,6 +220,8 @@ Get_Long_Message
    function Get_Long_Message (Info : Result_Info) return String;
 
 Return the long message of the result info.
+The long message usually contains the backtrace or other info
+related to the test failure.
 
 Get_Execution_Time
 ''''''''''''''''''
@@ -244,6 +251,8 @@ Add_Child
                         Child      :        Result_Collection_Access);
 
 Add a child collection to the collection.
+Ownership of Child is transferred to the Collection container
+and Child will be automatically freed when Collection is destroyed.
 
 Add_Error
 '''''''''
