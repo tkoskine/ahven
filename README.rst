@@ -27,7 +27,6 @@ See also
 ''''''''
 
 * The project page at http://sourceforge.net/projects/ahven/
-* The latest commits at http://cia.vc/stats/project/ahven
 * Author's blog at http://tero.stronglytyped.org/tag/ahven.html
 
 Platforms
