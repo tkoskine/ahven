@@ -36,12 +36,12 @@ package body Ahven.Framework is
 
    procedure Set_Up (T : in out Test) is
    begin
-      null;
+      null; -- empty by default
    end Set_Up;
 
    procedure Tear_Down (T : in out Test) is
    begin
-      null;
+      null; -- empty by default
    end Tear_Down;
 
    procedure Run (T         : in out Test;
@@ -121,6 +121,11 @@ package body Ahven.Framework is
    ----------- Test_Case ------------------------------
 
 
+   -- Wrap an "object" routine inside a Test_Command record
+   -- and add it to the test command list.
+   --
+   -- Name of the test will be silently cut if it does not
+   -- fit completely into AStrings.Bounded_String.
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine :        Object_Test_Routine_Access;
                                Name    :        String)
@@ -135,6 +140,11 @@ package body Ahven.Framework is
       Test_Command_List.Append (T.Routines, Command);
    end Add_Test_Routine;
 
+   -- Wrap a "simple" routine inside a Test_Command record
+   -- and add it to the test command list.
+   --
+   -- Name of the test will be silently cut if it does not
+   -- fit completely into AStrings.Bounded_String.
    procedure Add_Test_Routine (T       : in out Test_Case'Class;
                                Routine :        Simple_Test_Routine_Access;
                                Name    :        String)
@@ -151,7 +161,7 @@ package body Ahven.Framework is
 
    -- The heart of the package.
    -- Run one test routine (well, Command at this point) and
-   -- store the result to the Result object.
+   -- notify listeners about the result.
    procedure Run_Command (Command  :        Test_Command;
                           Info     :        Listeners.Context;
                           Timeout  :        Test_Duration;
@@ -218,32 +228,43 @@ package body Ahven.Framework is
       end Command_Task;
 
       procedure Run_A_Command is
+         procedure Set_Status (S :        Test_Status;
+                               Message :        String;
+                               Long_Message :        String;
+                               R : in out Test_Results)
+         is
+         begin
+            R.Set_Status (S);
+            R.Set_Message (To_Bounded_String
+              (Source => Message,
+               Drop   => Ada.Strings.Right));
+            R.Set_Long_Message (To_Bounded_String
+              (Source => Long_Message,
+               Drop   => Ada.Strings.Right));
+         end Set_Status;
       begin
          begin
             Run (Command, T);
             Result.Set_Status (TEST_PASS);
          exception
             when E : Assertion_Error =>
-               Result.Set_Status (TEST_FAIL);
-               Result.Set_Message (To_Bounded_String
-                 (Source => Ada.Exceptions.Exception_Message (E),
-                  Drop   => Ada.Strings.Right));
-               Result.Set_Long_Message (To_Bounded_String
-                 (Source => Ada.Exceptions.Exception_Information (E),
-                  Drop   => Ada.Strings.Right));
+               Set_Status
+                 (S => TEST_FAIL,
+                  Message => Ada.Exceptions.Exception_Message (E),
+                  Long_Message => Ada.Exceptions.Exception_Information (E),
+                  R => Result);
             when E : Test_Skipped_Error =>
-               Result.Set_Status (TEST_SKIP);
-               Result.Set_Message (To_Bounded_String
-                 (Source => Ada.Exceptions.Exception_Message (E),
-                  Drop   => Ada.Strings.Right));
+               Set_Status
+                 (S            => TEST_SKIP,
+                  Message      => Ada.Exceptions.Exception_Message (E),
+                  Long_Message => Ada.Exceptions.Exception_Information (E),
+                  R            => Result);
             when E : others =>
-               Result.Set_Status (TEST_ERROR);
-               Result.Set_Message (To_Bounded_String
-                 (Source => Ada.Exceptions.Exception_Name (E),
-                  Drop   => Ada.Strings.Right));
-               Result.Set_Long_Message (To_Bounded_String
-                 (Source => Ada.Exceptions.Exception_Information (E),
-                  Drop   => Ada.Strings.Right));
+               Set_Status
+                 (S            => TEST_ERROR,
+                  Message      => Ada.Exceptions.Exception_Message (E),
+                  Long_Message => Ada.Exceptions.Exception_Information (E),
+                  R            => Result);
          end;
       end Run_A_Command;
 
