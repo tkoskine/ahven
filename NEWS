@@ -5,6 +5,23 @@ Changes
 -------
 	* Various procedure descriptions in the API documentation
 	  were improved.
+	* Character limit of long messages in test results have been
+	  increased to 1024. On some compilers this means that
+	  memory usage is over 1 kilobytes per test result.
+	* New constant: Ahven.Max_Long_String_Len
+	* Exception backtraces are now stored to test results
+	  when test fails or has an error.
+
+Bugs fixed
+----------
+	* TAP runner did not output multiline (long) messages correctly.
+	  This is now fixed.
+
+Internal
+--------
+	* New package: Ahven.Long_AStrings
+	* Some coding style fixes.
+
 
 2012-03-05 Ahven 2.2
 ====================
