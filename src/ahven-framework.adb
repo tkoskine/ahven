@@ -228,10 +228,10 @@ package body Ahven.Framework is
       end Command_Task;
 
       procedure Run_A_Command is
-         procedure Set_Status (S :        Test_Status;
-                               Message :        String;
+         procedure Set_Status (S            :        Test_Status;
+                               Message      :        String;
                                Long_Message :        String;
-                               R : in out Test_Results)
+                               R            : in out Test_Results)
          is
          begin
             R.Set_Status (S);
@@ -249,10 +249,10 @@ package body Ahven.Framework is
          exception
             when E : Assertion_Error =>
                Set_Status
-                 (S => TEST_FAIL,
-                  Message => Ada.Exceptions.Exception_Message (E),
+                 (S            => TEST_FAIL,
+                  Message      => Ada.Exceptions.Exception_Message (E),
                   Long_Message => Ada.Exceptions.Exception_Information (E),
-                  R => Result);
+                  R            => Result);
             when E : Test_Skipped_Error =>
                Set_Status
                  (S            => TEST_SKIP,
@@ -419,8 +419,7 @@ package body Ahven.Framework is
          end if;
       end Exec;
 
-      procedure Run_All is new Test_Command_List.For_Each
-        (Action => Exec);
+      procedure Run_All is new Test_Command_List.For_Each (Action => Exec);
    begin
       Run_All (T.Routines);
    end Run;
