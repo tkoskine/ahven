@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2007-2009 Tero Koskinen <tero.koskinen@iki.fi>
+# Copyright (c) 2007-2013 Tero Koskinen <tero.koskinen@iki.fi>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -32,6 +32,7 @@ SOURCES=src/ahven-framework.adb src/ahven-framework.ads \
 	src/ahven-xml_runner.adb src/ahven-xml_runner.ads \
 	src/ahven-tap_runner.adb src/ahven-tap_runner.ads \
 	src/ahven-astrings.ads \
+	src/ahven-long_astrings.ads \
 	src/${OS_VERSION}/ahven_compat.adb src/${OS_VERSION}/ahven_compat.ads \
 	src/ahven-slist.adb src/ahven-slist.ads
 
@@ -48,6 +49,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-temporary_output.ali \
 	lib/ahven-text_runner.ali \
 	lib/ahven-astrings.ali \
+	lib/ahven-long_astrings.ali \
 	lib/ahven-xml_runner.ali
 
 STATIC_LIBRARY=libahven.a
@@ -88,7 +90,7 @@ distclean:
 
 install: install_lib install_docs
 
-install_lib:
+install_lib: build_lib
 	mkdir -p $(PREFIX)/include/ahven
 	mkdir -p $(LIBDIR)/ahven
 	mkdir -p $(PREFIX)/lib/gnat
@@ -97,7 +99,7 @@ install_lib:
 	$(INSTALL) -m 644 lib/$(STATIC_LIBRARY) $(LIBDIR)/ahven
 	$(INSTALL) -m 644 $(GPR_FILE) $(PREFIX)/lib/gnat
 
-install_docs:
+install_docs: userguide
 	mkdir -p $(PREFIX)/share/doc/ahven
 	cp -r doc/manual/en/build/html $(PREFIX)/share/doc/ahven
 
