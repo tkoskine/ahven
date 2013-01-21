@@ -22,6 +22,14 @@ Internal
 	* New package: Ahven.Long_AStrings
 	* Some coding style fixes.
 
+Known issues
+------------
+	* On Fedora 17/18 you need to first install libgnat-static package:
+
+	  sudo yum install libgnat-static
+
+	  Otherwise GNAT will die with internal error when building Ahven.
+
 
 2012-03-05 Ahven 2.2
 ====================
