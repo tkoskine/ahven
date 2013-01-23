@@ -14,7 +14,7 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 2.2 has 2.4K SLOC; 588 statements; 1228 declarations)
+* Small size (Ahven 2.3 has 2.8K SLOC; 718 statements; 1363 declarations)
 * JUnit-compatible test results in XML format;
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
@@ -179,7 +179,7 @@ Incremental release including bug fixes and new features.
 Ahven 1.0 (2007-10-24)
 ''''''''''''''''''''''
 
-Initial release. (See `News`_ for details.) 
+Initial release. (See `News`_ for details.)
 
 
 Download
@@ -198,7 +198,7 @@ Debian package
 
 Debian stable (6.0) provides Ahven 1.7 as libahven17.0 and libahven1-dev packages.
 
-One can install the packages with command *apt-get install libahven17 libahven-dev*.
+One can install the packages with command *apt-get install libahven17.0 libahven1-dev*.
 
 Installation
 ------------
@@ -255,15 +255,15 @@ Example:
   janusada\prepare.bat
   janusada\update.bat
   janusada\compile.bat
-  
+
 When compilation is finished, you have tap_test.exe in the 'test_obj'
 directory.
 
 Documentation
 -------------
 
-* The API documentation (for Ahven 2.1):
-  http://ahven.stronglytyped.org/api-2.1/index.html
+* The API documentation (for Ahven 2.3):
+  http://ahven.stronglytyped.org/api-2.3/index.html
 * The API documentation (for Ahven 1.8):
   http://ahven.stronglytyped.org/api/index.html
 * Tutorial:
