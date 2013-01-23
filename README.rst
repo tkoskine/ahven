@@ -32,26 +32,39 @@ See also
 Platforms
 ---------
 
-Ahven 2.2 compiles and passes its test suite on following platforms
+Ahven 2.3 compiles and passes its test suite on following platforms
 
 +-----------------------+-------+-------------------------+
 | OS                    |  Arch | Compiler                |
 +=======================+========+========================+
-| OpenBSD5.0            | amd64  | FSF GCC 4.3.5          |
+| Fedora Linux 18       | x86_64 | FSF GCC 4.7.2          |
 +-----------------------+--------+------------------------+
-| Fedora Linux 16       | x86_64 | FSF GCC 4.6.2          |
+| Debian GNU/Linux 6.0  | i386   | FSF GCC 4.4            |
 +-----------------------+--------+------------------------+
-| Fedora Linux 16       | x86_64 | GNAT GPL 2011          |
+| Debian GNU/Linux 6.0  | x86_64 | FSF GCC 4.4            |
 +-----------------------+--------+------------------------+
-| Windows XP            | i386   | Janus/Ada 3.1.2beta    |
+| Windows 7             | x86_64 | Janus/Ada 3.1.2beta    |
 +-----------------------+--------+------------------------+
-| Windows XP            | i386   | GNAT GPL 2009          |
+| Windows 7             | x86_64 | GNAT GPL 2012          |
++-----------------------+--------+------------------------+
+| Wine 1.5 on Linux     | i386   | Janus/Ada 3.1.2beta    |
 +-----------------------+--------+------------------------+
 | Windows XP            | i386   | Irvine ICC Ada 9.0beta |
 +-----------------------+--------+------------------------+
 
 News
 ----
+
+Ahven 2.3 (2013-01-24)
+''''''''''''''''''''''
+
+This is a minor feature release.
+
+Starting from this release, the exception backtraces are now
+stored to the test results and printed out along with the results.
+In addition, the documentation received some improvements and
+output of multiline messages from TAP_Runner was fixed.
+
 
 Ahven 2.2 (2012-03-05)
 ''''''''''''''''''''''
