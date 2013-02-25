@@ -111,13 +111,6 @@ Alternative directory can be set by overwriting the *PREFIX* variable.
 
     $ make OS_VERSION=unix PREFIX=/opt/ada install
 
-GNAT 3.15p
-==========
-
-Version 3.15p of GNAT does not understand some features used in
-the default GNAT project files. Therefore, you need to use
-project files from the *contrib/gnat315p* directory.
-
 ObjectAda
 =========
 
