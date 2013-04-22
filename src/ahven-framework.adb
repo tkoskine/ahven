@@ -757,10 +757,10 @@ package body Ahven.Framework is
       end Finalize;
 
       procedure Adjust (Target : in out List) is
-         Target_Last : Node_Access := null;
+         Target_Last  : Node_Access := null;
          Target_First : Node_Access := null;
-         Current : Node_Access := Target.First;
-         New_Node : Node_Access;
+         Current      : Node_Access := Target.First;
+         New_Node     : Node_Access;
       begin
          while Current /= null loop
             New_Node := new Node'(Data => new Test'Class'(Current.Data.all),
