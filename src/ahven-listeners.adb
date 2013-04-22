@@ -18,6 +18,9 @@ package body Ahven.Listeners is
    procedure Add_Skipped (Listener : in out Result_Listener;
                           Info     :        Context) is
    begin
+      -- By default, we treat skipped tests as Failures.
+      -- This is for compatibility with earlier API
+      -- which did not know Skipped tests.
       Add_Failure (Result_Listener'Class (Listener), Info);
    end Add_Skipped;
 end Ahven.Listeners;

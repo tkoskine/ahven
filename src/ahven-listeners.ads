@@ -56,6 +56,10 @@ package Ahven.Listeners is
    procedure Add_Skipped (Listener : in out Result_Listener;
                           Info     :        Context);
    -- Called when user wants to skip the test.
+   --
+   -- By default, skipped tests are treated as failures.
+   -- Listeners should reimplement this function if
+   -- they want to report skipped tests separately.
 
    procedure Add_Error (Listener : in out Result_Listener;
                         Info     :        Context) is abstract;
