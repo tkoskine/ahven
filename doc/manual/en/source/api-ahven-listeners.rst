@@ -39,7 +39,7 @@ Context
          when TEST_RUN =>
             Routine_Name : AStrings.Bounded_String;
             Message      : AStrings.Bounded_String;
-            Long_Message : AStrings.Bounded_String;
+            Long_Message : Long_AStrings.Bounded_String;
       end case;
    end record;
 
