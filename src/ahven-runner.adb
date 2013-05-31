@@ -32,6 +32,12 @@ package body Ahven.Runner is
       Parameters.Parse_Parameters (Parameters.NORMAL_PARAMETERS, Params);
       Set_Output_Capture (Listener, Parameters.Capture (Params));
 
+      -- Execute only tests which match to the given name.
+      --
+      -- Sinle_Test procedure is somewhat misleading since we
+      -- can actually execute more than one test if there are multiple
+      -- matching names or if a whole test suite or a test case
+      -- matches the given name.
       if Parameters.Single_Test (Params) then
          Framework.Execute
            (T => Suite, Test_Name => Parameters.Test_Name (Params),
