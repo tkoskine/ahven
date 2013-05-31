@@ -267,7 +267,7 @@ Execute
 Call Test class' Run method and place the test outcome to Result.
 The procedure calls Start_Test of every listener before calling
 the Run procedure and End_Test after calling the Run procedure.
-Timeout specifies the maximum execution time for a test.
+Timeout specifies the maximum execution time for each test.
 
 
 Execute
@@ -294,7 +294,7 @@ Execute
 
 Same as Execute above, but call the Run procedure which
 takes Test_Name parameter. Timeout specifies the maximum execution
-time for a test.
+time for each test.
 
 
 Get_Name
