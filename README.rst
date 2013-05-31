@@ -14,7 +14,7 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 2.2 has 2.4K SLOC; 588 statements; 1228 declarations)
+* Small size (Ahven 2.3 has 2.8K SLOC; 718 statements; 1363 declarations)
 * JUnit-compatible test results in XML format;
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
@@ -32,26 +32,39 @@ See also
 Platforms
 ---------
 
-Ahven 2.2 compiles and passes its test suite on following platforms
+Ahven 2.3 compiles and passes its test suite on following platforms
 
-+-----------------------+-------+-------------------------+
-| OS                    |  Arch | Compiler                |
++-----------------------+--------+------------------------+
+| OS                    |  Arch  | Compiler               |
 +=======================+========+========================+
-| OpenBSD5.0            | amd64  | FSF GCC 4.3.5          |
+| Fedora Linux 18       | x86_64 | FSF GCC 4.7.2          |
 +-----------------------+--------+------------------------+
-| Fedora Linux 16       | x86_64 | FSF GCC 4.6.2          |
+| Debian GNU/Linux 6.0  | i386   | FSF GCC 4.4            |
 +-----------------------+--------+------------------------+
-| Fedora Linux 16       | x86_64 | GNAT GPL 2011          |
+| Debian GNU/Linux 6.0  | x86_64 | FSF GCC 4.4            |
 +-----------------------+--------+------------------------+
-| Windows XP            | i386   | Janus/Ada 3.1.2beta    |
+| Windows 7             | x86_64 | Janus/Ada 3.1.2beta    |
 +-----------------------+--------+------------------------+
-| Windows XP            | i386   | GNAT GPL 2009          |
+| Windows 7             | x86_64 | GNAT GPL 2012          |
++-----------------------+--------+------------------------+
+| Wine 1.5 on Linux     | i386   | Janus/Ada 3.1.2beta    |
 +-----------------------+--------+------------------------+
 | Windows XP            | i386   | Irvine ICC Ada 9.0beta |
 +-----------------------+--------+------------------------+
 
 News
 ----
+
+Ahven 2.3 (2013-01-24)
+''''''''''''''''''''''
+
+This is a minor feature release.
+
+Starting from this release, the exception backtraces are now
+stored to the test results and printed out along with the results.
+In addition, the documentation received some improvements and
+output of multiline messages from TAP_Runner was fixed.
+
 
 Ahven 2.2 (2012-03-05)
 ''''''''''''''''''''''
@@ -166,7 +179,7 @@ Incremental release including bug fixes and new features.
 Ahven 1.0 (2007-10-24)
 ''''''''''''''''''''''
 
-Initial release. (See `News`_ for details.) 
+Initial release. (See `News`_ for details.)
 
 
 Download
@@ -185,7 +198,7 @@ Debian package
 
 Debian stable (6.0) provides Ahven 1.7 as libahven17.0 and libahven1-dev packages.
 
-One can install the packages with command *apt-get install libahven17 libahven-dev*.
+One can install the packages with command *apt-get install libahven17.0 libahven1-dev*.
 
 Installation
 ------------
@@ -242,15 +255,15 @@ Example:
   janusada\prepare.bat
   janusada\update.bat
   janusada\compile.bat
-  
+
 When compilation is finished, you have tap_test.exe in the 'test_obj'
 directory.
 
 Documentation
 -------------
 
-* The API documentation (for Ahven 2.1):
-  http://ahven.stronglytyped.org/api-2.1/index.html
+* The API documentation (for Ahven 2.3):
+  http://ahven.stronglytyped.org/api-2.3/index.html
 * The API documentation (for Ahven 1.8):
   http://ahven.stronglytyped.org/api/index.html
 * Tutorial:

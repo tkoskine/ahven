@@ -39,7 +39,7 @@ Context
          when TEST_RUN =>
             Routine_Name : AStrings.Bounded_String;
             Message      : AStrings.Bounded_String;
-            Long_Message : AStrings.Bounded_String;
+            Long_Message : Long_AStrings.Bounded_String;
       end case;
    end record;
 
@@ -96,6 +96,23 @@ Add_Error
                         Info     :        Context) is abstract;
 
 Called after there is an error in the test.
+
+Add_Skipped
+'''''''''''
+
+.. versionadded:: 2.0
+
+::
+
+   procedure Add_Skipped (Listener : in out Result_Listener;
+                          Info     :        Context);
+
+Called when user wants to skip the test.
+
+By default, skipped tests are treated as failures.
+Listeners should reimplement this function if
+they want to report skipped tests separately.
+
 
 Start_Test
 ''''''''''

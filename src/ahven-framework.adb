@@ -34,6 +34,14 @@ package body Ahven.Framework is
       Listener_Object : in out Listeners.Result_Listener'Class);
    -- Logic for Execute procedures. Action is specified by the caller.
 
+   -- Helper function to reduce some typing.
+   function To_Bounded (Source : String) return AStrings.Bounded_String is
+   begin
+      return To_Bounded_String (Source => Source,
+                                Drop   => Ada.Strings.Right);
+   end To_Bounded;
+
+
    procedure Set_Up (T : in out Test) is
    begin
       null; -- empty by default
@@ -132,9 +140,7 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         (Command_Kind   => OBJECT,
-         Name           => To_Bounded_String
-                             (Source => Name,
-                              Drop   => Ada.Strings.Right),
+         Name           => To_Bounded (Source => Name),
          Object_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -151,9 +157,7 @@ package body Ahven.Framework is
    is
       Command : constant Test_Command :=
         (Command_Kind   => SIMPLE,
-         Name           => To_Bounded_String
-                             (Source => Name,
-                              Drop   => Ada.Strings.Right),
+         Name           => To_Bounded (Source => Name),
          Simple_Routine => Routine);
    begin
       Test_Command_List.Append (T.Routines, Command);
@@ -235,9 +239,7 @@ package body Ahven.Framework is
          is
          begin
             R.Set_Status (S);
-            R.Set_Message (To_Bounded_String
-              (Source => Message,
-               Drop   => Ada.Strings.Right));
+            R.Set_Message (To_Bounded (Source => Message));
             R.Set_Long_Message (To_Bounded_String
               (Source => Long_Message,
                Drop   => Ada.Strings.Right));
@@ -458,7 +460,7 @@ package body Ahven.Framework is
 
    procedure Set_Name (T : in out Test_Case; Name : String) is
    begin
-      T.Name := To_Bounded_String (Source => Name, Drop => Ada.Strings.Right);
+      T.Name := To_Bounded (Source => Name);
    end Set_Name;
 
 
@@ -471,9 +473,7 @@ package body Ahven.Framework is
       return
         new Test_Suite'
           (Ada.Finalization.Controlled with
-           Suite_Name        => To_Bounded_String
-                                  (Source => Suite_Name,
-                                   Drop   => Ada.Strings.Right),
+           Suite_Name        => To_Bounded (Source => Suite_Name),
            Test_Cases        => Test_List.Empty_List,
            Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
@@ -482,9 +482,7 @@ package body Ahven.Framework is
      return Test_Suite is
    begin
       return (Ada.Finalization.Controlled with
-              Suite_Name        => To_Bounded_String
-                                     (Source => Suite_Name,
-                                      Drop   => Ada.Strings.Right),
+              Suite_Name        => To_Bounded (Source => Suite_Name),
               Test_Cases        => Test_List.Empty_List,
               Static_Test_Cases => Indefinite_Test_List.Empty_List);
    end Create_Suite;
@@ -518,9 +516,6 @@ package body Ahven.Framework is
       --
       -- Execute_Cases is for normal test list
       -- and Execute_Static_Cases is for indefinite test list.
-      --
-      -- Normal test list does not have For_Each procedure,
-      -- so we need to loop manually.
 
       -- A helper procedure which runs Execute for the given test.
       procedure Execute_Test (Current : in out Test'Class) is
@@ -762,10 +757,10 @@ package body Ahven.Framework is
       end Finalize;
 
       procedure Adjust (Target : in out List) is
-         Target_Last : Node_Access := null;
+         Target_Last  : Node_Access := null;
          Target_First : Node_Access := null;
-         Current : Node_Access := Target.First;
-         New_Node : Node_Access;
+         Current      : Node_Access := Target.First;
+         New_Node     : Node_Access;
       begin
          while Current /= null loop
             New_Node := new Node'(Data => new Test'Class'(Current.Data.all),

@@ -36,7 +36,7 @@ Ahven is distributed under permissive ISC license (shown below).
 ::
 
     --
-    -- Copyright (c) 2008, 2009, 2010 Tero Koskinen <tero.koskinen@iki.fi>
+    -- Copyright (c) 2007-2013 Tero Koskinen <tero.koskinen@iki.fi>
     --
     -- Permission to use, copy, modify, and distribute this software for any
     -- purpose with or without fee is hereby granted, provided that the above
@@ -111,13 +111,6 @@ Alternative directory can be set by overwriting the *PREFIX* variable.
 
     $ make OS_VERSION=unix PREFIX=/opt/ada install
 
-GNAT 3.15p
-==========
-
-Version 3.15p of GNAT does not understand some features used in
-the default GNAT project files. Therefore, you need to use
-project files from the *contrib/gnat315p* directory.
-
 ObjectAda
 =========
 
@@ -131,14 +124,14 @@ Irvine ICCAda
 
 Easiest way to build Ahven with ICCAda is to use *icm* utility::
 
-    C:\ahven-2.2>cd src
-    C:\ahven-2.2\src>icm new
-    C:\ahven-2.2\src>icm scan *.ad? windows\*.ad?
-    C:\ahven-2.2\src>icm make libmain
-    C:\ahven-2.2\src>cd ..\test
-    C:\ahven-2.2\test>icm new -search=..\src
-    C:\ahven-2.2\test>icm scan *.ad?
-    C:\ahven-2.2\test>icm make tester
+    C:\ahven-2.4>cd src
+    C:\ahven-2.4\src>icm new
+    C:\ahven-2.4\src>icm scan *.ad? windows\*.ad?
+    C:\ahven-2.4\src>icm make libmain
+    C:\ahven-2.4\src>cd ..\test
+    C:\ahven-2.4\test>icm new -search=..\src
+    C:\ahven-2.4\test>icm scan *.ad?
+    C:\ahven-2.4\test>icm make tester
   
 
 Janus/Ada
@@ -151,7 +144,7 @@ file *prepare.bat*.
 
 ::
 
-    C:\ahven-2.2>janusada\prepare.bat
+    C:\ahven-2.4>janusada\prepare.bat
 
 Before compiling the library, you need to run
 the preparation script *janusada\\prepare.bat*.
@@ -160,7 +153,7 @@ by running *janusada\\update.bat*.
 
 ::
 
-    C:\ahven-2.2>janusada\update.bat
+    C:\ahven-2.4>janusada\update.bat
 
 Now you are ready to compile the project.
 This happens by running
@@ -168,7 +161,7 @@ This happens by running
 
 ::
 
-    C:\ahven-2.2>janusada\compile.bat
+    C:\ahven-2.4>janusada\compile.bat
 
 After a while, you should have compiled library files
 in the *lib_obj* directory and
@@ -177,7 +170,7 @@ in the *test_obj* directory.
 The executable is Ahven's test  suite and if it reports
 no errors, everything is working as expected.
 
-At the time of writing (Ahven 2.2), every test, which is not skipped,
+At the time of writing (Ahven 2.4), every test, which is not skipped,
 should pass with the latest version of Janus/Ada.
 
 However, with earlier versions of Janus/Ada some tests will fail.
