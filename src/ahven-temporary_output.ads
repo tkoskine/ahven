@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 with Ahven.AStrings;
+with Ahven.Long_AStrings;
 with Ada.Text_IO;
 
 package Ahven.Temporary_Output is
@@ -25,9 +26,6 @@ package Ahven.Temporary_Output is
    -- Create a new temporary file. Exception Temporary_File_Error
    -- is raised if the procedure cannot create a new temp file.
 
-   function Get_Name (File : Temporary_File) return String;
-   -- Return the name of the file.
-
    procedure Redirect_Output (To_File : in out Temporary_File);
    -- Redirect the standard output to the file.
    -- To_File must be opened using Create_Temp.
@@ -36,10 +34,24 @@ package Ahven.Temporary_Output is
    -- Restore the standard output to its default settings.
 
    procedure Remove_Temp (File : in out Temporary_File);
-   -- Remove the temporary file. File can be either open or closed.
+   -- Remove the temporary file. File needs be opened first.
+   -- File is automatically closed once removed.
 
    procedure Close_Temp (File : in out Temporary_File);
-   -- Close the temporary file.
+   -- Close the temporary file without removing the file.
+
+   procedure Read_Contents
+     (File     : in out Temporary_File;
+      Contents :    out Ahven.Long_AStrings.Bounded_String);
+   -- Return the contents of the temporary file.
+   --
+   -- If the temporary file has more output than what fits
+   -- to Long_AStrings.Bounded_String, then only the beginning
+   -- of the file is returned.
+   --
+   -- Note: Read_Contents will call Restore_Output automatically,
+   -- because Ada.Text_IO doesn't allow reading from a file handle
+   -- which is set as standard output (via Redirect_Output).
 
 private
    type Temporary_File is limited record

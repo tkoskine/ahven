@@ -91,16 +91,15 @@ package body Ahven.Tap_Runner is
       end if;
    end Print_Info;
 
-   procedure Print_Log_File (Filename : String; Prefix : String) is
-      Handle : File_Type;
-      Char   : Character := ' ';
+   procedure Print_Log_File (Log    : Long_AStrings.Bounded_String;
+                             Prefix : String) is
+      use Long_AStrings;
+
       First  : Boolean := True;
       Start_Of_Line : Boolean := True;
    begin
-      Open (Handle, In_File, Filename);
-      loop
-         exit when End_Of_File (Handle);
-         Get (Handle, Char);
+
+      for I in Long_AStrings.Length_Range range 1 .. Length (Log) loop
          if First then
             Put_Line (Prefix & "===== Output =======");
             First := False;
@@ -109,13 +108,13 @@ package body Ahven.Tap_Runner is
             Put (Prefix);
             Start_Of_Line := False;
          end if;
-         Put (Char);
-         if End_Of_Line (Handle) then
+         if Element (Log, I) = Ada.Characters.Latin_1.LF then
             New_Line;
             Start_Of_Line := True;
+         else
+            Put (Element (Log, I));
          end if;
       end loop;
-      Close (Handle);
       if not First then
          Put_Line (Prefix & "====================");
       end if;
@@ -132,7 +131,6 @@ package body Ahven.Tap_Runner is
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
-         Temporary_Output.Close_Temp (Listener.Output_File);
       end if;
 
       Put ("ok ");
@@ -149,7 +147,6 @@ package body Ahven.Tap_Runner is
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
-         Temporary_Output.Close_Temp (Listener.Output_File);
       end if;
 
       Put ("not ok ");
@@ -160,9 +157,12 @@ package body Ahven.Tap_Runner is
       if Listener.Verbose then
          Print_Info (Info);
          if Listener.Capture_Output then
-            Print_Log_File
-              (Filename => Temporary_Output.Get_Name (Listener.Output_File),
-               Prefix   => "# ");
+            declare
+               Log : Long_AStrings.Bounded_String;
+            begin
+               Temporary_Output.Read_Contents (Listener.Output_File, Log);
+               Print_Log_File (Log => Log, Prefix   => "# ");
+            end;
          end if;
       end if;
    end Report_Not_Ok;
@@ -186,7 +186,6 @@ package body Ahven.Tap_Runner is
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
-         Temporary_Output.Close_Temp (Listener.Output_File);
       end if;
 
       Put ("ok ");
@@ -210,16 +209,12 @@ package body Ahven.Tap_Runner is
 
    procedure End_Test (Listener : in out Tap_Listener;
                        Info     :        Context) is
-      Handle : Ada.Text_IO.File_Type;
    begin
       if Listener.Capture_Output then
-         Ada.Text_IO.Open (Handle, Ada.Text_IO.Out_File,
-                           Temporary_Output.Get_Name (Listener.Output_File));
-         Ada.Text_IO.Delete (Handle);
+         Temporary_Output.Remove_Temp (Listener.Output_File);
       end if;
    exception
       when Name_Error =>
-         -- Missing file is safe to ignore, we are going to delete it anyway
          null;
    end End_Test;
 end Ahven.Tap_Runner;

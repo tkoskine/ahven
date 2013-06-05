@@ -21,6 +21,7 @@ with Ada.Characters.Latin_1;
 with Ahven.Runner;
 with Ahven.XML_Runner;
 with Ahven.AStrings;
+with Ahven.Long_AStrings;
 
 use Ada.Text_IO;
 use Ada.Strings.Fixed;
@@ -52,7 +53,7 @@ package body Ahven.Text_Runner is
    procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False);
 
-   procedure Print_Log_File (Filename : String);
+   procedure Print_Log_File (Log : Long_AStrings.Bounded_String);
 
    procedure Pad (Level : Natural) is
    begin
@@ -182,8 +183,8 @@ package body Ahven.Text_Runner is
          exit Test_Loop when not Is_Valid (Position);
          Print_Test (Data (Position), Level, Status);
          if Print_Log and
-           (Length (Get_Output_File (Data (Position))) > 0) then
-            Print_Log_File (To_String (Get_Output_File (Data (Position))));
+           (Long_AStrings.Length (Get_Log_Data (Data (Position))) > 0) then
+            Print_Log_File (Get_Log_Data (Data (Position)));
          end if;
          Position := Next (Position);
       end loop Test_Loop;
@@ -288,25 +289,23 @@ package body Ahven.Text_Runner is
       end if;
    end Report_Results;
 
-   procedure Print_Log_File (Filename : String) is
-      Handle : File_Type;
+   procedure Print_Log_File (Log : Long_AStrings.Bounded_String) is
+      use Ahven.Long_Astrings;
+
       Char   : Character := ' ';
       First  : Boolean := True;
    begin
-      Open (Handle, In_File, Filename);
-      loop
-         exit when End_Of_File (Handle);
-         Get (Handle, Char);
+      for I in Long_AStrings.Length_Range range 1 .. Length (Log) loop
          if First then
             Put_Line ("===== Output =======");
             First := False;
          end if;
-         Put (Char);
-         if End_Of_Line (Handle) then
+         if Element (Log, I) = Ada.Characters.Latin_1.LF then
             New_Line;
+         else
+            Put (Element (Log, I));
          end if;
       end loop;
-      Close (Handle);
       if not First then
          Put_Line ("====================");
       end if;

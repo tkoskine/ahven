@@ -91,6 +91,12 @@ package body Ahven.Results is
       Set_Output_File (Info, To_Bounded_String (Filename));
    end Set_Output_File;
 
+   procedure Set_Log_Data (Info : in out Result_Info;
+                           Data :        Long_AStrings.Bounded_String) is
+   begin
+      Info.Log := Data;
+   end Set_Log_Data;
+
    function Get_Test_Name (Info : Result_Info) return String is
    begin
       return To_String (Info.Test_Name);
@@ -120,6 +126,12 @@ package body Ahven.Results is
    begin
       return Info.Output_File;
    end Get_Output_File;
+
+   function Get_Log_Data (Info : Result_Info)
+     return Long_AStrings.Bounded_String is
+   begin
+      return Info.Log;
+   end Get_Log_Data;
 
    procedure Add_Child (Collection : in out Result_Collection;
                         Child      :        Result_Collection_Access) is
