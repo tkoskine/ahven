@@ -13,13 +13,32 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
-with Ada.Characters.Latin_1;
+with Ada.Strings.Fixed;
 
 package body Ahven.Temporary_Output is
+   use Ahven.AStrings;
+   use Ada.Strings.Fixed;
+   Temp_Counter : Natural := 0;
+
    procedure Create_Temp (File : out Temporary_File) is
+      Filename : constant String := "ahven_temp_" &
+        Trim (Integer'Image (Temp_Counter), Ada.Strings.Both);
    begin
-      Ada.Text_IO.Create (File.Handle, Ada.Text_IO.Out_File, "");
+      if Temp_Counter < Natural'Last then
+         Temp_Counter := Temp_Counter + 1;
+      else
+         raise Temporary_File_Error;
+      end if;
+
+      File.Name := To_Bounded_String (Filename);
+
+      Ada.Text_IO.Create (File.Handle, Ada.Text_IO.Out_File, Filename);
    end Create_Temp;
+
+   function Get_Name (File : Temporary_File) return String is
+   begin
+      return To_String (File.Name);
+   end Get_Name;
 
    procedure Redirect_Output (To_File : in out Temporary_File) is
    begin
@@ -35,40 +54,16 @@ package body Ahven.Temporary_Output is
 
    procedure Remove_Temp (File : in out Temporary_File) is
    begin
-      if Ada.Text_IO.Is_Open (File.Handle) then
-         Ada.Text_IO.Delete (File.Handle);
+      if not Ada.Text_IO.Is_Open (File.Handle) then
+         Ada.Text_IO.Open (File.Handle, Ada.Text_IO.Out_File,
+                           To_String (File.Name));
       end if;
+      Ada.Text_IO.Delete (File.Handle);
    end Remove_Temp;
 
    procedure Close_Temp (File : in out Temporary_File) is
    begin
       Ada.Text_IO.Close (File.Handle);
    end Close_Temp;
-
-   procedure Read_Contents
-     (File     : in out Temporary_File;
-      Contents :    out Ahven.Long_AStrings.Bounded_String)
-   is
-      Ch : Character;
-   begin
-      Restore_Output;
-      Contents := Long_AStrings.Null_Bounded_String;
-      if not Ada.Text_IO.Is_Open (File.Handle) then
-         return;
-      end if;
-
-      Ada.Text_IO.Flush (File.Handle);
-      Ada.Text_IO.Reset (File.Handle, Ada.Text_IO.In_File);
-
-      loop
-         exit when Ada.Text_IO.End_Of_File (File.Handle);
-
-         Ada.Text_IO.Get (File.Handle, Ch);
-         Long_AStrings.Append (Contents, Ch);
-         if Ada.Text_IO.End_Of_Line (File.Handle) then
-            Long_AStrings.Append (Contents, Ada.Characters.Latin_1.LF);
-         end if;
-      end loop;
-   end Read_Contents;
 
 end Ahven.Temporary_Output;

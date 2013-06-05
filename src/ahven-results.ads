@@ -80,11 +80,6 @@ package Ahven.Results is
                               Filename :        String);
    -- Set the name of the test output file.
 
-   procedure Set_Log_Data (Info : in out Result_Info;
-                           Data :        Long_AStrings.Bounded_String);
-   -- Set the log data of the test, in case the test fails or
-   -- has an error.
-
    function Get_Test_Name (Info : Result_Info) return String;
    -- Return the test name of the result info.
 
@@ -103,9 +98,6 @@ package Ahven.Results is
    function Get_Output_File (Info : Result_Info) return Bounded_String;
    -- Return the name of the output file.
    -- Empty string is returned in case there is no output file.
-
-   function Get_Log_Data (Info : Result_Info)
-     return Long_AStrings.Bounded_String;
 
    type Result_Collection is limited private;
    -- A collection of Result_Info objects.
@@ -242,8 +234,6 @@ private
       Message        : Bounded_String  := Null_Bounded_String;
       Long_Message   : Long_AStrings.Bounded_String
         := Long_AStrings.Null_Bounded_String;
-      Log            : Long_AStrings.Bounded_String
-        := Long_AStrings.Null_Bounded_String;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
@@ -252,8 +242,7 @@ private
       Message        => Null_Bounded_String,
       Long_Message   => Long_AStrings.Null_Bounded_String,
       Execution_Time => 0.0,
-      Output_File    => Null_Bounded_String,
-      Log            => Long_AStrings.Null_Bounded_String);
+      Output_File    => Null_Bounded_String);
 
    package Result_Info_List is
      new Ahven.SList (Element_Type => Result_Info);

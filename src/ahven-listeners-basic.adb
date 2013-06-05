@@ -37,14 +37,6 @@ package body Ahven.Listeners.Basic is
          Results.Set_Test_Name (Listener.Last_Info, Info.Test_Name);
          Results.Set_Message (Listener.Last_Info, Info.Message);
          Results.Set_Long_Message (Listener.Last_Info, Info.Long_Message);
-         if Result = FAILURE_RESULT or Result = ERROR_RESULT then
-            declare
-               Log : Long_AStrings.Bounded_String;
-            begin
-               Temporary_Output.Read_Contents (Listener.Output_File, Log);
-               Results.Set_Log_Data (Listener.Last_Info, Log);
-            end;
-         end if;
       end if;
    end Set_Last_Test_Info;
 
@@ -121,6 +113,11 @@ package body Ahven.Listeners.Basic is
                -- the normal output now and close the temporary file.
                Temporary_Output.Restore_Output;
                Temporary_Output.Close_Temp (Listener.Output_File);
+
+               -- Saving the name of the temporary file to the test result,
+               -- so the file can be deleted later
+               Set_Output_File
+                 (My_Info, Temporary_Output.Get_Name (Listener.Output_File));
             end if;
 
             Set_Message (My_Info, Get_Message (Listener.Last_Info));
