@@ -18,13 +18,14 @@ with Ada.Strings.Fixed;
 package body Ahven.Temporary_Output is
    use Ahven.AStrings;
    use Ada.Strings.Fixed;
-   Temp_Counter : Natural := 0;
+   subtype Temp_Counter_Type is Long_Integer;
+   Temp_Counter : Temp_Counter_Type := 0;
 
    procedure Create_Temp (File : out Temporary_File) is
       Filename : constant String := "ahven_temp_" &
-        Trim (Integer'Image (Temp_Counter), Ada.Strings.Both);
+        Trim (Long_Integer'Image (Temp_Counter), Ada.Strings.Both);
    begin
-      if Temp_Counter < Natural'Last then
+      if Temp_Counter < Temp_Counter_Type'Last then
          Temp_Counter := Temp_Counter + 1;
       else
          raise Temporary_File_Error;
