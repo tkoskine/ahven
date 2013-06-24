@@ -16,7 +16,8 @@ Run
 
    procedure Run (Suite : in out Framework.Test'Class);
 
-Run the suite and print the results.
+Run the suite and print the results in Test-Anything-Protocol (TAP)
+format. Skipped tests are reported as *ok* with *# SKIP* text in description.
 
 Add_Pass
 ''''''''

@@ -19,7 +19,7 @@ Run
 
    procedure Run (Suite : in out Framework.Test_Suite'Class);
 
-Run the suite and write the results to a file.
+Run the suite and write the results to a file in XML format.
 
 Run
 '''
