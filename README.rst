@@ -5,9 +5,11 @@ Ahven - Unit Testing Library for Ada Programming Language
 .. contents::
    :depth: 1
 
-Ahven is a simple unit test library (or a framework) for Ada programming language. It is loosely modelled after `JUnit`_ and some ideas are taken from AUnit.
+Ahven is a simple unit test library (or a framework) for Ada programming language.
+It is loosely modelled after `JUnit`_ and some ideas are taken from AUnit.
 
-Ahven is free software distributed under permissive ISC license and should work with any Ada 95 or 2005 compiler.
+Ahven is free software distributed under permissive ISC license and should work
+with any Ada 95, 2005, or 2012 compiler.
 
 
 Features
