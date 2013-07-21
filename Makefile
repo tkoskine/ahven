@@ -121,6 +121,7 @@ control:
 docs: userguide
 
 old_docs: ahven.specs
+	echo This method is deprecated. Please use 'docs' target.
 	mkdir -p doc/api
 	adabrowse -c adabrowse.conf -i -f@ahven.specs -o doc/api/
 

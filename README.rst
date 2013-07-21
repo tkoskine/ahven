@@ -19,7 +19,7 @@ Features
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
 * Plain Ada 95 code, no Ada 2005 features used,
-  but can be compiled as Ada 2005 code if needed
+  but can be compiled as Ada 2005 or Ada 2012 code if needed
 * Portable across different compilers and operating systems
 * Permissive Open Source license (ISC)
 
@@ -203,24 +203,19 @@ One can install the packages with command *apt-get install libahven17.0 libahven
 Installation
 ------------
 
-For building Ahven source code you need Ada 95
-compiler, for example GNAT, Janus/Ada, or ObjectAda.
+For building Ahven source code you need Ada 95 compiler, for example GNAT,
+Janus/Ada, or ObjectAda.
 
-Optionally, you need AdaBrowse to build the documentation
-and AdaControl to run coding style checks.
+Optionally, you need Sphinx_ and sphinxcontrib-adadomain (Python packages)
+to build the documentation and AdaControl to run coding style checks.
 
-The default Makefile compiles code using gnatmake.
-Internally, gnatmake is given a GNAT project file,
-which works with GNAT GPL series and relatively
-recent FSF GNAT. If you plan to compile Ahven
-with GNAT 3.15p, you need to modify the project
-file slightly and remove incompatible compiler flags.
+The default Makefile compiles code using gnatmake. Internally, gnatmake is
+given a GNAT project file, which works with GNAT GPL series and relatively
+recent FSF GNAT.
 
-If you use another compiler, you need to customize
-the Makefile by yourself. Please note, that 'src'
-directory has platform specific subdirectories 'unix'
-and 'windows. You need to select the sources from one
-of them also.
+If you use another compiler, you need to customize the Makefile by yourself.
+Please note, that 'src' directory has platform specific subdirectories 'unix'
+and 'windows. You need to select the sources from one of them also.
 
 Installation: GNAT
 ''''''''''''''''''
@@ -231,7 +226,7 @@ and the unit tests.
 Command *make check* will run the unit tests.
 
 If you want to build the API documentation, you
-need AdaBrowse tool. Command 'make docs' will
+need Sphinx_ tool. Command 'make docs' will
 build the API documentation.
 
 Installation happens by typing *make install*
