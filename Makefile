@@ -6,3 +6,6 @@ check:
 
 install:
 	cd gnat && $(MAKE) install
+
+clean:
+	cd gnat && $(MAKE) clean
