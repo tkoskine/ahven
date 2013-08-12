@@ -5,12 +5,24 @@ library project Build_Ahven is
    type OS_Type is ("unix", "windows");
    OS_Version : OS_Type := external ("OS_VERSION", "windows");
 
-   Version := "18";
+   Version := "24";
 
    for Library_Name      use "ahven";
    for Library_Kind      use "dynamic";
-   for Library_Version   use "libahven.so.24";
-   for Library_Interface use ("Ahven");
+   for Library_Version   use "libahven.so." & Version;
+   for Library_Interface use ("Ahven",
+                              "Ahven.Framework",
+                              "Ahven.Listeners",
+                              "Ahven.Listeners.Basic",
+                              "Ahven.AStrings",
+                              "Ahven.Long_AStrings",
+                              "Ahven.Results",
+                              "Ahven.Parameters",
+                              "Ahven.SList",
+                              "Ahven.Runner",
+                              "Ahven.Tap_Runner",
+                              "Ahven.Text_Runner",
+                              "Ahven.XML_Runner");
    for Source_List_File  use "ahven.lgpr";
    for Object_Dir        use Comfignat.Objdir;
    for Library_Src_Dir   use Comfignat.Stage_Includedir & "/ahven";
