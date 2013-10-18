@@ -16,6 +16,12 @@
 
 with Ahven.Framework;
 
+-- A package for handling command line parameters
+--
+-- Parameters are handled for normal and TAP test runners
+-- and the used mode is specified by giving either
+-- NORMAL_PARAMETERS or TAP_PARAMETERS parameter to
+-- Parse_Parameters procedure.
 package Ahven.Parameters is
 
    Invalid_Parameter : exception;
