@@ -4,6 +4,9 @@ default:
 check:
 	cd gnat && $(MAKE) check
 
+html:
+	cd gnat && $(MAKE) html
+
 install:
 	cd gnat && $(MAKE) install
 

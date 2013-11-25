@@ -11,9 +11,9 @@
 -- modified is included with the above copyright notice.
 
 
--- This file is part of Comfignat – common, convenient, command-line-controlled
--- compile-time configuration of software built with the GNAT tools. For more
--- information about Comfignat, see http://www.Rombobeorn.se/Comfignat/.
+-- This file is part of Comfignat 1.2 – common, convenient, command-line-
+-- controlled compile-time configuration of software built with the GNAT tools.
+-- For information about Comfignat, see http://www.Rombobeorn.se/Comfignat/.
 
 
 -- This project file defines directory variables for use in build-controlling
@@ -78,12 +78,13 @@ abstract project Comfignat is
    -- tell them where to find or write different kinds of files at run time.
    -- Most of the directory names are relative to Bindir if the software was
    -- configured as a relocatable package. Otherwise they are absolute
-   -- pathnames.
+   -- pathnames. Bindir is relative to Libexecdir when the package is
+   -- relocatable.
    --
 
    -- Programs that can be run from a command prompt are in Bindir. This is
-   -- normally the same directory that the program itself is in, so this
-   -- variable is probably of little use at run time.
+   -- usually the same directory that the program itself is in, so this
+   -- variable is probably useful only to programs in Libexecdir.
    #if Bindir'Defined then
       Bindir := $Bindir;
    #else
@@ -136,6 +137,25 @@ abstract project Comfignat is
       Logdir := Localstatedir & "/log";
    #end if;
 
+   -- Small files that take part in describing the state of the system and that
+   -- exist only while the program is running, such as process identifier files
+   -- and transient Unix-domain sockets, shall be sought and created under
+   -- Runstatedir. (This is NOT the place for temporary files in general.)
+   #if Runstatedir'Defined then
+      Runstatedir := $Runstatedir;
+   #else
+      Runstatedir := "/run";
+   #end if;
+
+   -- Lock files that are used to prevent multiple programs from trying to
+   -- access a device or other resource at the same time shall be sought and
+   -- created under Lockdir.
+   #if Lockdir'Defined then
+      Lockdir := $Lockdir;
+   #else
+      Lockdir := Runstatedir & "/lock";
+   #end if;
+
    -- Source files to be used in the compilation of software using libraries
    -- are under Includedir.
    #if Includedir'Defined then
@@ -144,12 +164,32 @@ abstract project Comfignat is
       Includedir := Prefix & "/include";
    #end if;
 
+   -- If a library has installed architecture-specific source files to be used
+   -- in compilation, then those files may also be under a library-specific
+   -- subdirectory of Archincludedir.
+   #if Archincludedir'Defined then
+      Archincludedir := $Archincludedir;
+   #else
+      Archincludedir := Includedir;
+   #end if;
+
    -- Binary libraries and other architecture-specific files are under Libdir.
    #if Libdir'Defined then
       Libdir := $Libdir;
    #else
       Libdir := Exec_Prefix & "/lib";
    #end if;
+
+   -- ALI files are under a library-specific subdirectory of Alidir.
+   #if Alidir'Defined then
+      Alidir := $Alidir;
+   #else
+      Alidir := Libdir;
+   #end if;
+
+   -- A program or library that has Archincludedir, Libdir and/or Alidir
+   -- compiled-in will in those directories find only libraries compiled for
+   -- the same architecture as itself.
 
    -- GNAT project files are under GPRdir.
    #if GPRdir'Defined then
@@ -185,25 +225,6 @@ abstract project Comfignat is
       Miscdocdir := $Miscdocdir;
    #else
       Miscdocdir := Datarootdir & "/doc";
-   #end if;
-
-   -- Small files that take part in describing the state of the system, and
-   -- that exist only while the program is running, such as process identifier
-   -- files and transient Unix-domain sockets, shall be created under
-   -- Runtimedir. (This is NOT the place for temporary files in general.)
-   #if Runtimedir'Defined then
-      Runtimedir := $Runtimedir;
-   #else
-      Runtimedir := "/run";
-   #end if;
-
-   -- Lock files that are used to prevent multiple programs from trying to
-   -- access a device or other resource at the same time shall be created under
-   -- Lockdir.
-   #if Lockdir'Defined then
-      Lockdir := $Lockdir;
-   #else
-      Lockdir := Runtimedir & "/lock";
    #end if;
 
 
@@ -267,13 +288,28 @@ abstract project Comfignat is
       Stage_Includedir := Stagedir & Includedir;
    #end if;
 
+   -- If architecture-specific source files absolutely must be installed, then
+   -- those files may be placed under a library-specific subdirectory of
+   -- Stage_Archincludedir.
+   #if Stage_Archincludedir'Defined then
+      Stage_Archincludedir := $Stage_Archincludedir;
+   #else
+      Stage_Archincludedir := Stagedir & Archincludedir;
+   #end if;
+
    -- Binary libraries shall be installed in Stage_Libdir.
-   -- ALI files shall be installed in a library-specific subdirectory of
-   -- Stage_Libdir.
    #if Stage_Libdir'Defined then
       Stage_Libdir := $Stage_Libdir;
    #else
       Stage_Libdir := Stagedir & Libdir;
+   #end if;
+
+   -- ALI files shall be installed under a library-specific subdirectory of
+   -- Stage_Alidir.
+   #if Stage_Alidir'Defined then
+      Stage_Alidir := $Stage_Alidir;
+   #else
+      Stage_Alidir := Stagedir & Alidir;
    #end if;
 
 end Comfignat;
