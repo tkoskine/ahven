@@ -198,9 +198,9 @@ https://bitbucket.org/tkoskine/ahven/
 Debian package
 ''''''''''''''
 
-Debian stable (6.0) provides Ahven 1.7 as libahven17.0 and libahven1-dev packages.
+Debian stable (7.0) provides Ahven 2.1 as libahven21.0 and libahven3-dev packages.
 
-One can install the packages with command *apt-get install libahven17.0 libahven1-dev*.
+One can install the packages with command *apt-get install libahven21.0 libahven3-dev*.
 
 Installation
 ------------

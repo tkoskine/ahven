@@ -94,7 +94,10 @@ Set_Output_Capture
    procedure Set_Output_Capture (Listener : in out Basic_Listener;
                                  Capture  :        Boolean);
 
-Enable or disable Ada.Text_IO output capturing
+Enable or disable Ada.Text_IO output capturing.
+When Capture is True, all Ada.Text_IO output is redirected
+into temporary files. See Ahven.Temporary_Output package
+for details.
 
 Get_Output_Capture
 ''''''''''''''''''
