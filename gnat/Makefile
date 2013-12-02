@@ -8,3 +8,12 @@ html: ${stage_miscdocdir}/ahven/
 	cp -RHpf ${objdir}/sphinx/html ${stage_miscdocdir}/ahven
 
 build: html
+
+tests: base ahven_tests.gpr
+	${build_GPR}
+
+check: tests
+	./tester -c
+
+clean::
+	rm -f ${builddir}/*tester
