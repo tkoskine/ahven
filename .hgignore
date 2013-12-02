@@ -24,3 +24,4 @@ src\libmain.adb
 *.exe
 doc/manual/en/build
 *.metrix
+gnat/stage
