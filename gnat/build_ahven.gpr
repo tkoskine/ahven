@@ -27,7 +27,7 @@ library project Build_Ahven is
    for Object_Dir        use Comfignat.Objdir;
    for Library_Src_Dir   use Comfignat.Stage_Includedir & "/ahven";
    for Library_Dir       use Comfignat.Stage_Libdir;
-   for Library_ALI_Dir   use Comfignat.Stage_Libdir & "/ahven";
+   for Library_ALI_Dir   use Comfignat.Stage_Alidir & "/ahven";
 
    case OS_Version is
       when "unix" =>
