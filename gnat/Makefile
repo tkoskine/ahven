@@ -12,6 +12,9 @@ build: html
 tests: base ahven_tests.gpr
 	${build_GPR}
 
+${stage_miscdocdir}/ahven:
+	mkdir -p ${stage_miscdocdir}/ahven
+
 check: tests
 	./tester -c
 
