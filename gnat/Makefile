@@ -18,5 +18,9 @@ ${stage_miscdocdir}/ahven:
 check: tests
 	./tester -c
 
+check_xml: tests
+	-mkdir -p results
+	./tester -c -x -d results
+
 clean::
 	rm -f ${builddir}/*tester

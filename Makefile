@@ -6,6 +6,10 @@ default:
 check:
 	cd gnat && $(MAKE) $(OPTS) check
 
+check_xml:
+	cd gnat && $(MAKE) $(OPTS) check_xml
+
+
 html:
 	cd gnat && $(MAKE) html
 
