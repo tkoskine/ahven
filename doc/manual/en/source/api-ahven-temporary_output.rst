@@ -32,7 +32,7 @@ Create a new temporary file. Exception Temporary_File_Error
 is raised if the procedure cannot create a new temp file.
 
 The name of the file is automatically generated and
-follows form ahven_123 where "ahven_" is a constant prefix
+follows form ahven_123 where "ahven\_" is a constant prefix
 and "123" increases by one after every Create_Temp call.
 The file is created to the current working directory.
 
