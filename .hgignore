@@ -25,3 +25,4 @@ src\libmain.adb
 doc/manual/en/build
 *.metrix
 gnat/stage
+gnat/comfignat.gpr
