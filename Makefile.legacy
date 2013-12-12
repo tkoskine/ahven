@@ -53,7 +53,7 @@ ALI_FILES=lib/ahven.ali \
 	lib/ahven-xml_runner.ali
 
 STATIC_LIBRARY=libahven.a
-GPR_FILE=gnat/ahven.gpr
+GPR_FILE=gnatold/ahven.gpr
 
 default: build_all
 
@@ -69,18 +69,18 @@ lib:
 build_all: objects test_objects build_lib build_tests
 
 build_lib: objects lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_lib
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnatold/ahven_lib
 
 build_tests: test_objects build_lib
-	OS_VERSION=$(OS_VERSION) gnatmake -Pgnat/ahven_tests
+	OS_VERSION=$(OS_VERSION) gnatmake -Pgnatold/ahven_tests
 
 clean: clean_lib clean_tests clean_docs
 
 clean_lib:
-	gnatclean -q -Pgnat/ahven_lib
+	gnatclean -q -Pgnatold/ahven_lib
 
 clean_tests:
-	gnatclean -q -Pgnat/ahven_tests
+	gnatclean -q -Pgnatold/ahven_tests
 
 clean_docs:
 	rm -f doc/api/*.html ahven.specs
