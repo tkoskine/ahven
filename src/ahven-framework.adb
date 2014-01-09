@@ -41,6 +41,99 @@ package body Ahven.Framework is
                                 Drop   => Ada.Strings.Right);
    end To_Bounded;
 
+   ----------- Indefinite_Test_List -------------------
+
+
+   package body Indefinite_Test_List is
+      procedure Remove (Ptr : Node_Access) is
+         procedure Free is
+           new Ada.Unchecked_Deallocation (Object => Node,
+                                           Name   => Node_Access);
+         My_Ptr : Node_Access := Ptr;
+      begin
+         Ptr.Next := null;
+         Free_Test (My_Ptr.Data);
+         My_Ptr.Data := null;
+         Free (My_Ptr);
+      end Remove;
+
+      procedure Append (Target : in out List;
+                        Node_Data : Test'Class) is
+         New_Node : Node_Access  := null;
+      begin
+         New_Node := new Node'(Data => new Test'Class'(Node_Data),
+                               Next => null);
+
+         if Target.Last = null then
+            Target.Last := New_Node;
+            Target.First := New_Node;
+         else
+            Target.Last.Next := New_Node;
+            Target.Last := New_Node;
+         end if;
+      end Append;
+
+      procedure Clear (Target : in out List) is
+         Current_Node : Node_Access := Target.First;
+         Next_Node : Node_Access := null;
+      begin
+         while Current_Node /= null loop
+            Next_Node := Current_Node.Next;
+            Remove (Current_Node);
+            Current_Node := Next_Node;
+         end loop;
+
+         Target.First := null;
+         Target.Last := null;
+      end Clear;
+
+      procedure For_Each (Target : List) is
+         Current_Node : Node_Access := Target.First;
+      begin
+         while Current_Node /= null loop
+            Action (Current_Node.Data.all);
+            Current_Node := Current_Node.Next;
+         end loop;
+      end For_Each;
+
+      procedure Initialize (Target : in out List) is
+      begin
+         Target.Last := null;
+         Target.First := null;
+      end Initialize;
+
+      procedure Finalize (Target : in out List) is
+      begin
+         Clear (Target);
+      end Finalize;
+
+      procedure Adjust (Target : in out List) is
+         Target_Last  : Node_Access := null;
+         Target_First : Node_Access := null;
+         Current      : Node_Access := Target.First;
+         New_Node     : Node_Access;
+      begin
+         while Current /= null loop
+            New_Node := new Node'(Data => new Test'Class'(Current.Data.all),
+                                  Next => null);
+
+            if Target_Last = null then
+               Target_First := New_Node;
+            else
+               Target_Last.Next := New_Node;
+            end if;
+            Target_Last := New_Node;
+
+            Current := Current.Next;
+         end loop;
+         Target.First := Target_First;
+         Target.Last := Target_Last;
+      end Adjust;
+   end Indefinite_Test_List;
+
+   
+   ----------- Test type -------------------
+
 
    procedure Set_Up (T : in out Test) is
    begin
@@ -690,93 +783,5 @@ package body Ahven.Framework is
    end Run;
 
 
-   ----------- Indefinite_Test_List -------------------
 
-
-   package body Indefinite_Test_List is
-      procedure Remove (Ptr : Node_Access) is
-         procedure Free is
-           new Ada.Unchecked_Deallocation (Object => Node,
-                                           Name   => Node_Access);
-         My_Ptr : Node_Access := Ptr;
-      begin
-         Ptr.Next := null;
-         Free_Test (My_Ptr.Data);
-         My_Ptr.Data := null;
-         Free (My_Ptr);
-      end Remove;
-
-      procedure Append (Target : in out List;
-                        Node_Data : Test'Class) is
-         New_Node : Node_Access  := null;
-      begin
-         New_Node := new Node'(Data => new Test'Class'(Node_Data),
-                               Next => null);
-
-         if Target.Last = null then
-            Target.Last := New_Node;
-            Target.First := New_Node;
-         else
-            Target.Last.Next := New_Node;
-            Target.Last := New_Node;
-         end if;
-      end Append;
-
-      procedure Clear (Target : in out List) is
-         Current_Node : Node_Access := Target.First;
-         Next_Node : Node_Access := null;
-      begin
-         while Current_Node /= null loop
-            Next_Node := Current_Node.Next;
-            Remove (Current_Node);
-            Current_Node := Next_Node;
-         end loop;
-
-         Target.First := null;
-         Target.Last := null;
-      end Clear;
-
-      procedure For_Each (Target : List) is
-         Current_Node : Node_Access := Target.First;
-      begin
-         while Current_Node /= null loop
-            Action (Current_Node.Data.all);
-            Current_Node := Current_Node.Next;
-         end loop;
-      end For_Each;
-
-      procedure Initialize (Target : in out List) is
-      begin
-         Target.Last := null;
-         Target.First := null;
-      end Initialize;
-
-      procedure Finalize (Target : in out List) is
-      begin
-         Clear (Target);
-      end Finalize;
-
-      procedure Adjust (Target : in out List) is
-         Target_Last  : Node_Access := null;
-         Target_First : Node_Access := null;
-         Current      : Node_Access := Target.First;
-         New_Node     : Node_Access;
-      begin
-         while Current /= null loop
-            New_Node := new Node'(Data => new Test'Class'(Current.Data.all),
-                                  Next => null);
-
-            if Target_Last = null then
-               Target_First := New_Node;
-            else
-               Target_Last.Next := New_Node;
-            end if;
-            Target_Last := New_Node;
-
-            Current := Current.Next;
-         end loop;
-         Target.First := Target_First;
-         Target.Last := Target_Last;
-      end Adjust;
-   end Indefinite_Test_List;
 end Ahven.Framework;
