@@ -131,7 +131,7 @@ package body Ahven.Framework is
       end Adjust;
    end Indefinite_Test_List;
 
-   
+
    ----------- Test type -------------------
 
 
