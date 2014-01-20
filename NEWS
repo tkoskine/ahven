@@ -1,9 +1,23 @@
-????-??-?? Ahven 2.4
+2014-02-?? Ahven 2.4
 ====================
 
 Changes
 -------
-	* Nothing yet (TODO)
+	* Created a work-around for Apex and ICCAda, so that the
+	  compiler compile the body of Ahven.Framework correctly.
+
+	  The compilers did not correctly handle the body of
+	  Indefinite_Test_List package inside Ahven.Framework
+	  when Indefinite_Test_List was at the end of
+	  ahven-framework.adb. Now the body is at the beginning
+	  of the file. (No functional changes.)
+
+	* Various documentation improvements.
+
+	* Alternative comfignat-based build system (contrib/comfignat).
+	  It is experimental for now and meant mostly for Linux
+	  distribution packages.
+
 
 2013-01-24 Ahven 2.3
 ====================
