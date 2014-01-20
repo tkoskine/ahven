@@ -32,9 +32,9 @@ library project Build_Ahven is
 
    case OS_Version is
       when "unix" =>
-         for Source_Dirs use ("../src", "../src/unix");
+         for Source_Dirs use ("../../../src", "../../../src/unix");
       when "windows" =>
-         for Source_Dirs use ("../src", "../src/windows");
+         for Source_Dirs use ("../../../src", "../../../src/windows");
    end case;
 
 end Build_Ahven;
