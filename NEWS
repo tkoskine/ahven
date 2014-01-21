@@ -16,7 +16,7 @@ Changes
 
 	* Alternative comfignat-based build system (contrib/comfignat).
 	  It is experimental for now and meant mostly for Linux
-	  distribution packages.
+	  distribution packagers.
 
 
 2013-01-24 Ahven 2.3
