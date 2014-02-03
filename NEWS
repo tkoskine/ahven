@@ -3,21 +3,33 @@
 
 Changes
 -------
-	* Created a work-around for Apex and ICCAda, so that the
-	  compiler compile the body of Ahven.Framework correctly.
+	* Created a work-around to Ahven.Framework for Apex and ICCAda.
+	  Now Apex Ada compilers the the body of Ahven.Framework
+	  without errors and ICCAda does not produce any warnings.
 
 	  The compilers did not correctly handle the body of
 	  Indefinite_Test_List package inside Ahven.Framework
 	  when Indefinite_Test_List was at the end of
-	  ahven-framework.adb. Now the body is at the beginning
-	  of the file. (No functional changes.)
+	  ahven-framework.adb. This was fixed by moving the body
+	  to the beginning of the file. (No functional changes.)
 
 	* Various documentation improvements.
 
-	* Alternative comfignat-based build system (contrib/comfignat).
-	  It is experimental for now and meant mostly for Linux
+	* Alternative comfignat-based build system (contrib/comfignat)
+ 	  was added. It is experimental for now and meant mostly for Linux
 	  distribution packagers.
 
+Known issues
+------------
+	* On Fedora 19/20 you need to first install libgnat-static package:
+
+	  sudo yum install libgnat-static
+
+	  Otherwise GNAT will die with internal error when building Ahven.
+
+	* On Windows 8.1 you need to use JNT_RTS instead of JTN_RTS_Console
+	  as Janus/Ada runtime. Otherwise, Janus/Ada fails to find Ada runtime
+	  system for Ahven.
 
 2013-01-24 Ahven 2.3
 ====================
