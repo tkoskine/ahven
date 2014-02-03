@@ -36,7 +36,7 @@ Ahven is distributed under permissive ISC license (shown below).
 ::
 
     --
-    -- Copyright (c) 2007-2013 Tero Koskinen <tero.koskinen@iki.fi>
+    -- Copyright (c) 2007-2014 Tero Koskinen <tero.koskinen@iki.fi>
     --
     -- Permission to use, copy, modify, and distribute this software for any
     -- purpose with or without fee is hereby granted, provided that the above
@@ -111,6 +111,25 @@ Alternative directory can be set by overwriting the *PREFIX* variable.
 
     $ make OS_VERSION=unix PREFIX=/opt/ada install
 
+Alternative build system for GNAT on Linux
+===========================================
+
+People using Linux and GNAT, especially Fedora Linux and
+FSF GNAT, can use an alternative build system based on
+comfignat. This build system integrates better into existing
+Ada library infrastructure provided by the used Linux distribution.
+
+To build and install Ahven using comfignat-based system, run:
+
+::
+
+    $ cd contrib/comfignat
+    $ make -f Makefile.comfignat
+    $ sudo make -f Makefile.comfignat install
+
+Note: You need to have *python-sphinx* and *python-sphinxcontrib-adadomain*
+packages installed to generate the documentation for Ahven.
+
 ObjectAda
 =========
 
@@ -133,6 +152,12 @@ Easiest way to build Ahven with ICCAda is to use *icm* utility::
     C:\ahven-2.4\test>icm scan *.ad?
     C:\ahven-2.4\test>icm make tester
   
+There is no installation step. If you want to use Ahven
+from your program, run *icm new* with -search parameter:
+
+::
+
+    icm new -search=c:\ahven-2.4\src
 
 Janus/Ada
 =========
