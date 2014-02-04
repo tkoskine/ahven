@@ -781,7 +781,4 @@ package body Ahven.Framework is
             Tear_Down (T);
       end case;
    end Run;
-
-
-
 end Ahven.Framework;
