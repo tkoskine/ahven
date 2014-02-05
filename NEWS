@@ -4,7 +4,7 @@
 Changes
 -------
 	* Created a work-around to Ahven.Framework for Apex and ICCAda.
-	  Now Apex Ada compilers the the body of Ahven.Framework
+	  Now Apex Ada compiles the the body of Ahven.Framework
 	  without errors and ICCAda does not produce any warnings.
 
 	  The compilers did not correctly handle the body of
@@ -14,7 +14,6 @@ Changes
 	  to the beginning of the file. (No functional changes.)
 
 	* Various documentation improvements.
-
 	* Alternative comfignat-based build system (contrib/comfignat)
  	  was added. It is experimental for now and meant mostly for Linux
 	  distribution packagers. From Bjorn Persson.
@@ -30,6 +29,7 @@ Known issues
 	* On Windows 8.1 you need to use JNT_RTS instead of JTN_RTS_Console
 	  as Janus/Ada runtime. Otherwise, Janus/Ada fails to find Ada runtime
 	  system for Ahven.
+
 
 2013-01-24 Ahven 2.3
 ====================
