@@ -17,7 +17,7 @@ Changes
 
 	* Alternative comfignat-based build system (contrib/comfignat)
  	  was added. It is experimental for now and meant mostly for Linux
-	  distribution packagers.
+	  distribution packagers. From Bjorn Persson.
 
 Known issues
 ------------
