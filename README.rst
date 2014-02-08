@@ -16,7 +16,7 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 2.3 has 2.8K SLOC; 718 statements; 1363 declarations)
+* Small size (Ahven 2.4 has 2.8K SLOC; 719 statements; 1366 declarations)
 * JUnit-compatible test results in XML format;
   this allows integration with tools like `Jenkins`_ or CruiseControl.
 * Strict coding style (enforced by AdaControl)
@@ -34,28 +34,41 @@ See also
 Platforms
 ---------
 
-Ahven 2.3 compiles and passes its test suite on following platforms
+Ahven 2.4 compiles and passes its test suite on following platforms
 
 +-----------------------+--------+------------------------+
 | OS                    |  Arch  | Compiler               |
 +=======================+========+========================+
-| Fedora Linux 18       | x86_64 | FSF GCC 4.7.2          |
+| Fedora Linux 20       | x86_64 | FSF GCC 4.8.2          |
 +-----------------------+--------+------------------------+
-| Debian GNU/Linux 6.0  | i386   | FSF GCC 4.4            |
+| Debian GNU/Linux 7.3  | i386   | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Debian GNU/Linux 6.0  | x86_64 | FSF GCC 4.4            |
+| Debian GNU/Linux 7.3  | x86_64 | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Windows 7             | x86_64 | Janus/Ada 3.1.2beta    |
+| Windows XP            | i386   | Janus/Ada 3.1.2beta    |
 +-----------------------+--------+------------------------+
-| Windows 7             | x86_64 | GNAT GPL 2012          |
+| Windows 8.1           | x86_64 | Janus/Ada 3.1.2beta    |
++-----------------------+--------+------------------------+
+| Windows 8.1           | x86_64 | GNAT GPL 2013          |
++-----------------------+--------+------------------------+
+| Windows 8.1           | i386   | Irvine ICC Ada 9.0beta |
 +-----------------------+--------+------------------------+
 | Wine 1.5 on Linux     | i386   | Janus/Ada 3.1.2beta    |
-+-----------------------+--------+------------------------+
-| Windows XP            | i386   | Irvine ICC Ada 9.0beta |
 +-----------------------+--------+------------------------+
 
 News
 ----
+
+Ahven 2.4 (2014-02-09)
+''''''''''''''''''''''
+
+This is a minor maintenance and bug fix release.
+
+Ahven now compiles cleanly with Apex Ada (no errors)
+and Irvine ICC Ada (no warnings). In addition,
+the documentation was improved and experimental
+comfignat-based build system was added.
+
 
 Ahven 2.3 (2013-01-24)
 ''''''''''''''''''''''
@@ -259,8 +272,8 @@ directory.
 Documentation
 -------------
 
-* The API documentation (for Ahven 2.3):
-  http://ahven.stronglytyped.org/api-2.3/index.html
+* The API documentation (for Ahven 2.4):
+  http://ahven.stronglytyped.org/api-2.4/index.html
 * The API documentation (for Ahven 1.8):
   http://ahven.stronglytyped.org/api/index.html
 * Tutorial:
