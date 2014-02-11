@@ -101,7 +101,7 @@ package body Ahven.XML_Runner is
                                  Execution_Time : String) is
    begin
       Put (File, "<testcase ");
-      Print_Attribute (File, "classname", Filter_String (Parent));
+      Print_Attribute (File, "classname", Filter_String (Parent) & ".Test");
       Put (File, " ");
       Print_Attribute (File, "name", Filter_String (Name));
       Put (File, " ");
