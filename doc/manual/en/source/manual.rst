@@ -143,21 +143,21 @@ Irvine ICCAda
 
 Easiest way to build Ahven with ICCAda is to use *icm* utility::
 
-    C:\ahven-2.4>cd src
-    C:\ahven-2.4\src>icm new
-    C:\ahven-2.4\src>icm scan *.ad? windows\*.ad?
-    C:\ahven-2.4\src>icm make libmain
-    C:\ahven-2.4\src>cd ..\test
-    C:\ahven-2.4\test>icm new -search=..\src
-    C:\ahven-2.4\test>icm scan *.ad?
-    C:\ahven-2.4\test>icm make tester
+    C:\ahven-2.5>cd src
+    C:\ahven-2.5\src>icm new
+    C:\ahven-2.5\src>icm scan *.ad? windows\*.ad?
+    C:\ahven-2.5\src>icm make libmain
+    C:\ahven-2.5\src>cd ..\test
+    C:\ahven-2.5\test>icm new -search=..\src
+    C:\ahven-2.5\test>icm scan *.ad?
+    C:\ahven-2.5\test>icm make tester
   
 There is no installation step. If you want to use Ahven
 from your program, run *icm new* with -search parameter:
 
 ::
 
-    icm new -search=c:\ahven-2.4\src
+    icm new -search=c:\ahven-2.5\src
 
 Janus/Ada
 =========
@@ -169,7 +169,7 @@ file *prepare.bat*.
 
 ::
 
-    C:\ahven-2.4>janusada\prepare.bat
+    C:\ahven-2.5>janusada\prepare.bat
 
 Before compiling the library, you need to run
 the preparation script *janusada\\prepare.bat*.
@@ -178,7 +178,7 @@ by running *janusada\\update.bat*.
 
 ::
 
-    C:\ahven-2.4>janusada\update.bat
+    C:\ahven-2.5>janusada\update.bat
 
 Now you are ready to compile the project.
 This happens by running
@@ -186,7 +186,7 @@ This happens by running
 
 ::
 
-    C:\ahven-2.4>janusada\compile.bat
+    C:\ahven-2.5>janusada\compile.bat
 
 After a while, you should have compiled library files
 in the *lib_obj* directory and
@@ -195,7 +195,7 @@ in the *test_obj* directory.
 The executable is Ahven's test  suite and if it reports
 no errors, everything is working as expected.
 
-At the time of writing (Ahven 2.4), every test, which is not skipped,
+At the time of writing (Ahven 2.5), every test, which is not skipped,
 should pass with the latest version of Janus/Ada.
 
 However, with earlier versions of Janus/Ada some tests will fail.
