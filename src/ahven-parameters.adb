@@ -85,11 +85,12 @@ package body Ahven.Parameters is
       Files_Only  : Boolean := False;
       Dir_Next    : Boolean := False;
       Timeout_Next : Boolean := False;
-      Suffix_Next : Boolean := False;
+      Suffix : Boolean := False;
 
       procedure Handle_Parameter (P     : in out Parameter_Info;
                                   Arg   :        String;
-                                  Index :        Positive)
+                                  Index :        Positive;
+                                  Suffix_Next : in out Boolean)
       -- Parse one parameter and update P if necessary.
       is
       begin
@@ -128,7 +129,7 @@ package body Ahven.Parameters is
                Test_Suffix    => 0,
                Timeout        => 0.0);
       for A in Positive range 1 .. Argument_Count loop
-         Handle_Parameter (Info, Argument (A), A);
+         Handle_Parameter (Info, Argument (A), A, Suffix);
       end loop;
       if Dir_Next then
          raise Invalid_Parameter;
