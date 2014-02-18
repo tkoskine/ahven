@@ -60,6 +60,8 @@ package Ahven.Parameters is
    function Timeout (Info : Parameter_Info) return Framework.Test_Duration;
    -- Return the timeout value for a test.
 
+   function Test_Class_Suffix (Info : Parameter_Info) return String;
+
 private
    type Parameter_Info is record
       Verbose_Output : Boolean := True;
@@ -71,6 +73,9 @@ private
 
       Result_Dir     : Natural := 0;
       -- Position of results dir in the argument array
+
+      Test_Suffix    : Natural := 0;
+      -- Position of test class name suffix in the argument array
 
       Timeout        : Framework.Test_Duration := 0.0;
    end record;

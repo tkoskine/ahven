@@ -42,16 +42,22 @@ package body Ahven.XML_Runner is
 
    procedure Print_Test_Pass (File : File_Type;
                               Parent_Test : String;
-                              Info : Result_Info);
+                              Info : Result_Info;
+                              Test_Suffix : String);
+
    procedure Print_Test_Failure (File : File_Type;
                                  Parent_Test : String;
-                                 Info : Result_Info);
+                                 Info : Result_Info;
+                                 Test_Suffix : String);
+
    procedure Print_Test_Error (File : File_Type;
                                Parent_Test : String;
-                               Info : Result_Info);
+                               Info : Result_Info;
+                               Test_Suffix : String);
 
    procedure Print_Test_Case (Collection : Result_Collection;
-                              Dir : String);
+                              Dir : String;
+                              Test_Suffix : String);
 
    procedure Print_Log_File (File : File_Type; Filename : String);
 
@@ -60,7 +66,8 @@ package body Ahven.XML_Runner is
 
    procedure Start_Testcase_Tag (File : File_Type;
                                  Parent : String; Name : String;
-                                 Execution_Time : String);
+                                 Execution_Time : String;
+                                 Test_Suffix : String);
 
    procedure End_Testcase_Tag (File : File_Type);
 
@@ -98,10 +105,12 @@ package body Ahven.XML_Runner is
 
    procedure Start_Testcase_Tag (File : File_Type;
                                  Parent : String; Name : String;
-                                 Execution_Time : String) is
+                                 Execution_Time : String;
+                                 Test_Suffix : String) is
    begin
       Put (File, "<testcase ");
-      Print_Attribute (File, "classname", Filter_String (Parent) & ".Test");
+      Print_Attribute (File, "classname", Filter_String (Parent)
+        & Test_Suffix);
       Put (File, " ");
       Print_Attribute (File, "name", Filter_String (Name));
       Put (File, " ");
@@ -134,7 +143,8 @@ package body Ahven.XML_Runner is
 
    procedure Print_Test_Pass (File : File_Type;
                               Parent_Test : String;
-                              Info : Result_Info) is
+                              Info : Result_Info;
+                              Test_Suffix : String) is
       Exec_Time : constant String :=
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
@@ -142,7 +152,8 @@ package body Ahven.XML_Runner is
         (File           => File,
          Parent         => Parent_Test,
          Name           => Get_Routine_Name (Info),
-         Execution_Time => Exec_Time);
+         Execution_Time => Exec_Time,
+         Test_Suffix    => Test_Suffix);
 
       if Length (Get_Output_File (Info)) > 0 then
          Put (File, "<system-out>");
@@ -154,7 +165,8 @@ package body Ahven.XML_Runner is
 
    procedure Print_Test_Skipped (File : File_Type;
                                  Parent_Test : String;
-                                 Info : Result_Info) is
+                                 Info : Result_Info;
+                                 Test_Suffix : String) is
       Exec_Time : constant String :=
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
@@ -162,7 +174,8 @@ package body Ahven.XML_Runner is
         (File           => File,
          Parent         => Parent_Test,
          Name           => Get_Routine_Name (Info),
-         Execution_Time => Exec_Time);
+         Execution_Time => Exec_Time,
+         Test_Suffix    => Test_Suffix);
 
       Put (File, "<skipped ");
 
@@ -176,7 +189,8 @@ package body Ahven.XML_Runner is
 
    procedure Print_Test_Failure (File : File_Type;
                                  Parent_Test : String;
-                                 Info : Result_Info) is
+                                 Info : Result_Info;
+                                 Test_Suffix : String) is
       Exec_Time : constant String :=
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
@@ -184,7 +198,8 @@ package body Ahven.XML_Runner is
         (File           => File,
          Parent         => Parent_Test,
          Name           => Get_Routine_Name (Info),
-         Execution_Time => Exec_Time);
+         Execution_Time => Exec_Time,
+         Test_Suffix    => Test_Suffix);
 
       Put (File, "<failure ");
       Print_Attribute (File, "type",
@@ -202,7 +217,8 @@ package body Ahven.XML_Runner is
 
    procedure Print_Test_Error (File : File_Type;
                                Parent_Test : String;
-                               Info : Result_Info) is
+                               Info : Result_Info;
+                               Test_Suffix : String) is
       Exec_Time : constant String :=
         Trim (Duration'Image (Get_Execution_Time (Info)), Ada.Strings.Both);
    begin
@@ -210,7 +226,8 @@ package body Ahven.XML_Runner is
         (File           => File,
          Parent         => Parent_Test,
          Name           => Get_Routine_Name (Info),
-         Execution_Time => Exec_Time);
+         Execution_Time => Exec_Time,
+         Test_Suffix    => Test_Suffix);
 
       Put (File, "<error ");
       Print_Attribute (File, "type",
@@ -226,8 +243,9 @@ package body Ahven.XML_Runner is
       End_Testcase_Tag (File);
    end Print_Test_Error;
 
-   procedure Print_Test_Case (Collection : Result_Collection;
-                              Dir : String) is
+   procedure Print_Test_Case (Collection  : Result_Collection;
+                              Dir         : String;
+                              Test_Suffix : String) is
       procedure Print (Output : File_Type;
                        Result : Result_Collection);
       -- Internal procedure to print the testcase into given file.
@@ -266,7 +284,9 @@ package body Ahven.XML_Runner is
          loop
             exit Error_Loop when not Is_Valid (Position);
             Print_Test_Error (Output,
-              To_String (Get_Test_Name (Result)), Data (Position));
+              To_String (Get_Test_Name (Result)),
+              Data (Position),
+              Test_Suffix);
             Position := Next (Position);
          end loop Error_Loop;
 
@@ -275,7 +295,9 @@ package body Ahven.XML_Runner is
          loop
             exit Failure_Loop when not Is_Valid (Position);
             Print_Test_Failure (Output,
-              To_String (Get_Test_Name (Result)), Data (Position));
+              To_String (Get_Test_Name (Result)),
+              Data (Position),
+              Test_Suffix);
             Position := Next (Position);
          end loop Failure_Loop;
 
@@ -284,7 +306,9 @@ package body Ahven.XML_Runner is
          loop
             exit Pass_Loop when not Is_Valid (Position);
             Print_Test_Pass (Output,
-              To_String (Get_Test_Name (Result)), Data (Position));
+              To_String (Get_Test_Name (Result)),
+              Data (Position),
+              Test_Suffix);
             Position := Next (Position);
          end loop Pass_Loop;
 
@@ -294,7 +318,8 @@ package body Ahven.XML_Runner is
             exit Skip_Loop when not Is_Valid (Position);
 
             Print_Test_Skipped (Output,
-              To_String (Get_Test_Name (Result)), Data (Position));
+              To_String (Get_Test_Name (Result)), Data (Position),
+              Test_Suffix);
             Position := Next (Position);
          end loop Skip_Loop;
 
@@ -314,20 +339,21 @@ package body Ahven.XML_Runner is
    end Print_Test_Case;
 
    procedure Report_Results (Result : Result_Collection;
-                             Dir    : String) is
+                             Dir    : String;
+                             Test_Suffix : String) is
       Position : Result_Collection_Cursor;
    begin
       Position := First_Child (Result);
       loop
          exit when not Is_Valid (Position);
          if Child_Depth (Data (Position).all) = 0 then
-            Print_Test_Case (Data (Position).all, Dir);
+            Print_Test_Case (Data (Position).all, Dir, Test_Suffix);
          else
-            Report_Results (Data (Position).all, Dir);
+            Report_Results (Data (Position).all, Dir, Test_Suffix);
 
             -- Handle the test cases in this collection
             if Direct_Test_Count (Result) > 0 then
-               Print_Test_Case (Result, Dir);
+               Print_Test_Case (Result, Dir, Test_Suffix);
             end if;
          end if;
          Position := Next (Position);
@@ -399,7 +425,8 @@ package body Ahven.XML_Runner is
                         Args         : Parameters.Parameter_Info) is
    begin
       Report_Results (Test_Results,
-                      Parameters.Result_Dir (Args));
+                      Parameters.Result_Dir (Args),
+                      Parameters.Test_Class_Suffix (Args));
    end Do_Report;
 
    procedure Run (Suite : in out Framework.Test_Suite'Class) is

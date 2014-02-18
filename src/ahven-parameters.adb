@@ -25,15 +25,17 @@ package body Ahven.Parameters is
    --  -c : capture output
    --  -d : result directory
    --  -q : quiet mode
+   --  -s : test class suffix in XML files
    --  -t : timeout
    --  -v : verbose mode (default)
    --  -x : XML output
    --
-   procedure Parse_Options (Info     : in out Parameter_Info;
-                            Mode     :        Parameter_Mode;
-                            Option   :        String;
-                            Dir_Next :    out Boolean;
-                            Timeout_Next : out Boolean) is
+   procedure Parse_Options (Info     :  in out Parameter_Info;
+                            Mode     :         Parameter_Mode;
+                            Option   :         String;
+                            Dir_Next :     out Boolean;
+                            Timeout_Next : out Boolean;
+                            Suffix_Next  : out Boolean) is
       procedure Check_Invalid (C : Character) is
       begin
          case Mode is
@@ -65,6 +67,8 @@ package body Ahven.Parameters is
                Info.Verbose_Output := False;
             when 'x' =>
                Info.Xml_Output := True;
+            when 's' =>
+               Suffix_Next := True;
             when others =>
                raise Invalid_Parameter;
          end case;
@@ -76,18 +80,17 @@ package body Ahven.Parameters is
    --
    procedure Parse_Parameters (Mode :     Parameter_Mode;
                                Info : out Parameter_Info) is
-      procedure Handle_Parameter (P     : in out Parameter_Info;
-                                  Arg   :        String;
-                                  Index :        Positive);
-      -- Parse one parameter and update P if necessary.
+
 
       Files_Only  : Boolean := False;
       Dir_Next    : Boolean := False;
       Timeout_Next : Boolean := False;
+      Suffix_Next : Boolean := False;
 
       procedure Handle_Parameter (P     : in out Parameter_Info;
                                   Arg   :        String;
                                   Index :        Positive)
+      -- Parse one parameter and update P if necessary.
       is
       begin
          if Dir_Next then
@@ -96,6 +99,9 @@ package body Ahven.Parameters is
          elsif Timeout_Next then
             P.Timeout := Framework.Test_Duration'Value (Arg);
             Timeout_Next := False;
+         elsif Suffix_Next then
+               P.Test_Suffix := Index;
+               Suffix_Next := False;
          elsif Arg = "--" then
             Files_Only := True;
          elsif Arg'Size > 1 then
@@ -105,7 +111,8 @@ package body Ahven.Parameters is
                   Mode => Mode,
                   Option => Arg (Arg'First + 1 .. Arg'Last),
                   Dir_Next => Dir_Next,
-                  Timeout_Next => Timeout_Next);
+                  Timeout_Next => Timeout_Next,
+                  Suffix_Next => Suffix_Next);
             else
                P.Test_Name := Index;
             end if;
@@ -118,6 +125,7 @@ package body Ahven.Parameters is
                Capture_Output => False,
                Test_Name      => 0,
                Result_Dir     => 0,
+               Test_Suffix    => 0,
                Timeout        => 0.0);
       for A in Positive range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A), A);
@@ -187,4 +195,13 @@ package body Ahven.Parameters is
    begin
       return Info.Timeout;
    end Timeout;
+
+   function Test_Class_Suffix (Info : Parameter_Info) return String is
+   begin
+      if Info.Test_Suffix = 0 then
+         return "";
+      else
+         return Argument (Info.Test_Suffix);
+      end if;
+   end Test_Class_Suffix;
 end Ahven.Parameters;

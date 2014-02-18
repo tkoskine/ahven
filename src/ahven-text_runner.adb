@@ -317,7 +317,8 @@ package body Ahven.Text_Runner is
    begin
       if Parameters.XML_Results (Args) then
          XML_Runner.Report_Results
-           (Test_Results, Parameters.Result_Dir (Args));
+           (Test_Results, Parameters.Result_Dir (Args),
+            Parameters.Test_Class_Suffix (Args));
       else
          Report_Results (Test_Results, Parameters.Verbose (Args));
       end if;

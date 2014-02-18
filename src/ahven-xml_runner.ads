@@ -28,7 +28,8 @@ package Ahven.XML_Runner is
    -- parameter to a test suite.
 
    procedure Report_Results (Result : Results.Result_Collection;
-                             Dir    : String);
+                             Dir    : String;
+                             Test_Suffix : String);
    -- Report results to the given directory.
 private
    procedure Do_Report (Test_Results : Results.Result_Collection;
