@@ -108,7 +108,7 @@ check: build_tests
 
 check_xml: build_tests
 	-mkdir -p results
-	./tester -c -x -d results
+	./tester -c -x -d results -s .Test
 
 check_tap: build_tests
 	./tap_tester
