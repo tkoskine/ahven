@@ -14,13 +14,14 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with "ahven_lib";
+with "comfignat.gpr";
+with "build_ahven.gpr";  -- Link to the just compiled library.
 
 project Ahven_Tests is
    for Languages use ("Ada");
-   for Source_Dirs use ("../test");
-   for Object_Dir use "../test_objects";
-   for Exec_Dir use "../";
+   for Source_Dirs use ("../../../test");
+   for Object_Dir use Comfignat.Objdir & "/test";
+   for Exec_Dir use Comfignat.Builddir;
    for Main use ("tester.adb", "tap_tester.adb");
 
    package Builder is
