@@ -1,5 +1,5 @@
 -- Comfignat configuration variables for GNAT project files
--- Copyright 2013 B. Persson, Bjorn@Rombobeorn.se
+-- Copyright 2013 - 2014 B. Persson, Bjorn@Rombobeorn.se
 --
 -- This material is provided as is, with absolutely no warranty expressed
 -- or implied. Any use is at your own risk.
@@ -11,7 +11,7 @@
 -- modified is included with the above copyright notice.
 
 
--- This file is part of Comfignat 1.2 – common, convenient, command-line-
+-- This file is part of Comfignat 1.3 – common, convenient, command-line-
 -- controlled compile-time configuration of software built with the GNAT tools.
 -- For information about Comfignat, see http://www.Rombobeorn.se/Comfignat/.
 

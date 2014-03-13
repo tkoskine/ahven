@@ -1,5 +1,5 @@
 # Comfignat makefile foundation for configuring and building GNAT projects
-# Copyright 2013 B. Persson, Bjorn@Rombobeorn.se
+# Copyright 2013 - 2014 B. Persson, Bjorn@Rombobeorn.se
 #
 # This material is provided as is, with absolutely no warranty expressed
 # or implied. Any use is at your own risk.
@@ -11,7 +11,7 @@
 # modified is included with the above copyright notice.
 
 
-# This file is part of Comfignat 1.2 – common, convenient, command-line-
+# This file is part of Comfignat 1.3 – common, convenient, command-line-
 # controlled compile-time configuration of software built with the GNAT tools.
 # For information about Comfignat, see http://www.Rombobeorn.se/Comfignat/.
 
@@ -31,6 +31,69 @@
 # code is pretty much impossible to write without advanced Make features.) If
 # Make cannot be used for whatever reason, then it's not too difficult to run
 # the project files through Gnatprep manually.
+
+
+#
+# First of all, define some functions and constants for processing directory
+# variables:
+#
+
+nil =
+inert_space = _Comfignat_magic_protective_space_character_substitute_
+inert_tab = _Comfignat_magic_protective_tab_character_substitute_
+inert_percent = _Comfignat_magic_protective_percent_character_substitute_
+mung_string = ${subst %,${inert_percent},${subst ${nil}	,${inert_tab},${subst ${nil} ,${inert_space},${1}}}}
+unmung_string = ${subst ${inert_percent},%,${subst ${inert_tab},	,${subst ${inert_space}, ,${1}}}}
+# mung_string and unmung_string are used to prevent Make from interpreting
+# space and percent characters in strings.
+
+relativize = ${if ${filter ${2}%,${1}}, \
+                  ${3}${1:${2}%=%}, \
+                  ${call relativize,${1},${dir ${2:%/=%}},${3}../}}
+# relativize is the recursive algorithm that converts an absolute pathname into
+# a relative one.
+# Parameters:
+#    1: an absolute pathname to convert to relative
+#    2: the absolute base pathname, being shortened until it's a prefix of 1
+#    3: a growing series of "../" to lead the relative pathname with
+# If 2 is a prefix of 1, then return 3 concatenated with the part of 1 that
+# differs from 2. Otherwise delete the last element of 2, add one level of
+# "../" to 3, and repeat.
+# Within relativize all pathnames have one trailing slash so that only whole
+# directory names will match. Otherwise "/usr/lib" could match "/usr/lib64" for
+# example.
+
+prepare_pathname = ${subst //,/,${abspath ${call mung_string,${1}}}/}
+# prepare_pathname prepares a pathname for use as a parameter to relativize.
+#    · Protect space and percent characters from interpretation by Make.
+#    · Normalize the pathname, eliminating ".", ".." and "//".
+#    · Append a slash.
+#    · If the input was "/", then it is now "//". Change that back to "/".
+
+relative_to = \
+   ${or ${call unmung_string \
+              ,${patsubst %/,%,${call relativize \
+                                     ,${call prepare_pathname,${1}} \
+                                     ,${call prepare_pathname,${2}},}}},.}
+# relative_to converts an absolute pathname into a relative one. What it
+# actually does is to prepare the input to relativize and fix up its output.
+# Parameters:
+#    1: an absolute pathname to convert to relative
+#    2: the absolute base pathname that 1 shall be made relative to
+# Processing:
+#    · Prepare the two input pathnames with prepare_pathname.
+#    · Call relativize with the prepared pathnames for parameters 1 and 2, and
+#      an empty string for 3.
+#    · Strip the result of surrounding spaces and the trailing slash.
+#    · Reverse the protection of space and percent characters.
+#    · If the result is an empty string, then return "." instead.
+
+make_pathname = ${call relative_to,${${1}},${CURDIR}}
+# make_pathname takes the name of a variable whose value is an absolute
+# pathname, and converts that pathname into the right form for usage in Make
+# targets, prerequisites and functions, which means that it is made relative
+# to the current working directory to prevent spaces in parent directories'
+# names from breaking Make.
 
 
 #
@@ -121,13 +184,6 @@ stagedir = ${builddir}/stage
 # installed are written under stagedir, and then copied to their destination in
 # the installation step.
 
-ifneq (${Comfignat_overriding_absolute_builddir},)
-   # This process is a sub-Make and must use the same builddir as its parent.
-   # This assignment must be done before builddir is used in VPATH and in the
-   # pathname of the configuration file.
-   override builddir := ${Comfignat_overriding_absolute_builddir}
-endif
-
 # Containing makefiles should avoid modifying the directory variables. Users
 # should be able to rely on these defaults.
 
@@ -169,6 +225,29 @@ stage_miscdocdir     = ${stagedir}${miscdocdir}
 # These are the directories where different kinds of files to be installed are
 # written during the build.
 
+make_srcdir         = ${call make_pathname,srcdir}
+make_builddir       = ${call make_pathname,builddir}
+make_objdir         = ${call make_pathname,objdir}
+make_stagedir       = ${call make_pathname,stagedir}
+make_bindir         = ${call make_pathname,stage_bindir}
+make_libexecdir     = ${call make_pathname,stage_libexecdir}
+make_datadir        = ${call make_pathname,stage_datadir}
+make_sysconfdir     = ${call make_pathname,stage_sysconfdir}
+make_statedir       = ${call make_pathname,stage_statedir}
+make_cachedir       = ${call make_pathname,stage_cachedir}
+make_logdir         = ${call make_pathname,stage_logdir}
+make_includedir     = ${call make_pathname,stage_includedir}
+make_archincludedir = ${call make_pathname,stage_archincludedir}
+make_libdir         = ${call make_pathname,stage_libdir}
+make_alidir         = ${call make_pathname,stage_alidir}
+make_gprdir         = ${call make_pathname,stage_gprdir}
+make_localedir      = ${call make_pathname,stage_localedir}
+make_mandir         = ${call make_pathname,stage_mandir}
+make_infodir        = ${call make_pathname,stage_infodir}
+make_miscdocdir     = ${call make_pathname,stage_miscdocdir}
+# These variables are for use in Make targets, prerequisites and other places
+# where Make expects space-separated lists.
+
 preprocess_file = "${GNATPREP}" ${firstword ${filter %.gp,$^}} $@ \
                   ${options_preprocessing} ${Gnatprep_arguments} \
                   ${if ${filter ${notdir $@},${notdir ${usage_GPRs}}}, \
@@ -181,10 +260,67 @@ preprocess_file = "${GNATPREP}" ${firstword ${filter %.gp,$^}} $@ \
 # conveyed to it as Gnatprep symbols. Otherwise srcdir is conveyed.
 
 build_GPR = "${GNAT_BUILDER}" -P ${firstword ${filter %.gpr,$^}} \
-            -aP${srcdir} -aP${builddir} -p \
+            ${addprefix -aP,${VPATH}} -p \
             ${options_building} ${builder_arguments} ${GNATFLAGS}
 # build_GPR is a command for use in recipes. It performs a build controlled by
 # the first project file among the rule's prerequisites.
+
+
+#
+# Adjust the build directory variables, and load the configuration:
+#
+
+# Ensure that builddir is an absolute pathname and is inherited by sub-Makes:
+
+ifneq (${Comfignat_overriding_absolute_builddir},)
+   override builddir := ${Comfignat_overriding_absolute_builddir}
+else ifeq (${origin builddir},command line)
+   override builddir := ${abspath ${builddir}}
+endif
+export Comfignat_overriding_absolute_builddir := ${builddir}
+
+# Read the configuration file if there is one:
+
+configuration = ${make_builddir}/comfignat_configuration.mk
+
+-include ${configuration}
+
+# Ensure that objdir and stagedir are absolute pathnames and are inherited by
+# sub-Makes:
+
+ifneq (${Comfignat_overriding_absolute_objdir},)
+   override objdir := ${Comfignat_overriding_absolute_objdir}
+else ifeq (${origin objdir},command line)
+   override objdir := ${abspath ${objdir}}
+   export Comfignat_overriding_absolute_objdir := ${objdir}
+   objdir_is_overridden = true
+endif
+
+ifneq (${Comfignat_overriding_absolute_stagedir},)
+   override stagedir := ${Comfignat_overriding_absolute_stagedir}
+else ifeq (${origin stagedir},command line)
+   override stagedir := ${abspath ${stagedir}}
+   export Comfignat_overriding_absolute_stagedir := ${stagedir}
+   stagedir_is_overridden = true
+endif
+
+# builddir, objdir and stagedir need to be absolute in project files, because a
+# pathname relative to a project file can be wrong when a separate build
+# directory is used and project files are both in srcdir and in builddir.
+# objdir and stagedir also need to be absolute in the configuration file
+# because the working directory might change between Make invocations.
+# Sub-Makes must use the same builddir, objdir and stagedir as the parent, so
+# the absolute pathnames are conveyed to child processes in environment
+# variables that won't normally be overridden and are unlikely to be defined by
+# accident.
+# The correction of builddir in sub-Makes must happen before builddir is used
+# in VPATH and in the pathname of the configuration file.
+# The inclusion of the configuration file must happen after MAKEFILE_LIST has
+# been used to define srcdir.
+# The changes to objdir and stagedir must be done after the configuration file
+# is read because otherwise the configuration would override the command line.
+# Once modified the variables are no longer of command line origin, so they are
+# marked as overridden so that "make configure" will save them.
 
 
 #
@@ -207,7 +343,7 @@ endif
 ifneq (${origin preprocessed_files},file)
    preprocessed_files = \
       ${filter-out ${notdir ${usage_GPRs}}, \
-                   ${basename ${notdir ${wildcard ${srcdir}/*.gp}}}}
+                   ${basename ${notdir ${wildcard ${make_srcdir}/*.gp}}}}
 endif
 # preprocessed_files is a list of files to be produced in the preprocessing
 # step at the beginning of the build. Containing makefiles may override it or
@@ -241,8 +377,12 @@ endif
 # default values for optional arguments should be set in the options variables
 # instead.
 
-VPATH += ${srcdir} ${builddir}
+VPATH += ${filter-out .,${make_srcdir} ${make_builddir}}
 # VPATH is a list of directories that Make should search for prerequisites.
+
+# If VPATH has been defined as simply expanded before this file was included,
+# then make_srcdir and make_builddir will be expanded now, so everything that's
+# involved in their values must be defined before this point.
 
 configuration_variables += \
    GNATPREP GNAT_BUILDER \
@@ -264,60 +404,12 @@ configuration_variables += \
 
 
 #
-# Read the configuration file if there is one:
-#
-
-configuration = ${builddir}/comfignat_configuration.mk
-
--include ${configuration}
-
-
-#
-# Ensure that builddir, objdir and stagedir are absolute pathnames:
-#
-
-ifeq (${origin builddir},command line)
-   override builddir := ${abspath ${builddir}}
-endif
-export Comfignat_overriding_absolute_builddir := ${builddir}
-
-ifneq (${Comfignat_overriding_absolute_objdir},)
-   override objdir := ${Comfignat_overriding_absolute_objdir}
-else ifeq (${origin objdir},command line)
-   override objdir := ${abspath ${objdir}}
-   export Comfignat_overriding_absolute_objdir := ${objdir}
-   objdir_is_overridden = true
-endif
-
-ifneq (${Comfignat_overriding_absolute_stagedir},)
-   override stagedir := ${Comfignat_overriding_absolute_stagedir}
-else ifeq (${origin stagedir},command line)
-   override stagedir := ${abspath ${stagedir}}
-   export Comfignat_overriding_absolute_stagedir := ${stagedir}
-   stagedir_is_overridden = true
-endif
-
-# These pathnames need to be absolute in project files, because a pathname
-# relative to a project file can be wrong when a separate build directory is
-# used and project files are both in srcdir and in builddir. objdir and
-# stagedir also need to be absolute in the configuration file because the
-# working directory might change between Make invocations.
-# Sub-Makes must use the same builddir, objdir and stagedir as the parent, so
-# the absolute pathnames are conveyed to child processes in environment
-# variables that won't normally be overridden and are unlikely to be defined by
-# accident.
-# The changes to objdir and stagedir must be done after the configuration file
-# is read because otherwise the configuration would override the command line.
-# Once modified the variables are no longer of command line origin, so they are
-# marked as overridden so that "make configure" will save them.
-
-
-#
 # Compute symbol definitions for Gnatprep and external variable assignments for
 # build projects:
 #
 
-# First define some functions and constants for processing directory variables.
+# For this some more functions and constants for processing directory variables
+# are needed.
 
 usage_directory_variables = includedir archincludedir libdir alidir
 # These are the usage-relevant directory variables. They are needed in usage
@@ -331,55 +423,6 @@ usage_relevant = ${filter ${usage_directory_variables},${1}}
 # usage_relevant returns a list of the words in the input list that are usage-
 # relevant directory variables. If given a single variable name, it returns
 # that name if the variable is usage-relevant, or an empty string if it isn't.
-
-nil =
-inert_space = _Comfignat_magic_protective_space_character_substitute_
-inert_percent = _Comfignat_magic_protective_percent_character_substitute_
-mung_string = ${subst %,${inert_percent},${subst ${nil} ,${inert_space},${1}}}
-unmung_string = ${subst ${inert_percent},%,${subst ${inert_space}, ,${1}}}
-# mung_string and unmung_string are used to prevent Make from interpreting
-# space and percent characters in strings.
-
-relativize = ${if ${filter ${2}%,${1}}, \
-                  ${3}${1:${2}%=%}, \
-                  ${call relativize,${1},${dir ${2:%/=%}},${3}../}}
-# relativize is the recursive algorithm that converts an absolute pathname into
-# a relative one.
-# Parameters:
-#    1: an absolute pathname to convert to relative
-#    2: the absolute base pathname, being shortened until it's a prefix of 1
-#    3: a growing series of "../" to lead the relative pathname with
-# If 2 is a prefix of 1, then return 3 concatenated with the part of 1 that
-# differs from 2. Otherwise delete the last element of 2, add one level of
-# "../" to 3, and repeat.
-# Within relativize all pathnames have one trailing slash so that only whole
-# directory names will match. Otherwise "/usr/lib" could match "/usr/lib64" for
-# example.
-
-prepare_pathname = ${subst //,/,${abspath ${call mung_string,${1}}}/}
-# prepare_pathname prepares a pathname for use as a parameter to relativize.
-#    · Protect space and percent characters from interpretation by Make.
-#    · Normalize the pathname, eliminating ".", ".." and "//".
-#    · Append a slash.
-#    · If the input was "/", then it is now "//". Change that back to "/".
-
-relative_to = \
-   ${or ${call unmung_string \
-              ,${patsubst %/,%,${call relativize \
-                                     ,${call prepare_pathname,${1}} \
-                                     ,${call prepare_pathname,${2}},}}},.}
-# relative_to converts an absolute pathname into a relative one. What it
-# actually does is to prepare the input to relativize and fix up its output.
-# Parameters:
-#    1: an absolute pathname to convert to relative
-#    2: the absolute base pathname that 1 shall be made relative to
-# Processing:
-#    · Prepare the two input pathnames with prepare_pathname.
-#    · Call relativize with the prepared pathnames for parameters 1 and 2, and
-#      an empty string for 3.
-#    · Strip the result of surrounding spaces and the trailing slash.
-#    · Reverse the protection of space and percent characters.
-#    · If the result is an empty string, then return "." instead.
 
 maybe_relative_to = \
    ${if ${or ${filter-out 1,${words ${relocatable_package}}}, \
@@ -530,8 +573,8 @@ build_targets = ${addsuffix .phony_target,${build_GPRs}}
 # A phony target is defined for each build project, and the job of determining
 # whether the project needs rebuilding is delegated to the builder.
 
-staged_usage_GPRs = ${addprefix ${stage_gprdir}/,${usage_GPRs}}
-preprocessed_files_in_builddir = ${addprefix ${builddir}/,${preprocessed_files}}
+staged_usage_GPRs = ${addprefix ${make_gprdir}/,${usage_GPRs}}
+preprocessed_files_in_builddir = ${addprefix ${make_builddir}/,${preprocessed_files}}
 # When usage projects are preprocessed they are written to stage_gprdir. Other
 # preprocessed files are assumed to be needed during the build and are written
 # to builddir.
@@ -551,11 +594,11 @@ Comfignat_default_goal: build
 .PRECIOUS: %/
 
 # This rule appears to work around a bug that was fixed in GNU Make 3.82:
-${stage_gprdir}/:
+${make_gprdir}/:
 	mkdir -p $@
 
 # How to initialize a build directory with a delegating makefile:
-${builddir}/Makefile: | ${builddir}/
+${make_builddir}/Makefile: | ${make_builddir}/
 	@echo 'Writing $@.'
 	@( echo 'Comfignat_default_goal: force ; ${delegation_command}'; \
 	   echo '%: force ; ${delegation_command} $$@'; \
@@ -570,7 +613,7 @@ ${builddir}/Makefile: | ${builddir}/
 # the match-anything rule to update the makefile.
 
 # How to save configured variables:
-configure:: ${builddir}/Makefile
+configure:: ${make_builddir}/Makefile
 	@echo "Writing ${configuration}."
 	@( ${foreach var,${configuration_variables}, \
 	             ${if ${or ${findstring command line,${origin ${var}}}, \
@@ -614,19 +657,19 @@ show_configuration::
 	 true
 
 # How to preprocess the project Comfignat:
-${builddir}/comfignat.gpr: comfignat.gpr.gp | ${builddir}/
+${make_builddir}/comfignat.gpr: comfignat.gpr.gp | ${make_builddir}/
 	"${GNATPREP}" $< $@ -DInvoked_By_Makefile ${all_directories} ${GNATPREPFLAGS}
 
 # How to preprocess files that are needed during the build:
-${builddir}/%: %.gp | ${builddir}/
+${make_builddir}/%: %.gp | ${make_builddir}/
 	${preprocess_file}
 
 # How to preprocess usage projects:
-${stage_gprdir}/%: %.gp | ${stage_gprdir}/
+${make_gprdir}/%: %.gp | ${make_gprdir}/
 	${preprocess_file}
 
 # How to stage usage projects that don't need preprocessing:
-${stage_gprdir}/%: % | ${stage_gprdir}/
+${make_gprdir}/%: % | ${make_gprdir}/
 	cp -p $< $@
 
 preprocess: $${preprocessed_files_in_builddir}
@@ -649,14 +692,14 @@ build: base $${staged_usage_GPRs}
 all: build
 # Optional targets may be added as prerequisites of "all".
 
-${stagedir}:
+${make_stagedir}:
 	@${MAKE} build
 # "make install" straight out of a source package triggers a build, but if
 # something has been built then "make install" doesn't rebuild anything, just
 # copies the built files to their destination.
 
 # How to install what has been built and staged:
-install: ${stagedir}
+install: ${make_stagedir}
 	mkdir -p "${DESTDIR}/"
 	cp -RPf ${install_cp_flags} "${stagedir}"/* "${DESTDIR}/"
 .PHONY: install
