@@ -37,4 +37,24 @@ library project Build_Ahven is
          for Source_Dirs use ("../src", "../src/windows");
    end case;
 
+   package Builder  is
+      for Default_Switches ("Ada") use ("-g","-gnatf",
+                                          "-gnatVa",
+                                          "-gnato",
+                                          "-gnatwe",
+                                          "-gnatwa",
+                                          "-gnatwl",
+                                          "-gnatE",
+                                          "-gnatwF", -- unreferenced formal off
+                                          "-gnatydi3bmhex", "-gnat95");
+      -- gnat style switches explained:
+      -- 'i' - 'if' and 'then' placement
+      -- 'd' - no DOS line terminators
+      -- '3' - indentation level (3 spaces)
+      -- 'b' - no trailing whitespace (blanks after statements)
+      -- 'm' - lines less than 80 characters
+      -- 'h' - no horizontal tabs
+      -- 'e' - exit statements need to have labels in named loops
+      -- 'x' - no unnecessary parentheses around conditions
+   end Builder;
 end Build_Ahven;
