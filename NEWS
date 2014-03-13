@@ -5,6 +5,18 @@
 
 Changes
 -------
+	* The default build system (Makefile) for GNAT uses now
+	  comfignat.mk template. All existing make targets should
+	  work in the normal way, but the internals have been
+	  changed.
+
+	* Python-sphinx and sphinxcontrol-adadomain packages
+	  are now required for building the documentation.
+	  Also, since the documentation is built by default,
+	  you need to have those packages installed, if you
+	  want to build complete Ahven from the source code
+	  using the provided Makefile.
+
 	* XML_Runner now supports "-s" parameter, which allows
 	  one to specify suffix for test class names.
 
