@@ -46,9 +46,8 @@ library project Build_Ahven is
                                           "-gnatwl",
                                           "-gnatE",
                                           "-gnatwF", -- unreferenced formal off
-                                          "-gnatydi3bmhex", "-gnat95");
+                                          "-gnatyd3bmhex", "-gnat95");
       -- gnat style switches explained:
-      -- 'i' - 'if' and 'then' placement
       -- 'd' - no DOS line terminators
       -- '3' - indentation level (3 spaces)
       -- 'b' - no trailing whitespace (blanks after statements)
