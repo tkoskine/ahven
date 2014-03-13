@@ -7,6 +7,10 @@ Changes
 -------
 	* XML_Runner now supports "-s" parameter, which allows
 	  one to specify suffix for test class names.
+
+Bugs fixed
+----------
+	* Fixed compilation with gcc/gnat 4.9. Noticed by John Marino.
 	
 
 2014-02-09 Ahven 2.4
