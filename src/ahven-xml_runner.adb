@@ -243,6 +243,32 @@ package body Ahven.XML_Runner is
       End_Testcase_Tag (File);
    end Print_Test_Error;
 
+   generic
+     with procedure Print (File : File_Type;
+                           Parent_Test : String;
+                           Info : Result_Info;
+                           Test_Suffix : String);
+   procedure Print_Results (Output     : File_Type;
+                            First_Item : Result_Info_Cursor;
+                            Result : Result_Collection;
+                            Test_Suffix : String);
+
+   procedure Print_Results (Output : File_Type;
+                            First_Item : Result_Info_Cursor;
+                            Result : Result_Collection;
+                            Test_Suffix : String) is
+      Position : Result_Info_Cursor := First_Item;
+   begin
+      loop
+         exit when not Is_Valid (Position);
+         Print (File        => Output,
+                Parent_Test => To_String (Get_Test_Name (Result)),
+                Info        => Data (Position),
+                Test_Suffix => Test_Suffix);
+         Position := Next (Position);
+      end loop;
+   end Print_Results;
+
    procedure Print_Test_Case (Collection  : Result_Collection;
                               Dir         : String;
                               Test_Suffix : String) is
@@ -257,7 +283,14 @@ package body Ahven.XML_Runner is
 
       procedure Print (Output : File_Type;
                        Result : Result_Collection) is
-         Position : Result_Info_Cursor;
+         procedure Print_Errors is new Print_Results
+           (Print => Print_Test_Error);
+         procedure Print_Failures is new Print_Results
+           (Print => Print_Test_Failure);
+         procedure Print_Passes is new Print_Results
+           (Print => Print_Test_Pass);
+         procedure Print_Skips is new Print_Results
+           (Print => Print_Test_Skipped);
       begin
          Put_Line (Output, "<?xml version=" & '"' & "1.0" & '"' &
                    " encoding=" & '"' & "iso-8859-1" & '"' &
@@ -279,49 +312,26 @@ package body Ahven.XML_Runner is
            "name", To_String (Get_Test_Name (Result)));
          Put_Line (Output, ">");
 
-         Position := First_Error (Result);
-         Error_Loop:
-         loop
-            exit Error_Loop when not Is_Valid (Position);
-            Print_Test_Error (Output,
-              To_String (Get_Test_Name (Result)),
-              Data (Position),
-              Test_Suffix);
-            Position := Next (Position);
-         end loop Error_Loop;
-
-         Position := First_Failure (Result);
-         Failure_Loop:
-         loop
-            exit Failure_Loop when not Is_Valid (Position);
-            Print_Test_Failure (Output,
-              To_String (Get_Test_Name (Result)),
-              Data (Position),
-              Test_Suffix);
-            Position := Next (Position);
-         end loop Failure_Loop;
-
-         Position := First_Pass (Result);
-         Pass_Loop:
-         loop
-            exit Pass_Loop when not Is_Valid (Position);
-            Print_Test_Pass (Output,
-              To_String (Get_Test_Name (Result)),
-              Data (Position),
-              Test_Suffix);
-            Position := Next (Position);
-         end loop Pass_Loop;
-
-         Position := First_Skipped (Result);
-         Skip_Loop:
-         loop
-            exit Skip_Loop when not Is_Valid (Position);
-
-            Print_Test_Skipped (Output,
-              To_String (Get_Test_Name (Result)), Data (Position),
-              Test_Suffix);
-            Position := Next (Position);
-         end loop Skip_Loop;
+         Print_Errors
+           (Output => Output,
+            First_Item => First_Error (Result),
+            Result => Result,
+            Test_Suffix => Test_Suffix);
+         Print_Failures
+           (Output => Output,
+            First_Item => First_Failure (Result),
+            Result => Result,
+            Test_Suffix => Test_Suffix);
+         Print_Passes
+           (Output => Output,
+            First_Item => First_Pass (Result),
+            Result => Result,
+            Test_Suffix => Test_Suffix);
+         Print_Skips
+           (Output => Output,
+            First_Item => First_Skipped (Result),
+            Result => Result,
+            Test_Suffix => Test_Suffix);
 
          Put_Line (Output, "</testsuite>");
       end Print;

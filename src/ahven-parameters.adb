@@ -21,6 +21,8 @@ use Ada.Command_Line;
 use Ada.Text_IO;
 
 package body Ahven.Parameters is
+   type Parser_State is (NONE, DIR_NEXT, TIMEOUT_NEXT, SUFFIX_NEXT);
+
    -- Possible options:
    --  -c : capture output
    --  -d : result directory
@@ -33,9 +35,7 @@ package body Ahven.Parameters is
    procedure Parse_Options (Info     :  in out Parameter_Info;
                             Mode     :         Parameter_Mode;
                             Option   :         String;
-                            Dir_Next :     out Boolean;
-                            Timeout_Next : out Boolean;
-                            Suffix_Next  : out Boolean) is
+                            State    :     out Parser_State) is
       procedure Check_Invalid (C : Character) is
       begin
          case Mode is
@@ -50,18 +50,18 @@ package body Ahven.Parameters is
          end case;
       end Check_Invalid;
    begin
-      Dir_Next := False;
-      Timeout_Next := False;
-      Suffix_Next := False;
+      State := NONE;
+
+      Option_Loop:
       for A in Option'Range loop
          Check_Invalid (Option (A));
          case Option (A) is
             when 'c' =>
                Info.Capture_Output := True;
             when 'd' =>
-               Dir_Next := True;
+               State := DIR_NEXT;
             when 't' =>
-               Timeout_Next := True;
+               State := TIMEOUT_NEXT;
             when 'v' =>
                Info.Verbose_Output := True;
             when 'q' =>
@@ -69,11 +69,11 @@ package body Ahven.Parameters is
             when 'x' =>
                Info.Xml_Output := True;
             when 's' =>
-               Suffix_Next := True;
+               State := SUFFIX_NEXT;
             when others =>
                raise Invalid_Parameter;
          end case;
-      end loop;
+      end loop Option_Loop;
    end Parse_Options;
 
    -- Recognize command line parameters.
@@ -82,11 +82,8 @@ package body Ahven.Parameters is
    procedure Parse_Parameters (Mode :     Parameter_Mode;
                                Info : out Parameter_Info) is
 
-
+      State : Parser_State := NONE;
       Files_Only  : Boolean := False;
-      Dir_Next    : Boolean := False;
-      Timeout_Next : Boolean := False;
-      Suffix_Next : Boolean := False;
 
       procedure Handle_Parameter (P     : in out Parameter_Info;
                                   Arg   :        String;
@@ -94,15 +91,15 @@ package body Ahven.Parameters is
       -- Parse one parameter and update P if necessary.
       is
       begin
-         if Dir_Next then
+         if State = DIR_NEXT then
             P.Result_Dir := Index;
-            Dir_Next := False;
-         elsif Timeout_Next then
+            State := NONE;
+         elsif State = TIMEOUT_NEXT then
             P.Timeout := Framework.Test_Duration'Value (Arg);
-            Timeout_Next := False;
-         elsif Suffix_Next then
-               P.Test_Suffix := Index;
-               Suffix_Next := False;
+            State := NONE;
+         elsif State = Suffix_Next then
+            P.Test_Suffix := Index;
+            State := NONE;
          elsif Arg = "--" then
             Files_Only := True;
          elsif Arg'Size > 1 then
@@ -111,9 +108,7 @@ package body Ahven.Parameters is
                  (Info => P,
                   Mode => Mode,
                   Option => Arg (Arg'First + 1 .. Arg'Last),
-                  Dir_Next => Dir_Next,
-                  Timeout_Next => Timeout_Next,
-                  Suffix_Next => Suffix_Next);
+                  State => State);
             else
                P.Test_Name := Index;
             end if;
@@ -131,7 +126,7 @@ package body Ahven.Parameters is
       for A in Positive range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A), A);
       end loop;
-      if Dir_Next then
+      if State /= NONE then
          raise Invalid_Parameter;
       end if;
    end Parse_Parameters;

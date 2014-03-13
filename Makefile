@@ -1,3 +1,19 @@
+#
+# Copyright (c) 2007-2014 Tero Koskinen <tero.koskinen@iki.fi>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+
 OPTS="GNAT_BUILDER=gnatmake"
 
 default:
@@ -18,6 +34,9 @@ install:
 
 clean:
 	cd gnat && $(MAKE) $(OPTS) clean
+
+README.html: README.rst
+	rst2html --stylesheet-path=css/html4css1.css,css/my-docutils.css README.rst > README.html
 
 control:
 	rm -f objects/*.adt objects/*.ali
