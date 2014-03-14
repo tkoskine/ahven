@@ -20,7 +20,7 @@ check: tests
 
 check_xml: tests
 	-mkdir -p results
-	./tester -c -x -d results
+	./tester -c -x -s .Test -d results
 
 clean::
 	rm -f ${builddir}/*tester
