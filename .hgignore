@@ -12,6 +12,7 @@ tap_tester
 tester
 TRACE.TMP
 ctst.bat
+ctsttap.bat
 *.OBJ
 *.SYM
 *.SRL
