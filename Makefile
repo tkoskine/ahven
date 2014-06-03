@@ -14,7 +14,7 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-OPTS="GNAT_BUILDER=gnatmake" OS_VERSION=unix
+OPTS?="GNAT_BUILDER=gnatmake" OS_VERSION=unix
 
 default:
 	cd gnat && $(MAKE) $(OPTS)
@@ -31,6 +31,9 @@ html:
 
 install:
 	cd gnat && $(MAKE) $(OPTS) install
+
+base:
+	cd gnat && $(MAKE) $(OPTS) base
 
 clean:
 	cd gnat && $(MAKE) $(OPTS) clean
