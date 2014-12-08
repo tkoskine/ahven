@@ -59,11 +59,9 @@ package body Ahven.Framework is
 
       procedure Append (Target : in out List;
                         Node_Data : Test'Class) is
-         New_Node : Node_Access  := null;
+         New_Node : Node_Access :=
+           new Node'(Data => new Test'Class'(Node_Data), Next => null);
       begin
-         New_Node := new Node'(Data => new Test'Class'(Node_Data),
-                               Next => null);
-
          if Target.Last = null then
             Target.Last := New_Node;
             Target.First := New_Node;
@@ -75,7 +73,7 @@ package body Ahven.Framework is
 
       procedure Clear (Target : in out List) is
          Current_Node : Node_Access := Target.First;
-         Next_Node : Node_Access := null;
+         Next_Node    : Node_Access := null;
       begin
          while Current_Node /= null loop
             Next_Node := Current_Node.Next;
