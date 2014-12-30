@@ -218,8 +218,8 @@ One can install the packages with command *apt-get install libahven21.0 libahven
 Installation
 ------------
 
-For building Ahven source code you need Ada 95 compiler, for example GNAT,
-Janus/Ada, or ObjectAda.
+For building Ahven source code you need Ada 95/2005/2012 compiler, for example GNAT,
+Janus/Ada, Irvine ICCAda, or ObjectAda.
 
 Optionally, you need Sphinx_ and sphinxcontrib-adadomain (Python packages)
 to build the documentation and AdaControl to run coding style checks.

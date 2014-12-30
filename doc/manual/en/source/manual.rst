@@ -60,8 +60,8 @@ Building and Installing Ahven
 #############################
 
 To build and install Ahven source code, you need an Ada 95 compiler.
-At the moment, Ahven is tested with four different
-compiler families: GNAT, ObjectAda, Irvine ICCAda, and Janus/Ada.
+At the moment, Ahven is tested with three different
+compiler families: GNAT, Irvine ICCAda, and Janus/Ada.
 
 GNAT GPL series and FSF GCC
 ===========================
@@ -129,14 +129,6 @@ To build and install Ahven using comfignat-based system, run:
 
 Note: You need to have *python-sphinx* and *python-sphinxcontrib-adadomain*
 packages installed to generate the documentation for Ahven.
-
-ObjectAda
-=========
-
-There is no project file included for ObjectAda.
-To compile Ahven, you need to create
-a new project and import the source code of Ahven
-to the project.
 
 Irvine ICCAda
 =============
