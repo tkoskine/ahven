@@ -24,6 +24,8 @@ src\libmain.adb
 *.bak
 *.exe
 doc/manual/en/build
+doc/manual/en/html
+doc/manual/en/doctrees
 *.metrix
 gnat/stage
 gnat/comfignat.gpr
