@@ -59,7 +59,7 @@ package body Ahven.Framework is
 
       procedure Append (Target : in out List;
                         Node_Data : Test'Class) is
-         New_Node : Node_Access :=
+         New_Node : constant Node_Access :=
            new Node'(Data => new Test'Class'(Node_Data), Next => null);
       begin
          if Target.Last = null then
