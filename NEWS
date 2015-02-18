@@ -1,4 +1,4 @@
-????-??-?? Ahven 2.5
+2015-??-?? Ahven 2.5
 ====================
 
 * TODO
@@ -12,13 +12,12 @@ Changes
 
 	* Python-sphinx and sphinxcontrol-adadomain packages
 	  are now required for building the documentation.
-	  Also, since the documentation is built by default,
-	  you need to have those packages installed, if you
-	  want to build complete Ahven from the source code
-	  using the provided Makefile.
 
 	* XML_Runner now supports "-s" parameter, which allows
 	  one to specify suffix for test class names.
+
+	* Test runners can now accept multiple test names
+	  from the command line. Suggestion from Jacob Sparre Andersen.
 
 Bugs fixed
 ----------
