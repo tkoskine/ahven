@@ -16,8 +16,10 @@
 
 OPTS?="GNAT_BUILDER=gnatmake" OS_VERSION=unix
 
-default:
-	cd gnat && $(MAKE) $(OPTS)
+default: base
+
+all:
+	cd gnat && $(MAKE) $(OPTS) all
 
 check:
 	cd gnat && $(MAKE) $(OPTS) check

@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+with Ada.Characters.Latin_1;
 with Ada.Text_IO;
 with Ada.Strings;
 with Ada.Strings.Fixed;
@@ -77,7 +78,7 @@ package body Ahven.XML_Runner is
       Result : String (Str'Range);
    begin
       for I in Str'Range loop
-         if Str (I) = ''' then
+         if Str (I) = ''' or Character'Pos (Str (I)) < 32 then
             Result (I) := '_';
          else
             Result (I) := Str (I);
@@ -99,8 +100,14 @@ package body Ahven.XML_Runner is
 
    procedure Print_Attribute (File : File_Type; Attr : String;
                               Value : String) is
+      use Ada.Characters;
+
+      Map : Ada.Strings.Maps.Character_Mapping;
    begin
-      Put (File, Attr & "=" & '"' & Value & '"');
+      Map := To_Mapping (From => " '/\<>" & '"' &
+                                 Latin_1.CR & Latin_1.LF,
+                         To   => "______" & "___");
+      Put (File, Attr & "=" & '"' & Filter_String (Value, Map) & '"');
    end Print_Attribute;
 
    procedure Start_Testcase_Tag (File : File_Type;
@@ -125,11 +132,14 @@ package body Ahven.XML_Runner is
 
    function Create_Name (Dir : String; Name : String) return String
    is
+      use Ada.Characters;
+
       function Filename (Test : String) return String is
          Map : Ada.Strings.Maps.Character_Mapping;
       begin
-         Map := To_Mapping (From => " '/\<>:|?*()" & '"',
-                            To   => "-___________" & '_');
+         Map := To_Mapping (From => " '/\<>:|?*()" & '"' &
+                                    Latin_1.CR & Latin_1.LF,
+                            To   => "-___________" & "___");
 
          return "TEST-" & Filter_String (Test, Map) & ".xml";
       end Filename;
