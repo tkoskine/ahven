@@ -16,6 +16,7 @@
 
 with Ada.Command_Line;
 
+with Ahven.Name_List;
 with Ahven.Listeners;
 with Ahven.Listeners.Basic;
 
@@ -28,19 +29,21 @@ package body Ahven.Runner is
 
       Listener : Listeners.Basic.Basic_Listener;
       Params   : Parameters.Parameter_Info;
+      Tests    : Name_List.List;
    begin
       Parameters.Parse_Parameters (Parameters.NORMAL_PARAMETERS, Params);
       Set_Output_Capture (Listener, Parameters.Capture (Params));
 
       -- Execute only tests which match to the given name.
       --
-      -- Sinle_Test procedure is somewhat misleading since we
+      -- Single_Test procedure is somewhat misleading since we
       -- can actually execute more than one test if there are multiple
       -- matching names or if a whole test suite or a test case
       -- matches the given name.
       if Parameters.Single_Test (Params) then
+         Tests := Parameters.Test_Names (Params);
          Framework.Execute
-           (T => Suite, Test_Name => Parameters.Test_Name (Params),
+           (T => Suite, Test_Names => Tests,
             Listener => Listener, Timeout => Parameters.Timeout (Params));
       else
          Framework.Execute (Suite, Listener, Parameters.Timeout (Params));

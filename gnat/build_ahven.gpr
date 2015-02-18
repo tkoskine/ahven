@@ -14,6 +14,7 @@ library project Build_Ahven is
                               "Ahven.Framework",
                               "Ahven.Listeners",
                               "Ahven.Listeners.Basic",
+			      "Ahven.Name_List",
                               "Ahven.AStrings",
                               "Ahven.Long_AStrings",
                               "Ahven.Results",

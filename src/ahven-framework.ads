@@ -20,6 +20,7 @@ with Ahven;
 with Ahven.Listeners;
 with Ahven.SList;
 with Ahven.AStrings;
+with Ahven.Name_List;
 
 pragma Elaborate_All (Ahven);
 pragma Elaborate_All (Ahven.SList);
@@ -85,17 +86,17 @@ package Ahven.Framework is
    -- Types derived from the Test type are required to overwrite
    -- this procedure.
 
-   procedure Run (T         : in out Test;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class);
+   procedure Run (T          : in out Test;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class);
    -- Run the test and place the test result to Result.
    --
    -- Calls Run (T, Test_Name, Listener, Timeout) with Timeout value 0.0.
 
-   procedure Run (T         : in out Test;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class;
-                  Timeout   :        Test_Duration)
+   procedure Run (T          : in out Test;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class;
+                  Timeout    :        Test_Duration)
      is abstract;
    -- Run the test with given name and place the test result to Result.
    -- Timeout specifies the maximum runtime for a single test.
@@ -109,10 +110,13 @@ package Ahven.Framework is
    -- Return the amount of tests (test routines) which will be executed when
    -- the Run (T) procedure is called.
 
-   function Test_Count (T : Test; Test_Name : String)
+   function Test_Count (T : Test; Test_Names : Name_List.List)
      return Test_Count_Type is abstract;
    -- Return the amount of tests (test routines) which will be executed when
-   -- the Run (T, Test_Name) procedure is called.
+   -- the Run (T, Test_Names) procedure is called.
+
+   function Test_Count (T : Test; Test_Name : String) return Test_Count_Type;
+   -- Single name wrapper for Test_Count (T, Test_Names)
 
    procedure Execute (T        : in out Test'Class;
                       Listener : in out Listeners.Result_Listener'Class;
@@ -124,10 +128,10 @@ package Ahven.Framework is
    -- This procedure is meant to be called from Runner package(s).
    -- There should be no need for other to use this.
 
-   procedure Execute (T         : in out Test'Class;
-                      Test_Name :        String;
-                      Listener  : in out Listeners.Result_Listener'Class;
-                      Timeout   :        Test_Duration);
+   procedure Execute (T          : in out Test'Class;
+                      Test_Names :        Name_List.List;
+                      Listener   : in out Listeners.Result_Listener'Class;
+                      Timeout    :        Test_Duration);
    -- Same as Execute above, but call the Run procedure which
    -- takes Test_Name parameter.
 
@@ -142,18 +146,18 @@ package Ahven.Framework is
                   Timeout  :        Test_Duration);
    -- Run Test_Case's test routines.
 
-   procedure Run (T         : in out Test_Case;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class;
-                  Timeout   :        Test_Duration);
+   procedure Run (T          : in out Test_Case;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class;
+                  Timeout    :        Test_Duration);
    -- Run Test_Case's test routine which matches to the Name.
 
    function Test_Count (T : Test_Case) return Test_Count_Type;
    -- Implementation of Test_Count (T : Test).
 
-   function Test_Count (T : Test_Case; Test_Name : String)
+   function Test_Count (T : Test_Case; Test_Names : Name_List.List)
      return Test_Count_Type;
-   -- Implementation of Test_Count (T : Test, Test_Name : String).
+   -- Implementation of Test_Count (T : Test, Test_Name : Name_List.List).
 
    procedure Finalize (T : in out Test_Case);
    -- Finalize procedure of the Test_Case.
@@ -240,18 +244,18 @@ package Ahven.Framework is
                   Timeout   :        Test_Duration);
    -- Run Test_Suite's Test_Cases.
 
-   procedure Run (T         : in out Test_Suite;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class;
-                  Timeout   :        Test_Duration);
+   procedure Run (T          : in out Test_Suite;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class;
+                  Timeout    :        Test_Duration);
    -- Run test suite's child which matches to the given name.
 
    function Test_Count (T : Test_Suite) return Test_Count_Type;
    -- Implementation of Test_Count (T : Test).
 
-   function Test_Count (T : Test_Suite; Test_Name : String)
+   function Test_Count (T : Test_Suite; Test_Names : Name_List.List)
      return Test_Count_Type;
-   -- Implementation of Test_Count (T : Test, Test_Name : String).
+   -- Implementation of Test_Count (T : Test, Test_Name : Name_List.List).
 
    procedure Adjust (T : in out Test_Suite);
    -- Adjust procedure of Test_Suite.

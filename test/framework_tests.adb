@@ -16,6 +16,9 @@
 
 with Ada.Calendar;
 with Ada.Unchecked_Deallocation;
+with Ada.Strings;
+with Ahven.Name_List;
+with Ahven.AStrings;
 with Simple_Listener;
 with Dummy_Tests;
 
@@ -39,6 +42,21 @@ package body Framework_Tests is
    procedure Free is new Ada.Unchecked_Deallocation
      (Object => Simple_Listener.Listener,
       Name   => Simple_Listener.Listener_Access);
+
+   function To_Bounded (Source : String) return AStrings.Bounded_String is
+      use Ahven.AStrings;
+   begin
+      return To_Bounded_String (Source => Source,
+                                Drop   => Ada.Strings.Right);
+   end To_Bounded;
+
+   function To_List (Name : String) return Name_List.List is
+      A_List : Name_List.List := Name_List.Empty_List;
+   begin
+      Name_List.Append (A_List, To_Bounded (Name));
+
+      return A_List;
+   end To_List;
 
    procedure Initialize (T : in out Test) is
       use Framework;
@@ -259,7 +277,7 @@ package body Framework_Tests is
    begin
       Framework.Add_Static_Test (My_Suite, Dummy_Test);
 
-      Framework.Run (My_Suite, "Failure", My_Listener);
+      Framework.Run (My_Suite, To_List ("Failure"), My_Listener);
 
       Assert_Eq_Nat (My_Listener.Passes, 0, "Pass count");
       Assert_Eq_Nat (My_Listener.Errors, 0, "Error count");

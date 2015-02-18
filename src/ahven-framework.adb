@@ -41,6 +41,32 @@ package body Ahven.Framework is
                                 Drop   => Ada.Strings.Right);
    end To_Bounded;
 
+   function Name_In_List (Name : AStrings.Bounded_String;
+                          List_Of_Names : Name_List.List)
+     return Boolean is
+      use type Name_List.Cursor;
+
+      Pos : Name_List.Cursor := Name_List.First (List_Of_Names);
+   begin
+      loop
+         exit when not Name_List.Is_Valid (Pos);
+
+         if Name_List.Data (Pos) = Name then
+            return True;
+         end if;
+
+         Pos := Name_List.Next (Pos);
+      end loop;
+      return False;
+   end Name_In_List;
+
+   function Name_In_List (Name : String; List_Of_Names : Name_List.List)
+     return Boolean is
+   begin
+      return Name_In_List (To_Bounded (Name), List_Of_Names);
+   end Name_In_List;
+
+
    ----------- Indefinite_Test_List -------------------
 
 
@@ -149,14 +175,14 @@ package body Ahven.Framework is
       Run (T => Test'Class (T), Listener => Listener, Timeout => 0.0);
    end Run;
 
-   procedure Run (T         : in out Test;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class) is
+   procedure Run (T          : in out Test;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class) is
    begin
-      Run (T         => Test'Class (T),
-           Test_Name => Test_Name,
-           Listener  => Listener,
-           Timeout   => 0.0);
+      Run (T          => Test'Class (T),
+           Test_Names => Test_Names,
+           Listener   => Listener,
+           Timeout    => 0.0);
    end Run;
 
    procedure Execute_Internal
@@ -186,6 +212,15 @@ package body Ahven.Framework is
           Test_Kind => CONTAINER));
    end Execute_Internal;
 
+   function Test_Count (T : Test; Test_Name : String) return Test_Count_Type
+   is
+      A_List : Name_List.List := Name_List.Empty_List;
+   begin
+      Name_List.Append (A_List, To_Bounded (Test_Name));
+
+      return Test_Count (Test'Class (T), A_List);
+   end Test_Count;
+
    procedure Execute (T        : in out Test'Class;
                       Listener : in out Listeners.Result_Listener'Class;
                       Timeout  :        Test_Duration) is
@@ -199,16 +234,16 @@ package body Ahven.Framework is
       Execute_Impl (Test_Object => T, Listener_Object => Listener);
    end Execute;
 
-   procedure Execute (T           : in out Test'Class;
-                      Test_Name   :        String;
-                      Listener    : in out Listeners.Result_Listener'Class;
-                      Timeout     :        Test_Duration) is
+   procedure Execute (T          : in out Test'Class;
+                      Test_Names :        Name_List.List;
+                      Listener   : in out Listeners.Result_Listener'Class;
+                      Timeout    :        Test_Duration) is
       procedure Run_Impl is
       begin
-         Run (T         => T,
-              Test_Name => Test_Name,
-              Listener  => Listener,
-              Timeout   => Timeout);
+         Run (T          => T,
+              Test_Names => Test_Names,
+              Listener   => Listener,
+              Timeout    => Timeout);
       end Run_Impl;
 
       procedure Execute_Impl is new Execute_Internal (Action => Run_Impl);
@@ -495,14 +530,14 @@ package body Ahven.Framework is
 
    -- Purpose of the procedure is to run all
    -- test routines with name Test_Name.
-   procedure Run (T         : in out Test_Case;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class;
-                  Timeout   :        Test_Duration)
+   procedure Run (T          : in out Test_Case;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class;
+                  Timeout    :        Test_Duration)
    is
       procedure Exec (Cmd : in out Test_Command) is
       begin
-         if To_String (Cmd.Name) = Test_Name then
+         if Name_In_List (Cmd.Name, Test_Names) then
             Run_Internal (T            => T,
                           Listener     => Listener,
                           Command      => Cmd,
@@ -522,7 +557,7 @@ package body Ahven.Framework is
       return Test_Count_Type (Test_Command_List.Length (T.Routines));
    end Test_Count;
 
-   function Test_Count (T : Test_Case; Test_Name : String)
+   function Test_Count (T : Test_Case; Test_Names : Name_List.List)
      return Test_Count_Type
    is
       use Test_Command_List;
@@ -531,7 +566,7 @@ package body Ahven.Framework is
 
       procedure Increase (Cmd : in out Test_Command) is
       begin
-         if To_String (Cmd.Name) = Test_Name then
+         if Name_In_List (Cmd.Name, Test_Names) then
             Counter := Counter + 1;
          end if;
       end Increase;
@@ -628,20 +663,20 @@ package body Ahven.Framework is
       Execute_Static_Cases (T.Static_Test_Cases);
    end Run;
 
-   procedure Run (T         : in out Test_Suite;
-                  Test_Name :        String;
-                  Listener  : in out Listeners.Result_Listener'Class;
-                  Timeout   :        Test_Duration)
+   procedure Run (T          : in out Test_Suite;
+                  Test_Names :        Name_List.List;
+                  Listener   : in out Listeners.Result_Listener'Class;
+                  Timeout    :        Test_Duration)
    is
       procedure Execute_Test (Current : in out Test'Class) is
       begin
-         if Get_Name (Current) = Test_Name then
+         if Name_In_List (Get_Name (Current), Test_Names) then
             Execute (T => Current, Listener => Listener, Timeout => Timeout);
          else
-            Execute (T         => Current,
-                     Test_Name => Test_Name,
-                     Listener  => Listener,
-                     Timeout   => Timeout);
+            Execute (T          => Current,
+                     Test_Names => Test_Names,
+                     Listener   => Listener,
+                     Timeout    => Timeout);
          end if;
       end Execute_Test;
 
@@ -656,7 +691,7 @@ package body Ahven.Framework is
       procedure Execute_Static_Cases is
         new Indefinite_Test_List.For_Each (Action => Execute_Test);
    begin
-      if Test_Name = To_String (T.Suite_Name) then
+      if Name_In_List (T.Suite_Name, Test_Names) then
          Run (T, Listener, Timeout);
       else
          Execute_Cases (T.Test_Cases);
@@ -694,16 +729,16 @@ package body Ahven.Framework is
       return Counter;
    end Test_Count;
 
-   function Test_Count (T : Test_Suite; Test_Name : String)
+   function Test_Count (T : Test_Suite; Test_Names : Name_List.List)
      return Test_Count_Type is
       Counter : Test_Count_Type := 0;
 
       procedure Handle_Test (Test_Object : in out Test'Class) is
       begin
-         if Get_Name (Test_Object) = Test_Name then
+         if Name_In_List (Get_Name (Test_Object), Test_Names) then
             Counter := Counter + Test_Count (Test_Object);
          else
-            Counter := Counter + Test_Count (Test_Object, Test_Name);
+            Counter := Counter + Test_Count (Test_Object, Test_Names);
          end if;
       end Handle_Test;
 
@@ -717,7 +752,7 @@ package body Ahven.Framework is
       procedure Count_Tests is
         new Test_List.For_Each (Action => Handle_Test_Ptr);
    begin
-      if Test_Name = To_String (T.Suite_Name) then
+      if Name_In_List (T.Suite_Name, Test_Names) then
          return Test_Count (T);
       end if;
 

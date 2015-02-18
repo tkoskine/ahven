@@ -17,6 +17,8 @@
 with Ada.Command_Line;
 with Ada.Text_IO;
 
+with Ahven.AStrings;
+
 use Ada.Command_Line;
 use Ada.Text_IO;
 
@@ -110,7 +112,9 @@ package body Ahven.Parameters is
                   Option => Arg (Arg'First + 1 .. Arg'Last),
                   State => State);
             else
-               P.Test_Name := Index;
+               Name_List.Append (P.Test_Names,
+                 AStrings.To_Bounded_String
+                   (Ada.Command_Line.Argument (Index)));
             end if;
          end if;
       end Handle_Parameter;
@@ -119,7 +123,7 @@ package body Ahven.Parameters is
       Info := (Verbose_Output => True,
                Xml_Output     => False,
                Capture_Output => False,
-               Test_Name      => 0,
+               Test_Names     => Name_List.Empty_List,
                Result_Dir     => 0,
                Test_Suffix    => 0,
                Timeout        => 0.0);
@@ -136,7 +140,8 @@ package body Ahven.Parameters is
       case Mode is
          when NORMAL_PARAMETERS =>
             Put_Line
-              ("Possible parameters: [-cqvx] [-d directory] [--] [testname]");
+              ("Possible parameters: [-cqvx] [-d directory] [--]" &
+               " [testname] .. [testname]");
             Put_Line ("   -d    : directory for test results");
             Put_Line ("   -x    : output in XML format");
          when TAP_PARAMETERS =>
@@ -166,17 +171,24 @@ package body Ahven.Parameters is
 
    function Single_Test (Info : Parameter_Info) return Boolean is
    begin
-      return (Info.Test_Name /= 0);
+      return (Name_List.Length (Info.Test_Names) /= 0);
    end Single_Test;
 
    function Test_Name (Info : Parameter_Info) return String is
+      use Ahven.AStrings;
    begin
-      if Info.Test_Name = 0 then
+      if Name_List.Length (Info.Test_Names) = 0 then
          return "";
       else
-         return Argument (Info.Test_Name);
+         return To_String (Name_List.Data (Name_List.First (Info.Test_Names)));
       end if;
    end Test_Name;
+
+   function Test_Names (Info : Parameter_Info)
+     return Ahven.Name_List.List is
+   begin
+      return Info.Test_Names;
+   end Test_Names;
 
    function Result_Dir (Info : Parameter_Info) return String is
    begin

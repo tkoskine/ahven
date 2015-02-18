@@ -15,6 +15,7 @@
 --
 
 with Ahven.Framework;
+with Ahven.Name_List;
 
 -- A package for handling command line parameters
 --
@@ -54,6 +55,10 @@ package Ahven.Parameters is
    function Test_Name (Info : Parameter_Info) return String;
    -- Return the name of the test passed as a parameter.
 
+   function Test_Names (Info : Parameter_Info)
+     return Ahven.Name_List.List;
+   -- Return all the test names passed as a parameter
+
    function Result_Dir (Info : Parameter_Info) return String;
    -- Return the directory for XML results.
 
@@ -68,8 +73,8 @@ private
       Xml_Output     : Boolean := False;
       Capture_Output : Boolean := False;
 
-      Test_Name      : Natural := 0;
-      -- Position of test name in the argument array
+      Test_Names     : Name_List.List;
+      -- Names of the wanted tests
 
       Result_Dir     : Natural := 0;
       -- Position of results dir in the argument array

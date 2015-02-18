@@ -18,6 +18,7 @@ with Ada.Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Characters.Latin_1;
 
+with Ahven.Name_List;
 with Ahven.Parameters;
 with Ahven.AStrings;
 with Ahven.Long_AStrings;
@@ -56,6 +57,7 @@ package body Ahven.Tap_Runner is
    procedure Run (Suite : in out Framework.Test'Class) is
       Listener : Tap_Listener;
       Params   : Parameters.Parameter_Info;
+      Tests    : Name_List.List;
    begin
       Parameters.Parse_Parameters (Parameters.TAP_PARAMETERS, Params);
 
@@ -63,13 +65,13 @@ package body Ahven.Tap_Runner is
       Listener.Capture_Output := Parameters.Capture (Params);
 
       if Parameters.Single_Test (Params) then
-         Put_Line ("1.." & Count_Image (Test_Count
-           (Suite, Parameters.Test_Name (Params))));
+         Tests := Parameters.Test_Names (Params);
+         Put_Line ("1.." & Count_Image (Test_Count (Suite, Tests)));
          Framework.Execute
-           (T         => Suite,
-            Test_Name => Parameters.Test_Name (Params),
-            Listener  => Listener,
-            Timeout   => Parameters.Timeout (Params));
+           (T          => Suite,
+            Test_Names => Tests,
+            Listener   => Listener,
+            Timeout    => Parameters.Timeout (Params));
       else
          Put_Line ("1.." & Count_Image (Test_Count (Suite)));
          Framework.Execute (Suite, Listener, Parameters.Timeout (Params));
