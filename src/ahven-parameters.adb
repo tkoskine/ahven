@@ -128,6 +128,8 @@ package body Ahven.Parameters is
                Test_Suffix    => 0,
                Timeout        => 0.0);
       for A in Positive range 1 .. Argument_Count loop
+         exit when Argument (A) = "-i"; --  Ignore remaining arguments.
+
          Handle_Parameter (Info, Argument (A), A);
       end loop;
       if State /= NONE then
@@ -151,7 +153,8 @@ package body Ahven.Parameters is
       Put_Line ("   -q    : quiet results");
       Put_Line ("   -t    : test timeout, infinite default");
       Put_Line ("   -v    : verbose results (default)");
-      Put_Line ("   --    : end of parameters (optional)");
+      Put_Line ("   --    : test names follow (optional)");
+      Put_Line ("   -i    : ignore remaining parameters (optional)");
    end Usage;
 
    function Capture (Info : Parameter_Info) return Boolean is

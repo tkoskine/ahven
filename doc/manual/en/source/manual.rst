@@ -408,3 +408,7 @@ Ahven.Text_Runner recognizes following parameters:
 
     verbose results (default)
 
+.. cmdoption:: -i 
+
+    ignore remaining parameters - for passing parameters to the test cases
+
