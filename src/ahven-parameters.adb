@@ -23,7 +23,7 @@ use Ada.Command_Line;
 use Ada.Text_IO;
 
 package body Ahven.Parameters is
-   type Parser_State is (NONE, DIR_NEXT, TIMEOUT_NEXT, SUFFIX_NEXT);
+   type Parser_State is (NONE, DIR_NEXT, TIMEOUT_NEXT, SUFFIX_NEXT, IGNORE_REST);
 
    -- Possible options:
    --  -c : capture output
@@ -72,6 +72,9 @@ package body Ahven.Parameters is
                Info.Xml_Output := True;
             when 's' =>
                State := SUFFIX_NEXT;
+            when 'i' =>
+               State := IGNORE_REST;
+               exit Option_Loop;
             when others =>
                raise Invalid_Parameter;
          end case;
@@ -93,7 +96,12 @@ package body Ahven.Parameters is
       -- Parse one parameter and update P if necessary.
       is
       begin
-         if State = DIR_NEXT then
+         if State = IGNORE_REST and Arg = "--" then
+            State := NONE;
+            Files_Only := True;
+         elsif State = IGNORE_REST then
+            null; -- Do nothing
+         elsif State = DIR_NEXT then
             P.Result_Dir := Index;
             State := NONE;
          elsif State = TIMEOUT_NEXT then
@@ -107,10 +115,10 @@ package body Ahven.Parameters is
          elsif Arg'Size > 1 then
             if (not Files_Only) and (Arg (Arg'First) = '-') then
                Parse_Options
-                 (Info => P,
-                  Mode => Mode,
+                 (Info   => P,
+                  Mode   => Mode,
                   Option => Arg (Arg'First + 1 .. Arg'Last),
-                  State => State);
+                  State  => State);
             else
                Name_List.Append (P.Test_Names,
                  AStrings.To_Bounded_String
@@ -128,11 +136,9 @@ package body Ahven.Parameters is
                Test_Suffix    => 0,
                Timeout        => 0.0);
       for A in Positive range 1 .. Argument_Count loop
-         exit when Argument (A) = "-i"; --  Ignore remaining arguments.
-
          Handle_Parameter (Info, Argument (A), A);
       end loop;
-      if State /= NONE then
+      if State /= NONE and State /= IGNORE_REST then
          raise Invalid_Parameter;
       end if;
    end Parse_Parameters;
@@ -142,7 +148,7 @@ package body Ahven.Parameters is
       case Mode is
          when NORMAL_PARAMETERS =>
             Put_Line
-              ("Possible parameters: [-cqvx] [-d directory] [--]" &
+              ("Possible parameters: [-cqvxi] [-d directory] [--]" &
                " [testname] .. [testname]");
             Put_Line ("   -d    : directory for test results");
             Put_Line ("   -x    : output in XML format");
@@ -153,8 +159,8 @@ package body Ahven.Parameters is
       Put_Line ("   -q    : quiet results");
       Put_Line ("   -t    : test timeout, infinite default");
       Put_Line ("   -v    : verbose results (default)");
+      Put_Line ("   -i    : ignore remaining parameters up to ""--""");
       Put_Line ("   --    : test names follow (optional)");
-      Put_Line ("   -i    : ignore remaining parameters (optional)");
    end Usage;
 
    function Capture (Info : Parameter_Info) return Boolean is
