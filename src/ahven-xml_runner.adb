@@ -75,10 +75,11 @@ package body Ahven.XML_Runner is
    function Create_Name (Dir : String; Name : String) return String;
 
    function Filter_String (Str : String) return String is
+      use Ada.Characters;
       Result : String (Str'Range);
    begin
       for I in Str'Range loop
-         if Str (I) = ''' or Character'Pos (Str (I)) < 32 then
+         if Str (I) = ''' or Str (I) < Latin_1.Space then
             Result (I) := '_';
          else
             Result (I) := Str (I);

@@ -23,7 +23,8 @@ use Ada.Command_Line;
 use Ada.Text_IO;
 
 package body Ahven.Parameters is
-   type Parser_State is (NONE, DIR_NEXT, TIMEOUT_NEXT, SUFFIX_NEXT, IGNORE_REST);
+   type Parser_State is
+     (NONE, DIR_NEXT, TIMEOUT_NEXT, SUFFIX_NEXT, IGNORE_REST);
 
    -- Possible options:
    --  -c : capture output
