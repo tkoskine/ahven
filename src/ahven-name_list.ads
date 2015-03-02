@@ -20,4 +20,4 @@ with Ahven.AStrings;
 pragma Elaborate_All (Ahven.SList);
 
 package Ahven.Name_List is new
-  Ahven.SList (Ahven.AStrings.Bounded_String);
+  Ahven.SList (Element_Type => Ahven.AStrings.Bounded_String);
