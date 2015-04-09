@@ -22,5 +22,8 @@ check_xml: tests
 	-mkdir -p results
 	./tester -c -x -s .Test -d results
 
+check_tap: tests
+	./tap_tester
+
 clean::
 	rm -f ${builddir}/*tester

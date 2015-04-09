@@ -27,6 +27,9 @@ check:
 check_xml:
 	cd gnat && $(MAKE) $(OPTS) check_xml
 
+check_tap:
+	cd gnat && $(MAKE) $(OPTS) check_tap
+
 
 html:
 	cd gnat && $(MAKE) html
