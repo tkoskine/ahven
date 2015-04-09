@@ -1,23 +1,34 @@
-2015-??-?? Ahven 2.5
+2015-04-?? Ahven 2.5
 ====================
-
-* TODO
 
 Changes
 -------
 	* The default build system (Makefile) for GNAT uses now
 	  comfignat.mk template. All existing make targets should
 	  work in the normal way, but the internals have been
-	  changed.
+	  changed. See
+	  http://tero.stronglytyped.org/building-the-development-version-of-ahven.html
+	  for details.
 
 	* Python-sphinx and sphinxcontrol-adadomain packages
 	  are now required for building the documentation.
 
 	* XML_Runner now supports "-s" parameter, which allows
 	  one to specify suffix for test class names.
+	  Helps with CI systems which expect certain format for
+	  the names.
+	  Example:
+	    my_tests -c -x -s .Test -d results
 
 	* Test runners can now accept multiple test names
 	  from the command line. Suggestion from Jacob Sparre Andersen.
+
+	* Test runners have new "-i" parameter, which tells
+	  the runners to ignore the rest of the parameters until
+	  parameter "--" is seen. Suggestion and initial patch
+	  from Jacob Sparre Andersen.
+	  Example:
+	    my_tests -v -i -this-is-ignored +and-this -- MyTest
 
 Bugs fixed
 ----------
