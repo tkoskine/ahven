@@ -34,21 +34,25 @@ if [ x"$1" = x"" ]; then
     exit 1
 fi
 
+if [ x"$2" != x"" ]; then
+    HGROOT=$2
+    echo "Using $HGROOT as repository"
+fi
+
 VERSION=$1
 
-cd /tmp || failure "cd /tmp failed"
-hg clone $HGROOT ahven-$VERSION || failure "checkout failed"
-cd ahven-$VERSION && rm -rf .hg .hgignore .hgtags && cd .. || failure "rm failed"
-cd ahven-$VERSION && cd doc/manual/en && make html && cd /tmp || failure "docs failed"
-tar zcf ahven-$VERSION.tar.gz ahven-$VERSION || failure "tar zcf failed"
-zip -r ahven-$VERSION.zip ahven-$VERSION || failure "zip -r failed"
+AHVEN_TMP_DIR=`mktemp -d`
 
-echo "Release tarball ready at /tmp/ahven-$VERSION.tar.gz"
-echo "Release zip ready at /tmp/ahven-$VERSION.zip"
-echo "Please remove /tmp/ahven-$VERSION directory."
+cd $AHVEN_TMP_DIR || failure "cd $AHVEN_TMP_DIR failed"
+hg clone $HGROOT ahven-$VERSION || failure "checkout failed"
+cd ahven-$VERSION || failure "cd failed"
+hg archive -p ahven-$VERSION $AHVEN_TMP_DIR/ahven-$VERSION.tar.gz || failure "hg archive .tar.gz failed"
+hg archive -p ahven-$VERSION $AHVEN_TMP_DIR/ahven-$VERSION.zip || failure "hg archive .zip failed"
+cd ..
+
+echo "Release tarball ready at $AHVEN_TMP_DIR/ahven-$VERSION.tar.gz"
+echo "Release zip ready at $AHVEN_TMP_DIR/ahven-$VERSION.zip"
+echo "Please remove $AHVEN_TMP_DIR/ahven-$VERSION directory."
 
 echo
-echo "Sign the tarball and the zip with commands"
-echo "gpg --detach /tmp/ahven-$VERSION.tar.gz"
-echo "gpg --detach /tmp/ahven-$VERSION.zip"
 

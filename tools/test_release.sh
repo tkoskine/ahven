@@ -11,13 +11,19 @@ if [ x"$1" = x"" ]; then
     exit 1
 fi
 
+if [ x"$2" = x"" ]; then
+    TARBALL=/tmp/ahven-$VERSION.tar.gz
+else
+    TARBALL=$2
+fi
+
 VERSION=$1
 
 TEMPDIR=`mktemp -d`
 INSTALL_DIR=`mktemp -d`
 
 cd $TEMPDIR || fail "cd to temp failed"
-tar zxvf /tmp/ahven-$VERSION.tar.gz || fail "tar failed"
+tar zxvf $TARBALL || fail "tar $TARBALL failed"
 cd ahven-$VERSION || fail "cd to ahven-$VERSION failed"
 make || fail "make failed"
 make check || fail "make check failed"
