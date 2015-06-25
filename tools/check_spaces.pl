@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 #
-# Udage: perl check_spaces.pl file1 file2 .. fileN
+# A script to check tabs and trailing whitespace from files.
+#
+# Usage: perl check_spaces.pl file1 file2 .. fileN
 #
 
 my $line = 0;
