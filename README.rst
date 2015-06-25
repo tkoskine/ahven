@@ -227,6 +227,15 @@ Debian stable (7.0) provides Ahven 2.1 as libahven21.0 and libahven3-dev package
 
 One can install the packages with command *apt-get install libahven21.0 libahven3-dev*.
 
+Fedora package
+''''''''''''''
+
+Fedora 21 provides Ahven 2.4 as *ahven* and *ahven-devel* packages. One can install the packages with command:
+
+::
+
+   yum install ahven ahven-devel
+
 Installation
 ------------
 
