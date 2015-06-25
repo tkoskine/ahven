@@ -1,4 +1,7 @@
 #!/usr/bin/perl
+#
+# Udage: perl check_spaces.pl file1 file2 .. fileN
+#
 
 my $line = 0;
 while(<>)
