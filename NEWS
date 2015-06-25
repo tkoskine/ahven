@@ -1,4 +1,4 @@
-2015-04-?? Ahven 2.5
+2015-06-?? Ahven 2.5
 ====================
 
 Changes
@@ -30,9 +30,27 @@ Changes
 	  Example:
 	    my_tests -v -i -this-is-ignored +and-this -- MyTest
 
+	* Old Cruisecontrol and Fedora packaging examples were
+	  removed from contrib/ directory.
+
 Bugs fixed
 ----------
 	* Fixed compilation with gcc/gnat 4.9. Noticed by John Marino.
+
+Hosting changes
+---------------
+	* Starting from 2.5, Ahven is no longer hosted at Sourceforge.
+	  Instead, it has dedicated site at http://www.ahven-framework.com/
+
+	  Release packages can be downloaded from
+	  http://www.ahven-framework.com/releases/
+
+	  Old http://ahven.stronglytyped.org/ address continues work as
+	  a mirror site.
+
+	  Source code repository can be accessed either via
+	  https://bitbucket.org/tkoskine/ahven or
+	  http://hg.stronglytyped.org/ahven
 	
 
 2014-02-09 Ahven 2.4
