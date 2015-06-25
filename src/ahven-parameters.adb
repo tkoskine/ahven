@@ -47,7 +47,7 @@ package body Ahven.Parameters is
                   raise Invalid_Parameter;
                end if;
             when TAP_PARAMETERS =>
-               if (C = 'd') or (C = 'x') then
+               if (C = 'd') or (C = 'x') or (C = 's') then
                   raise Invalid_Parameter;
                end if;
          end case;
@@ -149,17 +149,20 @@ package body Ahven.Parameters is
       case Mode is
          when NORMAL_PARAMETERS =>
             Put_Line
-              ("Possible parameters: [-cqvxi] [-d directory] [--]" &
+              ("Possible parameters: [-cqvxi] [-t timeout ] " &
+               "[-s suffix] " &
+               "[-d directory] [--]" &
                " [testname] .. [testname]");
             Put_Line ("   -d    : directory for test results");
             Put_Line ("   -x    : output in XML format");
+            Put_Line ("   -s    : Test name suffix in XML files");
          when TAP_PARAMETERS =>
-            Put_Line ("Possible parameters: [-cqvi] [--] [testname]" &
-               " .. [testname]");
+            Put_Line ("Possible parameters: [-cqvi] [-t timeout] [--] " &
+               "[testname] .. [testname]");
       end case;
       Put_Line ("   -c    : capture and report test outputs");
       Put_Line ("   -q    : quiet results");
-      Put_Line ("   -t    : test timeout, infinite default");
+      Put_Line ("   -t    : test timeout, infinite(0) default");
       Put_Line ("   -v    : verbose results (default)");
       Put_Line ("   -i    : ignore remaining parameters up to ""--""");
       Put_Line ("   --    : test names follow (optional)");
