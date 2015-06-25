@@ -7,7 +7,7 @@ fail()
 }
 
 if [ x"$1" = x"" ]; then
-    echo "usage: test_release.sh <version>"
+    echo "usage: test_release.sh <version> [ahven-x.x.tar.gz]"
     exit 1
 fi
 
