@@ -396,9 +396,13 @@ Ahven.Text_Runner recognizes following parameters:
 
     capture and report test outputs
 
+.. cmdoption:: -s
+
+    Specify test name suffix to be used in XML files
+
 .. cmdoption:: -t
 
-    specify timeout value for tests
+    specify timeout value for tests (value 0 means infinite timeout)
 
 .. cmdoption:: -q 
 
