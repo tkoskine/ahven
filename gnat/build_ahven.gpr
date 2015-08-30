@@ -5,7 +5,7 @@ library project Build_Ahven is
    type OS_Type is ("unix", "windows");
    OS_Version : OS_Type := external ("OS_VERSION", "windows");
 
-   Version := "24";
+   Version := "27";
 
    for Library_Name      use "ahven";
    for Library_Kind      use "dynamic";
