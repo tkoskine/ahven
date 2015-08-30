@@ -33,7 +33,7 @@ See also
 Platforms
 ---------
 
-Ahven 2.5 compiles and passes its test suite on following platforms
+Ahven 2.6 compiles and passes its test suite on following platforms
 
 +-----------------------+--------+------------------------+
 | OS                    |  Arch  | Compiler               |
@@ -51,6 +51,12 @@ Ahven 2.5 compiles and passes its test suite on following platforms
 
 News
 ----
+
+Ahven 2.6 (2015-08-30)
+''''''''''''''''''''''
+
+This release fixes release dates mentioned in the documentation.
+Otherwise 2.6 is identical to 2.5.
 
 Ahven 2.5 (2015-08-30)
 ''''''''''''''''''''''
