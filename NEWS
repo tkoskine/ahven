@@ -12,6 +12,8 @@ Changes
 
 	* Python-sphinx and sphinxcontrol-adadomain packages
 	  are now required for building the documentation.
+	  Prebuilt documentation is available online at
+	  http://docs.ahven-framework.com/2.5/index.html
 
 	* XML_Runner now supports "-s" parameter, which allows
 	  one to specify suffix for test class names.
