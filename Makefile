@@ -14,7 +14,8 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-OPTS?="GNAT_BUILDER=gnatmake" OS_VERSION=unix
+PREFIX?=/usr/local
+OPTS?="GNAT_BUILDER=gnatmake" OS_VERSION=unix prefix=$(PREFIX)
 
 default: base
 

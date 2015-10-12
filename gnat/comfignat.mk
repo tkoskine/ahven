@@ -148,7 +148,7 @@ relocatable_package = false
 # breaking the project files.
 # dirgpr takes precedence over relocatable_package.
 
-prefix        = /usr/local
+prefix        ?= /usr/local
 exec_prefix   = ${prefix}
 datarootdir   = ${prefix}/share
 localstatedir = ${prefix}/var
