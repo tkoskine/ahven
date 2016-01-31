@@ -5,6 +5,9 @@ library project Build_Ahven is
    type OS_Type is ("unix", "windows");
    OS_Version : OS_Type := external ("OS_VERSION", "windows");
 
+   type Boolean is ("false", "true");
+   Development_Build : Boolean := external ("development_build", "false");
+
    Version := "27";
 
    for Library_Name      use "ahven";
@@ -49,16 +52,25 @@ library project Build_Ahven is
          for Source_Dirs use ("../src", "../src/windows");
    end case;
 
-   package Builder  is
-      for Default_Switches ("Ada") use ("-g","-gnatf",
-                                          "-gnatVa",
-                                          "-gnato",
-                                          "-gnatwe",
-                                          "-gnatwa",
-                                          "-gnatwl",
-                                          "-gnatE",
-                                          "-gnatwF", -- unreferenced formal off
-                                          "-gnatyd3bmhex", "-gnat95");
+   Production_Switches := ("-g",
+                           "-gnatf",
+                           "-gnatVa",
+                           "-gnato",
+                           "-gnatwa",
+                           "-gnatwl",
+                           "-gnatE",
+                           "-gnatwF"); -- unreferenced formal off
+
+   package Compiler  is
+      case Development_Build is
+         when "false" =>
+            for Default_Switches ("Ada") use Production_Switches;
+         when "true" =>
+            for Default_Switches ("Ada") use Production_Switches &
+                                             ("-gnatwe",
+                                              "-gnatyd3bmhex",
+                                              "-gnat95");
+      end case;
       -- gnat style switches explained:
       -- 'd' - no DOS line terminators
       -- '3' - indentation level (3 spaces)
@@ -67,5 +79,5 @@ library project Build_Ahven is
       -- 'h' - no horizontal tabs
       -- 'e' - exit statements need to have labels in named loops
       -- 'x' - no unnecessary parentheses around conditions
-   end Builder;
+   end Compiler;
 end Build_Ahven;
