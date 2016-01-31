@@ -8,28 +8,39 @@ library project Build_Ahven is
    Version := "27";
 
    for Library_Name      use "ahven";
-   for Library_Kind      use "dynamic";
-   for Library_Version   use "libahven.so." & Version;
-   for Library_Interface use ("Ahven",
-                              "Ahven.Framework",
-                              "Ahven.Listeners",
-                              "Ahven.Listeners.Basic",
-			      "Ahven.Name_List",
-                              "Ahven.AStrings",
-                              "Ahven.Long_AStrings",
-                              "Ahven.Results",
-                              "Ahven.Parameters",
-                              "Ahven.SList",
-                              "Ahven.Runner",
-                              "Ahven.Tap_Runner",
-                              "Ahven.Temporary_Output",
-                              "Ahven.Text_Runner",
-                              "Ahven.XML_Runner");
+   for Library_Kind      use Comfignat.Library_Type;
    for Source_List_File  use "ahven.lgpr";
    for Object_Dir        use Comfignat.Objdir;
    for Library_Src_Dir   use Comfignat.Stage_Includedir & "/ahven";
    for Library_Dir       use Comfignat.Stage_Libdir;
    for Library_ALI_Dir   use Comfignat.Stage_Alidir & "/ahven";
+
+   -- When building a shared library we want Library_Interface to make the
+   -- library elaborate itself automatically. For a static library we need to
+   -- avoid Library_Interface so that GNAT will automatically make a using
+   -- program handle elaboration of the library.
+   -- Library_Version sets the soname, which only shared libraries have.
+   case Comfignat.Library_Type is
+      when "dynamic" | "relocatable" =>
+         for Library_Version   use "libahven.so." & Version;
+         for Library_Interface use ("Ahven",
+                                    "Ahven.Framework",
+                                    "Ahven.Listeners",
+                                    "Ahven.Listeners.Basic",
+                                    "Ahven.Name_List",
+                                    "Ahven.AStrings",
+                                    "Ahven.Long_AStrings",
+                                    "Ahven.Results",
+                                    "Ahven.Parameters",
+                                    "Ahven.SList",
+                                    "Ahven.Runner",
+                                    "Ahven.Tap_Runner",
+                                    "Ahven.Temporary_Output",
+                                    "Ahven.Text_Runner",
+                                    "Ahven.XML_Runner");
+      when "static" =>
+         null;
+   end case;
 
    case OS_Version is
       when "unix" =>

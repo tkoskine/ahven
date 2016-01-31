@@ -4,7 +4,7 @@ with $Directories_GPR;
 
 library project Ahven is
    for Library_Name     use "ahven";
-   for Library_Kind     use "dynamic";
+   for Library_Kind     use $Library_Type;
    for Source_Dirs      use ($Includedir & "/ahven");
    for Library_Dir      use $Libdir;
    for Library_ALI_Dir  use $Alidir & "/ahven";
