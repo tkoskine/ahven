@@ -1,5 +1,5 @@
 # Comfignat makefile foundation for configuring and building GNAT projects
-# Copyright 2013 - 2014 B. Persson, Bjorn@Rombobeorn.se
+# Copyright 2013 - 2016 B. Persson, Bjorn@Rombobeorn.se
 #
 # This material is provided as is, with absolutely no warranty expressed
 # or implied. Any use is at your own risk.
@@ -11,7 +11,7 @@
 # modified is included with the above copyright notice.
 
 
-# This file is part of Comfignat 1.3 – common, convenient, command-line-
+# This file is part of Comfignat 1.5 beta – common, convenient, command-line-
 # controlled compile-time configuration of software built with the GNAT tools.
 # For information about Comfignat, see http://www.Rombobeorn.se/Comfignat/.
 
@@ -88,8 +88,8 @@ relative_to = \
 #    · Reverse the protection of space and percent characters.
 #    · If the result is an empty string, then return "." instead.
 
-make_pathname = ${call relative_to,${${1}},${CURDIR}}
-# make_pathname takes the name of a variable whose value is an absolute
+Make_pathname = ${call relative_to,${${1}},${CURDIR}}
+# Make_pathname takes the name of a variable whose value is an absolute
 # pathname, and converts that pathname into the right form for usage in Make
 # targets, prerequisites and functions, which means that it is made relative
 # to the current working directory to prevent spaces in parent directories'
@@ -148,7 +148,11 @@ relocatable_package = false
 # breaking the project files.
 # dirgpr takes precedence over relocatable_package.
 
-prefix        ?= /usr/local
+library_type = dynamic
+# If a library can be built as either shared or static, then library_type shall
+# be used to set the attribute Library_Kind in the project files.
+
+prefix        = /usr/local
 exec_prefix   = ${prefix}
 datarootdir   = ${prefix}/share
 localstatedir = ${prefix}/var
@@ -181,8 +185,8 @@ objdir   = ${builddir}/obj
 stagedir = ${builddir}/stage
 # builddir is the build directory, which may be separate from the source tree.
 # Intermediate files produced during the build are kept in objdir. Files to be
-# installed are written under stagedir, and then copied to their destination in
-# the installation step.
+# installed are written under stagedir in the build phase, and then copied to
+# their destination in the installation phase.
 
 # Containing makefiles should avoid modifying the directory variables. Users
 # should be able to rely on these defaults.
@@ -194,6 +198,12 @@ install_cp_flags = ${if ${DESTDIR},--preserve=timestamps}
 # directly to the target system, because that would change the timestamps of
 # existing directories.
 
+do_preinstall  = ${if ${DESTDIR},false,true}
+do_postinstall = ${if ${DESTDIR},false,true}
+# Any pre- and post-installation commands that the containing makefile may
+# specify are executed when installation is done directly to the target system,
+# but not when installation is done to a staging directory, because such
+# commands need to be run on the target system, not on a build server.
 
 #
 # Containing makefiles may use these variables in their rules, but nothing
@@ -225,39 +235,40 @@ stage_miscdocdir     = ${stagedir}${miscdocdir}
 # These are the directories where different kinds of files to be installed are
 # written during the build.
 
-make_srcdir         = ${call make_pathname,srcdir}
-make_builddir       = ${call make_pathname,builddir}
-make_objdir         = ${call make_pathname,objdir}
-make_stagedir       = ${call make_pathname,stagedir}
-make_bindir         = ${call make_pathname,stage_bindir}
-make_libexecdir     = ${call make_pathname,stage_libexecdir}
-make_datadir        = ${call make_pathname,stage_datadir}
-make_sysconfdir     = ${call make_pathname,stage_sysconfdir}
-make_statedir       = ${call make_pathname,stage_statedir}
-make_cachedir       = ${call make_pathname,stage_cachedir}
-make_logdir         = ${call make_pathname,stage_logdir}
-make_includedir     = ${call make_pathname,stage_includedir}
-make_archincludedir = ${call make_pathname,stage_archincludedir}
-make_libdir         = ${call make_pathname,stage_libdir}
-make_alidir         = ${call make_pathname,stage_alidir}
-make_gprdir         = ${call make_pathname,stage_gprdir}
-make_localedir      = ${call make_pathname,stage_localedir}
-make_mandir         = ${call make_pathname,stage_mandir}
-make_infodir        = ${call make_pathname,stage_infodir}
-make_miscdocdir     = ${call make_pathname,stage_miscdocdir}
+Make_srcdir         = ${call Make_pathname,srcdir}
+Make_builddir       = ${call Make_pathname,builddir}
+Make_objdir         = ${call Make_pathname,objdir}
+Make_stagedir       = ${call Make_pathname,stagedir}
+Make_bindir         = ${call Make_pathname,stage_bindir}
+Make_libexecdir     = ${call Make_pathname,stage_libexecdir}
+Make_datadir        = ${call Make_pathname,stage_datadir}
+Make_sysconfdir     = ${call Make_pathname,stage_sysconfdir}
+Make_statedir       = ${call Make_pathname,stage_statedir}
+Make_cachedir       = ${call Make_pathname,stage_cachedir}
+Make_logdir         = ${call Make_pathname,stage_logdir}
+Make_includedir     = ${call Make_pathname,stage_includedir}
+Make_archincludedir = ${call Make_pathname,stage_archincludedir}
+Make_libdir         = ${call Make_pathname,stage_libdir}
+Make_alidir         = ${call Make_pathname,stage_alidir}
+Make_gprdir         = ${call Make_pathname,stage_gprdir}
+Make_localedir      = ${call Make_pathname,stage_localedir}
+Make_mandir         = ${call Make_pathname,stage_mandir}
+Make_infodir        = ${call Make_pathname,stage_infodir}
+Make_miscdocdir     = ${call Make_pathname,stage_miscdocdir}
 # These variables are for use in Make targets, prerequisites and other places
 # where Make expects space-separated lists.
 
 preprocess_file = "${GNATPREP}" ${firstword ${filter %.gp,$^}} $@ \
                   ${options_preprocessing} ${Gnatprep_arguments} \
                   ${if ${filter ${notdir $@},${notdir ${usage_GPRs}}}, \
-                       ${usage_directories}, \
+                       ${usage_directories} '-DLibrary_Type="${library_type}"', \
                        '-DSrcdir="${srcdir}"'} \
                   ${GNATPREPFLAGS}
 # preprocess_file is a command for use in recipes. It runs the first .gp file
 # among the rule's prerequisites through Gnatprep to produce the target. If the
-# target is a usage project, then the usage-relevant directory variables are
-# conveyed to it as Gnatprep symbols. Otherwise srcdir is conveyed.
+# target is a usage project, then the usage-relevant variables are conveyed to
+# it as Gnatprep symbols. Otherwise srcdir is conveyed, as it's needed by
+# preprocessed build projects.
 
 build_GPR = "${GNAT_BUILDER}" -P ${firstword ${filter %.gpr,$^}} \
             ${addprefix -aP,${VPATH}} -p \
@@ -281,7 +292,7 @@ export Comfignat_overriding_absolute_builddir := ${builddir}
 
 # Read the configuration file if there is one:
 
-configuration = ${make_builddir}/comfignat_configuration.mk
+configuration = ${Make_builddir}/comfignat_configuration.mk
 
 -include ${configuration}
 
@@ -343,7 +354,7 @@ endif
 ifneq (${origin preprocessed_files},file)
    preprocessed_files = \
       ${filter-out ${notdir ${usage_GPRs}}, \
-                   ${basename ${notdir ${wildcard ${make_srcdir}/*.gp}}}}
+                   ${basename ${notdir ${wildcard ${Make_srcdir}/*.gp}}}}
 endif
 # preprocessed_files is a list of files to be produced in the preprocessing
 # step at the beginning of the build. Containing makefiles may override it or
@@ -377,11 +388,11 @@ endif
 # default values for optional arguments should be set in the options variables
 # instead.
 
-VPATH += ${filter-out .,${make_srcdir} ${make_builddir}}
+VPATH += ${filter-out .,${Make_srcdir} ${Make_builddir}}
 # VPATH is a list of directories that Make should search for prerequisites.
 
 # If VPATH has been defined as simply expanded before this file was included,
-# then make_srcdir and make_builddir will be expanded now, so everything that's
+# then Make_srcdir and Make_builddir will be expanded now, so everything that's
 # involved in their values must be defined before this point.
 
 configuration_variables += \
@@ -389,7 +400,7 @@ configuration_variables += \
    GNATPREPFLAGS GNAT_BUILDER_FLAGS ADAFLAGS CPPFLAGS CFLAGS CXXFLAGS FFLAGS \
    GNATBINDFLAGS GNATLINKFLAGS LDFLAGS GNATFLAGS \
    DESTDIR \
-   dirgpr relocatable_package \
+   dirgpr relocatable_package library_type \
    prefix exec_prefix datarootdir localstatedir \
    bindir libexecdir \
    datadir sysconfdir statedir cachedir logdir runstatedir lockdir \
@@ -397,6 +408,7 @@ configuration_variables += \
    localedir mandir infodir miscdocdir \
    objdir stagedir \
    install_cp_flags \
+   do_preinstall do_postinstall \
    ${options}
 # configuration_variables is a list of variables that can be saved in the
 # persistent configuration with "make configure". Containing makefiles may
@@ -417,28 +429,36 @@ usage_directory_variables = includedir archincludedir libdir alidir
 
 builder_directory_variables = bindir libexecdir ${usage_directory_variables}
 # These are the builder-relevant directory variables. They control where the
-# GNAT tools write files to be installed.
+# GNAT tools write files to be installed. These are the variables that
+# Comfignat-compatible directories projects must provide.
 
 usage_relevant = ${filter ${usage_directory_variables},${1}}
 # usage_relevant returns a list of the words in the input list that are usage-
 # relevant directory variables. If given a single variable name, it returns
 # that name if the variable is usage-relevant, or an empty string if it isn't.
 
-maybe_relative_to = \
-   ${if ${or ${filter-out 1,${words ${relocatable_package}}}, \
-             ${filter-out true false,${relocatable_package}}}, \
-        ${error relocatable_package must be "true" or "false"} \
-       ,${if ${filter true,${relocatable_package}} \
-            ,${call relative_to,${1},${2}},${1}}}
+checked_boolean = ${or ${and ${filter 1,${words ${${1}}}}, \
+                             ${filter true false,${${1}}}}, \
+                       ${error ${1} must be "true" or "false"}}
+# checked_boolean takes the name of a variable and checks that its value is a
+# single word, and that that word is either "true" or "false". If so it returns
+# the value; otherwise it complains and stops the execution.
+
+checked_true = ${filter true,${call checked_boolean,${1}}}
+# checked_true takes the name of a variable and checks that it has a boolean
+# value. It then returns an empty string for "false" or a non-empty string for
+# "true".
+
+maybe_relative_to = ${if ${call checked_true,relocatable_package} \
+                        ,${call relative_to,${1},${2}},${1}}
 # maybe_relative_to converts an absolute pathname into a relative one if a
 # relocatable package is desired.
 # Parameters:
 #    1: an absolute pathname to maybe convert to relative
 #    2: the absolute base pathname that 1 may be made relative to
-# First check that the value of relocatable_package is a single word and that
-# that word is either "true" or "false". Complain and stop if that isn't so.
-# Then, if relocatable_package is "true", let relative_to convert the pathname,
+# If relocatable_package is "true", then let relative_to convert the pathname,
 # otherwise return parameter 1 unchanged.
+# It is checked that relocatable_package has a boolean value.
 
 embed_pathname = ${call maybe_relative_to,${${1}},${if ${filter bindir,${1}} \
                                                       ,${libexecdir},${bindir}}}
@@ -458,11 +478,10 @@ define convey_builder_directory_variable
    all_directories   += '-Dstage_${1}="${stage_${1}}"'
    usage_directories += ${if ${call usage_relevant,${1}}, \
                              '-D${1}="${call usage_pathname,${1}}"'}
-
 endef
 # convey_builder_directory_variable takes the name of a builder-relevant
 # directory variable and returns Make code that conveys that variable to
-# project files. The code snippet ends with a line break.
+# project files.
 #    · Append a symbol definition to all_directories to convey the variable to
 #      comfignat.gpr in the right form for inclusion in a program.
 #    · Also convey to comfignat.gpr the corresponding pathname under the
@@ -476,11 +495,10 @@ define use_directories_project_variable
    all_directories   += '-D${1}=${directories_project}.${1}'
    usage_directories += ${if ${call usage_relevant,${1}}, \
                              '-D${1}=${directories_project}.${1}'}
-
 endef
 # use_directories_project_variable takes the name of a builder-relevant
 # directory variable and returns Make code that makes project files get that
-# variable from a directories project. The code snippet ends with a line break.
+# variable from a directories project.
 #    · Append a symbol definition to all_directories for comfignat.gpr.
 #    · If the variable is also usage-relevant, then append a symbol definition
 #      to usage_directories for usage projects.
@@ -523,12 +541,12 @@ all_directories += '-DLockdir="${lockdir}"'
 # pathnames.
 
 # Set the builder-relevant directory variables.
-${eval ${foreach var,${builder_directory_variables}, \
-                 ${if ${or ${findstring command line,${origin ${var}}}, \
-                           ${filter true,${${var}_is_configured}}, \
-                           ${filter 0,${words ${dirgpr}}}}, \
-                      ${call convey_builder_directory_variable,${var}}, \
-                      ${call use_directories_project_variable,${var}}}}}
+${foreach var,${builder_directory_variables}, \
+          ${if ${or ${findstring command line,${origin ${var}}}, \
+                    ${filter true,${${var}_is_configured}}, \
+                    ${filter 0,${words ${dirgpr}}}}, \
+               ${eval ${call convey_builder_directory_variable,${var}}}, \
+               ${eval ${call use_directories_project_variable,${var}}}}}
 # For each builder-relevant directory variable, check whether its value in
 # project files should be taken from the corresponding Make variable or from a
 # directories project, and construct symbol definitions accordingly.
@@ -541,15 +559,13 @@ ${eval ${foreach var,${builder_directory_variables}, \
 
 option_values = \
    ${foreach option,${options}, \
-             ${if ${and ${filter-out environment,${origin ${option}}}, \
-                        ${filter 1,${words ${${option}}}}, \
-                        ${filter true false,${${option}}}}, \
-                  ${option}=${${option}}, \
-                  ${error ${option} must be "true" or "false"}}}
-# For each variable listed in options, check that it didn't come from the
-# environment (to prevent accidents), that its value is a single word, and that
-# that word is either "true" or "false". If so, output a name/value pair;
-# otherwise complain and stop.
+             ${if ${filter-out undefined environment,${origin ${option}}}, \
+                  ${option}=${call checked_boolean,${option}}, \
+                  ${error ${option} has no default value and must be set to \
+                          "true" or "false" on the command line}}}
+# For each variable listed in options, check that it exists, that it didn't
+# come from the environment (to prevent accidents), and that it has a boolean
+# value. If so, output a name/value pair; otherwise complain and stop.
 
 # Convey boolean options to Gnatprep.
 options_preprocessing = ${addprefix -D,${option_values}}
@@ -573,8 +589,8 @@ build_targets = ${addsuffix .phony_target,${build_GPRs}}
 # A phony target is defined for each build project, and the job of determining
 # whether the project needs rebuilding is delegated to the builder.
 
-staged_usage_GPRs = ${addprefix ${make_gprdir}/,${usage_GPRs}}
-preprocessed_files_in_builddir = ${addprefix ${make_builddir}/,${preprocessed_files}}
+staged_usage_GPRs = ${addprefix ${Make_gprdir}/,${usage_GPRs}}
+preprocessed_files_in_builddir = ${addprefix ${Make_builddir}/,${preprocessed_files}}
 # When usage projects are preprocessed they are written to stage_gprdir. Other
 # preprocessed files are assumed to be needed during the build and are written
 # to builddir.
@@ -586,6 +602,7 @@ preprocessed_files_in_builddir = ${addprefix ${make_builddir}/,${preprocessed_fi
 
 .SECONDEXPANSION:
 
+.PHONY: Comfignat_default_goal
 Comfignat_default_goal: build
 
 # How to make directories:
@@ -594,11 +611,11 @@ Comfignat_default_goal: build
 .PRECIOUS: %/
 
 # This rule appears to work around a bug that was fixed in GNU Make 3.82:
-${make_gprdir}/:
+${Make_gprdir}/:
 	mkdir -p $@
 
 # How to initialize a build directory with a delegating makefile:
-${make_builddir}/Makefile: | ${make_builddir}/
+${Make_builddir}/Makefile: | ${Make_builddir}/
 	@echo 'Writing $@.'
 	@( echo 'Comfignat_default_goal: force ; ${delegation_command}'; \
 	   echo '%: force ; ${delegation_command} $$@'; \
@@ -613,7 +630,8 @@ ${make_builddir}/Makefile: | ${make_builddir}/
 # the match-anything rule to update the makefile.
 
 # How to save configured variables:
-configure:: ${make_builddir}/Makefile
+.PHONY: configure
+configure:: ${Make_builddir}/Makefile
 	@echo "Writing ${configuration}."
 	@( ${foreach var,${configuration_variables}, \
 	             ${if ${or ${findstring command line,${origin ${var}}}, \
@@ -648,6 +666,7 @@ configure:: ${make_builddir}/Makefile
 # V_is_weakly_configured=false".
 
 # How to show the values of configured variables:
+.PHONY: show_configuration
 show_configuration::
 	@${foreach var,${configuration_variables}, \
 	           ${if ${filter true,${${var}_is_configured}}, \
@@ -657,21 +676,23 @@ show_configuration::
 	 true
 
 # How to preprocess the project Comfignat:
-${make_builddir}/comfignat.gpr: comfignat.gpr.gp | ${make_builddir}/
-	"${GNATPREP}" $< $@ -DInvoked_By_Makefile ${all_directories} ${GNATPREPFLAGS}
+${Make_builddir}/comfignat.gpr: comfignat.gpr.gp | ${Make_builddir}/
+	"${GNATPREP}" $< $@ -DInvoked_By_Makefile ${all_directories} \
+	              '-DLibrary_Type="${library_type}"' ${GNATPREPFLAGS}
 
 # How to preprocess files that are needed during the build:
-${make_builddir}/%: %.gp | ${make_builddir}/
+${Make_builddir}/%: %.gp | ${Make_builddir}/
 	${preprocess_file}
 
 # How to preprocess usage projects:
-${make_gprdir}/%: %.gp | ${make_gprdir}/
+${Make_gprdir}/%: %.gp | ${Make_gprdir}/
 	${preprocess_file}
 
 # How to stage usage projects that don't need preprocessing:
-${make_gprdir}/%: % | ${make_gprdir}/
+${Make_gprdir}/%: % | ${Make_gprdir}/
 	cp -p $< $@
 
+.PHONY: preprocess
 preprocess: $${preprocessed_files_in_builddir}
 
 # How to build a project:
@@ -681,33 +702,70 @@ preprocess: $${preprocessed_files_in_builddir}
 # requires that all preprocessing of files that are needed during the build is
 # done before any project is built.
 
+.PHONY: base
 base: $${build_targets}
 # This builds the projects listed in build_GPRs, plus any additional
 # prerequisites that the containing makefile might add.
 
+.PHONY: build
 build: base $${staged_usage_GPRs}
 # This is the default build. Additional targets that should be built by default
 # may be added as prerequisites.
 
+.PHONY: all
 all: build
 # Optional targets may be added as prerequisites of "all".
 
-${make_stagedir}:
+${Make_stagedir}:
 	@${MAKE} build
 # "make install" straight out of a source package triggers a build, but if
 # something has been built then "make install" doesn't rebuild anything, just
 # copies the built files to their destination.
 
-# How to install what has been built and staged:
-install: ${make_stagedir}
-	mkdir -p "${DESTDIR}/"
-	cp -RPf ${install_cp_flags} "${stagedir}"/* "${DESTDIR}/"
-.PHONY: install
+.PHONY: preinstall
+preinstall:
+# A recipe may be added to "preinstall" with commands that need to be run
+# before the files are installed when installation is done directly to the
+# target system, but should be skipped when installation is done to a staging
+# directory.
 
+# How to install what has been built and staged:
+.PHONY: install_stage
+install_stage: ${Make_stagedir} ${if ${call checked_true,do_preinstall},preinstall}
+	if [ "`echo "${stagedir}"/*`" != "${stagedir}/*" ]; then \
+	   mkdir -p "${DESTDIR}/"; \
+	   cp -RPf ${install_cp_flags} "${stagedir}"/* "${DESTDIR}/"; \
+	fi
+# If stagedir doesn't exist, then the rule to make it by running the build is
+# invoked. If stagedir then exists and contains some files (the asterisk gets
+# expanded) then those files are copied recursively to DESTDIR or to the
+# filesystem root.
+
+.PHONY: install_files
+install_files: install_stage
+# A recipe may be added to "install_files" if any files have to be written,
+# deleted or moved after the staged directory tree has been installed. This
+# should be used only for workarounds. It's better to stage all the files
+# correctly under stagedir in the build phase.
+
+.PHONY: postinstall
+postinstall: install_files
+# A recipe may be added to "postinstall" with commands that need to be run
+# after the files are installed when installation is done directly to the
+# target system, but should be skipped when installation is done to a staging
+# directory. This will typically be commands that modify existing files on the
+# target system.
+
+.PHONY: install
+install: install_files ${if ${call checked_true,do_postinstall},postinstall}
+
+.PHONY: clean
 clean::
 	rm -Rf "${objdir}" "${stagedir}" ${preprocessed_files_in_builddir}
 
+.PHONY: unconfigure
 unconfigure::
 	rm -f "${configuration}"
 
+.PHONY: distclean
 distclean: clean unconfigure

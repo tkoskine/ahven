@@ -1,5 +1,5 @@
 -- Comfignat configuration variables for GNAT project files
--- Copyright 2013 - 2014 B. Persson, Bjorn@Rombobeorn.se
+-- Copyright 2013 - 2016 B. Persson, Bjorn@Rombobeorn.se
 --
 -- This material is provided as is, with absolutely no warranty expressed
 -- or implied. Any use is at your own risk.
@@ -11,7 +11,7 @@
 -- modified is included with the above copyright notice.
 
 
--- This file is part of Comfignat 1.3 – common, convenient, command-line-
+-- This file is part of Comfignat 1.5 beta – common, convenient, command-line-
 -- controlled compile-time configuration of software built with the GNAT tools.
 -- For information about Comfignat, see http://www.Rombobeorn.se/Comfignat/.
 
@@ -84,7 +84,7 @@ abstract project Comfignat is
 
    -- Programs that can be run from a command prompt are in Bindir. This is
    -- usually the same directory that the program itself is in, so this
-   -- variable is probably useful only to programs in Libexecdir.
+   -- variable is probably useful only to programs under Libexecdir.
    #if Bindir'Defined then
       Bindir := $Bindir;
    #else
@@ -272,8 +272,9 @@ abstract project Comfignat is
       Stage_Bindir := Stagedir & Bindir;
    #end if;
 
-   -- Programs that are only to be run by other programs, not by users, shall
-   -- be installed under Stage_Libexecdir.
+   -- Programs that are only intended to be run by other programs, not by
+   -- users, shall be installed under an application-specific subdirectory of
+   -- Stage_Libexecdir.
    #if Stage_Libexecdir'Defined then
       Stage_Libexecdir := $Stage_Libexecdir;
    #else
@@ -310,6 +311,22 @@ abstract project Comfignat is
       Stage_Alidir := $Stage_Alidir;
    #else
       Stage_Alidir := Stagedir & Alidir;
+   #end if;
+
+
+   --
+   -- Other configuration than directories:
+   --
+
+   -- If a library can be built as either shared or static, then Library_Type
+   -- shall be used to set the attribute Library_Kind. It can be overridden on
+   -- the builder command line, which makes it possible to write a makefile
+   -- that builds both a shared and a static library.
+   type Library_Kind is ("dynamic", "relocatable", "static");
+   #if Library_Type'Defined then
+      Library_Type : Library_Kind := external("LIBRARY_TYPE", $Library_Type);
+   #else
+      Library_Type : Library_Kind := external("LIBRARY_TYPE", "dynamic");
    #end if;
 
 end Comfignat;
