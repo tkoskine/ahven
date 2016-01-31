@@ -1,4 +1,8 @@
+GNAT_BUILDER ?= gnatmake
+
 include comfignat.mk
+
+export OS_VERSION ?= unix
 
 build_GPRs = build_ahven.gpr
 usage_GPRs = ahven.gpr

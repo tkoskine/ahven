@@ -14,35 +14,32 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-PREFIX?=/usr/local
-OPTS?="GNAT_BUILDER=gnatmake" OS_VERSION=unix prefix=$(PREFIX)
-
 default: base
 
 all:
-	cd gnat && $(MAKE) $(OPTS) all
+	cd gnat && $(MAKE) all
 
 check:
-	cd gnat && $(MAKE) $(OPTS) check
+	cd gnat && $(MAKE) check
 
 check_xml:
-	cd gnat && $(MAKE) $(OPTS) check_xml
+	cd gnat && $(MAKE) check_xml
 
 check_tap:
-	cd gnat && $(MAKE) $(OPTS) check_tap
+	cd gnat && $(MAKE) check_tap
 
 
 html:
 	cd gnat && $(MAKE) html
 
 install:
-	cd gnat && $(MAKE) $(OPTS) install
+	cd gnat && $(MAKE) install
 
 base:
-	cd gnat && $(MAKE) $(OPTS) base
+	cd gnat && $(MAKE) base
 
 clean:
-	cd gnat && $(MAKE) $(OPTS) clean
+	cd gnat && $(MAKE) clean
 
 README.html: README.rst
 	rst2html --stylesheet-path=css/html4css1.css,css/my-docutils.css README.rst > README.html
