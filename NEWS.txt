@@ -1,9 +1,12 @@
-201?-??-?? Ahven 2.7
+2016-??-?? Ahven 2.7
 ====================
 
 Changes
 -------
-	* TODO
+	* NEWS file renamed to NEWS.txt
+	* GNAT Makefile / comfignat updates:
+	  - prefix variable for installation location (note: lowercase)
+	  - development / production build settings
 
 2015-08-30 Ahven 2.6
 ====================
