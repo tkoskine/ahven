@@ -3,7 +3,7 @@
 
 Changes
 -------
-	* NEWS file renamed to NEWS.txt
+	* NEWS file renamed to NEWS.txt, LICENSE to LICENSE.txt.
 	* GNAT Makefile / comfignat updates:
 	  - prefix variable for installation location (note: lowercase)
 	  - development / production build settings
