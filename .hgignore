@@ -18,7 +18,6 @@ ctsttap.bat
 *.SRL
 *.JRL
 _JANUS.PRJ
-src\libmain.adb
 *.orig
 *.swp
 *.bak
