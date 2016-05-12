@@ -145,7 +145,7 @@ package body Ahven.Text_Runner is
      procedure (Result : Result_Collection; Level : Natural);
 
    type Child_Count_Proc is access
-     function (Result : Result_Collection) return Natural;
+     function (Result : Result_Collection) return Test_Count_Type;
 
    procedure Print_Children (Result : Result_Collection;
                              Level  : Natural;
@@ -267,23 +267,26 @@ package body Ahven.Text_Runner is
    procedure Report_Results (Result  : Result_Collection;
                              Verbose : Boolean := False) is
    begin
-      Put_Line ("Passed : " & Integer'Image (Pass_Count (Result)));
+      Put_Line ("Passed : " & Test_Count_Type'Image (Pass_Count (Result)));
       if Verbose then
          Print_Passes (Result => Result, Level => 0);
       end if;
       New_Line;
       if Skipped_Count (Result) > 0 then
-         Put_Line ("Skipped : " & Integer'Image (Skipped_Count (Result)));
+         Put_Line ("Skipped : " &
+           Test_Count_Type'Image (Skipped_Count (Result)));
          Print_Skips (Result => Result, Level => 0);
          New_Line;
       end if;
       if Failure_Count (Result) > 0 then
-         Put_Line ("Failed : " & Integer'Image (Failure_Count (Result)));
+         Put_Line ("Failed : " &
+           Test_Count_Type'Image (Failure_Count (Result)));
          Print_Failures (Result => Result, Level => 0);
          New_Line;
       end if;
       if Error_Count (Result) > 0 then
-         Put_Line ("Errors : " & Integer'Image (Error_Count (Result)));
+         Put_Line ("Errors : " &
+           Test_Count_Type'Image (Error_Count (Result)));
          Print_Errors (Result => Result, Level => 0);
       end if;
    end Report_Results;

@@ -25,6 +25,9 @@ package body Results_Tests is
    procedure Assert_Eq_Int is
      new Ahven.Assert_Equal (Data_Type => Integer,
                              Image     => Integer'Image);
+   procedure Assert_Eq is
+     new Ahven.Assert_Equal (Data_Type => Test_Count_Type,
+                             Image     => Test_Count_Type'Image);
 
    procedure Initialize (T : in out Test) is
       use Ahven.Framework;
@@ -51,9 +54,9 @@ package body Results_Tests is
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert_Eq_Int (Actual   => Test_Count (Coll),
-                     Expected => 2,
-                     Message  => "test count");
+      Assert_Eq (Actual   => Test_Count (Coll),
+                 Expected => 2,
+                 Message  => "test count");
    end Test_Count_Children;
 
    procedure Test_Direct_Count is
@@ -73,12 +76,12 @@ package body Results_Tests is
       Add_Pass (Coll_Dyn.all, Info);
 
       Add_Child (Coll, Coll_Dyn);
-      Assert_Eq_Int (Actual => Direct_Test_Count (Coll),
-                     Expected => Expected_Test_Count,
-                     Message => "test count");
-      Assert_Eq_Int (Actual => Direct_Test_Count (Coll_Dyn.all),
-                     Expected => 1,
-                     Message => "test count (dyn)");
+      Assert_Eq (Actual => Direct_Test_Count (Coll),
+                 Expected => Expected_Test_Count,
+                 Message => "test count");
+      Assert_Eq (Actual => Direct_Test_Count (Coll_Dyn.all),
+                 Expected => 1,
+                 Message => "test count (dyn)");
    end Test_Direct_Count;
 
    procedure Test_Result_Iterator is
@@ -86,8 +89,9 @@ package body Results_Tests is
 
       Msg  : constant Bounded_String := To_Bounded_String ("hello");
 
-      function Count_Tests (Position : Result_Info_Cursor) return Integer is
-         Count : Natural            := 0;
+      function Count_Tests (Position : Result_Info_Cursor)
+        return Test_Count_Type is
+         Count : Test_Count_Type    := 0;
          Pos   : Result_Info_Cursor := Position;
       begin
          loop
@@ -119,17 +123,17 @@ package body Results_Tests is
          Add_Pass (Coll, Info);
       end loop;
 
-      Assert_Eq_Int (Actual   => Count_Tests (First_Pass (Coll)),
-                     Expected => Pass_Amount,
-                     Message  => "pass amount");
+      Assert_Eq (Actual   => Count_Tests (First_Pass (Coll)),
+                 Expected => Pass_Amount,
+                 Message  => "pass amount");
 
-      Assert_Eq_Int (Actual   => Count_Tests (First_Failure (Coll)),
-                     Expected => Failure_Amount,
-                     Message  => "failure amount");
+      Assert_Eq (Actual   => Count_Tests (First_Failure (Coll)),
+                 Expected => Failure_Amount,
+                 Message  => "failure amount");
 
-      Assert_Eq_Int (Actual   => Count_Tests (First_Error (Coll)),
-                     Expected => Error_Amount,
-                     Message  => "error amount");
+      Assert_Eq (Actual   => Count_Tests (First_Error (Coll)),
+                 Expected => Error_Amount,
+                 Message  => "error amount");
    end Test_Result_Iterator;
 
    procedure Test_Add_Pass is

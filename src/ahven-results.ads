@@ -137,27 +137,27 @@ package Ahven.Results is
                          Parent     :        Result_Collection_Access);
    -- Set a parent collection to the collection.
 
-   function Test_Count (Collection : Result_Collection) return Natural;
+   function Test_Count (Collection : Result_Collection) return Test_Count_Type;
    -- Return the amount of tests in the collection.
    -- Tests in child collections are included.
 
-   function Direct_Test_Count (Collection : Result_Collection) return Natural;
+   function Direct_Test_Count (Collection : Result_Collection) return Test_Count_Type;
    -- Return the amount of tests in the collection.
    -- The tests in the child collections are NOT included.
 
-   function Pass_Count (Collection : Result_Collection) return Natural;
+   function Pass_Count (Collection : Result_Collection) return Test_Count_Type;
    -- Return the amount of passed tests in the collection.
    -- Tests in child collections are included.
 
-   function Error_Count (Collection : Result_Collection) return Natural;
+   function Error_Count (Collection : Result_Collection) return Test_Count_Type;
    -- Return the amount of test errors in the collection.
    -- Tests in child collections are included.
 
-   function Failure_Count (Collection : Result_Collection) return Natural;
+   function Failure_Count (Collection : Result_Collection) return Test_Count_Type;
    -- Return the amount of test errors in the collection.
    -- Tests in child collections are included.
 
-   function Skipped_Count (Collection : Result_Collection) return Natural;
+   function Skipped_Count (Collection : Result_Collection) return Test_Count_Type;
    -- Return the amount of skipped tests in the colleciton.
    -- Tests in child collections are included.
 

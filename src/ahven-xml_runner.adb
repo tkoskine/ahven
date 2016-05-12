@@ -287,9 +287,9 @@ package body Ahven.XML_Runner is
                        Result : Result_Collection);
       -- Internal procedure to print the testcase into given file.
 
-      function Img (Value : Natural) return String is
+      function Img (Value : Test_Count_Type) return String is
       begin
-         return Trim (Natural'Image (Value), Ada.Strings.Both);
+         return Trim (Test_Count_Type'Image (Value), Ada.Strings.Both);
       end Img;
 
       procedure Print (Output : File_Type;

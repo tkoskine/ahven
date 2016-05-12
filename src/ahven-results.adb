@@ -191,11 +191,13 @@ package body Ahven.Results is
       Collection.Parent := Parent;
    end Set_Parent;
 
-   function Test_Count (Collection : Result_Collection) return Natural is
-      Count : Natural := Result_Info_List.Length (Collection.Errors) +
-                         Result_Info_List.Length (Collection.Failures) +
-                         Result_Info_List.Length (Collection.Skips) +
-                         Result_Info_List.Length (Collection.Passes);
+   function Test_Count (Collection : Result_Collection)
+     return Test_Count_Type is
+      Count : Test_Count_Type :=
+        Result_Info_List.Length (Collection.Errors) +
+        Result_Info_List.Length (Collection.Failures) +
+        Result_Info_List.Length (Collection.Skips) +
+        Result_Info_List.Length (Collection.Passes);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
@@ -208,7 +210,7 @@ package body Ahven.Results is
    end Test_Count;
 
    function Direct_Test_Count (Collection : Result_Collection)
-     return Natural
+     return Test_Count_Type
    is
    begin
       return Length (Collection.Errors) +
@@ -216,8 +218,9 @@ package body Ahven.Results is
              Length (Collection.Passes);
    end Direct_Test_Count;
 
-   function Pass_Count (Collection : Result_Collection) return Natural is
-      Count    : Natural            := Length (Collection.Passes);
+   function Pass_Count (Collection : Result_Collection)
+     return Test_Count_Type is
+      Count    : Test_Count_Type    := Length (Collection.Passes);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
@@ -229,8 +232,9 @@ package body Ahven.Results is
       return Count;
    end Pass_Count;
 
-   function Error_Count (Collection : Result_Collection) return Natural is
-      Count    : Natural            := Length (Collection.Errors);
+   function Error_Count (Collection : Result_Collection)
+     return Test_Count_Type is
+      Count    : Test_Count_Type    := Length (Collection.Errors);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
@@ -242,8 +246,9 @@ package body Ahven.Results is
       return Count;
    end Error_Count;
 
-   function Failure_Count (Collection : Result_Collection) return Natural is
-      Count    : Natural            := Length (Collection.Failures);
+   function Failure_Count (Collection : Result_Collection)
+     return Test_Count_Type is
+      Count    : Test_Count_Type    := Length (Collection.Failures);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop
@@ -255,8 +260,9 @@ package body Ahven.Results is
       return Count;
    end Failure_Count;
 
-   function Skipped_Count (Collection : Result_Collection) return Natural is
-      Count    : Natural            := Length (Collection.Skips);
+   function Skipped_Count (Collection : Result_Collection)
+     return Test_Count_Type is
+      Count    : Test_Count_Type    := Length (Collection.Skips);
       Position : Result_List.Cursor := First (Collection.Children);
    begin
       loop

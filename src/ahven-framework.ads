@@ -31,13 +31,6 @@ package Ahven.Framework is
 
    subtype Test_Duration is Duration range 0.0 .. Three_Hours;
 
-   type Test_Count_Type is new Natural;
-   -- Type for the test count. This effectively
-   -- limits the amount tests to whatever Natural is.
-   --
-   -- Although, in practice when adding tests the limit
-   -- is not checked.
-
    type Test is abstract new Ada.Finalization.Controlled with null record;
    -- A type, which provides the base for Test_Case and
    -- Test_Suite types.

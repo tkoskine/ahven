@@ -24,9 +24,8 @@ use Ahven;
 use Ahven.Results;
 
 package body Basic_Listener_Tests is
-
-   procedure Assert_Equal_Nat is new Ahven.Assert_Equal
-     (Data_Type => Natural, Image => Natural'Image);
+   procedure Assert_Eq is new Ahven.Assert_Equal
+     (Data_Type => Test_Count_Type, Image => Test_Count_Type'Image);
 
    procedure Initialize (T : in out Test) is
    begin
@@ -60,7 +59,7 @@ package body Basic_Listener_Tests is
                     Test_Name      => To_Bounded_String ("testname"),
                     Test_Kind      => ROUTINE));
 
-      Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
+      Assert_Eq (Test_Count (Listener.Main_Result), 1, "Test Count");
    end Test_Single_Pass;
 
    procedure Test_Error_Inside_Suite is
@@ -97,12 +96,12 @@ package body Basic_Listener_Tests is
                     Test_Name => To_Bounded_String ("suite"),
                     Test_Kind => CONTAINER));
 
-      Assert_Equal_Nat (Test_Count (Listener.Main_Result), 1, "Test Count");
+      Assert_Eq (Test_Count (Listener.Main_Result), 1, "Test Count");
 
-      Assert_Equal_Nat (Direct_Test_Count (Listener.Main_Result), 0,
-                        "Direct Test Count");
+      Assert_Eq (Direct_Test_Count (Listener.Main_Result), 0,
+                 "Direct Test Count");
 
-      Assert_Equal_Nat (Error_Count (Listener.Main_Result), 1, "Error Count");
+      Assert_Eq (Error_Count (Listener.Main_Result), 1, "Error Count");
    end Test_Error_Inside_Suite;
 
 end Basic_Listener_Tests;

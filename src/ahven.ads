@@ -24,6 +24,13 @@ package Ahven is
 
    Test_Skipped_Error : exception;
    -- Exception, raised when test is skipped
+   
+   subtype Test_Count_Type is Long_Integer range 0 .. 2**31-1;
+   -- Type for the test count. Long_Integer might be bigger
+   -- on some platforms, but the upper limit is something
+   -- what most compilers support.
+   --
+   -- In practice, when adding tests the limit is not explicitly checked.
 
    procedure Assert (Condition : Boolean; Message : String);
    -- If Condition is false, Assert raises Assertion_Error

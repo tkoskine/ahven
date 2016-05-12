@@ -27,7 +27,7 @@ private
 
    type Tap_Listener is new Ahven.Listeners.Result_Listener with record
       Result : Tap_Result_Type := NOT_OK_RESULT;
-      Current_Test : Framework.Test_Count_Type := 0;
+      Current_Test : Ahven.Test_Count_Type := 0;
       Verbose : Boolean := True;
       Output_File : Temporary_Output.Temporary_File;
       Capture_Output : Boolean := False;

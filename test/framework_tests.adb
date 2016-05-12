@@ -28,8 +28,8 @@ package body Framework_Tests is
    use Ahven;
 
    procedure Assert_Eq_Count is
-     new Ahven.Assert_Equal (Data_Type => Framework.Test_Count_Type,
-                             Image     => Framework.Test_Count_Type'Image);
+     new Ahven.Assert_Equal (Data_Type => Ahven.Test_Count_Type,
+                             Image     => Ahven.Test_Count_Type'Image);
 
    procedure Assert_Eq_Nat is
      new Ahven.Assert_Equal (Data_Type => Natural,
@@ -209,7 +209,7 @@ package body Framework_Tests is
    end Test_Test_Case_Run_Break_Infinite_Loop;
 
    procedure Test_Test_Case_Test_Count is
-      use type Framework.Test_Count_Type;
+      use type Ahven.Test_Count_Type;
 
       Dummy_Test  : Dummy_Tests.Test;
    begin
@@ -350,7 +350,7 @@ package body Framework_Tests is
    -- Test that Test_Count works for static test cases
    procedure Test_Test_Suite_Test_Static_Count is
       use Dummy_Tests;
-      use type Framework.Test_Count_Type;
+      use type Ahven.Test_Count_Type;
 
       Child       : Framework.Test_Suite;
       Parent      : Framework.Test_Suite;
@@ -368,7 +368,7 @@ package body Framework_Tests is
 
    procedure Test_Test_Suite_Test_Name_Count is
       use Dummy_Tests;
-      use type Framework.Test_Count_Type;
+      use type Ahven.Test_Count_Type;
 
       Child       : Framework.Test_Suite;
       Parent      : Framework.Test_Suite;
