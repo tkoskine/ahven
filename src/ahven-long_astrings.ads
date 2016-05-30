@@ -14,7 +14,16 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with Ada.Strings.Bounded;
+with Ada.Strings.Unbounded;
 
 package Ahven.Long_AStrings is
-  new Ada.Strings.Bounded.Generic_Bounded_Length (Max => Max_Long_String_Len);
+  subtype Unbounded_String is Ada.Strings.Unbounded.Unbounded_String;
+  Null_Unbounded_String : Unbounded_String
+   := Ada.Strings.Unbounded.Null_Unbounded_String;
+  function To_Unbounded_String (Str : String) return Unbounded_String renames
+    Ada.Strings.Unbounded.To_Unbounded_String;
+  function To_String (U : Unbounded_String) return String renames
+    Ada.Strings.Unbounded.To_String;
+  function Length (U : Unbounded_String) return Natural renames
+    Ada.Strings.Unbounded.Length;
+end Ahven.Long_Astrings;

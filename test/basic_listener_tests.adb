@@ -53,7 +53,7 @@ package body Basic_Listener_Tests is
            Test_Kind    => ROUTINE,
            Routine_Name => To_Bounded_String ("routine"),
            Message      => To_Bounded_String ("message"),
-           Long_Message => Long_AStrings.To_Bounded_String ("long_message")));
+           Long_Message => Long_AStrings.To_Unbounded_String ("long_message")));
       Listeners.Basic.End_Test
         (Listener, (Phase          => TEST_END,
                     Test_Name      => To_Bounded_String ("testname"),
@@ -85,7 +85,7 @@ package body Basic_Listener_Tests is
            Test_Kind => ROUTINE,
            Routine_Name => To_Bounded_String ("routine"),
            Message      => To_Bounded_String ("message"),
-           Long_Message => Long_AStrings.To_Bounded_String ("long_message")));
+           Long_Message => Long_AStrings.To_Unbounded_String ("long_message")));
       Listeners.Basic.End_Test
         (Listener, (Phase     => TEST_END,
                     Test_Name => To_Bounded_String ("testname"),

@@ -33,7 +33,7 @@ package Ahven.Listeners is
          when TEST_RUN =>
             Routine_Name : AStrings.Bounded_String;
             Message      : AStrings.Bounded_String;
-            Long_Message : Long_AStrings.Bounded_String;
+            Long_Message : Long_AStrings.Unbounded_String;
       end case;
    end record;
 
