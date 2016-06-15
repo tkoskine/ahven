@@ -17,13 +17,13 @@
 with Ada.Strings.Unbounded;
 
 package Ahven.Long_AStrings is
-  subtype Unbounded_String is Ada.Strings.Unbounded.Unbounded_String;
-  Null_Unbounded_String : Unbounded_String
+  subtype Long_String is Ada.Strings.Unbounded.Unbounded_String;
+  Null_Long_String : constant Long_String
    := Ada.Strings.Unbounded.Null_Unbounded_String;
-  function To_Unbounded_String (Str : String) return Unbounded_String renames
+  function To_Long_String (Str : String) return Long_String renames
     Ada.Strings.Unbounded.To_Unbounded_String;
-  function To_String (U : Unbounded_String) return String renames
+  function To_String (U : Long_String) return String renames
     Ada.Strings.Unbounded.To_String;
-  function Length (U : Unbounded_String) return Natural renames
+  function Length (U : Long_String) return Natural renames
     Ada.Strings.Unbounded.Length;
 end Ahven.Long_Astrings;

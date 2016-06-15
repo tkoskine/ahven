@@ -63,14 +63,14 @@ package body Ahven.Results is
 
    procedure Set_Long_Message
      (Info    : in out Result_Info;
-      Message :        Long_AStrings.Unbounded_String) is
+      Message :        Long_AStrings.Long_String) is
    begin
       Info.Long_Message := Message;
    end Set_Long_Message;
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String) is
    begin
-      Set_Long_Message (Info, Long_AStrings.To_Unbounded_String (Message));
+      Set_Long_Message (Info, Long_AStrings.To_Long_String (Message));
    end Set_Long_Message;
 
    procedure Set_Execution_Time (Info         : in out Result_Info;

@@ -310,12 +310,12 @@ package body Ahven.Framework is
          function Get_Message return AStrings.Bounded_String;
          procedure Set_Message (Value : AStrings.Bounded_String);
 
-         function Get_Long_Message return Long_AStrings.Unbounded_String;
-         procedure Set_Long_Message (Value : Long_AStrings.Unbounded_String);
+         function Get_Long_Message return Long_AStrings.Long_String;
+         procedure Set_Long_Message (Value : Long_AStrings.Long_String);
       private
          Status : Test_Status := TEST_ERROR;
          Message : AStrings.Bounded_String;
-         Long_Message : Long_AStrings.Unbounded_String;
+         Long_Message : Long_AStrings.Long_String;
       end Test_Results;
 
       protected body Test_Results is
@@ -339,12 +339,12 @@ package body Ahven.Framework is
             Message := Value;
          end Set_Message;
 
-         function Get_Long_Message return Long_AStrings.Unbounded_String is
+         function Get_Long_Message return Long_AStrings.Long_String is
          begin
             return Long_Message;
          end Get_Long_Message;
 
-         procedure Set_Long_Message (Value : Long_AStrings.Unbounded_String) is
+         procedure Set_Long_Message (Value : Long_AStrings.Long_String) is
          begin
             Long_Message := Value;
          end Set_Long_Message;
@@ -366,7 +366,7 @@ package body Ahven.Framework is
          begin
             R.Set_Status (S);
             R.Set_Message (To_Bounded (Source => Message));
-            R.Set_Long_Message (To_Unbounded_String (Long_Message));
+            R.Set_Long_Message (To_Long_String (Long_Message));
          end Set_Status;
       begin
          begin
@@ -433,7 +433,7 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      => Result.Get_Message,
-                Long_Message => Long_AStrings.Null_Unbounded_String));
+                Long_Message => Long_AStrings.Null_Long_String));
          when TEST_ERROR =>
             Listeners.Add_Error
               (Listener,
@@ -451,7 +451,7 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      => To_Bounded_String ("TIMEOUT"),
-                Long_Message => Long_AStrings.Null_Unbounded_String));
+                Long_Message => Long_AStrings.Null_Long_String));
          when TEST_SKIP =>
             Listeners.Add_Skipped
               (Listener,
@@ -460,7 +460,7 @@ package body Ahven.Framework is
                 Test_Kind    => CONTAINER,
                 Routine_Name => Info.Routine_Name,
                 Message      => Result.Get_Message,
-                Long_Message => Long_AStrings.Null_Unbounded_String));
+                Long_Message => Long_AStrings.Null_Long_String));
       end case;
    end Run_Command;
 
@@ -492,7 +492,7 @@ package body Ahven.Framework is
                       Routine_Name =>
                         To_Bounded_String (Routine_Name),
                       Message      => AStrings.Null_Bounded_String,
-                      Long_Message => Long_AStrings.Null_Unbounded_String),
+                      Long_Message => Long_AStrings.Null_Long_String),
                    Timeout  => Timeout,
                    Listener => Listener,
                    T        => T);

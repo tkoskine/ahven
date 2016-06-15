@@ -62,7 +62,7 @@ package Ahven.Results is
 
    procedure Set_Long_Message
      (Info    : in out Result_Info;
-      Message :        Long_AStrings.Unbounded_String);
+      Message :        Long_AStrings.Long_String);
    -- Set a long message for the result
 
    procedure Set_Long_Message (Info : in out Result_Info; Message : String);
@@ -232,15 +232,15 @@ private
       Routine_Name   : Bounded_String  := Null_Bounded_String;
       Execution_Time : Duration := 0.0;
       Message        : Bounded_String  := Null_Bounded_String;
-      Long_Message   : Long_AStrings.Unbounded_String
-        := Long_AStrings.Null_Unbounded_String;
+      Long_Message   : Long_AStrings.Long_String
+        := Long_AStrings.Null_Long_String;
    end record;
 
    Empty_Result_Info : constant Result_Info :=
      (Test_Name      => Null_Bounded_String,
       Routine_Name   => Null_Bounded_String,
       Message        => Null_Bounded_String,
-      Long_Message   => Long_AStrings.Null_Unbounded_String,
+      Long_Message   => Long_AStrings.Null_Long_String,
       Execution_Time => 0.0,
       Output_File    => Null_Bounded_String);
 
