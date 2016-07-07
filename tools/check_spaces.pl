@@ -4,6 +4,12 @@
 #
 # Usage: perl check_spaces.pl file1.diff file2.diff .. fileN.diff
 #
+# Use as a precommit hook in .hg/hgrc:
+#   pretxncommit.whitespace = hg export tip|perl tools/check_spaces.pl
+#
+# or (if using color extension also)
+#   pretxncommit.whitespace = hg --color never export tip|perl tools/check_spaces.pl
+#
 
 my $line = 0;
 while(<>)
