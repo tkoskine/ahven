@@ -141,7 +141,8 @@ package Ahven.Results is
    -- Return the amount of tests in the collection.
    -- Tests in child collections are included.
 
-   function Direct_Test_Count (Collection : Result_Collection) return Test_Count_Type;
+   function Direct_Test_Count (Collection : Result_Collection)
+     return Test_Count_Type;
    -- Return the amount of tests in the collection.
    -- The tests in the child collections are NOT included.
 
@@ -149,15 +150,18 @@ package Ahven.Results is
    -- Return the amount of passed tests in the collection.
    -- Tests in child collections are included.
 
-   function Error_Count (Collection : Result_Collection) return Test_Count_Type;
+   function Error_Count (Collection : Result_Collection)
+     return Test_Count_Type;
    -- Return the amount of test errors in the collection.
    -- Tests in child collections are included.
 
-   function Failure_Count (Collection : Result_Collection) return Test_Count_Type;
+   function Failure_Count (Collection : Result_Collection)
+     return Test_Count_Type;
    -- Return the amount of test errors in the collection.
    -- Tests in child collections are included.
 
-   function Skipped_Count (Collection : Result_Collection) return Test_Count_Type;
+   function Skipped_Count (Collection : Result_Collection)
+     return Test_Count_Type;
    -- Return the amount of skipped tests in the colleciton.
    -- Tests in child collections are included.
 

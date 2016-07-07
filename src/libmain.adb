@@ -14,6 +14,7 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+--## rule off WITH_CLAUSES
 with Ahven;
 with Ahven.Framework;
 with Ahven.Results;

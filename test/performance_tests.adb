@@ -71,7 +71,7 @@ package body Performance_Tests is
 
    procedure Test_100K_Tests is
    begin
-      Run_Tests_X_Times (X => 100_000);
+      Run_Tests_X_Times (X => 100_000); --## rule line off STYLE
    end Test_100K_Tests;
 
    function Get_Test_Suite return Ahven.Framework.Test_Suite is
@@ -85,17 +85,17 @@ package body Performance_Tests is
 
    procedure Test_1M_Tests is
    begin
-      Run_Tests_X_Times (X => 1_000_000);
+      Run_Tests_X_Times (X => 1_000_000); --## rule line off STYLE
    end Test_1M_Tests;
 
    procedure Test_10M_Tests is
    begin
-      Run_Tests_X_Times (X => 10_000_000);
+      Run_Tests_X_Times (X => 10_000_000); --## rule line off STYLE
    end Test_10M_Tests;
 
    procedure Test_100M_Tests is
    begin
       Skip ("Requires too much memory");
-      Run_Tests_X_Times (X => 100_000_000);
+      Run_Tests_X_Times (X => 100_000_000); --## rule line off STYLE
    end Test_100M_Tests;
 end Performance_Tests;

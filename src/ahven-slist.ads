@@ -22,7 +22,7 @@ package Ahven.SList is
    type List is new Ada.Finalization.Controlled with private;
    type Cursor is private;
 
-   subtype Count_Type is Long_Integer'Base range 0 .. 2**31-1;
+   subtype Count_Type is Long_Integer'Base range 0 .. Count_Max;
 
    Invalid_Cursor : exception;
 

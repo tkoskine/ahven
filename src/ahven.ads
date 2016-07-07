@@ -18,6 +18,7 @@
 package Ahven is
    Max_String_Len : constant := 160;
    Max_Long_String_Len : constant := 1024;
+   Count_Max : constant := (2**31) - 1;
 
    Assertion_Error : exception;
    -- Exception, raised when Assert fails.
@@ -25,7 +26,7 @@ package Ahven is
    Test_Skipped_Error : exception;
    -- Exception, raised when test is skipped
    
-   subtype Test_Count_Type is Long_Integer range 0 .. 2**31-1;
+   subtype Test_Count_Type is Long_Integer range 0 .. Count_Max;
    -- Type for the test count. Long_Integer might be bigger
    -- on some platforms, but the upper limit is something
    -- what most compilers support.
