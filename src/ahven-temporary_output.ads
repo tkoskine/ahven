@@ -39,7 +39,7 @@ package Ahven.Temporary_Output is
    -- Remove the temporary file. File can be either open or closed.
 
    procedure Close_Temp (File : in out Temporary_File);
-   -- Close the temporary file.
+   -- Close the temporary file. File needs to be opened first.
 
 private
    type Temporary_File is limited record
