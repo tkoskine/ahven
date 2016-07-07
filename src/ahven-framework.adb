@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007-2011 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2007-2016 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
