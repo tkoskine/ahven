@@ -7,9 +7,10 @@ Changes
 	* GNAT Makefile / comfignat updates:
 	  - prefix variable for installation location (note: lowercase)
 	  - development / production build settings
-	* Simplified GNAT project file under gnat_gen directory.
+	  - directory changed to gnat_linux.
+	* Simplified GNAT project file under gnat directory.
 	  This can be used on Windows also:
-	    gprbuild -p -P gnat_gen\ahven
+	    gprbuild -p -P gnat\ahven
 	* Test_Count_Type is now subtype of Long_Integer with
 	  upper limit at 2**31-1. This allows more tests on compilers
 	  where Natural is a 16-bit value.
