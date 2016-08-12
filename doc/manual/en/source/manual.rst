@@ -4,7 +4,7 @@
 Ahven User's Guide
 ==================
 
-Tero Koskinen
+Tero Koskinen <tero.koskinen@iki.fi>
 
 Overview
 ########
@@ -36,7 +36,7 @@ Ahven is distributed under permissive ISC license (shown below).
 ::
 
     --
-    -- Copyright (c) 2007-2014 Tero Koskinen <tero.koskinen@iki.fi>
+    -- Copyright (c) 2007-2016 Tero Koskinen <tero.koskinen@iki.fi>
     --
     -- Permission to use, copy, modify, and distribute this software for any
     -- purpose with or without fee is hereby granted, provided that the above
@@ -66,53 +66,51 @@ compiler families: GNAT, Irvine ICCAda, and Janus/Ada.
 GNAT GPL series and FSF GCC
 ===========================
 
-When you have GNAT GPL or FSF GCC, the easieast way to
-compile and install Ahven is to use
-the *make* utility and Makefile.
+For GNAT there are two sets of project files provided:
 
-When compiling using the *make* utility,
-you need to tell your platform type. Currently,
-only supported platform types are *unix*
-and *windows*. The type can be told by
-setting OS_VERSION variable to the selected platform.
+* gnat
+* gnat_linux
 
-::
+GNAT project files under *gnat* directory are generic and can be used
+on any system, but *gnat_linux* depends on GNU Make utility and
+expects Unix-like environment (Linux, \*BSD, Cygwin or MinGW on Windows).
 
-    $ make OS_VERSION=unix
+Using GNAT project files from gnat directory
+--------------------------------------------
 
-If you are unable to use *make*, you
-can use the GNAT project files directly.
-Ahven distribution comes with three GNAT project files:
-ahven.gpr, ahven_lib.gpr, and ahven_tests.gpr.
-The *ahven.gpr* file is meant to be used
-when compiling unit tests. The library itself is built
-using the *ahven_lib.gpr* file.
-To build the testsuite of the Ahven, one needs to
-use the *ahven_tests.gpr* file.
+There are two project files under *gnat* directory:
+ahven.gpr and ahven_tests.gpr.
 
-Like with Makefile, you need to tell your platform type.
-This time the selection happens by using an environment variable
-called *OS*. The variable accepts same
-values as Makefile.
+Project file ahven.gpr will build the library itself
+and ahven_tests.gpr will build the unit tests for the library.
+
+Example on Windows:
 
 ::
 
-    $ OS=windows gnatmake -P ahven_lib
-    $ OS=windows gnatmake -P ahven_tests
+   gnatmake -P gnat\ahven
+   gnatmake -P gnat\ahven_tests
 
-Installing Library
-------------------
+Once the source files and tests are compiled, there are two executables
+in *gnat* directory: tester(.exe) and tap_tester(.exe).
 
-You can install the library by using command *make install*.
-By default the installation happens to the */usr/local* directory.
-Alternative directory can be set by overwriting the *PREFIX* variable.
+You can run them and if there are no errors, the library can be expected
+to be working correctly.
 
-::
+Project files in *gnat* directory do not provide separate installation
+step for the library. When you wish to use the library, you can simply
+reference ahven.gpr in your project file::
 
-    $ make OS_VERSION=unix PREFIX=/opt/ada install
+   -- my_project.gpr
+   with "/path/to/ahven/gnat/ahven.gpr";
+
+   project My_Project is
+      -- ...
+   end My_Project;
+
 
 Alternative build system for GNAT on Linux
-===========================================
+------------------------------------------
 
 People using Linux and GNAT, especially Fedora Linux and
 FSF GNAT, can use an alternative build system based on
@@ -123,12 +121,21 @@ To build and install Ahven using comfignat-based system, run:
 
 ::
 
-    $ cd contrib/comfignat
-    $ make -f Makefile.comfignat
-    $ sudo make -f Makefile.comfignat install
+    $ cd gnat_linux
+    $ make
+    $ sudo make install
 
 Note: You need to have *python-sphinx* and *python-sphinxcontrib-adadomain*
 packages installed to generate the documentation for Ahven.
+
+If you want to change the installation directory, you can give *make*
+command prefix parameter:
+
+::
+
+   $ cd gnat_linux
+   $ make prefix=$HOME/tmp/ahven-install-dir
+   $ make install
 
 Irvine ICCAda
 =============
@@ -181,10 +188,10 @@ This happens by running
     C:\ahven-2.7>janusada\compile.bat
 
 After a while, you should have compiled library files
-in the *lib_obj* directory and
-an executable called *tap_test.exe*
+in the *lib_obj* directory and an executable called *tap_test.exe*
 in the *test_obj* directory.
-The executable is Ahven's test  suite and if it reports
+
+The executable is Ahven's test suite and if it reports
 no errors, everything is working as expected.
 
 At the time of writing (Ahven 2.7), every test, which is not skipped,
@@ -200,6 +207,7 @@ Using Ahven
 ###########
 
 The heart of Ahven is an abstract type called ``Test``.
+
 It presents an entity which can be run by *a test runner*.
 Types ``Test_Case`` and ``Test_Suite`` are derived from the
 ``Test`` type. The ``Test_Case`` type is the base type
