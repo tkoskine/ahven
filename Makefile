@@ -13,6 +13,12 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
+#
+# This Makefile is meant for Linux systems and uses
+# comfignat.mk settings from gnat_linux/ directory.
+#
+# For more simple build process, use GNAT project files
+# directly from gnat/ directory.
 
 default: base
 
