@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2016 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -14,34 +14,11 @@
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
-with "comfignat.gpr";
-with "build_ahven.gpr";  -- Link to the just compiled library.
+with "ahven";
 
 project Ahven_Tests is
-   for Languages use ("Ada");
    for Source_Dirs use ("../test");
-   for Object_Dir use Comfignat.Objdir & "/test";
-   for Exec_Dir use Comfignat.Builddir;
-   for Main use ("tester.adb", "tap_tester.adb", "perf_tester.adb");
-
-   package Builder is
-      for Default_Switches ("Ada") use ("-g",
-                                        "-gnatQ",
-                                        "-gnatwa",
-                                        "-gnatwF", -- unreferenced formal off
-                                        "-gnat95");
-   end Builder;
-
-   package Linker is
-      for Default_Switches ("Ada") use ("-g");
-   end Linker;
-
-   package Compiler is
-      for Default_Switches ("Ada") use ("-gnatf", "-g");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("Ada") use ("-E", "-static");
-   end Binder;
-
+   for Object_Dir use "obj";
+   for Exec_Dir use ".";
+   for Main use ("tester.adb", "tap_tester.adb");
 end Ahven_Tests;

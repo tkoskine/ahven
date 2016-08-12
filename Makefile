@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2007-2014 Tero Koskinen <tero.koskinen@iki.fi>
+# Copyright (c) 2007-2016 Tero Koskinen <tero.koskinen@iki.fi>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -17,29 +17,29 @@
 default: base
 
 all:
-	cd gnat && $(MAKE) all
+	cd gnat_linux && $(MAKE) all
 
 check:
-	cd gnat && $(MAKE) check
+	cd gnat_linux && $(MAKE) check
 
 check_xml:
-	cd gnat && $(MAKE) check_xml
+	cd gnat_linux && $(MAKE) check_xml
 
 check_tap:
-	cd gnat && $(MAKE) check_tap
+	cd gnat_linux && $(MAKE) check_tap
 
 
 html:
-	cd gnat && $(MAKE) html
+	cd gnat_linux && $(MAKE) html
 
 install:
-	cd gnat && $(MAKE) install
+	cd gnat_linux && $(MAKE) install
 
 base:
-	cd gnat && $(MAKE) base
+	cd gnat_linux && $(MAKE) base
 
 clean:
-	cd gnat && $(MAKE) clean
+	cd gnat_linux && $(MAKE) clean
 
 README.html: README.rst
 	rst2html --stylesheet-path=css/html4css1.css,css/my-docutils.css README.rst > README.html
