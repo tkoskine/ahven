@@ -52,7 +52,7 @@ Ahven 2.6 compiles and passes its test suite on following platforms
 News
 ----
 
-Ahven 2.7 (201?-??-??)
+Ahven 2.7 (2016-??-??)
 ''''''''''''''''''''''
 
 * TODO
