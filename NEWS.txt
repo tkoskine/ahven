@@ -15,6 +15,11 @@ Changes
 	  upper limit at 2**31-1. This allows more tests on compilers
 	  where Natural is a 16-bit value.
 
+Internal
+--------
+	* Ahven.Long_AStrings now uses Unbounded_String instead of Bounded_String.
+	  This reduces the memory usage and allows therefore more tests.
+
 2015-08-30 Ahven 2.6
 ====================
 
