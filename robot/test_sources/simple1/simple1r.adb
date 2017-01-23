@@ -18,8 +18,8 @@ with Ahven.Text_Runner;
 with Ahven.Framework;
 with Simple1;
 
-procedure Runner is
+procedure Simple1R is
    S : Simple1.Test_Case;
 begin
    Ahven.Text_Runner.Run (S);
-end Runner;
+end Simple1R;
