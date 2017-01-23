@@ -30,3 +30,4 @@ doc/manual/en/doctrees
 gnat_linux/stage
 gnat_linux/comfignat.gpr
 results
+robot/*.*ml
