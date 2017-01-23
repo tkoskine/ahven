@@ -1,6 +1,8 @@
 check header_comments (minimum, 10);
 search header_comments (model, "licenseheader.pat");
 
+
+
 check pragmas (nonstandard);
 check improper_initialization (out_parameter);
 -- check improper_initialization (access variable);
@@ -27,7 +29,7 @@ check max_line_length (79);
 search characters (not_iso_646);
 search max_blank_lines (2);
 
-check Multiple_Assignments (repeated);
+check assignments (repeated);
 
 check declarations (integer_type);
 check declarations (multiple_names);
@@ -38,7 +40,8 @@ check declarations (multiple_names);
 
 check directly_accessed_globals;
 
-check style (positional_association, instantiation, 0, call, 3);
+check positional_associations (all, 3, call);
+check positional_associations (all, 0, instantiation);
 
 -- No variables in package specs
 check usage (variable, from_spec);
@@ -58,12 +61,13 @@ Long_Blocks: check Max_Size (block, 25);
 
 check style (negative_condition);
 check style (casing_identifier, original);
-check style (multiple_elements);
+check style (multiple_elements, statement);
 check style (compound_statement);
 check style (casing_keyword, lowercase);
 check style (no_closing_name);
 search style (exposed_literal, integer, 0, 1, 2, number, constant, var_init);
 
+set with_clauses.check_private_with off;
 check with_clauses (reduceable);
 
 check units (unchecked);
