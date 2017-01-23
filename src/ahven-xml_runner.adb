@@ -79,7 +79,7 @@ package body Ahven.XML_Runner is
       Result : String (Str'Range);
    begin
       for I in Str'Range loop
-         if Str (I) = ''' or Str (I) < Latin_1.Space then
+         if (Str (I) = ''') or (Str (I) < Latin_1.Space) then
             Result (I) := '_';
          else
             Result (I) := Str (I);

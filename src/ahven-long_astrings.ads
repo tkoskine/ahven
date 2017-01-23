@@ -26,4 +26,4 @@ package Ahven.Long_AStrings is
     Ada.Strings.Unbounded.To_String;
   function Length (U : Long_String) return Natural renames
     Ada.Strings.Unbounded.Length;
-end Ahven.Long_Astrings;
+end Ahven.Long_AStrings;

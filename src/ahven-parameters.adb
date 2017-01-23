@@ -97,7 +97,7 @@ package body Ahven.Parameters is
       -- Parse one parameter and update P if necessary.
       is
       begin
-         if State = IGNORE_REST and Arg = "--" then
+         if (State = IGNORE_REST) and (Arg = "--") then
             State := NONE;
             Files_Only := True;
          elsif State = IGNORE_REST then
@@ -108,7 +108,7 @@ package body Ahven.Parameters is
          elsif State = TIMEOUT_NEXT then
             P.Timeout := Framework.Test_Duration'Value (Arg);
             State := NONE;
-         elsif State = Suffix_Next then
+         elsif State = SUFFIX_NEXT then
             P.Test_Suffix := Index;
             State := NONE;
          elsif Arg = "--" then
@@ -139,7 +139,7 @@ package body Ahven.Parameters is
       for A in Positive range 1 .. Argument_Count loop
          Handle_Parameter (Info, Argument (A), A);
       end loop;
-      if State /= NONE and State /= IGNORE_REST then
+      if (State /= NONE) and (State /= IGNORE_REST) then
          raise Invalid_Parameter;
       end if;
    end Parse_Parameters;
