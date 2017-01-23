@@ -3,9 +3,14 @@ Library  Process
 
 *** Test Cases ***
 Simple1 Test Passes
-    Run Test  simple1
+    Run Test  simple1r
     Result Should Contain  Passed :\ \ 1
     Result Should Match    *Simple*PASS*
+
+Fail1 Test Fails
+		Run Test  fail1r
+    Result Should Contain  Failed :\ \ 1
+    Result Should Match    *Fail*DOES NOT WORK*FAIL*
 
 *** Keywords ***
 Run Test

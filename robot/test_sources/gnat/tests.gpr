@@ -17,8 +17,8 @@
 with "../../../gnat/ahven";
 
 project Tests is
-   for Source_Dirs use ("../simple1");
+   for Source_Dirs use ("../simple1", "../fail1");
    for Object_Dir use "obj";
    for Exec_Dir use ".";
-   for Main use ("simple1r.adb");
+   for Main use ("simple1r.adb", "fail1r.adb");
 end Tests;

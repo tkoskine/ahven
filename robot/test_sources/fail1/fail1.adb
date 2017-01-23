@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+-- Copyright (c) 2017 Tero Koskinen <tero.koskinen@iki.fi>
 --
 -- Permission to use, copy, modify, and distribute this software for any
 -- purpose with or without fee is hereby granted, provided that the above
@@ -17,19 +17,21 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
-package body Simple1 is
+with Ahven; use Ahven;
+
+package body Fail1 is
    type Test_Access is access all Test_Case;
 
    procedure Initialize (T : in out Test_Case) is
    begin
-      Set_Name (T, "Simple1");
+      Set_Name (T, "Fail1");
 
       Ahven.Framework.Add_Test_Routine
-        (T, Test_Simple'Access, "Simple");
+        (T, Test_Fail'Access, "Fail");
    end Initialize;
    
-   procedure Test_Simple is
+   procedure Test_Fail is
    begin
-      null;
-   end Test_Simple;
-end Simple1;
+      Fail ("DOES NOT WORK");
+   end Test_Fail;
+end Fail1;
