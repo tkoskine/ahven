@@ -10,3 +10,4 @@ pipelines:
     - step:
         script:
           - make base
+          - make check
