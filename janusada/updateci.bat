@@ -1,9 +1,9 @@
 cd src
 cd windows
-corder compat /pAhvenCompat/l'ads'/n'adb'/t/w/k255 /js'jbind'/jb'/t/l/YLLIBCMT' /c'/q/b'/b'ctst.bat'/r..\..\com_obj
+corder compat /pAhvenCompat/l'ads'/n'adb'/t/w/k255 /js'jbind'/jb'/t/l/YLLIBCMT/q' /c'/q/b'/b'ctst.bat'/r..\..\com_obj
 cd ..
-corder libmain /pAhvenLib/l'ads'/n'adb'/t/w/k255 /js'jbind'/jb'/t/l/YLLIBCMT' /c'/q/b'/b'ctst.bat'/r..\lib_obj
+corder libmain /pAhvenLib/l'ads'/n'adb'/t/w/k255 /js'jbind'/jb'/t/l/YLLIBCMT/q' /c'/q/b'/b'ctst.bat'/r..\lib_obj
 cd ..\test
-corder tester /pAhvenTst/l'ads'/n'adb' /js'jbind'/jb'/t/l/YLLIBCMT' /t/w/k255/c'/q/b'/b'ctst.bat'/r..\test_obj
-corder tap_tester /pAhvenTstTap/l'ads'/n'adb' /js'jbind'/jb'/t/l/YLLIBCMT' /t/w/k255/c'/q/b'/b'ctsttap.bat'/r..\test_obj
+corder tester /pAhvenTst/l'ads'/n'adb' /js'jbind'/jb'/t/l/YLLIBCMT/q' /t/w/k255/c'/q/b'/b'ctst.bat'/r..\test_obj
+corder tap_tester /pAhvenTstTap/l'ads'/n'adb' /js'jbind'/jb'/t/l/YLLIBCMT/q' /t/w/k255/c'/q/b'/b'ctsttap.bat'/r..\test_obj
 cd ..
