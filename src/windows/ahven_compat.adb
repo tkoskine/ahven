@@ -15,7 +15,7 @@
 --
 
 -- Windows version of OS compatibility package
-package body Ahven_Compat 
+package body Ahven_Compat is
    function Directory_Separator return String is
    begin
       return "\";
