@@ -52,10 +52,16 @@ Ahven 2.6 compiles and passes its test suite on following platforms
 News
 ----
 
-Ahven 2.7 (2016-??-??)
+Ahven 2.7 (2017-??-??)
 ''''''''''''''''''''''
 
-* TODO
+This is a minor maintenance release with some new features.
+
+An addition to existing comfignat based system, there is now
+very simple GNAT project file provided for Ahven library.
+
+The framework internals also got some performance increases
+and smaller memory usage for each test.
 
 Ahven 2.6 (2015-08-30)
 ''''''''''''''''''''''
