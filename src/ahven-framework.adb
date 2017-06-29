@@ -803,13 +803,13 @@ package body Ahven.Framework is
 
    procedure Run (Command : Test_Command; T : in out Test_Case'Class) is
    begin
+      Set_Up (T);
       case Command.Command_Kind is
          when SIMPLE =>
             Command.Simple_Routine.all;
          when OBJECT =>
-            Set_Up (T);
             Command.Object_Routine.all (T);
-            Tear_Down (T);
       end case;
+      Tear_Down (T);
    end Run;
 end Ahven.Framework;
