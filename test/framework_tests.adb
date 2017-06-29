@@ -65,6 +65,8 @@ package body Framework_Tests is
 
       Add_Test_Routine (T, Test_Set_Up'Access, "Test_Case: Set_Up");
       T.Value := INITIALIZED;
+      Add_Test_Routine (T, Test_Set_Up_And_Tear_Down_Simple'Access,
+                                  "Test_Case: Set_Up and Tear_Down (Simple)");
       Add_Test_Routine (T, Test_Tear_Down'Access,
                                   "Test_Case: Tear_Down");
       Add_Test_Routine (T, Test_Test_Case_Run'Access,
@@ -113,6 +115,23 @@ package body Framework_Tests is
    begin
       Assert (Test (T).Value = SETUP_DONE, "Set_Up not called!");
    end Test_Set_Up;
+
+   -- Test that Set_Up and Tear_Down procedures are called
+   -- for simple test routines.
+   --
+   -- Actual Set_Up test is inside Dummy_Tests.
+   -- If My_Listener has one pass, everything went fine.
+   procedure Test_Set_Up_And_Tear_Down_Simple is
+      use type Dummy_Tests.Test_State;
+
+      My_Simple_Test : Dummy_Tests.Test_Simple;
+      My_Listener : Simple_Listener.Listener;
+   begin
+      Dummy_Tests.Run (My_Simple_Test, My_Listener);
+      Assert (My_Listener.Passes = 1, "No passed test.");
+      Assert (Dummy_Tests.Package_State = Dummy_Tests.DOWN,
+         "Tear_Down not called!");
+   end Test_Set_Up_And_Tear_Down_Simple;
 
    procedure Test_Tear_Down is
       use type Dummy_Tests.Test_State;

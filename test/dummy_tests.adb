@@ -108,5 +108,32 @@ package body Dummy_Tests is
    begin
       Instance_Count := 0;
    end Reset_Instance_Count;
+
+   procedure Initialize (T : in out Test_Simple) is
+      procedure Register (T : in out Ahven.Framework.Test_Case'Class;
+                       Routine : Ahven.Framework.Simple_Test_Routine_Access;
+                       Name    : String)
+        renames Ahven.Framework.Add_Test_Routine;
+   begin
+      Register (T, This_Test_Modifies_The_Package_State'Access,
+         "Package state modification");
+      Package_State := INITIALIZED;
+   end Initialize;
+
+   procedure Set_Up (T : in out Test_Simple) is
+   begin
+      Package_State := UP;
+   end Set_Up;
+
+   procedure Tear_Down (T : in out Test_Simple) is
+   begin
+      Package_State := DOWN;
+   end Tear_Down;
+
+   procedure This_Test_Modifies_The_Package_State is
+   begin
+      Ahven.Assert (Package_State = UP, "Package_State = UP");
+      Package_State := USED;
+   end This_Test_Modifies_The_Package_State;
 end Dummy_Tests;
 --## rule on DIRECTLY_ACCESSED_GLOBALS

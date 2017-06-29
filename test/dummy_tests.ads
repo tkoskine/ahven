@@ -59,4 +59,18 @@ package Dummy_Tests is
 
    procedure Reset_Instance_Count;
 
+   Package_State : Test_State;
+
+   type Test_Simple is new Ahven.Framework.Test_Case with record
+      null;
+   end record;
+
+   procedure Initialize (T : in out Test_Simple);
+
+   procedure Set_Up (T : in out Test_Simple);
+
+   procedure Tear_Down (T : in out Test_Simple);
+
+   procedure This_Test_Modifies_The_Package_State;
+
 end Dummy_Tests;

@@ -31,6 +31,8 @@ package Framework_Tests is
 private
    procedure Test_Set_Up (T : in out Ahven.Framework.Test_Case'Class);
 
+   procedure Test_Set_Up_And_Tear_Down_Simple;
+
    procedure Test_Tear_Down;
 
    procedure Test_Test_Case_Run;
