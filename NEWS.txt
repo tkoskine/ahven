@@ -14,11 +14,18 @@ Changes
 	* Test_Count_Type is now subtype of Long_Integer with
 	  upper limit at 2**31-1. This allows more tests on compilers
 	  where Natural is a 16-bit value.
+	* Set_Up and Tear_Down are now called also for test routines
+	  without parameters. Idea and patch from Jacob Sparre Andersen.
+
+Bugs fixed
+----------
+	* Tear_Down did not work if a test raised exception.
+	  Reported by Jacob Sparre Andersen.
 
 Internal
 --------
 	* Ahven.Long_AStrings now uses Unbounded_String instead of Bounded_String.
-	  This reduces the memory usage and allows therefore more tests.
+	  This reduces the memory usage and therefore allows more tests.
 
 2015-08-30 Ahven 2.6
 ====================
