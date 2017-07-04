@@ -67,6 +67,9 @@ package body Framework_Tests is
       T.Value := INITIALIZED;
       Add_Test_Routine (T, Test_Set_Up_And_Tear_Down_Simple'Access,
                                   "Test_Case: Set_Up and Tear_Down (Simple)");
+      Add_Test_Routine
+        (T, Test_Tear_Down_After_Exception_Simple'Access,
+         "Test_Case: Tear_Down after exception (Simple)");
       Add_Test_Routine (T, Test_Tear_Down'Access,
                                   "Test_Case: Tear_Down");
       Add_Test_Routine (T, Test_Test_Case_Run'Access,
@@ -132,6 +135,24 @@ package body Framework_Tests is
       Assert (Dummy_Tests.Package_State = Dummy_Tests.DOWN,
          "Tear_Down not called!");
    end Test_Set_Up_And_Tear_Down_Simple;
+
+   procedure Test_Tear_Down_After_Exception_Simple is
+      use type Dummy_Tests.Test_State;
+
+      My_Simple_Test : Dummy_Tests.Test_Simple;
+      My_Listener : Simple_Listener.Listener;
+   begin
+      Ahven.Framework.Add_Test_Routine
+        (My_Simple_Test,
+         Dummy_Tests.This_Test_Raises_Error'Access, "exception");
+      Dummy_Tests.Run (My_Simple_Test, My_Listener);
+      Assert_Eq_Nat (My_Listener.Passes, 1, "Pass count");
+      Assert_Eq_Nat (My_Listener.Errors, 1, "Error count");
+      Assert_Eq_Nat (My_Listener.Failures, 0, "Failure count");
+      Assert_Eq_Int (My_Simple_Test.Tear_Down_Count, 1, "Tear_Down count");
+      Assert (Dummy_Tests.Package_State = Dummy_Tests.DOWN,
+         "Tear_Down not called!");
+   end Test_Tear_Down_After_Exception_Simple;
 
    procedure Test_Tear_Down is
       use type Dummy_Tests.Test_State;

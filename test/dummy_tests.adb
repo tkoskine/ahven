@@ -123,11 +123,13 @@ package body Dummy_Tests is
    procedure Set_Up (T : in out Test_Simple) is
    begin
       Package_State := UP;
+      T.Tear_Down_Count := 0;
    end Set_Up;
 
    procedure Tear_Down (T : in out Test_Simple) is
    begin
       Package_State := DOWN;
+      T.Tear_Down_Count := T.Tear_Down_Count + 1;
    end Tear_Down;
 
    procedure This_Test_Modifies_The_Package_State is

@@ -33,6 +33,8 @@ private
 
    procedure Test_Set_Up_And_Tear_Down_Simple;
 
+   procedure Test_Tear_Down_After_Exception_Simple;
+
    procedure Test_Tear_Down;
 
    procedure Test_Test_Case_Run;

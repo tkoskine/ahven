@@ -62,7 +62,7 @@ package Dummy_Tests is
    Package_State : Test_State;
 
    type Test_Simple is new Ahven.Framework.Test_Case with record
-      null;
+      Tear_Down_Count : Integer := -1;
    end record;
 
    procedure Initialize (T : in out Test_Simple);
