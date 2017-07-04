@@ -804,12 +804,27 @@ package body Ahven.Framework is
    procedure Run (Command : Test_Command; T : in out Test_Case'Class) is
    begin
       Set_Up (T);
-      case Command.Command_Kind is
-         when SIMPLE =>
-            Command.Simple_Routine.all;
-         when OBJECT =>
-            Command.Object_Routine.all (T);
-      end case;
+      begin
+         case Command.Command_Kind is
+            when SIMPLE =>
+               Command.Simple_Routine.all;
+            when OBJECT =>
+               Command.Object_Routine.all (T);
+         end case;
+      exception
+         when others =>
+            -- If a routine raises an exception, we end up here.
+            -- Tear_Down needs to be called after every test, so
+            -- this is a good place to do it.
+            --
+            -- Tear_Down also might throw an exception, but that should be ok.
+            -- It is just then propagated outside instead of the exception
+            -- from the test routine.
+            Tear_Down (T);
+            raise;
+      end;
+
+      -- Normal case, no exceptions
       Tear_Down (T);
    end Run;
 end Ahven.Framework;
