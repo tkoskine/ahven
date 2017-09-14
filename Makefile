@@ -19,33 +19,36 @@
 #
 # For more simple build process, use GNAT project files
 # directly from gnat/ directory.
+#
+
+prefix?=/usr/local
 
 default: base
 
 all:
-	cd gnat_linux && $(MAKE) all
+	cd gnat_linux && $(MAKE) prefix=$(prefix) all
 
 check:
-	cd gnat_linux && $(MAKE) check
+	cd gnat_linux && $(MAKE) prefix=$(prefix) check
 
 check_xml:
-	cd gnat_linux && $(MAKE) check_xml
+	cd gnat_linux && $(MAKE) prefix=$(prefix) check_xml
 
 check_tap:
-	cd gnat_linux && $(MAKE) check_tap
+	cd gnat_linux && $(MAKE) prefix=$(prefix) check_tap
 
 
 html:
 	cd gnat_linux && $(MAKE) html
 
 install:
-	cd gnat_linux && $(MAKE) install
+	cd gnat_linux && $(MAKE) prefix=$(prefix) all install
 
 base:
-	cd gnat_linux && $(MAKE) base
+	cd gnat_linux && $(MAKE) prefix=$(prefix) base
 
 clean:
-	cd gnat_linux && $(MAKE) clean
+	cd gnat_linux && $(MAKE) prefix=$(prefix) clean
 
 README.html: README.rst
 	rst2html --stylesheet-path=css/html4css1.css,css/my-docutils.css README.rst > README.html
