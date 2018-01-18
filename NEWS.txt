@@ -1,21 +1,27 @@
-2017-??-?? Ahven 2.7
+2018-??-?? Ahven 2.7
 ====================
 
 Changes
 -------
 	* NEWS file renamed to NEWS.txt, LICENSE to LICENSE.txt.
+
 	* GNAT Makefile / comfignat updates:
 	  - prefix variable for installation location (note: lowercase)
 	  - development / production build settings
 	  - directory changed to gnat_linux.
+
 	* Simplified GNAT project file under gnat directory.
 	  This can be used on Windows also:
 	    gprbuild -p -P gnat\ahven
+
 	* Test_Count_Type is now subtype of Long_Integer with
 	  upper limit at 2**31-1. This allows more tests on compilers
 	  where Natural is a 16-bit value.
+
 	* Set_Up and Tear_Down are now called also for test routines
 	  without parameters. Idea and patch from Jacob Sparre Andersen.
+
+	* Adjusted syntax checking rules to work with Adacontrol V1.18r9.
 
 Bugs fixed
 ----------
