@@ -196,8 +196,8 @@ in the *test_obj* directory.
 The executable is Ahven's test suite and if it reports
 no errors, everything is working as expected.
 
-At the time of writing (Ahven 2.7), every test, which is not skipped,
-should pass with the latest version of Janus/Ada.
+Every test, which is not skipped, should pass with the latest
+stable version of Janus/Ada.
 
 However, with earlier versions of Janus/Ada some tests will fail.
 The failing tests are worked around in Ahven's source code, but
