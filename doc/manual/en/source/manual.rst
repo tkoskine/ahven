@@ -86,7 +86,7 @@ and ahven_tests.gpr will build the unit tests for the library.
 
 Example on Windows:
 
-::
+.. code-block:: bash
 
    gnatmake -P gnat\ahven
    gnatmake -P gnat\ahven_tests
@@ -119,7 +119,7 @@ Ada library infrastructure provided by the used Linux distribution.
 
 To build and install Ahven using comfignat-based system, run:
 
-::
+.. code-block:: bash
 
     $ cd gnat_linux
     $ make
@@ -131,7 +131,7 @@ packages installed to generate the documentation for Ahven.
 If you want to change the installation directory, you can give *make*
 command prefix parameter:
 
-::
+.. code-block:: bash
 
    $ cd gnat_linux
    $ make prefix=$HOME/tmp/ahven-install-dir
@@ -140,23 +140,25 @@ command prefix parameter:
 Irvine ICCAda
 =============
 
-Easiest way to build Ahven with ICCAda is to use *icm* utility::
+Easiest way to build Ahven with ICCAda is to use *icm* utility
 
-    C:\ahven-2.7>cd src
-    C:\ahven-2.7\src>icm new
-    C:\ahven-2.7\src>icm scan *.ad? windows\*.ad?
-    C:\ahven-2.7\src>icm make libmain
-    C:\ahven-2.7\src>cd ..\test
-    C:\ahven-2.7\test>icm new -search=..\src
-    C:\ahven-2.7\test>icm scan *.ad?
-    C:\ahven-2.7\test>icm make tester
+.. code-block:: bat
+
+    C:\ahven-x.y>cd src
+    C:\ahven-x.y\src>icm new
+    C:\ahven-x.y\src>icm scan *.ad? windows\*.ad?
+    C:\ahven-x.y\src>icm make libmain
+    C:\ahven-x.y\src>cd ..\test
+    C:\ahven-x.y\test>icm new -search=..\src
+    C:\ahven-x.y\test>icm scan *.ad?
+    C:\ahven-x.y\test>icm make tester
   
 There is no installation step. If you want to use Ahven
 from your program, run *icm new* with -search parameter:
 
-::
+.. code-block:: bat
 
-    icm new -search=c:\ahven-2.7\src
+    C:\another-project> icm new -search=c:\ahven-x.y\src
 
 Janus/Ada
 =========
@@ -166,26 +168,26 @@ By default, the scripts assume Janus/Ada to be installed to directory
 *C:\\Janus312\\*.  If that is not the case, change the path from
 file *prepare.bat*.
 
-::
+.. code-block:: bat
 
-    C:\ahven-2.7>janusada\prepare.bat
+    C:\ahven-x.y>janusada\prepare.bat
 
 Before compiling the library, you need to run
 the preparation script *janusada\\prepare.bat*.
 Then, scan the sources and create compilation script
 by running *janusada\\update.bat*.
 
-::
+.. code-block:: bat
 
-    C:\ahven-2.7>janusada\update.bat
+    C:\ahven-x.y>janusada\update.bat
 
 Now you are ready to compile the project.
 This happens by running
 *compile.bat* script.
 
-::
+.. code-block:: bat
 
-    C:\ahven-2.7>janusada\compile.bat
+    C:\ahven-x.y>janusada\compile.bat
 
 After a while, you should have compiled library files
 in the *lib_obj* directory and an executable called *tap_test.exe*
