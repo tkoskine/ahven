@@ -45,7 +45,7 @@ html:
 	cd gnat_linux && $(MAKE) html
 
 install:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) all install
+	cd gnat_linux && $(MAKE) prefix=$(prefix) install
 
 base:
 	cd gnat_linux && $(MAKE) prefix=$(prefix) base

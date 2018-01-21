@@ -278,7 +278,10 @@ If you want to build the API documentation, you
 need Sphinx_ tool. Command 'make docs' will
 build the API documentation.
 
-Installation happens by typing *make install*.
+Installation happens by typing *make install*. This installs that which has
+been built by earlier make commands. If nothing has been built, then
+*make install* first builds the library, just like a plain *make*, and then
+installs that.
 Alternatively, you can simply copy the source code directory ('src')
 to your project.
 
