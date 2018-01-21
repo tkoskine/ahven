@@ -23,7 +23,10 @@
 
 prefix?=/usr/local
 
-default: base
+default: build
+
+build:
+	cd gnat_linux && $(MAKE) prefix=$(prefix) build
 
 all:
 	cd gnat_linux && $(MAKE) prefix=$(prefix) all
