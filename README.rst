@@ -38,23 +38,23 @@ Ahven 2.7 compiles and passes its test suite on following platforms
 +-----------------------+--------+------------------------+
 | OS                    |  Arch  | Compiler               |
 +=======================+========+========================+
-| Fedora Linux 25       | x86_64 | FSF GCC 6.1            |
+| Fedora Linux 27       | x86_64 | FSF GCC 6.1            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | i386   | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | x86_64 | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| OpenBSD 6.1           | amd64  | FSF GCC 4.6            |
+| OpenBSD 6.2           | amd64  | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Windows 10            | x86_64 | Janus/Ada 3.1.2        |
+| Windows 10            | x86_64 | Janus/Ada 3.1.2c       |
 +-----------------------+--------+------------------------+
-| Windows 10            | x86_64 | GNAT GPL 2017          |
+| Windows 10            | x86_64 | GNAT GPL 2018          |
 +-----------------------+--------+------------------------+
 
 News
 ----
 
-Ahven 2.7 (2017-??-??)
+Ahven 2.7 (2018-??-??)
 ''''''''''''''''''''''
 
 This is a minor maintenance release with some new features.
