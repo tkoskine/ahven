@@ -33,20 +33,22 @@ See also
 Platforms
 ---------
 
-Ahven 2.6 compiles and passes its test suite on following platforms
+Ahven 2.7 compiles and passes its test suite on following platforms
 
 +-----------------------+--------+------------------------+
 | OS                    |  Arch  | Compiler               |
 +=======================+========+========================+
-| Fedora Linux 22       | x86_64 | FSF GCC 5.1.1          |
+| Fedora Linux 25       | x86_64 | FSF GCC 6.1            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | i386   | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | x86_64 | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Windows 8.1           | x86_64 | Janus/Ada 3.1.2beta    |
+| OpenBSD 6.1           | amd64  | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Windows 8.1           | x86_64 | GNAT GPL 2013          |
+| Windows 10            | x86_64 | Janus/Ada 3.1.2        |
++-----------------------+--------+------------------------+
+| Windows 10            | x86_64 | GNAT GPL 2017          |
 +-----------------------+--------+------------------------+
 
 News
@@ -57,11 +59,13 @@ Ahven 2.7 (2017-??-??)
 
 This is a minor maintenance release with some new features.
 
-An addition to existing comfignat based system, there is now
+In addition to existing comfignat based system, there is now
 very simple GNAT project file provided for Ahven library.
 
 The framework internals also got some performance increases
 and smaller memory usage for each test.
+
+Set_Up and Tear_Down procedures got improvements and fixes.
 
 Ahven 2.6 (2015-08-30)
 ''''''''''''''''''''''
