@@ -1,8 +1,11 @@
+.. index:: ! Ahven (package)
+
 :mod:`Ahven` -- Package
 =======================
 
-.. ada:module:: Ahven
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
+
+
 
 ----------
 Exceptions

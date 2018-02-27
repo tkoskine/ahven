@@ -1,7 +1,8 @@
+.. index:: ! Ahven.Results (package)
+
 :mod:`Ahven.Results` -- Package
 ===============================
 
-.. ada:module:: Ahven.Results
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----

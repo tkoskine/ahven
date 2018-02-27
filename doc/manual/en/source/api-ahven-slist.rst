@@ -1,7 +1,8 @@
+.. index:: ! Ahven.SList (package)
+
 :mod:`Ahven.SList` -- Package
 =============================
 
-.. ada:module:: Ahven.SList
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 .. versionadded:: 1.4
 
