@@ -125,8 +125,8 @@ To build and install Ahven using comfignat-based system, run:
     $ make
     $ sudo make install
 
-Note: You need to have *python-sphinx* and *python-sphinxcontrib-adadomain*
-packages installed to generate the documentation for Ahven.
+Note: You need to have *python-sphinx* package installed to generate
+the documentation for Ahven.
 
 If you want to change the installation directory, you can give *make*
 command prefix parameter:
