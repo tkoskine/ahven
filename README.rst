@@ -260,7 +260,7 @@ Installation
 For building Ahven source code you need Ada 95/2005/2012 compiler,
 for example GNAT, Janus/Ada, Irvine ICCAda, or ObjectAda.
 
-Optionally, you need Sphinx_ and sphinxcontrib-adadomain (Python packages)
+Optionally, you need Sphinx_ (Python package)
 to build the documentation and AdaControl to run coding style checks.
 
 The default Makefile compiles code using gnatmake. Internally, gnatmake is

@@ -23,6 +23,9 @@ Changes
 
 	* Adjusted syntax checking rules to work with Adacontrol V1.18r9.
 
+	* sphinxcontrib-adadomain extension is no longer needed to
+		build the documentation.
+
 Bugs fixed
 ----------
 	* Tear_Down did not work if a test raised exception.
