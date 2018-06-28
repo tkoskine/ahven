@@ -24,16 +24,3 @@ However, some environments allow the task abortion even
 without abort completion points in some cases. FSF GCC
 on OpenBSD with user space threads is one such environment.
 
-Bounded Strings
-===============
-
-All strings in Ahven are either type of String or
-type of Ahven.AStrings.Bounded_String, which is an instantiation
-of Ada.Strings.Bounded.Generic_Bounded_Length with
-maximum length of 160.
-
-The limitation is there because some versions of Janus/Ada
-have a buggy Unbounded_String implementation and use of Unbounded_String
-causes memory leaks and random crashes.
-
-
