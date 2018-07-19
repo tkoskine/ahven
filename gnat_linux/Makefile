@@ -14,7 +14,10 @@ html: ${stage_miscdocdir}/ahven/
 	${MAKE} html --directory=${srcdir}/../doc/manual/en BUILDDIR=${objdir}/sphinx
 	cp -RHpf ${objdir}/sphinx/html ${stage_miscdocdir}/ahven
 
-build: html
+docs: html
+
+# The documentation is built as part of make all, but not in the default build.
+all: html
 
 tests: base ahven_tests.gpr
 	${build_GPR}

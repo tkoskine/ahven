@@ -1,7 +1,8 @@
+.. index:: ! Ahven.Listeners.Basic (package)
+
 :mod:`Ahven.Listeners.Basic` -- Package
 =======================================
 
-.. ada:module:: Ahven.Listeners.Basic
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----

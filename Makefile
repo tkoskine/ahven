@@ -21,34 +21,15 @@
 # directly from gnat/ directory.
 #
 
-prefix?=/usr/local
+# By default, invoke Comfignat's default goal, which builds and stages the
+# library, including the usage project file, but not the documentation.
+default:
+	${MAKE} --directory=gnat_linux
 
-default: base
-
-all:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) all
-
-check:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) check
-
-check_xml:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) check_xml
-
-check_tap:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) check_tap
-
-
-html:
-	cd gnat_linux && $(MAKE) html
-
-install:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) all install
-
-base:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) base
-
-clean:
-	cd gnat_linux && $(MAKE) prefix=$(prefix) clean
+# Any goal that isn't named here is delegated to gnat_linux/Makefile.
+# Variables defined on the command line are passed along.
+%:
+	${MAKE} --directory=gnat_linux $@
 
 README.html: README.rst
 	rst2html --stylesheet-path=css/html4css1.css,css/my-docutils.css README.rst > README.html

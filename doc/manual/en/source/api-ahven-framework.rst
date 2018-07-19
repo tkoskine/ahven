@@ -1,10 +1,10 @@
+.. index:: ! Ahven.Framework (package)
+
 :mod:`Ahven.Framework` -- Package
 =================================
 
-.. ada:module:: Ahven.Framework
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 .. highlight:: ada
-
 
 -----
 Types
@@ -12,8 +12,6 @@ Types
 
 Test_Count_Type
 '''''''''''''''
-
-.. .. xada:type:: type Test_Count_Type is new Natural;
 
 ::
 
@@ -35,6 +33,8 @@ Test_Duration
 Subtype for the test timeouts. Limited to 3 hours, which
 should be enough for unit tests. Timeout value 0.0 means infinite time.
 
+.. index::
+   single: Test (Ahven.Framework, abstract controlled type)
 
 Test
 ''''
@@ -43,9 +43,7 @@ Test
 
     type Test is abstract new Ada.Finalization.Controlled with null record;
 
-.. .. xada:type:: type Test is abstract new Ada.Finalization.Controlled with null record;
-
-   A type, which provides the base for Test_Case and Test_Suite types.
+A type, which provides the base for Test_Case and Test_Suite types.
 
 Test_Class_Access
 '''''''''''''''''
@@ -55,6 +53,9 @@ Test_Class_Access
     type Test_Class_Access is access all Test'Class;
 
 An access type for Test'Class.
+
+.. index::
+   single: Test_Case (Ahven.Framework, abstract controlled type)
 
 Test_Case
 '''''''''
@@ -88,6 +89,9 @@ Simple_Test_Routine_Access
     type Simple_Test_Routine_Access is access procedure;
 
 A pointer to a test routine which does not take arguments.
+
+.. index::
+   single: Test (Ahven.Framework, controlled type)
 
 Test_Suite
 ''''''''''
@@ -124,11 +128,7 @@ Set_Up
 
    procedure Set_Up (T : in out Test);
 
-.. .. xada:procedure:: procedure Set_Up (T : in out Test);
-
-   Set_Up is called before executing the test procedure.
-
-   :param T: Test to be set up.
+Set_Up is called before executing the test procedure.
 
 Tear_Down
 '''''''''
@@ -146,11 +146,11 @@ Get_Name
 
    function Get_Name (T : Test) return String is abstract;
    
-.. .. xada:function:: function Get_Name (T : Test) return String is abstract;
+Return the name of the test.
 
-   Return the name of the test.
 
-   :param T: The test object.
+.. index::
+   single: Run (Ahven.Framework, procedure)
 
 Run
 '''
@@ -160,12 +160,7 @@ Run
    procedure Run (T         : in out Test;
                   Listener  : in out Listeners.Result_Listener'Class);
    
-.. .. xada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class);
-
-   Run the test and place the test result to Result. Infinite timeout.
-
-   :param T: The test object to run.
-   :param Listener: The listener which will be called during the test execution.
+Run the test and place the test result to Result. Infinite timeout.
 
 Run
 '''
@@ -177,13 +172,8 @@ Run
                   Timeout   :        Test_Duration)
      is abstract;
    
-.. .. xada:procedure:: procedure Run (T : in out Test; Listener : in out Listeners.Result_Listener'Class);
 
-   Run the test and place the test result to Result.
-
-   :param T: The test object to run.
-   :param Listener: The listener which will be called during the test execution.
-   :param Timeout: Time limit for the test.
+Run the test and place the test result to Result.
 
 
 Run
@@ -216,11 +206,8 @@ Notice: If multiple tests have same name this might call all of
 them. Timeout specifies maximum execution time for the tests.
 
 
-   :param T: The test object to run.
-   :param Test_Name: The name of the test which will be run.
-   :param Listener: The listener which will be called during the test execution.
-   :param Timeout: Time limit for the test.
-
+.. index::
+   single: Test_Count (Ahven.Framework, procedure)
 
 Test_Count
 ''''''''''

@@ -33,35 +33,39 @@ See also
 Platforms
 ---------
 
-Ahven 2.6 compiles and passes its test suite on following platforms
+Ahven 2.7 compiles and passes its test suite on following platforms
 
 +-----------------------+--------+------------------------+
 | OS                    |  Arch  | Compiler               |
 +=======================+========+========================+
-| Fedora Linux 22       | x86_64 | FSF GCC 5.1.1          |
+| Fedora Linux 27       | x86_64 | FSF GCC 6.1            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | i386   | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | x86_64 | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Windows 8.1           | x86_64 | Janus/Ada 3.1.2beta    |
+| OpenBSD 6.2           | amd64  | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
-| Windows 8.1           | x86_64 | GNAT GPL 2013          |
+| Windows 10            | x86_64 | Janus/Ada 3.1.2c       |
++-----------------------+--------+------------------------+
+| Windows 10            | x86_64 | GNAT GPL 2018          |
 +-----------------------+--------+------------------------+
 
 News
 ----
 
-Ahven 2.7 (2017-??-??)
+Ahven 2.7 (2018-??-??)
 ''''''''''''''''''''''
 
 This is a minor maintenance release with some new features.
 
-An addition to existing comfignat based system, there is now
+In addition to existing comfignat based system, there is now
 very simple GNAT project file provided for Ahven library.
 
 The framework internals also got some performance increases
 and smaller memory usage for each test.
+
+Set_Up and Tear_Down procedures got improvements and fixes.
 
 Ahven 2.6 (2015-08-30)
 ''''''''''''''''''''''
@@ -256,7 +260,7 @@ Installation
 For building Ahven source code you need Ada 95/2005/2012 compiler,
 for example GNAT, Janus/Ada, Irvine ICCAda, or ObjectAda.
 
-Optionally, you need Sphinx_ and sphinxcontrib-adadomain (Python packages)
+Optionally, you need Sphinx_ (Python package)
 to build the documentation and AdaControl to run coding style checks.
 
 The default Makefile compiles code using gnatmake. Internally, gnatmake is
@@ -278,7 +282,10 @@ If you want to build the API documentation, you
 need Sphinx_ tool. Command 'make docs' will
 build the API documentation.
 
-Installation happens by typing *make install*.
+Installation happens by typing *make install*. This installs that which has
+been built by earlier make commands. If nothing has been built, then
+*make install* first builds the library, just like a plain *make*, and then
+installs that.
 Alternatively, you can simply copy the source code directory ('src')
 to your project.
 

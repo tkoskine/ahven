@@ -1,9 +1,9 @@
+.. index:: ! Ahven.Listeners (package)
+
 :mod:`Ahven.Listeners` -- Package
 =================================
 
-.. ada:module:: Ahven.Listeners
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
-
 
 -----
 Types

@@ -1,7 +1,8 @@
+.. index:: ! Ahven.Runner (package)
+
 :mod:`Ahven.Runner` -- Package
 ==============================
 
-.. ada:module:: Ahven.Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----

@@ -1,7 +1,8 @@
+.. index:: ! Ahven.Parameters (package)
+
 :mod:`Ahven.Parameters` -- Package
 ==================================
 
-.. ada:module:: Ahven.Parameters
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
 -----

@@ -1,9 +1,9 @@
+.. index:: ! Ahven.Tap_Runner (package)
+
 :mod:`Ahven.Tap_Runner` -- Package
 ==================================
 
-.. ada:module:: Ahven.Tap_Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
-
 
 ========================
 Procedures and Functions

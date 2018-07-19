@@ -1,9 +1,9 @@
+.. index:: ! Ahven.Text_Runner (package)
+
 :mod:`Ahven.Text_Runner` -- Package
 ===================================
 
-.. ada:module:: Ahven.Text_Runner
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
-
 
 ------------------------
 Procedures and Functions

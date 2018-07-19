@@ -8,7 +8,8 @@ library project Build_Ahven is
    type Boolean is ("false", "true");
    Development_Build : Boolean := external ("development_build", "false");
 
-   Version := "27";
+   for Leading_Library_Options use External_As_List ("EXTRA_LDFLAGS", " ");
+   Version := External ("ahven_soversion", "27");
 
    for Library_Name      use "ahven";
    for Library_Kind      use Comfignat.Library_Type;
