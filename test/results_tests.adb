@@ -22,9 +22,6 @@ use Ahven;
 use Ahven.AStrings;
 
 package body Results_Tests is
-   procedure Assert_Eq_Int is
-     new Ahven.Assert_Equal (Data_Type => Integer,
-                             Image     => Integer'Image);
    procedure Assert_Eq is
      new Ahven.Assert_Equal (Data_Type => Test_Count_Type,
                              Image     => Test_Count_Type'Image);

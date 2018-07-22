@@ -1,5 +1,5 @@
 cd src
-set januspath=C:\JanusAda\rts
+set januspath=C:\JWIN320p\rts\console
 del /q ..\lib_obj\*.*
 del /q ..\com_obj\*.*
 mkdir ..\lib_obj
@@ -7,10 +7,10 @@ mkdir ..\com_obj
 copy /y ..\janusada\compat.adb ..\src\windows
 cd windows
 jmanager Add_Project (..\..\com_obj\,AhvenCompat)
-jmanager Add_Link (..\..\com_obj\,AhvenCompat,%januspath%, JNT_RTS)
+jmanager Add_Link (..\..\com_obj\,AhvenCompat,%januspath%, JWIN_RTS_CONSOLE)
 cd ..
 jmanager Add_Project (..\lib_obj\,AhvenLib)
-jmanager Add_Link (..\lib_obj\,AhvenLib,%januspath%, JNT_RTS)
+jmanager Add_Link (..\lib_obj\,AhvenLib,%januspath%, JWIN_RTS_CONSOLE)
 jmanager Add_Link (..\lib_obj\,AhvenLib,..\com_obj\, AhvenCompat)
 
 cd ..\test

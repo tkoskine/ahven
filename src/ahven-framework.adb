@@ -44,8 +44,6 @@ package body Ahven.Framework is
    function Name_In_List (Name : AStrings.Bounded_String;
                           List_Of_Names : Name_List.List)
      return Boolean is
-      use type Name_List.Cursor;
-
       Pos : Name_List.Cursor := Name_List.First (List_Of_Names);
    begin
       loop
@@ -558,8 +556,6 @@ package body Ahven.Framework is
    function Test_Count (T : Test_Case; Test_Names : Name_List.List)
      return Test_Count_Type
    is
-      use Test_Command_List;
-
       Counter  : Test_Count_Type := 0;
 
       procedure Increase (Cmd : in out Test_Command) is

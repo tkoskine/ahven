@@ -186,8 +186,6 @@ package body Framework_Tests is
    type Empty_Test_Case is new Ahven.Framework.Test_Case with null record;
 
    procedure Test_Test_Case_Run_Empty is
-      use Dummy_Tests;
-
       My_Listener : Simple_Listener.Listener;
       My_Test : Empty_Test_Case;
    begin
@@ -249,8 +247,6 @@ package body Framework_Tests is
    end Test_Test_Case_Run_Break_Infinite_Loop;
 
    procedure Test_Test_Case_Test_Count is
-      use type Ahven.Test_Count_Type;
-
       Dummy_Test  : Dummy_Tests.Test;
    begin
       Assert_Eq_Count (Dummy_Tests.Test_Count (Dummy_Test),
@@ -390,7 +386,6 @@ package body Framework_Tests is
    -- Test that Test_Count works for static test cases
    procedure Test_Test_Suite_Test_Static_Count is
       use Dummy_Tests;
-      use type Ahven.Test_Count_Type;
 
       Child       : Framework.Test_Suite;
       Parent      : Framework.Test_Suite;
@@ -408,7 +403,6 @@ package body Framework_Tests is
 
    procedure Test_Test_Suite_Test_Name_Count is
       use Dummy_Tests;
-      use type Ahven.Test_Count_Type;
 
       Child       : Framework.Test_Suite;
       Parent      : Framework.Test_Suite;
