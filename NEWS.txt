@@ -1,14 +1,15 @@
-2018-??-?? Ahven 2.7
+2018-07-24 Ahven 2.7
 ====================
 
 Changes
 -------
 	* NEWS file renamed to NEWS.txt, LICENSE to LICENSE.txt.
 
-	* GNAT Makefile / comfignat updates:
+	* GNAT Makefile / project file / comfignat updates:
 	  - prefix variable for installation location (note: lowercase)
 	  - development / production build settings
 	  - directory changed to gnat_linux.
+	  - library so version can be overridden.
 
 	* Simplified GNAT project file under gnat directory.
 	  This can be used on Windows also:
@@ -24,7 +25,7 @@ Changes
 	* Adjusted syntax checking rules to work with Adacontrol V1.18r9.
 
 	* sphinxcontrib-adadomain extension is no longer needed to
-		build the documentation.
+	  build the documentation.
 
 Bugs fixed
 ----------

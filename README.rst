@@ -16,9 +16,9 @@ Features
 --------
 
 * Simple API
-* Small size (Ahven 2.4 has 2.8K SLOC; 719 statements; 1366 declarations)
+* Small size (Ahven about has 3K SLOC)
 * JUnit-compatible test results in XML format;
-  this allows integration with tools like `Jenkins`_ or CruiseControl.
+  this allows integration with tools like `Jenkins`_ or TeamCity.
 * Strict coding style (enforced by AdaControl)
 * Plain Ada 95 code, no Ada 2005 features used,
   but can be compiled as Ada 2005 or Ada 2012 code if needed
@@ -38,13 +38,11 @@ Ahven 2.7 compiles and passes its test suite on following platforms
 +-----------------------+--------+------------------------+
 | OS                    |  Arch  | Compiler               |
 +=======================+========+========================+
-| Fedora Linux 27       | x86_64 | FSF GCC 6.1            |
+| Fedora Linux 28       | x86_64 | FSF GCC 8.1            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | i386   | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
 | Debian GNU/Linux 7.8  | x86_64 | FSF GCC 4.6            |
-+-----------------------+--------+------------------------+
-| OpenBSD 6.2           | amd64  | FSF GCC 4.6            |
 +-----------------------+--------+------------------------+
 | Windows 10            | x86_64 | Janus/Ada 3.1.2c       |
 +-----------------------+--------+------------------------+
@@ -54,7 +52,7 @@ Ahven 2.7 compiles and passes its test suite on following platforms
 News
 ----
 
-Ahven 2.7 (2018-??-??)
+Ahven 2.7 (2018-07-24)
 ''''''''''''''''''''''
 
 This is a minor maintenance release with some new features.
