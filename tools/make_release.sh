@@ -46,8 +46,8 @@ AHVEN_TMP_DIR=`mktemp -d`
 cd $AHVEN_TMP_DIR || failure "cd $AHVEN_TMP_DIR failed"
 hg clone $HGROOT ahven-$VERSION || failure "checkout failed"
 cd ahven-$VERSION || failure "cd failed"
-hg archive -p ahven-$VERSION $AHVEN_TMP_DIR/ahven-$VERSION.tar.gz || failure "hg archive .tar.gz failed"
-hg archive -p ahven-$VERSION $AHVEN_TMP_DIR/ahven-$VERSION.zip || failure "hg archive .zip failed"
+hg archive -X ".hg*" -p ahven-$VERSION $AHVEN_TMP_DIR/ahven-$VERSION.tar.gz || failure "hg archive .tar.gz failed"
+hg archive -X ".hg*" -p ahven-$VERSION $AHVEN_TMP_DIR/ahven-$VERSION.zip || failure "hg archive .zip failed"
 cd ..
 
 echo "Release tarball ready at $AHVEN_TMP_DIR/ahven-$VERSION.tar.gz"
