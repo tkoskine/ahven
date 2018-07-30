@@ -6,23 +6,6 @@
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 .. highlight:: ada
 
------
-Types
------
-
-Test_Count_Type
-'''''''''''''''
-
-::
-
-     type Test_Count_Type is new Natural;
-
-Type for the test count. This effectively
-limits the amount tests to whatever Natural is.
-
-Although, in practice when adding tests the limit
-is not checked.
-
 Test_Duration
 '''''''''''''
 

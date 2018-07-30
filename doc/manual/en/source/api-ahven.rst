@@ -5,7 +5,23 @@
 
 .. moduleauthor:: Tero Koskinen <tero.koskinen@iki.fi>
 
+-----
+Types
+-----
 
+Test_Count_Type
+'''''''''''''''
+
+::
+
+     type Test_Count_Type is new Long_Integer range 0 .. Count_Max;
+
+Type for the test count. This effectively limits the amount
+tests to whatever Count_Max is.
+
+Although, in practice when adding tests the limit is not checked.
+
+Currently Count_Max is constant (2**31) - 1.
 
 ----------
 Exceptions
