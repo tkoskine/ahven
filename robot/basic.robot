@@ -8,7 +8,7 @@ Simple1 Test Passes
     Result Should Match    *Simple*PASS*
 
 Fail1 Test Fails
-		Run Test  fail1r
+    Run Test  fail1r
     Result Should Contain  Failed :\ \ 1
     Result Should Match    *Fail*DOES NOT WORK*FAIL*
 
