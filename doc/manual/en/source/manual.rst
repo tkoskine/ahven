@@ -164,9 +164,10 @@ Janus/Ada
 =========
 
 Directory *janusada* contains project file creation scripts for Janus/Ada.
-By default, the scripts assume Janus/Ada to be installed to directory
-*C:\\Janus312\\*.  If that is not the case, change the path from
-file *prepare.bat*.
+By default, the scripts take the Janus/Ada installation directory from JAWSII
+environment variable. If the variable is empty, the scripts assume Janus/Ada
+to be installed to directory *C:\\JanusAda\\*.  If that is not the case,
+change the path from file *prepare.bat*.
 
 .. code-block:: bat
 
@@ -174,20 +175,12 @@ file *prepare.bat*.
 
 Before compiling the library, you need to run
 the preparation script *janusada\\prepare.bat*.
-Then, scan the sources and create compilation script
-by running *janusada\\update.bat*.
+Then, scan the sources and build the binaries
+by running *janusada\\build.bat*.
 
 .. code-block:: bat
 
-    C:\ahven-x.y>janusada\update.bat
-
-Now you are ready to compile the project.
-This happens by running
-*compile.bat* script.
-
-.. code-block:: bat
-
-    C:\ahven-x.y>janusada\compile.bat
+    C:\ahven-x.y>janusada\build.bat
 
 After a while, you should have compiled library files
 in the *lib_obj* directory and an executable called *tap_test.exe*
@@ -198,12 +191,6 @@ no errors, everything is working as expected.
 
 Every test, which is not skipped, should pass with the latest
 stable version of Janus/Ada.
-
-However, with earlier versions of Janus/Ada some tests will fail.
-The failing tests are worked around in Ahven's source code, but
-the test exists so that one can verify when the Janus/Ada bug
-causing the failure is fixed.
-
 
 Using Ahven
 ###########

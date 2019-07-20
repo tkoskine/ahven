@@ -300,18 +300,16 @@ Installation: Janus/Ada
 '''''''''''''''''''''''
 
 Build scripts for Janus/Ada are located in the 'janusada' directory.
-To compile the source code, you need to tweak file 'prepare.bat'
-and then run 'prepare.bat', 'update.bat', and 'compile.bat' from
-the top level directory. That is the same directory where this README.rst
-file is located.
+To compile the source code, you need to first tweak file 'prepare.bat'.
+Then run 'prepare.bat' and 'build.bat' from the top level directory.
+That is the same directory where this README.rst file is located.
 
 Example:
 
 ::
 
   janusada\prepare.bat
-  janusada\update.bat
-  janusada\compile.bat
+  janusada\build.bat
 
 When compilation is finished, you have tap_test.exe in the 'test_obj'
 directory.
