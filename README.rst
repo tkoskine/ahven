@@ -52,6 +52,14 @@ Ahven 2.7 compiles and passes its test suite on following platforms
 News
 ----
 
+Source code repository changes to Sourcehut (2019-09-10)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+As Bitbucket is shutting down Mercurial version control system support,
+the source code repository of Ahven has been changed to Sourcehut.
+
+New repository address is: https://hg.sr.ht/~tkoskine/Ahven
+
 Ahven 2.7 (2018-07-24)
 ''''''''''''''''''''''
 
@@ -233,24 +241,28 @@ http://www.ahven-framework.com/releases/
 
 You can download the latest development source code from
 Ahven's Mercurial repository:
-https://bitbucket.org/tkoskine/ahven/
+https://hg.sr.ht/~tkoskine/Ahven
 
 Debian package
 ''''''''''''''
 
-Debian stable (7.0) provides Ahven 2.1 as libahven21.0 and libahven3-dev packages.
+Debian Linux 10 (buster) provides Ahven as libahven28 and libahven7-dev packages.
 
-One can install the packages with command *apt-get install libahven21.0 libahven3-dev*.
+One can install the packages with command:
+
+::
+
+    sudo apt-get install libahven28 libahven7-dev
 
 Fedora package
 ''''''''''''''
 
-Fedora 23 provides Ahven 2.4 as *ahven* and *ahven-devel* packages.
+Fedora 70 provides Ahven 2.4 as *ahven* and *ahven-devel* packages.
 One can install the packages with the dnf command:
 
 ::
 
-   dnf install ahven ahven-devel
+   sudo dnf install ahven ahven-devel libgnat-static
 
 Installation
 ------------

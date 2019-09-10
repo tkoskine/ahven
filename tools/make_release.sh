@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2007 Tero Koskinen <tero.koskinen@iki.fi>
+# Copyright (c) 2019 Tero Koskinen <tero.koskinen@iki.fi>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -21,7 +21,7 @@
 # ./make_release 1.0
 #
 
-HGROOT=https://bitbucket.org/tkoskine/ahven
+HGROOT=https://hg.sr.ht/~tkoskine/Ahven
 
 failure()
 {
