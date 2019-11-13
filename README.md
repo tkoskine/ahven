@@ -45,7 +45,7 @@ Ahven 2.7 compiles and passes its test suite on following platforms
 As Bitbucket is shutting down Mercurial version control system support,
 the source code repository of Ahven has been changed to Sourcehut.
 
-New repository address is: https://hg.sr.ht/~tkoskine/Ahven
+New repository address is: https://hg.sr.ht/~tkoskine/ahven
 
 #### Ahven 2.7 (2018-07-24)
 
@@ -207,7 +207,7 @@ https://www.ahven-framework.com/releases/
 
 You can download the latest development source code from
 Ahven's Mercurial repository:
-https://hg.sr.ht/~tkoskine/Ahven
+https://hg.sr.ht/~tkoskine/ahven
 
 #### Debian package
 
