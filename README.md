@@ -217,7 +217,7 @@ Debian Linux 10 (buster) provides Ahven as libahven28 and libahven7-dev packages
 One can install the packages with command:
 
 ```
-    sudo apt-get install libahven28 libahven7-dev
+sudo apt-get install libahven28 libahven7-dev
 ```
 
 #### Fedora package
@@ -226,7 +226,7 @@ Fedora 31 provides Ahven as *ahven* and *ahven-devel* packages.
 One can install the packages with the dnf command:
 
 ```
-   sudo dnf install ahven ahven-devel libgnat-static
+sudo dnf install ahven ahven-devel libgnat-static
 ```
 
 ### Installation
@@ -267,9 +267,9 @@ If you want to specify the installation directory, you need to
 give it during the first *make* via prefix variable.
 
 ```
-    make clean # not necessary for the first build
-    make prefix=$HOME/my-libraries/ahven
-    make install
+make clean # not necessary for the first build
+make prefix=$HOME/my-libraries/ahven
+make install
 ```
 
 #### Installation: Janus/Ada
@@ -282,8 +282,8 @@ That is the same directory where this README.md file is located.
 Example:
 
 ```
-  janusada\prepare.bat
-  janusada\build.bat
+janusada\prepare.bat
+janusada\build.bat
 ```
 
 When compilation is finished, you have tap_test.exe in the 'test_obj'
