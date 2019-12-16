@@ -277,7 +277,7 @@ give it during the first *make* via prefix variable.
 Build scripts for Janus/Ada are located in the 'janusada' directory.
 To compile the source code, you need to first tweak file 'prepare.bat'.
 Then run 'prepare.bat' and 'build.bat' from the top level directory.
-That is the same directory where this README.rst file is located.
+That is the same directory where this README.md file is located.
 
 Example:
 
