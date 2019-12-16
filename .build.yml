@@ -1,0 +1,19 @@
+image: debian/stable
+packages:
+  - gprbuild
+  - make
+  - gnat-8
+  - mercurial
+
+sources:
+  - https://git.sr.ht/~tkoskine/ahven-mirror
+
+tasks:
+  - build: |
+      mkdir /tmp/ahven-install
+      cd ahven-mirror
+      gprbuild -p -P gnat/ahven.gpr
+      gprbuild -p -P gnat/ahven_tests.gpr
+  - test: |
+      ahven-mirror/gnat/tester
+      ahven-mirror/gnat/tap_tester
