@@ -6,8 +6,7 @@ packages:
   - mercurial
 
 sources:
-  - https://git.sr.ht/~tkoskine/ahven
-
+  - hg+https://hg.sr.ht/~tkoskine/ahven
 tasks:
   - build: |
       mkdir /tmp/ahven-install
