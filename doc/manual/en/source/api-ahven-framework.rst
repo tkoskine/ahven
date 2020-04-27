@@ -185,7 +185,7 @@ Run
      is abstract;
 
 Run the test with given name and place the test result to Result.
-Notice: If multiple tests have same name this might call all of
+Notice: If multiple tests have same name this will call all of
 them. Timeout specifies maximum execution time for the tests.
 
 
@@ -262,8 +262,8 @@ Execute
                       Listener  : in out Listeners.Result_Listener'Class;
                       Timeout  :        Test_Duration);
 
-Same as Execute above, but call the Run procedure which
-takes Test_Name parameter. Timeout specifies the maximum execution
+Same as Execute above, but call the Run procedure which takes
+Test_Name parameter. Timeout specifies the maximum execution
 time for each test.
 
 
@@ -400,8 +400,7 @@ Create_Suite
    function Create_Suite (Suite_Name : String)
      return Test_Suite;
 
-Create a new Test_Suite. The suite and its children are
-released automatically.
+Create a new Test_Suite. The suite and its children are released automatically.
 
 Add_Test
 ''''''''
