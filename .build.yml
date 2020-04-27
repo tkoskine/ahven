@@ -6,14 +6,14 @@ packages:
   - mercurial
 
 sources:
-  - https://git.sr.ht/~tkoskine/ahven-mirror
+  - https://git.sr.ht/~tkoskine/ahven
 
 tasks:
   - build: |
       mkdir /tmp/ahven-install
-      cd ahven-mirror
+      cd ahven
       gprbuild -p -P gnat/ahven.gpr
       gprbuild -p -P gnat/ahven_tests.gpr
   - test: |
-      ahven-mirror/gnat/tester
-      ahven-mirror/gnat/tap_tester
+      ahven/gnat/tester
+      ahven/gnat/tap_tester
