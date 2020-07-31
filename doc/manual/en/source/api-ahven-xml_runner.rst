@@ -7,6 +7,16 @@
 
 .. versionadded:: 1.2
 
+Package Ahven.XML_Runner provides procedures to run
+the test suites and write the results in XML file format.
+
+In normal case, Ahven.Text_Runner uses Ahven.XML_Runner
+automatically, if user has given a parameter to write the results
+in XML format.
+
+The target directory is parsed by Ahven.Runner from the program
+arguments and given as a parameter to Report_Results procedure.
+
 ------------------------
 Procedures and Functions
 ------------------------
