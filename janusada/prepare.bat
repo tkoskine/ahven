@@ -2,7 +2,13 @@ setlocal
 if [%JAWSII%] == [] (
   set januspath=C:\JanusAda\rts\console
 ) else (
-  if exist %JAWSII% (set januspath=%JAWSII%rts\console) else (
+  if exist %JAWSII% (
+    if %JAWSII:~-1[,1]% == \ (
+      set januspath=%JAWSII%rts\console
+    ) else (
+      set januspath=%JAWSII%\rts\console
+    )
+  ) else (
     set januspath=C:\JanusAda\rts\console
   )
 )
