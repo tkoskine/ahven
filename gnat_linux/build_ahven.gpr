@@ -26,6 +26,7 @@ library project Build_Ahven is
    case Comfignat.Library_Type is
       when "dynamic" | "relocatable" =>
          for Library_Version   use "libahven.so." & Version;
+         for Library_Options use External_As_List ("LDFLAGS", " ");
          for Library_Interface use ("Ahven",
                                     "Ahven.Framework",
                                     "Ahven.Listeners",
