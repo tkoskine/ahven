@@ -1,9 +1,16 @@
-DATE-TDB Ahven 2.8
-==================
+2020-10-17 Ahven 2.8
+====================
 
 Changes
 -------
-	* TODO
+	* Source code repository of Ahven is now hosted at
+	  Sourcehut: https://hg.sr.ht/~tkoskine/ahven
+
+	* Improvements to Janus/Ada build scripts
+
+	* Improvements to GNAT build scripts
+
+	* Minor documentation updates
 
 2018-07-24 Ahven 2.7
 ====================
