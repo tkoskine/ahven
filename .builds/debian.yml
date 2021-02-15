@@ -24,11 +24,3 @@ tasks:
       export ADA_PROJECT_PATH=/tmp/ahven-dynamic/share/gpr
       cd ../examples
       gprbuild -p -P examples
-  - build-static-gnat-linux-with-examples: |
-      cd ahven/gnat_linux
-      make library_type=static builddir=../tmp-static prefix=/tmp/ahven-static
-      make library_type=static builddir=../tmp-static prefix=/tmp/ahven-static check
-      make library_type=static builddir=../tmp-static prefix=/tmp/ahven-static install
-      export ADA_PROJECT_PATH=/tmp/ahven-static/share/gpr
-      cd ../examples
-      gprbuild -p -P examples
