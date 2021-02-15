@@ -16,11 +16,3 @@ tasks:
   - test-plain: |
       ahven/gnat/tester
       ahven/gnat/tap_tester
-  - build-dynamic-gnat-linux-with-examples: |
-      cd ahven/gnat_linux
-      make library_type=dynamic builddir=../tmp-dynamic prefix=/tmp/ahven-dynamic
-      make library_type=dynamic builddir=../tmp-dynamic prefix=/tmp/ahven-dynamic check
-      make library_type=dynamic builddir=../tmp-dynamic prefix=/tmp/ahven-dynamic install
-      export ADA_PROJECT_PATH=/tmp/ahven-dynamic/share/gpr
-      cd ../examples
-      gprbuild -p -P examples
