@@ -1,4 +1,4 @@
-GNAT_BUILDER ?= gnatmake
+GNAT_BUILDER ?= gprbuild
 
 include comfignat.mk
 
@@ -26,7 +26,7 @@ ${stage_miscdocdir}/ahven:
 	mkdir -p ${stage_miscdocdir}/ahven
 
 check: tests
-	./tester -c
+	${builddir}/tester -c
 
 check_xml: tests
 	-mkdir -p results
