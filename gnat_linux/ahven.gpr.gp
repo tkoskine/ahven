@@ -9,7 +9,7 @@ library project Ahven is
    for Library_Dir      use $Libdir;
    for Library_ALI_Dir  use $Alidir & "/ahven";
    for Externally_Built use "true";
-   #if Library_Type = "static" then
+   #if Library_Type = """static""" then
    package Linker is
       for Linker_Options use ("-lgnarl");
    end Linker;
