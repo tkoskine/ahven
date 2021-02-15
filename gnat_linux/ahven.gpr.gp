@@ -13,5 +13,5 @@ library project Ahven is
    package Linker is
       for Linker_Options use ("-lgnarl");
    end Linker;
-   #endif
+   #end if
 end Ahven;
