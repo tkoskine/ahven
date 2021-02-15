@@ -1,0 +1,36 @@
+image: fedora/latest
+packages:
+  - gprbuild
+  - make
+  - libgnat-static
+  - libgnat-devel
+  - gcc-gnat
+  - mercurial
+
+sources:
+  - hg+https://hg.sr.ht/~tkoskine/ahven
+tasks:
+  - build-plain: |
+      mkdir /tmp/ahven-install
+      cd ahven
+      gprbuild -p -P gnat/ahven.gpr
+      gprbuild -p -P gnat/ahven_tests.gpr
+  - test-plain: |
+      ahven/gnat/tester
+      ahven/gnat/tap_tester
+  - build-dynamic-gnat-linux-with-examples: |
+      cd ahven/gnat_linux
+      make library_type=dynamic builddir=../tmp-dynamic prefix=/tmp/ahven-dynamic
+      make library_type=dynamic builddir=../tmp-dynamic prefix=/tmp/ahven-dynamic check
+      make library_type=dynamic builddir=../tmp-dynamic prefix=/tmp/ahven-dynamic install
+      export ADA_PROJECT_PATH=/tmp/ahven-dynamic/share/gpr
+      cd ../examples
+      gprbuild -p -P examples
+  - build-static-gnat-linux-with-examples: |
+      cd ahven/gnat_linux
+      make library_type=static builddir=../tmp-static prefix=/tmp/ahven-static
+      make library_type=static builddir=../tmp-static prefix=/tmp/ahven-static check
+      make library_type=static builddir=../tmp-static prefix=/tmp/ahven-static install
+      export ADA_PROJECT_PATH=/tmp/ahven-static/share/gpr
+      cd ../examples
+      gprbuild -p -P examples
