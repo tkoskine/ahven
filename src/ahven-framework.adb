@@ -611,7 +611,7 @@ package body Ahven.Framework is
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Class_Access) is
    begin
-      Test_List.Append (Suite.Test_Cases, (Ptr => T));
+      Test_List.Append (Suite.Test_Cases, T);
    end Add_Test;
 
    procedure Add_Test (Suite : in out Test_Suite; T : Test_Suite_Access) is
@@ -645,9 +645,9 @@ package body Ahven.Framework is
          Execute (Current, Listener, Timeout);
       end Execute_Test;
 
-      procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
+      procedure Execute_Test_Ptr (Current : in out Test_Class_Access) is
       begin
-         Execute (Current.Ptr.all, Listener, Timeout);
+         Execute (Current.all, Listener, Timeout);
       end Execute_Test_Ptr;
 
       procedure Execute_Static_Cases is
@@ -676,9 +676,9 @@ package body Ahven.Framework is
          end if;
       end Execute_Test;
 
-      procedure Execute_Test_Ptr (Current : in out Test_Class_Wrapper) is
+      procedure Execute_Test_Ptr (Current : in out Test_Class_Access) is
       begin
-         Execute_Test (Current.Ptr.all);
+         Execute_Test (Current.all);
       end Execute_Test_Ptr;
 
       procedure Execute_Cases is
@@ -703,9 +703,9 @@ package body Ahven.Framework is
          Counter := Counter + Test_Count (Test_Obj);
       end Inc_Counter;
 
-      procedure Inc_Counter_Ptr (Wrapper : in out Test_Class_Wrapper) is
+      procedure Inc_Counter_Ptr (Ptr : in out Test_Class_Access) is
       begin
-         Inc_Counter (Wrapper.Ptr.all);
+         Counter := Counter + Test_Count (Ptr.all);
       end Inc_Counter_Ptr;
    begin
       declare
@@ -738,9 +738,9 @@ package body Ahven.Framework is
          end if;
       end Handle_Test;
 
-      procedure Handle_Test_Ptr (Obj : in out Test_Class_Wrapper) is
+      procedure Handle_Test_Ptr (Obj : in out Test_Class_Access) is
       begin
-         Handle_Test (Obj.Ptr.all);
+         Handle_Test (Obj.all);
       end Handle_Test_Ptr;
 
       procedure Count_Static is
@@ -763,9 +763,9 @@ package body Ahven.Framework is
 
       New_List : List := Empty_List;
 
-      procedure Create_Copy (Item : in out Test_Class_Wrapper) is
+      procedure Create_Copy (Item : in out Test_Class_Access) is
       begin
-         Append (New_List, (Ptr => new Test'Class'(Item.Ptr.all)));
+         Append (New_List, new Test'Class'(Item.all));
       end Create_Copy;
 
       procedure Copy_All is new For_Each (Action => Create_Copy);
@@ -778,9 +778,9 @@ package body Ahven.Framework is
    procedure Finalize  (T : in out Test_Suite) is
       use Test_List;
 
-      procedure Free_Item (Item : in out Test_Class_Wrapper) is
+      procedure Free_Item (Item : in out Test_Class_Access) is
       begin
-         Free_Test (Item.Ptr);
+         Free_Test (Item);
       end Free_Item;
 
       procedure Free_All is new For_Each (Action => Free_Item);

@@ -302,12 +302,8 @@ private
    -- Timeout parameter defines the longest time the test is allowed
    -- to run. Value 0.0 means infinite time.
 
-   type Test_Class_Wrapper is record
-      Ptr : Test_Class_Access;
-   end record;
-
    package Test_List is
-     new Ahven.SList (Element_Type => Test_Class_Wrapper);
+     new Ahven.SList (Element_Type => Test_Class_Access);
 
    package Indefinite_Test_List is
       type List is new Ada.Finalization.Controlled with private;
