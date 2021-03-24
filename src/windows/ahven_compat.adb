@@ -13,6 +13,8 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
+-- SPDX-License-Identifier: ISC
+--
 
 -- Windows version of OS compatibility package
 package body Ahven_Compat is

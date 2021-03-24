@@ -13,6 +13,8 @@
 -- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 -- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
+-- SPDX-License-Identifier: ISC
+--
 
 package body Simple_Listener is
    procedure Add_Pass (Object : in out Listener;
