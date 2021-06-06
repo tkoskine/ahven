@@ -1,0 +1,117 @@
+--
+-- Copyright (c) 2021 Tero Koskinen, Michael Rohan
+-- SPDX-License-Identifier: ISC
+--
+-- Permission to use, copy, modify, and distribute this software for any
+-- purpose with or without fee is hereby granted, provided that the above
+-- copyright notice and this permission notice appear in all copies.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+-- WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+-- MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+-- ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+-- WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+-- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+-- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+--
+
+project Ahven_Alire is
+
+   type OS_Kind is ("windows", "unix", "osx");
+   OS : OS_Kind := External ("AHVEN_OS", "unix");
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("AHVEN_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   type Enabled_Kind is ("enabled", "disabled");
+   Compile_Checks : Enabled_Kind := External ("AHVEN_COMPILE_CHECKS", "enabled");
+   Runtime_Checks : Enabled_Kind := External ("AHVEN_RUNTIME_CHECKS", "enabled");
+   Style_Checks : Enabled_Kind := External ("AHVEN_STYLE_CHECKS", "disabled");
+   Contracts_Checks : Enabled_Kind := External ("AHVEN_CONTRACTS", "enabled");
+
+   type Build_Kind is ("debug", "optimize");
+   Build_Mode : Build_Kind := External ("AHVEN_BUILD_MODE", "debug");
+
+   for Library_Name use "Ahven";
+   for Library_Version use "2.8.0";
+
+   for Object_Dir use "obj";
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "../lib";
+
+   Sources := ("../src");
+
+   case OS is
+      when "unix" | "osx" =>
+         Sources := Sources & ("../src/unix");
+      when "windows" =>
+         Sources := Sources & ("../src/windows");
+   end case;
+
+   for Source_Dirs use Sources;
+
+   Compile_Checks_Switches := ();
+   case Compile_Checks is
+      when "enabled" =>
+         Compile_Checks_Switches :=
+           ("-gnatwa",  -- All warnings
+            "-gnatVa",  -- All validity checks
+            "-gnatwe"); -- Warnings as errors
+      when others => null;
+   end case;
+
+   Runtime_Checks_Switches := ();
+   case Runtime_Checks is
+      when "enabled" => null;
+      when others =>
+         Runtime_Checks_Switches :=
+           ("-gnatp"); -- Supress checks
+   end case;
+
+   Style_Checks_Switches := ();
+   case Style_Checks is
+      when "enabled" =>
+         Style_Checks_Switches :=
+           ("-gnatyg",   -- GNAT Style checks
+            "-gnaty-d",  -- Disable no DOS line terminators
+            "-gnatyM80", -- Maximum line length
+            "-gnatyO");  -- Overriding subprograms explicitly marked as such
+      when others => null;
+   end case;
+
+   Contracts_Switches := ();
+   case Contracts_Checks is
+      when "enabled" =>
+         Contracts_Switches :=
+           ("-gnata"); --  Enable assertions and contracts
+      when others => null;
+   end case;
+
+   Build_Switches := ();
+   case Build_Mode is
+      when "optimize" =>
+         Build_Switches := ("-O3",     -- Optimization
+                            "-gnatn"); -- Enable inlining
+      when "debug" =>
+         Build_Switches := ("-g",   -- Debug info
+                            "-Og"); -- No optimization
+   end case;
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+        Compile_Checks_Switches &
+        Build_Switches &
+        Runtime_Checks_Switches &
+        Style_Checks_Switches &
+        Contracts_Switches &
+        ("-gnatw.X", -- Disable warnings for No_Exception_Propagation
+         "-gnatQ");  -- Don't quit. Generate ALI and tree files even if illegalities
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+end Ahven_Alire;
