@@ -13,7 +13,7 @@ call com_obj\ctst.bat
 
 if %ERRORLEVEL NEQ 0 goto errorhappened
 
-corder libmain /e/pAhvenLib/osrc%SUFFIX%/t/w/k255/js'jbind'/jb'%JBIND_OPTIONS%'/c'%COMP_OPTIONS%'/b'lib_obj\ctst.bat'/rlib_obj
+corder ahven_libmain /e/pAhvenLib/osrc%SUFFIX%/t/w/k255/js'jbind'/jb'%JBIND_OPTIONS%'/c'%COMP_OPTIONS%'/b'lib_obj\ctst.bat'/rlib_obj
 
 if %ERRORLEVEL NEQ 0 goto errorhappened
 
