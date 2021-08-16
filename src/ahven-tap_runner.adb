@@ -144,8 +144,7 @@ package body Ahven.Tap_Runner is
    end Add_Pass;
 
    procedure Report_Not_Ok (Listener : in out Tap_Listener;
-                            Info     :        Context;
-                            Severity :        String) is
+                            Info     :        Context) is
    begin
       if Listener.Capture_Output then
          Temporary_Output.Restore_Output;
@@ -170,13 +169,13 @@ package body Ahven.Tap_Runner is
    procedure Add_Failure (Listener : in out Tap_Listener;
                           Info     :        Context) is
    begin
-      Report_Not_Ok (Listener, Info, "fail");
+      Report_Not_Ok (Listener, Info);
    end Add_Failure;
 
    procedure Add_Error (Listener : in out Tap_Listener;
                         Info     :        Context) is
    begin
-      Report_Not_Ok (Listener, Info, "error");
+      Report_Not_Ok (Listener, Info);
    end Add_Error;
 
    procedure Add_Skipped (Listener : in out Tap_Listener;
