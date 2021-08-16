@@ -35,7 +35,7 @@ project Ahven_Alire is
    Build_Mode : Build_Kind := External ("AHVEN_BUILD_MODE", "debug");
 
    for Library_Name use "Ahven";
-   for Library_Version use "2.8.0";
+   for Library_Version use "2.9.0";
 
    for Object_Dir use "obj";
    for Create_Missing_Dirs use "True";
