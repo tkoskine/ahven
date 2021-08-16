@@ -40,6 +40,22 @@ project Ahven_Alire is
    for Object_Dir use "obj";
    for Create_Missing_Dirs use "True";
    for Library_Dir use "../lib";
+   
+   for Library_Interface use ("Ahven",
+             "Ahven.Framework",
+             "Ahven.Listeners",
+             "Ahven.Listeners.Basic",
+             "Ahven.Name_List",
+             "Ahven.AStrings",
+             "Ahven.Long_AStrings",
+             "Ahven.Results",
+             "Ahven.Parameters",
+             "Ahven.SList",
+             "Ahven.Runner",
+             "Ahven.Tap_Runner",
+             "Ahven.Temporary_Output",
+             "Ahven.Text_Runner",
+             "Ahven.XML_Runner");
 
    Sources := ("../src");
 
