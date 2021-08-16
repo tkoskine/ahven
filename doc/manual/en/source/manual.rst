@@ -147,7 +147,7 @@ Easiest way to build Ahven with ICCAda is to use *icm* utility
     C:\ahven-x.y>cd src
     C:\ahven-x.y\src>icm new
     C:\ahven-x.y\src>icm scan *.ad? windows\*.ad?
-    C:\ahven-x.y\src>icm make libmain
+    C:\ahven-x.y\src>icm make ahven_libmain
     C:\ahven-x.y\src>cd ..\test
     C:\ahven-x.y\test>icm new -search=..\src
     C:\ahven-x.y\test>icm scan *.ad?

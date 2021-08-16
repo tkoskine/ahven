@@ -27,7 +27,7 @@ with Ahven.Parameters;
 with Ahven.SList;
 with Ahven.Tap_Runner;
 
-procedure LibMain is
+procedure Ahven_LibMain is
 begin
    null;
-end LibMain;
+end Ahven_LibMain;
