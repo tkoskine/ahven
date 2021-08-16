@@ -1,3 +1,11 @@
+20??-??-?? Ahven 2.9
+====================
+
+Changes
+-------
+	* Alire package manager configuration files contributed
+	  by Michael Rohan.
+
 2020-10-17 Ahven 2.8
 ====================
 
