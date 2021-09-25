@@ -225,7 +225,7 @@ sudo apt-get install libahven-doc libahven7-dev
 
 #### Fedora package
 
-Fedora 32 provides Ahven as *ahven* and *ahven-devel* packages.
+Fedora provides Ahven as *ahven* and *ahven-devel* packages.
 One can install the packages with the dnf command:
 
 ```
