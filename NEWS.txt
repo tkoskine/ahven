@@ -5,6 +5,7 @@ Changes
 -------
 	* Alire package manager configuration files contributed
 	  by Michael Rohan.
+	* Added SPDX license identifiers to all source files.
 
 2020-10-17 Ahven 2.8
 ====================
