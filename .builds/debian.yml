@@ -2,7 +2,7 @@ image: debian/stable
 packages:
   - gprbuild
   - make
-  - gnat-8
+  - gnat-10
   - mercurial
 
 sources:
