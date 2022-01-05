@@ -23,7 +23,7 @@ with any Ada 95, 2005, or 2012 compiler.
 
 #### See also
 
-* Author's blog at http://tero.stronglytyped.org/tag/ahven.html
+* Author's blog at https://tero.stronglytyped.org/tag/ahven.html
 * fedora/stable build status: [![fedora/stable status](https://builds.sr.ht/~tkoskine/ahven/fedora.yml.svg)](https://builds.sr.ht/~tkoskine/ahven/fedora.yml?)
 * debian/stable build status: [![debian/stable status](https://builds.sr.ht/~tkoskine/ahven/debian.yml.svg)](https://builds.sr.ht/~tkoskine/ahven/debian.yml?)
 
@@ -40,6 +40,17 @@ Ahven 2.8 compiles and passes its test suite on following platforms
 
 
 ### News
+
+#### Git mirrors available (2022-01-05)
+
+Git mirrors of Ahven's Mercurial repository are available at:
+
+- Sourcehut: https://git.sr.ht/~tkoskine/ahven
+- Github: https://github.com/tkoskine/ahven
+
+**NOTE:**
+These mirrors might be out of sync occasionally. Please use
+the Mercurial repository when contributing patches.
 
 #### Ahven 2.8 (2020-10-17)
 
@@ -214,6 +225,11 @@ https://www.ahven-framework.com/releases/
 You can download the latest development source code from
 Ahven's Mercurial repository:
 https://hg.sr.ht/~tkoskine/ahven
+
+Git mirrors of the Mercurial repository are available at:
+
+- Sourcehut: https://git.sr.ht/~tkoskine/ahven
+- Github: https://github.com/tkoskine/ahven
 
 #### Debian package
 
