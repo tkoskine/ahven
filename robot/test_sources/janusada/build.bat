@@ -1,9 +1,13 @@
+@rem Run this from robot\test_sources directory
+
+if not exits bin ( mkdir bin )
+
 cd simple1
 corder simple1r /pSimple1/l'ads'/n'adb'/t/w/k255/js'jbind'/jb'/t/l/YLLIBCMT'/b'..\simple1_obj\ctst.bat'/r..\simple1_obj
 cd ..\simple1_obj
 call ctst.bat
 call lkc simple1r
-move simple1r.exe ..
+move simple1r.exe ..\bin
 cd ..
 
 cd fail1
@@ -11,5 +15,5 @@ corder fail1r /pfail1/l'ads'/n'adb'/t/w/k255/js'jbind'/jb'/t/l/YLLIBCMT'/b'..\fa
 cd ..\fail1_obj
 call ctst.bat
 call lkc fail1r
-move fail1r.exe ..
+move fail1r.exe ..\bin
 cd ..

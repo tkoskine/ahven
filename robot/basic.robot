@@ -19,7 +19,7 @@ Fail1 Test Fails
 *** Keywords ***
 Run Test
     [Arguments]  ${testname}
-    ${result}=  Run Process  test_sources/${testname}
+    ${result}=  Run Process  test_sources/bin/${testname}
     Set Test Variable  ${TEST_OUTPUT}  ${result.stdout}
 
 Result Should Contain
