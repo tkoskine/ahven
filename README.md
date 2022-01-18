@@ -29,14 +29,14 @@ with any Ada 95, 2005, or 2012 compiler.
 
 ### Platforms
 
-Ahven 2.8 compiles and passes its test suite on following platforms
+Ahven 2.9 compiles and passes its test suite on following platforms
 
 | OS                    |  Arch  | Compiler               |
 |-----------------------|--------|------------------------|
-| Fedora Linux 32       | x86_64 | FSF GCC 10.2.1         |
-| Debian GNU/Linux 10   | x86_64 | FSF GCC 8              |
+| Fedora Linux 35       | x86_64 | FSF GCC 11.2.1         |
+| Debian GNU/Linux 11   | x86_64 | FSF GCC 10             |
 | Windows 10            | x86_64 | Janus/Ada 3.2.1a       |
-| Windows 10            | x86_64 | GNAT GPL 2020          |
+| Windows 11            | x86_64 | GNAT GPL 2020          |
 
 
 ### News
