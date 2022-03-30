@@ -264,8 +264,8 @@ procedure is :ref:`Ahven.Assert <ahven-assert>`.
 It takes a boolean value and a message string as its parameters.
 If the boolean value is false the ``Assert``
 raises an ``Assertion_Error`` exception
-with the given string. The exception is catched by the framework.
-and when the test results are shown the error is also shown
+with the given string. The exception is caught by the framework
+and, when the test results are shown, the error is also shown
 with the given message.
 
 Another assertion procedure is a generic
